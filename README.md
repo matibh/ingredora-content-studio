@@ -27,7 +27,7 @@ La dirección elegida es una fábrica audiovisual basada en escenas 3D programá
 | [01 — Estrategia de contenido](docs/01-estrategia-de-contenido.md) | Audiencia, idiomas, pilares, campañas y medición | Borrador inicial |
 | [02 — Arquitectura general](docs/02-arquitectura-general.md) | Componentes, flujos, render, almacenamiento, seguridad y límites gratuitos | Borrador inicial |
 | [03 — ChatGPT: producción y protocolo](docs/03-chatgpt-produccion-y-protocolo.md) | Paquetes de producción, roles, validación, feedback y versionado | Borrador inicial |
-| 04 — Identidad visual | Sistema de marca y dirección artística | Pendiente |
+| [04 — Identidad visual](docs/04-identidad-visual.md) | Sistema de marca, packaging, gráfica y dirección artística | Borrador inicial |
 | 05 — Product Library | Catálogo, fuentes, verificación y derechos | Pendiente |
 | 06 — 3D Product Studio | Envases, materiales, texturas y modelos reutilizables | Pendiente |
 | 07 — Personajes y animaciones | Personajes, rigging, acciones y biblioteca de movimientos | Pendiente |
@@ -71,6 +71,7 @@ Los esquemas JSON se incorporarán cuando el modelo conceptual esté suficientem
 - Aplicación: todavía no implementada.
 - Arquitectura general: especificación inicial incorporada; hosting, codecs y límites operativos siguen sujetos a pruebas.
 - Protocolo ChatGPT-app: especificación inicial incorporada; schemas y mecanismo de importación quedan pendientes.
+- Identidad visual: sistema inicial de capas, dirección de arte 3D, composición y tokens; assets oficiales y decisiones de marca pendientes.
 - GitHub Pages: no se utilizará como hosting de la aplicación en esta etapa.
 - GitHub Actions: se habilitará solo para validaciones ligeras y sin habilitar billing.
 - Proveedor de hosting web: pendiente de evaluación y verificación de condiciones gratuitas.
