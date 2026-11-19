@@ -1033,7 +1033,7 @@ export function drawCocaColaPoolsideOverlay(
     ctx.fillStyle = red;
     ctx.fill();
     drawTextFit(ctx, "PARA ADIVINAR", width / 2, height * 0.685, width * 0.8, 25 * scale, white, 800);
-  } else if (time < 22.8) {
+  } else if (time < 21.0) {
     const reveal = ease((time - 16) / 0.34);
     ctx.save();
     ctx.fillStyle = "rgba(4,18,27,.76)";
@@ -1057,7 +1057,7 @@ export function drawCocaColaPoolsideOverlay(
     const cardW = (gridW - gapX) / 2;
     const cardH = height * 0.155;
     ingredients.forEach((ingredient, index) => {
-      const cardReveal = ease((time - (16 + index * 0.46)) / 0.28);
+      const cardReveal = ease((time - (16 + index * 0.40)) / 0.28);
       if (cardReveal <= 0) return;
       ctx.save();
       ctx.globalAlpha *= cardReveal;
@@ -1102,7 +1102,7 @@ export function drawCocaColaPoolsideOverlay(
       });
       ctx.restore();
     });
-    const caffeineReveal = ease((time - 19.1) / 0.32);
+    const caffeineReveal = ease((time - 18.6) / 0.30);
     if (caffeineReveal > 0) {
       ctx.save();
       ctx.globalAlpha *= caffeineReveal;
@@ -1114,7 +1114,7 @@ export function drawCocaColaPoolsideOverlay(
     }
     ctx.restore();
   } else {
-    const p = ease((time - 22.8) / 0.36);
+    const p = ease((time - 21.0) / 0.36);
     ctx.save();
     ctx.fillStyle = "rgba(3,17,27,.58)";
     ctx.fillRect(0, height * 0.10, width, height * 0.82);
