@@ -33,7 +33,7 @@ La dirección elegida es una fábrica audiovisual basada en escenas 3D programá
 | [07 — Personajes y animaciones](docs/07-personajes-y-animaciones.md) | Personajes estilizados, rigs, expresiones e interacciones | Borrador inicial |
 | [08 — Cinematic Scene Engine](docs/08-cinematic-scene-engine.md) | Escenarios, cámara, iluminación, partículas y composición | Borrador inicial |
 | [09 — Audio y Voice Studio](docs/09-audio-y-voice-studio.md) | Música procedural, SFX, ambientes, voz, mezcla y sincronización | Borrador inicial |
-| 10 — Editor y Render Engine | Timeline, previsualización, render por escenas y exportación | Pendiente |
+| [10 — Editor y Render Engine](docs/10-editor-y-render-engine.md) | Timeline, previsualización, render por escenas y exportación | Borrador inicial |
 | 11 — Supabase y almacenamiento | Datos, Storage, cuotas, RLS y recuperación | Pendiente |
 | 12 — Control de calidad | Validaciones automáticas y aprobación | Pendiente |
 | 13 — Distribución social | Adaptaciones, metadatos y publicación futura | Pendiente |
@@ -77,6 +77,7 @@ Los esquemas JSON se incorporarán cuando el modelo conceptual esté suficientem
 - Personajes y animaciones: sistema modular de personajes estilizados, rigs, expresiones, acciones, agarres de producto y timeline especificado.
 - Cinematic Scene Engine: entornos, dirección de cámara e iluminación, timeline, partículas, transiciones, overlays, composición narrativa y render determinista especificados.
 - Audio y Voice Studio: música procedural, SFX, ambientes, pistas de voz opcionales, mezcla, sincronización, metadatos y restricciones de derechos especificados; voz sintética aún no aprobada.
+- Editor y Render Engine: workspace de campañas, importación de paquetes, editor de escenas/timeline, preview, render determinista, cola, recuperación y almacenamiento de entregables especificados.
 - GitHub Pages: no se utilizará como hosting de la aplicación en esta etapa.
 - GitHub Actions: se habilitará solo para validaciones ligeras y sin habilitar billing.
 - Proveedor de hosting web: pendiente de evaluación y verificación de condiciones gratuitas.
