@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "engineVersion": "1.0.0",
   "id": "ingredora-coca-cola-poolside-002",
-  "title": "Coca-Cola — El vaso más esperado del verano",
-  "description": "Spot vertical cinematográfico de 34 segundos: un día de pileta, una Coca-Cola servida sobre hielo, congelamiento de la escena y desafío de 15 segundos para adivinar la composición declarada.",
+  "title": "Coca-Cola — Una Coca bien fría",
+  "description": "Spot vertical cinematográfico de 34 segundos con voz femenina argentina Edge TTS, subtítulos palabra por palabra sincronizados, desafío de 15 segundos y revelación visual.",
   "createdAt": "2026-11-19T20:00:00-03:00",
   "fps": 30,
   "width": 720,
@@ -33,5 +33,8 @@
       "subline": "¿SABÉS QUÉ TIENE ADENTRO?",
       "objects": []
     }
-  ]
+  ],
+  "voiceoverUrl": "studio/audio/coca-cola-poolside-v2-voice-es-AR.mp3",
+  "wordTimingsUrl": "studio/audio/coca-cola-poolside-v2-word-timings.json",
+  "voiceoverOffsetSeconds": 0
 }
