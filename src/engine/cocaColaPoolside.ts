@@ -392,10 +392,10 @@ export function createCocaColaPoolsideSet(world: THREE.Scene): PoolsideSet {
   const oceanPositions = oceanGeometry.attributes.position.array as Float32Array;
   const oceanBase = new Float32Array(oceanPositions);
 
-  const foamMaterial = new THREE.MeshBasicMaterial({ color: "#fffdf6", transparent: true, opacity: 0.46, side: THREE.DoubleSide });
+  const foamBandMaterial = new THREE.MeshBasicMaterial({ color: "#fffdf6", transparent: true, opacity: 0.46, side: THREE.DoubleSide });
   const foamBands: THREE.Mesh[] = [];
   for (let i = 0; i < 4; i += 1) {
-    const band = new THREE.Mesh(new THREE.PlaneGeometry(38, 0.10 + i * 0.025), foamMaterial);
+    const band = new THREE.Mesh(new THREE.PlaneGeometry(38, 0.10 + i * 0.025), foamBandMaterial);
     band.rotation.x = -Math.PI / 2;
     band.position.set((i % 2 ? -0.7 : 0.9), -1.925 + i * 0.003, -5.0 - i * 0.42);
     band.rotation.z = (i % 2 ? -0.015 : 0.012);
@@ -607,14 +607,14 @@ export function createCocaColaPoolsideSet(world: THREE.Scene): PoolsideSet {
     streamDroplets.push(drop);
   }
 
-  const foamMaterial = new THREE.MeshPhysicalMaterial({
+  const pourFoamMaterial = new THREE.MeshPhysicalMaterial({
     color: "#d9a77b",
     roughness: 0.22,
     transparent: true,
     opacity: 0.34,
     clearcoat: 0.65,
   });
-  const foam = new THREE.Mesh(new THREE.TorusGeometry(0.19, 0.016, 8, 64), foamMaterial);
+  const foam = new THREE.Mesh(new THREE.TorusGeometry(0.19, 0.016, 8, 64), pourFoamMaterial);
   foam.rotation.x = Math.PI / 2;
   foam.visible = false;
   glass.add(foam);
