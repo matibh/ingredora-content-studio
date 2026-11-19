@@ -1,7 +1,7 @@
 const DB_NAME = "ingredora-content-studio";
 const STORE_NAME = "renders";
 const DB_VERSION = 1;
-const RENDER_CACHE_VERSION = "nutella-v9-front-label-argentina-v12";
+const RENDER_CACHE_VERSION = "nutella-v9-supermarket-gondola-premium-v13";
 
 function cacheKey(id: string) {
   return `${id}:${RENDER_CACHE_VERSION}`;
