@@ -20,3 +20,9 @@
 .approve-upload-button:hover:not(:disabled){background:#45683e}
 .approve-upload-button:disabled{opacity:.45;cursor:not-allowed}
 .approval-result{overflow-wrap:anywhere;color:#557c45!important}
+
+.approval-panel{align-items:flex-start}
+.github-connected{display:flex;align-items:center;gap:8px;font-size:10px;color:#55764a}
+.github-dot{width:7px;height:7px;border-radius:50%;background:#79a95f;display:inline-block}
+.github-connected button{border:0;background:transparent;color:#89958a;font-size:8px;font-weight:800;letter-spacing:.8px;text-decoration:underline;cursor:pointer;padding:4px}
+.approval-panel .approve-upload-button{margin-top:4px;max-width:100%;line-height:1.5}
