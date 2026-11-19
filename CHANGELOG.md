@@ -99,3 +99,10 @@ All notable documentation and specification changes are recorded here.
 - Reaffirmed USD 0: no paid plans, billing, cards, overages, paid APIs or automatic upgrades. Provider quotas must be revalidated and operations paused before limits are exceeded.
 - Documented current official references for Supabase Free/billing/pausing, GitHub Actions usage and Cloudflare Pages limits.
 - Completed the initial document set 00–15. This is a documentation milestone only; application implementation remains unstarted and requires a cross-document audit and approval of data contracts.
+
+## 2026-11-19 — Cross-document audit
+
+- Added `docs/auditoria-transversal.md` with findings across documents 00–15, provider-limit checks, browser render feasibility, storage constraints, analytics boundaries and eight owner decisions.
+- Identified blockers: inconsistent social channel priorities, Supabase Free video storage limits, unproven browser codec pipeline, gameplay analytics ownership, retention identity and limits of automated quota guards.
+- Added recommendations for a reduced vertical-slice MVP and documented that implementation remains blocked pending approval of decisions D-01 through D-08.
+- Cleaned duplicate project-status text in README and linked the audit.
