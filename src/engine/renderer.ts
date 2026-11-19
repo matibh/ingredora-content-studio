@@ -137,11 +137,14 @@ function createNutellaSet(world: THREE.Scene) {
   },256,384),roughness:.66}));
   const canMats=products.map(([base])=>new THREE.MeshStandardMaterial({color:base,roughness:.28,metalness:.42}));
   const ticketMats=Array.from({length:12},(_,i)=>new THREE.MeshBasicMaterial({map:makeCanvasTexture((ctx,w,h)=>{
-    const promo=i===3||i===8;ctx.fillStyle=promo?"#fff0bd":"#f7f7f1";ctx.fillRect(0,0,w,h);
-    ctx.fillStyle=promo?"#c7352c":"#26332f";ctx.fillRect(0,0,w,38);ctx.fillStyle="#fff";ctx.font="800 27px Arial";ctx.fillText(promo?"OFERTA":"PRECIO",18,28);
-    ctx.fillStyle="#252923";ctx.font="900 78px Arial";ctx.fillText(["$ 1.890","$ 2.450","$ 3.190","$ 1.250","$ 4.890","$ 2.790","$ 1.690","$ 3.450","$ 2.190","$ 5.290","$ 1.990","$ 2.590"][i],18,126);
-    ctx.fillStyle="#555b54";ctx.font="600 22px Arial";ctx.fillText("PRECIO POR UNIDAD",18,166);ctx.strokeStyle="#c8c9c1";ctx.lineWidth=4;ctx.strokeRect(3,3,w-6,h-6);
-  },256,190),side:THREE.DoubleSide}));
+    const promo=i===3||i===8;
+    ctx.fillStyle=promo?"#fff0bd":"#f7f7f1";ctx.fillRect(0,0,w,h);
+    ctx.fillStyle=promo?"#c7352c":"#26332f";ctx.fillRect(0,0,w,27);
+    ctx.fillStyle="#fff";ctx.textAlign="left";ctx.textBaseline="middle";ctx.font="800 18px Arial";ctx.fillText(promo?"OFERTA":"PRECIO",14,14);
+    ctx.fillStyle="#252923";ctx.font="900 49px Arial";ctx.fillText(["$ 1.890","$ 2.450","$ 3.190","$ 1.250","$ 4.890","$ 2.790","$ 1.690","$ 3.450","$ 2.190","$ 5.290","$ 1.990","$ 2.590"][i],14,76);
+    ctx.fillStyle="#555b54";ctx.font="600 13px Arial";ctx.fillText("PRECIO POR UNIDAD",14,112);
+    ctx.strokeStyle="#c8c9c1";ctx.lineWidth=3;ctx.strokeRect(2,2,w-4,h-4);
+  },512,132),side:THREE.DoubleSide}));
   const shelfYs=[-1.25,-.20,.85,1.90];
   for(let row=0;row<4;row++){
     const y=shelfYs[row];
@@ -149,15 +152,15 @@ function createNutellaSet(world: THREE.Scene) {
     const beam=new THREE.Mesh(new THREE.BoxGeometry(14,.105,.10),edgeMat);beam.position.set(0,y-.005,-3.49);world.add(beam);
     const underside=new THREE.Mesh(new THREE.BoxGeometry(13.8,.035,1.22),darkMat);underside.position.set(0,y-.075,-4.16);world.add(underside);
     for(let depth=0;depth<2;depth++)for(let i=0;i<15;i++){
-      const x=-6.35+i*.905+(depth?.12:0),v=(i*3+row*5+depth*7)%products.length,h=.48+((i*7+row*3+depth)%5)*.105,w=.38+(i%3)*.045;
+      const x=-6.35+i*.905+(depth?.12:0),v=(i*3+row*5+depth*7)%products.length,h=.36+((i*7+row*3+depth)%5)*.065,w=.30+(i%3)*.035;
       const can=(i+row+depth)%5===0;
-      const pack=can?new THREE.Mesh(new THREE.CylinderGeometry(w*.48,w*.48,h,24),canMats[v]):new THREE.Mesh(new THREE.BoxGeometry(w,h,.34),packMats[v]);
+      const pack=can?new THREE.Mesh(new THREE.CylinderGeometry(w*.46,w*.46,h,24),canMats[v]):new THREE.Mesh(new THREE.BoxGeometry(w,h,.27),packMats[v]);
       if(can){const rim=new THREE.Mesh(new THREE.TorusGeometry(w*.47,.018,8,24),edgeMat);rim.position.y=h/2;pack.add(rim);}
-      if(!can&&(i+row)%4===0){const fold=new THREE.Mesh(new THREE.BoxGeometry(w*.72,.065,.31),packMats[v]);fold.position.y=h/2+.025;pack.add(fold);}
+      if(!can&&(i+row)%4===0){const fold=new THREE.Mesh(new THREE.BoxGeometry(w*.72,.045,.25),packMats[v]);fold.position.y=h/2+.025;pack.add(fold);}
       pack.position.set(x,y+.105+h/2,depth===0?-3.91:-4.52);pack.castShadow=true;pack.receiveShadow=true;world.add(pack);
     }
-    const rail=new THREE.Mesh(new THREE.BoxGeometry(14,.205,.075),new THREE.MeshStandardMaterial({color:"#e6e5dc",roughness:.38,metalness:.32}));rail.position.set(0,y-.16,-3.425);world.add(rail);
-    for(let i=0;i<12;i++){const tag=new THREE.Mesh(new THREE.PlaneGeometry(.91,.175),ticketMats[(i+row*3)%12]);tag.position.set(-6+i*1.09,y-.16,-3.382);world.add(tag);}
+    const rail=new THREE.Mesh(new THREE.BoxGeometry(14,.24,.075),new THREE.MeshStandardMaterial({color:"#e6e5dc",roughness:.38,metalness:.32}));rail.position.set(0,y-.16,-3.425);world.add(rail);
+    for(let i=0;i<12;i++){const tag=new THREE.Mesh(new THREE.PlaneGeometry(.91,.235),ticketMats[(i+row*3)%12]);tag.position.set(-6+i*1.09,y-.16,-3.382);world.add(tag);}
     const glint=new THREE.Mesh(new THREE.BoxGeometry(13.9,.012,.012),new THREE.MeshBasicMaterial({color:"#f6e8c8"}));glint.position.set(0,y+.055,-3.48);world.add(glint);
   }
   for(const x of [-7.12,7.12]){
