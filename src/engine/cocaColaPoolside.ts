@@ -286,8 +286,8 @@ export function createCocaColaPoolsideSet(world: THREE.Scene): PoolsideSet {
     clearcoat: 1,
   });
   const pour = new THREE.Mesh(new THREE.CylinderGeometry(0.055, 0.075, 1.65, 20), streamMaterial);
-  pour.position.set(0.02, -0.25, 0.52);
-  pour.rotation.z = 0.72;
+  pour.position.set(0.38, -0.45, 0.52);
+  pour.rotation.z = -0.72;
   pour.visible = false;
   world.add(pour);
 
