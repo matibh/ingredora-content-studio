@@ -178,7 +178,7 @@ function createNutellaSet(world: THREE.Scene) {
 
 function drawNutellaOverlay(ctx: CanvasRenderingContext2D, frame: number, fps: number, width: number, height: number) {
   const t = frame / fps;
-  const phase = t < 2.5 ? 0 : t < 4.5 ? 1 : t < 6.5 ? 2 : t < 12.5 ? 3 : t < 15.5 ? 4 : 5;
+  const phase = t < 3 ? 0 : t < 5.5 ? 1 : t < 8 ? 2 : t < 15 ? 3 : t < 19 ? 4 : 5;
   const accent = "#d8f36a"; const y = height * .735;
   const gradient = ctx.createLinearGradient(0, y - 150, 0, height);
   gradient.addColorStop(0, "rgba(8,17,14,0)"); gradient.addColorStop(.25, "rgba(8,17,14,.78)"); gradient.addColorStop(1, "rgba(8,17,14,.96)");
@@ -186,8 +186,8 @@ function drawNutellaOverlay(ctx: CanvasRenderingContext2D, frame: number, fps: n
   ctx.fillStyle = "rgba(8,17,14,.72)"; ctx.beginPath(); ctx.roundRect(width*.055,height*.035,width*.34,height*.05,18); ctx.fill();
   ctx.fillStyle = accent; ctx.font = "900 " + Math.round(width*.044) + "px Arial"; ctx.textAlign = "left"; ctx.textBaseline = "middle"; ctx.fillText("INGREDORA",width*.078,height*.06);
   ctx.textAlign = "center";
-  const eyebrow = ["EN LA GÓNDOLA","PERO… ¿QUÉ TIENE?","MIRÁ EL DORSO","SIETE INGREDIENTES","TU TURNO","DESAFÍO INGREDORA"][phase];
-  const headline = ["UN CLÁSICO DE SIEMPRE","VAMOS A MIRAR","LA ETIQUETA REAL","LEÉ Y MEMORIZÁ","¿CUÁNTOS RECORDÁS?","¡JUGÁ CON INGREDORA!"][phase];
+  const eyebrow = ["EN LA GÓNDOLA","PERO… ¿QUÉ TIENE?","MIRÁ EL DORSO","SIETE INGREDIENTES","TU TURNO","SEGUÍ JUGANDO"][phase];
+  const headline = ["UN CLÁSICO DE SIEMPRE","VAMOS A MIRAR","LA ETIQUETA REAL","LEÉ Y MEMORIZÁ","¿CUÁNTOS RECORDÁS?",""][phase];
   ctx.fillStyle = accent; ctx.font = "800 " + Math.round(width*.027) + "px Arial"; ctx.fillText(eyebrow,width/2,height*.775);
   ctx.fillStyle = "#fff"; ctx.font = "900 " + Math.round(width*.064) + "px Arial"; ctx.fillText(headline,width/2,height*.832,width*.91);
   if (phase === 3) {
@@ -205,13 +205,30 @@ function drawNutellaOverlay(ctx: CanvasRenderingContext2D, frame: number, fps: n
       ctx.fillStyle = "#ffffff"; ctx.fillText(item,x+15,yy+1,width*.37);
     });
     ctx.textAlign = "center";
+  } else if (phase === 5) {
+    // Dedicated final card: readable URL first, social-profile fallback second.
+    ctx.textAlign = "center";
+    ctx.fillStyle = accent;
+    ctx.font = "900 " + Math.round(width*.034) + "px Arial";
+    ctx.fillText("ENTRÁ Y SEGUÍ JUGANDO",width/2,height*.775,width*.9);
+    ctx.fillStyle = "#ffffff";
+    ctx.font = "900 " + Math.round(width*.105) + "px Arial";
+    ctx.fillText("ingredora.com",width/2,height*.855,width*.94);
+    ctx.fillStyle = "rgba(255,255,255,.98)";
+    ctx.font = "800 " + Math.round(width*.033) + "px Arial";
+    ctx.fillText("O BUSCÁ EL LINK EN MI PERFIL",width/2,height*.925,width*.92);
+    ctx.fillStyle = accent;
+    ctx.font = "900 " + Math.round(width*.025) + "px Arial";
+    ctx.fillText("INGREDORA",width/2,height*.972);
   } else {
     ctx.fillStyle = "rgba(255,255,255,.96)"; ctx.font = "700 " + Math.round(width*.026) + "px Arial";
-    const sub = ["Lo reconocés enseguida.","Vamos a mirar el dorso del frasco.","La etiqueta tiene toda la información.","Son siete ingredientes. Leelos y memorizalos.","¿Cuántos recordás?","Comentá tu respuesta y desafiá a alguien a jugar con Ingredora."][phase];
+    const sub = ["Lo reconocés enseguida.","Vamos a mirar el dorso del frasco.","La etiqueta tiene toda la información.","Son siete ingredientes. Leelos y memorizalos.","¿Cuántos recordás?",""][phase];
     ctx.fillText(sub,width/2,height*.89,width*.92);
   }
-  ctx.fillStyle = "rgba(255,255,255,.62)"; ctx.font = "700 " + Math.round(width*.018) + "px Arial";
-  ctx.fillText("UN PRODUCTO REAL. UN DESAFÍO PARA TU MEMORIA.",width/2,height*.96);
+  if (phase !== 5) {
+    ctx.fillStyle = "rgba(255,255,255,.62)"; ctx.font = "700 " + Math.round(width*.018) + "px Arial";
+    ctx.fillText("UN PRODUCTO REAL. UN DESAFÍO PARA TU MEMORIA.",width/2,height*.96);
+  }
 }
 function sceneAtFrame(pkg: ProductionPackage, frame: number): ProductionScene {
   return [...pkg.scenes].reverse().find((scene) => frame >= scene.startFrame) ?? pkg.scenes[0];
@@ -370,7 +387,7 @@ export async function renderPackageToWebM(
   const drawFrame = (frame: number) => {
     if (nutellaSet) {
       const time = frame / fps;
-       // 15-second storyboard: establish aisle, reveal the back label, memory challenge and explicit call to action.
+       // 26-second storyboard: product reveal, memory challenge and sustained website end card.
       const smooth = (v: number) => { const x = Math.max(0, Math.min(1, v)); return x*x*(3-2*x); };
       const turn = time < 4.5 ? 0 : time < 6.5 ? smooth((time-4.5)/2)*Math.PI : time < 12.5 ? Math.PI : Math.PI + smooth((time-12.5)/2)*Math.PI;
       nutellaSet.jar.rotation.y = turn;
