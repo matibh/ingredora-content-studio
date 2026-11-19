@@ -3,24 +3,23 @@ from pathlib import Path
 import edge_tts
 
 VOICE = "es-AR-ElenaNeural"
-# Locución breve: acompaña los textos que aparecen en pantalla y cierra con una invitación.
-# No enumera ni lee la lista de ingredientes.
+# CTA directa al sitio y alternativa para quienes llegan desde redes sociales.
 TEXT = (
     "¡Lo reconocés enseguida! Pero… ¿sabés qué tiene realmente? "
     "Vamos a mirar el dorso del frasco. "
     "La etiqueta tiene toda la información: siete ingredientes. "
-    "Leelos y memorizalos. "
-    "Ahora te toca a vos: ¿cuántos recordás? "
-    "Comentá tu respuesta y desafiá a alguien a jugar con Ingredora."
+    "Leelos, memorizalos y contame cuántos recordás. "
+    "Para seguir jugando, entrá a Ingredora punto com, "
+    "o buscá el link en mi perfil. ¡Te espero!"
 )
-OUTPUT = Path("public/studio/audio/nutella-v8-voice-es-AR.mp3")
+OUTPUT = Path("public/studio/audio/nutella-v9-voice-es-AR.mp3")
 
 async def main():
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     communicate = edge_tts.Communicate(
         TEXT,
         VOICE,
-        rate="+14%",
+        rate="+10%",
         pitch="+4Hz",
         volume="+12%",
     )
