@@ -193,7 +193,7 @@ export async function renderPackageToWebM(
 
   return new Promise<Blob>((resolve, reject) => {
     let frame = 0;
-    let animationId = 0;
+    let timerId = 0;
     let settled = false;
     const finish = (error?: Error) => {
       if (settled) return;
