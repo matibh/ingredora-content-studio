@@ -188,8 +188,8 @@ function App() {
               <div className="empty-player-art"><div className="play-outline">▷</div><span className="empty-spark spark-left">✳</span><span className="empty-spark spark-right">✦</span></div>
               <div className="empty-player-copy">
                 <p className="eyebrow">{loading ? "CONECTANDO CON EL ESTUDIO" : connection === "error" ? "SIN CONEXIÓN CON LA BIBLIOTECA" : "PANTALLA PREPARADA"}</p>
-                <h3>{loading ? "Buscando producciones…" : connection === "error" ? "No pudimos actualizar el contenido." : "Tu próximo video va a aparecer acá."}</h3>
-                <p>{loading ? "Estamos leyendo el catálogo de producciones." : connection === "error" ? "La página volverá a intentar sincronizar automáticamente." : "No hay videos publicados todavía. La producción se prepara fuera de esta página y aparece automáticamente cuando el render final está listo."}</p>
+                <h3>{loading ? "Buscando producciones…" : connection === "error" ? "No pudimos actualizar el contenido." : inProgress.length ? "Estamos preparando tu próximo video." : "Tu próximo video va a aparecer acá."}</h3>
+                <p>{loading ? "Estamos leyendo el catálogo de producciones." : connection === "error" ? "La página volverá a intentar sincronizar automáticamente." : inProgress.length ? "El render se realiza en este dispositivo y puede tardar unos minutos. El estado y cualquier problema aparecen en la sección «En producción»." : "Todavía no hay videos publicados. Cuando una producción esté lista, va a aparecer acá automáticamente."}</p>
               </div>
             </div>
           )}
