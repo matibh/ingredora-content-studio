@@ -24,6 +24,7 @@ async def main():
         rate="+10%",
         pitch="+4Hz",
         volume="+12%",
+        boundary="WordBoundary",
     )
     audio_chunks = []
     word_timings = []
