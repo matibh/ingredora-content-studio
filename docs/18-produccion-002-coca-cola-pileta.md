@@ -189,7 +189,7 @@ La narración se genera por bloques para respetar los cortes de imagen. La venta
 | 00:03.10 | «Una Coca bien fría, con hielo y burbujas.» |
 | 00:07.42 | «Pero pará… ¿sabés qué tiene adentro?» |
 | 00:10.50 | «Tenés quince segundos para adivinar sus ingredientes.» |
-| 00:31.05 | «¿Cuántos acertaste? Entrá a Ingredora punto com y jugá.» |
+| 00:29.45 | «¿Cuántos acertaste?» |\n| 00:31.60 | «¡Jugá en Ingredora!» |
 
 ### Sincronización
 
