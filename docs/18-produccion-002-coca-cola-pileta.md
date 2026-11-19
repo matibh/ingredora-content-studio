@@ -158,3 +158,19 @@ No utilizar música comercial ni grabaciones extraídas de anuncios de Coca-Cola
 - Catálogo de producciones: `public/studio/productions.json`
 
 El render inicial es un borrador técnico. No se considera aprobado ni se publica automáticamente.
+
+## 11. Revisión visual v2 — corrección de escena
+
+La primera composición se consideró insuficiente porque el encuadre vertical alejaba demasiado la botella y el vaso, mientras que el fondo, la niebla y el agua compartían una gama celeste que reducía el contraste.
+
+Cambios aplicados al motor:
+- Cámara más cercana y con movimiento de aproximación más contenido; el objetivo queda centrado en botella y vaso.
+- Fondo y niebla en tono cálido de verano.
+- Agua de pileta en teal profundo, sin transparencia que lave el color.
+- Deck en arena cálida, líneas de pileta claras y vegetación verde.
+- Iluminación de relleno cálida para separar el vidrio, el líquido oscuro y la etiqueta roja.
+- El congelamiento usa un destello cálido suave en vez de cubrir toda la imagen con un velo celeste.
+
+El diseño sonoro continúa siendo original y procedural: textura de efervescencia/vertido, acentos de hielo, golpe de congelamiento, ticks del contador y acorde de revelación. No se agregan grabaciones comerciales ni se presenta la pieza como publicidad oficial.
+
+**Pendiente de validación visual:** volver a renderizar desde el navegador y revisar el WebM real en móvil. El cambio de código y el build de Pages no sustituyen la inspección del video. No aprobar ni subir hasta revisar el resultado.
