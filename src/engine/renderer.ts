@@ -347,7 +347,7 @@ function drawNutellaOverlay(ctx: CanvasRenderingContext2D, frame: number, fps: n
     ctx.fillText("INGREDORA.COM",0,0,width*.84);ctx.restore();
 
     // Bright button treatment with a moving sheen and a clear action verb.
-    const buttonW=width*.72,buttonH=height*.092,buttonX=(width-buttonW)/2,buttonY=height*.515;
+    const buttonW=width*.72,buttonH=height*.092,buttonY=height*.515;
     const buttonPulse=1+Math.sin((t-26.25)*4.2)*.012;
     ctx.save();ctx.translate(width/2,buttonY+buttonH/2);ctx.scale(buttonPulse,buttonPulse);
     const bx=-buttonW/2,by=-buttonH/2;
