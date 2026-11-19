@@ -342,7 +342,7 @@ function drawNutellaOverlay(ctx: CanvasRenderingContext2D, frame: number, fps: n
     ctx.fillStyle=glow;ctx.fillRect(0,height*.13,width,height*.66);
 
     // A subtle spotlight panel separates the call-to-action from the supermarket scene.
-    const panelW=width*.91,panelH=height*.43,panelX=(width-panelW)/2,panelY=height*.285;
+    const panelW=width*.91,panelH=height*.49,panelX=(width-panelW)/2,panelY=height*.30;
     const panelGrad=ctx.createLinearGradient(panelX,panelY,panelX+panelW,panelY+panelH);
     panelGrad.addColorStop(0,"rgba(7,22,15,.84)");panelGrad.addColorStop(.5,"rgba(13,35,23,.94)");panelGrad.addColorStop(1,"rgba(5,18,12,.88)");
     rounded(panelX,panelY,panelW,panelH,height*.045);ctx.fillStyle=panelGrad;ctx.fill();
