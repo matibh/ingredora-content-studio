@@ -161,7 +161,7 @@ export async function renderPackageToWebM(
   });
   output.addVideoTrack(videoSource, { frameRate: fps });
   output.addAudioTrack(audioSource);
-  output.setMetadataTags({ title: pkg.title, artist: "Ingredora Content Studio", date: pkg.createdAt });
+  output.setMetadataTags({ title: pkg.title, artist: "Ingredora Content Studio", date: new Date(pkg.createdAt) });
 
   const world = new THREE.Scene();
   world.add(new THREE.HemisphereLight(0xffffff, 0x273b2c, 2.0));
