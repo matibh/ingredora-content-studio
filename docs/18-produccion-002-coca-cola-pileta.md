@@ -304,7 +304,7 @@ Esto es una simulación visual procedural determinista basada en cinemática bal
 
 ## 15. Ajuste de ritmo y física del líquido — versión 6
 
-Esta revisión prevalece sobre los timelines anteriores. La pieza completa baja de 34 a **27 segundos** para evitar que la lista de ingredientes quede sostenida demasiado tiempo después de reducir el contador a seis segundos.
+Esta revisión prevalece sobre los timelines anteriores. La pieza completa baja de 34 a **27 segundos** y la revelación se compacta de 6,8 a **5 segundos** para evitar que la lista de ingredientes quede sostenida demasiado tiempo después de reducir el contador a seis segundos.
 
 ### Timeline vigente
 
@@ -314,10 +314,10 @@ Esta revisión prevalece sobre los timelines anteriores. La pieza completa baja 
 | 00:03–00:07.2 | Vertido macro de Coca-Cola sobre hielo |
 | 00:07.2–00:10 | Congelamiento y pregunta |
 | 00:10–00:16 | Desafío exacto de seis segundos |
-| 00:16–00:22.8 | Revelación secuencial de ingredientes; seis tarjetas entran una tras otra y cafeína queda indicada aparte |
-| 00:22.8–00:27 | Cierre breve y CTA de Ingredora |
+| 00:16–00:21 | Revelación secuencial de ingredientes en cinco segundos; seis tarjetas entran una tras otra y cafeína queda indicada aparte |
+| 00:21–00:27 | Cierre de seis segundos y CTA de Ingredora |
 
-El audio Edge TTS se vuelve a generar a 27 segundos con la voz Elena. Las frases finales se ubican en 00:22.80 y 00:24.95; la ventana de ingredientes permanece sin locución.
+El audio Edge TTS se vuelve a generar a 27 segundos con la voz Elena. Las frases finales se ubican en 00:21.10 y 00:23.25; la ventana de ingredientes permanece sin locución.
 
 ### Líquido de la botella y llenado del vaso
 
