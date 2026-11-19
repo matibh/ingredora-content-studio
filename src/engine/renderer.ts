@@ -178,7 +178,7 @@ function createNutellaSet(world: THREE.Scene) {
 
 function drawNutellaOverlay(ctx: CanvasRenderingContext2D, frame: number, fps: number, width: number, height: number) {
   const t = frame / fps;
-  const phase = t < 2.5 ? 0 : t < 4.5 ? 1 : t < 6.5 ? 2 : t < 11.5 ? 3 : 4;
+  const phase = t < 2.5 ? 0 : t < 4.5 ? 1 : t < 6.5 ? 2 : t < 11.5 ? 3 : t < 13.5 ? 4 : 5;
   const accent = "#d8f36a"; const y = height * .735;
   const gradient = ctx.createLinearGradient(0, y - 150, 0, height);
   gradient.addColorStop(0, "rgba(8,17,14,0)"); gradient.addColorStop(.25, "rgba(8,17,14,.78)"); gradient.addColorStop(1, "rgba(8,17,14,.96)");
@@ -186,8 +186,8 @@ function drawNutellaOverlay(ctx: CanvasRenderingContext2D, frame: number, fps: n
   ctx.fillStyle = "rgba(8,17,14,.72)"; ctx.beginPath(); ctx.roundRect(width*.055,height*.035,width*.34,height*.05,18); ctx.fill();
   ctx.fillStyle = accent; ctx.font = "900 " + Math.round(width*.044) + "px Arial"; ctx.textAlign = "left"; ctx.textBaseline = "middle"; ctx.fillText("INGREDORA",width*.078,height*.06);
   ctx.textAlign = "center";
-  const eyebrow = ["EN LA GÓNDOLA","PERO… ¿QUÉ TIENE?","MIRÁ EL DORSO","SIETE INGREDIENTES","DESAFÍO INGREDORA"][phase];
-  const headline = ["UN CLÁSICO DE SIEMPRE","VAMOS A MIRAR","LA ETIQUETA REAL","LEÉ Y MEMORIZÁ","¿CUÁNTOS RECORDÁS?"][phase];
+  const eyebrow = ["EN LA GÓNDOLA","PERO… ¿QUÉ TIENE?","MIRÁ EL DORSO","SIETE INGREDIENTES","TU TURNO","DESAFÍO INGREDORA"][phase];
+  const headline = ["UN CLÁSICO DE SIEMPRE","VAMOS A MIRAR","LA ETIQUETA REAL","LEÉ Y MEMORIZÁ","¿CUÁNTOS RECORDÁS?","¡JUGÁ CON INGREDORA!"][phase];
   ctx.fillStyle = accent; ctx.font = "800 " + Math.round(width*.027) + "px Arial"; ctx.fillText(eyebrow,width/2,height*.775);
   ctx.fillStyle = "#fff"; ctx.font = "900 " + Math.round(width*.064) + "px Arial"; ctx.fillText(headline,width/2,height*.832,width*.91);
   if (phase === 3) {
@@ -207,7 +207,7 @@ function drawNutellaOverlay(ctx: CanvasRenderingContext2D, frame: number, fps: n
     ctx.textAlign = "center";
   } else {
     ctx.fillStyle = "rgba(255,255,255,.96)"; ctx.font = "700 " + Math.round(width*.026) + "px Arial";
-    const sub = ["Lo reconocés enseguida.","Vamos a mirar el dorso del frasco.","La etiqueta tiene la información.","Siete ingredientes. Leelos y memorizalos.","Comentá cuántos recordabas y jugá con Ingredora."][phase];
+    const sub = ["Lo reconocés enseguida.","Vamos a mirar el dorso del frasco.","La etiqueta tiene toda la información.","Son siete ingredientes. Leelos y memorizalos.","¿Cuántos recordás?","Comentá tu respuesta y desafiá a alguien a jugar con Ingredora."][phase];
     ctx.fillText(sub,width/2,height*.89,width*.92);
   }
   ctx.fillStyle = "rgba(255,255,255,.62)"; ctx.font = "700 " + Math.round(width*.018) + "px Arial";
@@ -370,9 +370,9 @@ export async function renderPackageToWebM(
   const drawFrame = (frame: number) => {
     if (nutellaSet) {
       const time = frame / fps;
-      // 12-second storyboard: establish aisle, push-in, front label, turn, ingredients, closing question.
+       // 15-second storyboard: establish aisle, reveal the back label, memory challenge and explicit call to action.
       const smooth = (v: number) => { const x = Math.max(0, Math.min(1, v)); return x*x*(3-2*x); };
-      const turn = time < 4.5 ? 0 : time < 6.5 ? smooth((time-4.5)/2)*Math.PI : time < 11.5 ? Math.PI : Math.PI + smooth((time-11.5)/2)*Math.PI;
+      const turn = time < 4.5 ? 0 : time < 6.5 ? smooth((time-4.5)/2)*Math.PI : time < 12.5 ? Math.PI : Math.PI + smooth((time-12.5)/2)*Math.PI;
       nutellaSet.jar.rotation.y = turn;
       nutellaSet.jar.position.y = -.35 + Math.sin(time * 1.7) * .045;
       // A brief label-only push toward camera: jar and camera remain locked.
@@ -381,7 +381,7 @@ export async function renderPackageToWebM(
       const labelZoom = 1 + .26*Math.min(labelIn,labelOut);
       nutellaSet.backLabel.scale.set(labelZoom,labelZoom,labelZoom);
       nutellaSet.backLabel.position.z = -.13*Math.min(labelIn,labelOut);
-      const distance = time < 2.5 ? 10.8 - smooth(time/2.5)*1.6 : time < 4.5 ? 9.2 - smooth((time-2.5)/2)*1.1 : time < 11.5 ? 8.1 : 8.1 + smooth((time-11.5)/3.5)*.7;
+      const distance = time < 2.5 ? 10.8 - smooth(time/2.5)*1.6 : time < 4.5 ? 9.2 - smooth((time-2.5)/2)*1.1 : time < 12.5 ? 8.1 : 8.1 + smooth((time-12.5)/2.5)*.7;
       camera.position.set(.12 + Math.sin(time*.22)*.08,.48,distance); camera.lookAt(0,-.12,0); camera.fov=34; camera.updateProjectionMatrix();
       renderer.render(world,camera); ctx.drawImage(renderer.domElement,0,0,pkg.width,pkg.height);
       drawNutellaOverlay(ctx,frame,fps,pkg.width,pkg.height); return;
