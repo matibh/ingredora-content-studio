@@ -29,3 +29,9 @@ All notable documentation and specification changes are recorded here.
 - Added `docs/04-identidad-visual.md` defining the layered visual identity, product/packaging fidelity, typography roles, social composition, 3D art direction, camera/light presets, motion principles and approval workflow.
 - Kept logo, official palette, font selection, approved references and final art direction open until supplied or approved by the user.
 - No application code or production infrastructure has been implemented.
+
+## 2026-11-19 — Product Library
+
+- Added `docs/05-product-library.md` defining product/brand/variant records, evidence provenance, asset rights, fidelity levels, versioning and campaign references.
+- Explicitly separated factual verification, visual observations, model fidelity and publication permissions; no product facts or brand permissions are assumed.
+- No application code or production infrastructure has been implemented.
