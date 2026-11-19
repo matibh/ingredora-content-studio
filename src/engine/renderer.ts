@@ -1,4 +1,15 @@
 import * as THREE from "three";
+import {
+  AudioBufferSource as MediabunnyAudioBufferSource,
+  BufferTarget,
+  canEncodeAudio,
+  canEncodeVideo,
+  CanvasSource,
+  Output,
+  Quality,
+  WebMOutputFormat,
+} from "mediabunny";
+import { generateOriginalSoundtrack } from "./audio";
 import type { ProductionPackage, ProductionScene, SceneObject } from "./types";
 
 export type RenderProgress = { frame: number; totalFrames: number; percent: number };
@@ -96,18 +107,34 @@ function validatePackage(pkg: ProductionPackage) {
   }
 }
 
+async function selectEncoders(width: number, height: number, fps: number) {
+  const videoCodec = (["vp9", "vp8"] as const).find(async () => false);
+  void videoCodec;
+  for (const codec of ["vp9", "vp8"] as const) {
+    if (await canEncodeVideo(codec, { width, height, frameRate: fps })) {
+      if (await canEncodeAudio("opus", { numberOfChannels: 2, sampleRate: 48_000 })) return codec;
+      throw new Error("El navegador no puede codificar audio Opus. No se generará un video silencioso.");
+    }
+  }
+  throw new Error("El navegador no dispone de un codificador WebM compatible (VP9/VP8).");
+}
+
 export async function renderPackageToWebM(
   pkg: ProductionPackage,
   onProgress: (progress: RenderProgress) => void,
   signal?: AbortSignal,
 ): Promise<Blob> {
   validatePackage(pkg);
-  if (!("MediaRecorder" in window) || !HTMLCanvasElement.prototype.captureStream) {
-    throw new Error("Este navegador no ofrece captura de video compatible. No se usó ningún servicio externo.");
-  }
-
   const totalFrames = Math.max(...pkg.scenes.map((scene) => scene.startFrame + scene.durationFrames));
   const fps = pkg.fps;
+  const durationSeconds = totalFrames / fps;
+  const videoCodec = await selectEncoders(pkg.width, pkg.height, fps);
+  if (signal?.aborted) throw new Error("Render cancelado.");
+
+  // The soundtrack is synthesized offline; no AudioContext playback or user gesture is required.
+  const soundtrack = await generateOriginalSoundtrack({ durationSeconds, sampleRate: 48_000 });
+  if (signal?.aborted) throw new Error("Render cancelado.");
+
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false, powerPreference: "high-performance" });
   renderer.setPixelRatio(1);
   renderer.setSize(pkg.width, pkg.height, false);
@@ -115,34 +142,31 @@ export async function renderPackageToWebM(
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.15;
 
-  const output = document.createElement("canvas");
-  output.width = pkg.width;
-  output.height = pkg.height;
-  const ctx = output.getContext("2d", { alpha: false });
-  if (!ctx) { renderer.dispose(); throw new Error("No se pudo preparar el lienzo de composición."); }
-
-  // Manual frame requests avoid browser-side duplicate captures when a frame takes longer than its target interval.
-  const stream = output.captureStream(0);
-  const videoTrack = stream.getVideoTracks()[0] as (MediaStreamTrack & { requestFrame?: () => void }) | undefined;
-  if (typeof videoTrack?.requestFrame !== "function") {
-    stream.getTracks().forEach((track) => track.stop());
+  const outputCanvas = document.createElement("canvas");
+  outputCanvas.width = pkg.width;
+  outputCanvas.height = pkg.height;
+  const ctx = outputCanvas.getContext("2d", { alpha: false });
+  if (!ctx) {
     renderer.dispose();
-    throw new Error("Este navegador no permite solicitar capturas de frame controladas. Usá una versión actualizada de Chrome o Edge.");
+    throw new Error("No se pudo preparar el lienzo de composición.");
   }
-  const requestVideoFrame = videoTrack.requestFrame.bind(videoTrack);
-  const mimeType = ["video/webm;codecs=vp9", "video/webm;codecs=vp8", "video/webm"].find((type) => MediaRecorder.isTypeSupported(type));
-  if (!mimeType) { stream.getTracks().forEach((track) => track.stop()); renderer.dispose(); throw new Error("No hay un codec WebM compatible en este navegador."); }
-  const recorder = new MediaRecorder(stream, { mimeType, videoBitsPerSecond: pkg.width >= 1000 ? 8_000_000 : 5_000_000 });
-  const chunks: BlobPart[] = [];
-  const recorded = new Promise<Blob>((resolve, reject) => {
-    recorder.ondataavailable = (event) => { if (event.data.size) chunks.push(event.data); };
-    recorder.onerror = () => reject(new Error("Falló la codificación del video en el navegador."));
-    recorder.onstop = () => resolve(new Blob(chunks, { type: mimeType }));
+
+  const target = new BufferTarget();
+  const output = new Output({ format: new WebMOutputFormat(), target });
+  const videoSource = new CanvasSource(outputCanvas, {
+    codec: videoCodec,
+    quality: new Quality({ bitrate: pkg.width >= 1000 ? 8_000_000 : 5_000_000 }),
   });
+  const audioSource = new MediabunnyAudioBufferSource({
+    codec: "opus",
+    quality: new Quality({ bitrate: 128_000 }),
+  });
+  output.addVideoTrack(videoSource, { frameRate: fps });
+  output.addAudioTrack(audioSource);
+  output.setMetadataTags({ title: pkg.title, artist: "Ingredora Content Studio", date: pkg.createdAt });
 
   const world = new THREE.Scene();
-  const ambient = new THREE.HemisphereLight(0xffffff, 0x273b2c, 2.0);
-  world.add(ambient);
+  world.add(new THREE.HemisphereLight(0xffffff, 0x273b2c, 2.0));
   const key = new THREE.DirectionalLight(0xffffff, 3.0);
   key.position.set(-3, 5, 6);
   key.castShadow = true;
@@ -205,48 +229,37 @@ export async function renderPackageToWebM(
     renderer.render(world, camera);
     ctx.drawImage(renderer.domElement, 0, 0, pkg.width, pkg.height);
     drawOverlay(ctx, current, pkg.width, pkg.height);
-    requestVideoFrame();
   };
 
-  return new Promise<Blob>((resolve, reject) => {
-    let frame = 0;
-    let timerId = 0;
-    let settled = false;
-    const finish = (error?: Error) => {
-      if (settled) return;
-      settled = true;
-      window.clearTimeout(timerId);
-      signal?.removeEventListener("abort", onAbort);
-      if (recorder.state !== "inactive") recorder.stop();
-      stream.getTracks().forEach((track) => track.stop());
-      for (const object of sceneObjects.values()) {
-        object.geometry.dispose();
-        (object.material as THREE.Material).dispose();
-      }
-      renderer.dispose();
-      if (error) reject(error);
-      else void recorded.then(resolve, reject);
-    };
-    const onAbort = () => finish(new Error("Render cancelado."));
-    if (signal?.aborted) { finish(new Error("Render cancelado.")); return; }
-    signal?.addEventListener("abort", onAbort, { once: true });
-    recorder.start(250);
+  let outputStarted = false;
+  try {
+    await output.start();
+    outputStarted = true;
+    await audioSource.add(soundtrack);
+    audioSource.close();
 
-    const tick = () => {
-      try {
-        if (signal?.aborted) { onAbort(); return; }
-        drawFrame(frame);
-        frame += 1;
-        onProgress({ frame, totalFrames, percent: Math.min(100, Math.round((frame / totalFrames) * 100)) });
-        if (frame >= totalFrames) {
-          timerId = window.setTimeout(() => finish(), 1000 / fps);
-          return;
-        }
-        timerId = window.setTimeout(tick, 1000 / fps);
-      } catch (error) {
-        finish(error instanceof Error ? error : new Error("Error inesperado durante el render."));
-      }
-    };
-    tick();
-  });
+    for (let frame = 0; frame < totalFrames; frame += 1) {
+      if (signal?.aborted) throw new Error("Render cancelado.");
+      drawFrame(frame);
+      await videoSource.add(frame / fps, 1 / fps);
+      onProgress({ frame: frame + 1, totalFrames, percent: Math.min(100, Math.round(((frame + 1) / totalFrames) * 100)) });
+    }
+
+    videoSource.close();
+    await output.finalize();
+    const buffer = target.buffer;
+    if (!buffer || buffer.byteLength === 0) throw new Error("El render terminó sin generar un archivo audiovisual.");
+    return new Blob([buffer], { type: await output.getMimeType() });
+  } catch (error) {
+    if (outputStarted && output.state !== "finalized" && output.state !== "canceled") {
+      await output.cancel().catch(() => undefined);
+    }
+    throw error instanceof Error ? error : new Error("Error inesperado durante el render audiovisual.");
+  } finally {
+    for (const object of sceneObjects.values()) {
+      object.geometry.dispose();
+      (object.material as THREE.Material).dispose();
+    }
+    renderer.dispose();
+  }
 }
