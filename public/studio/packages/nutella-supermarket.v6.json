@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "engineVersion": "1.0.0",
+  "id": "ingredora-nutella-supermarket-spot-006",
+  "title": "Nutella — Voz más enérgica y desafío (versión 6)",
+  "description": "Versión de 15 segundos con voz argentina más alegre y enfática, sincronizada con los captions y una invitación a jugar. La voz no enumera los ingredientes.",
+  "createdAt": "2026-11-19T20:30:00-03:00",
+  "fps": 30,
+  "width": 720,
+  "height": 1280,
+  "visualPreset": "nutella-supermarket",
+  "voiceoverUrl": "studio/audio/nutella-v6-voice-es-AR.mp3",
+  "voiceoverOffsetSeconds": 0,
+  "scenes": [
+    {
+      "id": "supermarket-upbeat-voice-v6",
+      "startFrame": 0,
+      "durationFrames": 450,
+      "background": "#96978f",
+      "camera": {
+        "position": [
+          0.15,
+          0.48,
+          8.7
+        ],
+        "target": [
+          0,
+          -0.15,
+          0
+        ],
+        "fov": 32
+      },
+      "accentColor": "#d8f36a",
+      "headline": "NUTELLA.",
+      "subline": "DETRÁS DE LA ETIQUETA.",
+      "objects": []
+    }
+  ]
+}
