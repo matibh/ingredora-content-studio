@@ -1,4 +1,4 @@
-# Ingredora Originals 002 — Coca-Cola: el vaso más esperado del verano
+# Ingredora Originals 002 — Coca-Cola: un día de playa, una Coca bien fría
 
 **Versión vigente:** 4.0 · **Fecha:** 19 de noviembre de 2026  
 **Package:** `ingredora-coca-cola-poolside-002`  
