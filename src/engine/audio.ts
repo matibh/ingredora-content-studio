@@ -154,7 +154,35 @@ export async function generateOriginalSoundtrack({
       const fade = Math.pow(1 - i / fizzLength, 1.6);
       fizzData[i] = (random() * 2 - 1) * fade;
     }
-    for (let start = 3.90; start < 6.45; start += 0.19) {
+    // Soft continuous pour body: filtered noise with gentle level automation.
+    const pourLength = Math.ceil(sampleRate * 0.32);
+    const pourBuffer = context.createBuffer(1, pourLength, sampleRate);
+    const pourData = pourBuffer.getChannelData(0);
+    for (let i = 0; i < pourLength; i += 1) {
+      const t = i / pourLength;
+      const breath = 0.72 + 0.28 * Math.sin(t * Math.PI);
+      pourData[i] = (random() * 2 - 1) * breath;
+    }
+    const pourSource = context.createBufferSource();
+    const pourFilter = context.createBiquadFilter();
+    const pourGain = context.createGain();
+    pourSource.buffer = pourBuffer;
+    pourSource.loop = true;
+    pourFilter.type = "bandpass";
+    pourFilter.frequency.value = 920;
+    pourFilter.Q.value = 0.48;
+    pourGain.gain.setValueAtTime(0.0001, 3.88);
+    pourGain.gain.linearRampToValueAtTime(0.012, 4.18);
+    pourGain.gain.setValueAtTime(0.010, 5.75);
+    pourGain.gain.exponentialRampToValueAtTime(0.0001, 6.48);
+    pourSource.connect(pourFilter);
+    pourFilter.connect(pourGain);
+    pourGain.connect(master);
+    pourSource.start(3.88);
+    pourSource.stop(6.52);
+
+    // Fine carbonation hiss over the pour, deliberately quieter than the liquid body.
+    for (let start = 3.94; start < 6.42; start += 0.28) {
       const source = context.createBufferSource();
       const filter = context.createBiquadFilter();
       const gain = context.createGain();
@@ -163,16 +191,17 @@ export async function generateOriginalSoundtrack({
       filter.frequency.value = 4_800 + random() * 1_700;
       filter.Q.value = 0.62;
       gain.gain.setValueAtTime(0.0001, start);
-      gain.gain.linearRampToValueAtTime(0.026, start + 0.025);
+      gain.gain.linearRampToValueAtTime(0.007, start + 0.025);
       gain.gain.exponentialRampToValueAtTime(0.0001, Math.min(durationSeconds, start + 0.24));
       source.connect(filter);
       filter.connect(gain);
       gain.connect(master);
       source.start(start);
     }
-    addTone(1_480, 3.34, 0.16, "sine", 0.075, 6_000, -0.24);
-    addTone(1_960, 3.42, 0.13, "sine", 0.055, 7_000, 0.24);
-    addTone(1_180, 4.12, 0.18, "triangle", 0.04, 5_000, 0.18);
+    // Tiny glass/ice ticks, not bright electronic chimes.
+    addTone(1_320, 3.98, 0.11, "sine", 0.022, 5_000, -0.24);
+    addTone(1_760, 4.08, 0.10, "sine", 0.018, 5_500, 0.24);
+    addTone(1_120, 5.92, 0.12, "triangle", 0.016, 4_800, 0.18);
     addTone(92, 7.18, 0.42, "sine", 0.18, 420, 0);
     addTone(740, 7.20, 0.36, "triangle", 0.035, 3_600, 0);
     for (let second = 10; second < 16; second += 1) {
