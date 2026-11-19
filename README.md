@@ -85,7 +85,6 @@ Los esquemas JSON se incorporarán cuando el modelo conceptual esté suficientem
 - Supabase y almacenamiento: modelo lógico de datos, buckets privados, RLS, cuotas Free, egress, límites de archivos, retención, recuperación y controles para impedir cargos.
 - Quality Assurance y Content Quality Gate: gates desde brief hasta publicación, severidad de hallazgos, veracidad, precisión de producto, derechos, localización, calidad audiovisual, privacidad y aprobación humana.
 - Distribución y publicación social: Social Packages por canal, variantes, copy, UTM, flujo manual y evaluación de APIs bajo la regla USD 0.
-- Seguridad, presupuesto cero, roadmap y pruebas: especificación transversal de seguridad, licencias, límites de gasto, plan incremental, pruebas y criterios de finalización.
 - Analítica, métricas y experimentación: embudo de contenido a partidas, eventos first-party mínimos, atribución UTM, KPIs, cohortes, experimentación y privacidad.
 - Seguridad, presupuesto cero, roadmap y pruebas: controles de costos, seguridad de paquetes y secretos, licencias, fases de implementación, estrategia de pruebas, Definition of Done y gates de salida.
 - GitHub Pages: no se utilizará como hosting de la aplicación en esta etapa.
