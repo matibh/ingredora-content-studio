@@ -105,7 +105,7 @@ function createNutellaSet(world: THREE.Scene) {
   },1024,768);
   wallTexture.wrapS=THREE.RepeatWrapping; wallTexture.wrapT=THREE.RepeatWrapping;
   wallTexture.repeat.set(2,1);
-  const wall = new THREE.Mesh(new THREE.PlaneGeometry(18, 12), new THREE.MeshStandardMaterial({ map:wallTexture, color:"#d0cfc5", roughness:1 }));
+  const wall = new THREE.Mesh(new THREE.PlaneGeometry(18, 12), new THREE.MeshStandardMaterial({ map:wallTexture, color:"#aaa99f", roughness:1 }));
   wall.position.set(0, 2.5, -5.5); world.add(wall);
   const wallTrim = new THREE.Mesh(new THREE.BoxGeometry(18,.16,.12),new THREE.MeshStandardMaterial({color:"#777b73",roughness:.82}));
   wallTrim.position.set(0,-1.65,-5.38);world.add(wallTrim);
@@ -123,7 +123,7 @@ function createNutellaSet(world: THREE.Scene) {
       const box=new THREE.Mesh(new THREE.BoxGeometry(w,h,.48),new THREE.MeshStandardMaterial({color:colors[(i+row*2)%colors.length],roughness:.72}));
       box.position.set(x,y+.12+h/2,-4.25+(i%2)*.04); world.add(box);
     }
-    const strip=new THREE.Mesh(new THREE.BoxGeometry(14,.18,.08),new THREE.MeshStandardMaterial({color:"#f4f1e8",roughness:.8}));
+    const strip=new THREE.Mesh(new THREE.BoxGeometry(14,.18,.08),new THREE.MeshStandardMaterial({color:"#c8c2b5",roughness:.8}));
     strip.position.set(0,y-.08,-3.49); world.add(strip);
     for(let i=0;i<7;i++){
       const tag=new THREE.Mesh(new THREE.BoxGeometry(.7,.09,.025),new THREE.MeshBasicMaterial({color:i===2?"#c83b2b":"#343a35"}));
@@ -142,14 +142,23 @@ function createNutellaSet(world: THREE.Scene) {
   const cap=new THREE.Mesh(new THREE.CylinderGeometry(.69,.69,.32,96),capMat);cap.position.y=1.34;cap.castShadow=true;jar.add(cap);
   for(let i=0;i<48;i++){const a=i/48*Math.PI*2,ridge=new THREE.Mesh(new THREE.BoxGeometry(.035,.22,.035),capMat);ridge.position.set(Math.sin(a)*.685,1.34,Math.cos(a)*.685);ridge.rotation.y=a;jar.add(ridge);}
   const frontTex=makeCanvasTexture((ctx,w,h)=>{
-    ctx.fillStyle="#f7f4e8";ctx.fillRect(0,0,w,h);ctx.fillStyle="#171717";ctx.font="900 170px Arial";ctx.textAlign="center";ctx.fillText("n",270,330);ctx.fillStyle="#c92824";ctx.fillText("utella",590,330);
-    ctx.fillStyle="#4b281b";ctx.beginPath();ctx.ellipse(w/2,535,290,125,0,0,Math.PI*2);ctx.fill();ctx.fillStyle="#f2d7a4";ctx.font="bold 54px Arial";ctx.fillText("CREMA DE AVELLANAS",w/2,710);ctx.font="42px Arial";ctx.fillText("CON CACAO",w/2,770);
+    ctx.fillStyle="#f8f6ee";ctx.fillRect(0,0,w,h);
+    // Nutella's recognizable wordmark: black initial, red remaining letters.
+    ctx.textAlign="left";ctx.textBaseline="alphabetic";ctx.font="900 178px Arial, Helvetica, sans-serif";
+    ctx.fillStyle="#171717";ctx.fillText("n",105,285);ctx.fillStyle="#d32622";ctx.fillText("utella",238,285);
+    ctx.fillStyle="#6d371e";ctx.beginPath();ctx.ellipse(510,575,300,142,-.08,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle="#8a4b28";ctx.beginPath();ctx.ellipse(500,540,255,95,-.08,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle="#f3d8a2";ctx.font="800 44px Arial";ctx.textAlign="center";ctx.fillText("HAZELNUT SPREAD",w/2,790);
+    ctx.fillStyle="#574334";ctx.font="700 31px Arial";ctx.fillText("WITH COCOA",w/2,840);
   },1024,900);
   const backTex=makeCanvasTexture((ctx,w,h)=>{
-    ctx.fillStyle="#f5f1e5";ctx.fillRect(0,0,w,h);ctx.strokeStyle="#c8c0ad";ctx.lineWidth=12;ctx.strokeRect(24,24,w-48,h-48);
-    ctx.fillStyle="#33291f";ctx.textAlign="left";ctx.font="bold 76px Arial";ctx.fillText("INGREDIENTES",72,145);ctx.font="48px Arial";
-    ["Azúcar, aceite vegetal,","avellanas, leche descremada","en polvo, cacao en polvo","desgrasado, emulsificante","(lecitinas) y saborizante."].forEach((line,i)=>ctx.fillText(line,72,270+i*94));
-    ctx.fillStyle="#6b6255";ctx.font="34px Arial";ctx.fillText("Nutella Argentina",72,805);
+    ctx.fillStyle="#f7f4e9";ctx.fillRect(0,0,w,h);
+    ctx.fillStyle="#d52b25";ctx.fillRect(0,0,w,42);
+    ctx.fillStyle="#26221e";ctx.textAlign="left";ctx.font="900 70px Arial";ctx.fillText("NUTELLA",66,135);
+    ctx.font="800 48px Arial";ctx.fillText("INGREDIENTES",66,218);
+    ctx.fillStyle="#51483d";ctx.font="700 39px Arial";
+    ["Azúcar","Aceite vegetal","Avellanas","Leche descremada en polvo","Cacao en polvo desgrasado","Emulsificante (lecitinas)","Saborizante"].forEach((line,i)=>ctx.fillText(line,74,315+i*76));
+    ctx.fillStyle="#6b6255";ctx.font="30px Arial";ctx.fillText("Información del producto · Argentina",66,855);
   },1024,900);
   // Curved label shells sit just outside the jar instead of cutting through its surface.
   const labelRadius = .925;
@@ -159,11 +168,11 @@ function createNutellaSet(world: THREE.Scene) {
   front.position.set(0,.02,0); jar.add(front);
   const back=new THREE.Mesh(labelGeometry(),new THREE.MeshStandardMaterial({map:backTex,roughness:.62,side:THREE.DoubleSide}));
   back.position.set(0,.02,0); back.rotation.y=Math.PI; jar.add(back);
-  const key=new THREE.DirectionalLight("#fff0d5",3.8);key.position.set(-3.5,5.5,6);world.add(key);
-  const fill=new THREE.DirectionalLight("#fff8e9",2.4);fill.position.set(4,1.8,4);world.add(fill);
-  const rim=new THREE.PointLight("#ffb35c",34,18);rim.position.set(-2.8,.6,-.3);world.add(rim);
-  const aisleLight=new THREE.PointLight("#fff1d6",22,20);aisleLight.position.set(1.5,3.8,1.2);world.add(aisleLight);
-  world.add(new THREE.HemisphereLight("#fff8eb","#826448",1.8));
+  const key=new THREE.DirectionalLight("#ffe2b8",2.05);key.position.set(-3.5,5.5,6);world.add(key);
+  const fill=new THREE.DirectionalLight("#fff0d8",.72);fill.position.set(4,1.8,4);world.add(fill);
+  const rim=new THREE.PointLight("#ff9d4d",11,18);rim.position.set(-2.8,.6,-.3);world.add(rim);
+  const aisleLight=new THREE.PointLight("#f5d7a8",7,20);aisleLight.position.set(1.5,3.8,1.2);world.add(aisleLight);
+  world.add(new THREE.HemisphereLight("#e8dfcf","#493326",.72));
   return {jar,frontLabel:front,backLabel:back};
 }
 
@@ -181,11 +190,24 @@ function drawNutellaOverlay(ctx: CanvasRenderingContext2D, frame: number, fps: n
   const headline = ["UN CLÁSICO DE SIEMPRE","NUTELLA.","HAY MÁS DETRÁS","LA ETIQUETA HABLA","7 INGREDIENTES","¿CUÁNTOS RECORDÁS?"][phase];
   ctx.fillStyle = accent; ctx.font = "800 " + Math.round(width*.027) + "px Arial"; ctx.fillText(eyebrow,width/2,height*.775);
   ctx.fillStyle = "#fff"; ctx.font = "900 " + Math.round(width*.064) + "px Arial"; ctx.fillText(headline,width/2,height*.832,width*.91);
-  ctx.fillStyle = "rgba(255,255,255,.94)"; ctx.font = "500 " + Math.round(width*.026) + "px Arial";
   if (phase === 4) {
-    ["Azúcar · aceite vegetal · avellanas","leche descremada en polvo · cacao","lecitinas (emulsificante) · saborizante"].forEach((line,i)=>ctx.fillText(line,width/2,height*(.882+i*.027),width*.93));
+    // Ingredient reveal: high-contrast two-column list, bold enough for a phone screen.
+    ctx.fillStyle = "rgba(7,14,11,.88)";
+    ctx.beginPath(); ctx.roundRect(width*.055,height*.855,width*.89,height*.112,18); ctx.fill();
+    const ingredients = ["AZÚCAR","ACEITE VEGETAL","AVELLANAS","LECHE EN POLVO","CACAO","LECITINAS","SABORIZANTE"];
+    ctx.textAlign = "left"; ctx.fillStyle = "#ffffff";
+    ctx.font = "900 " + Math.round(width*.029) + "px Arial";
+    ingredients.forEach((item,i) => {
+      const col = i < 4 ? 0 : 1; const row = i < 4 ? i : i-4;
+      const x = width*(col===0?.105:.555);
+      const yy = height*(.873 + row*.024);
+      ctx.fillStyle = accent; ctx.beginPath(); ctx.arc(x,yy,5,0,Math.PI*2); ctx.fill();
+      ctx.fillStyle = "#ffffff"; ctx.fillText(item,x+15,yy+1,width*.37);
+    });
+    ctx.textAlign = "center";
   } else {
-    const sub = ["Un producto que reconocés a primera vista.","La etiqueta que todos conocemos.","Vamos a girar el frasco.","La información está del otro lado.","Una receta con siete componentes declarados.","Comentá cuántos pudiste nombrar sin mirar."][phase];
+    ctx.fillStyle = "rgba(255,255,255,.96)"; ctx.font = "700 " + Math.round(width*.026) + "px Arial";
+    const sub = ["Un producto que reconocés a primera vista.","La etiqueta que todos conocemos.","Vamos a girar el frasco.","La información está del otro lado.","Siete ingredientes. Leelos y memorizalos.","Comentá cuántos pudiste nombrar sin mirar."][phase];
     ctx.fillText(sub,width/2,height*.89,width*.92);
   }
   ctx.fillStyle = "rgba(255,255,255,.62)"; ctx.font = "700 " + Math.round(width*.018) + "px Arial";
@@ -250,7 +272,7 @@ export async function renderPackageToWebM(
   renderer.setSize(pkg.width, pkg.height, false);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.28;
+  renderer.toneMappingExposure = 0.92;
 
   const outputCanvas = document.createElement("canvas");
   outputCanvas.width = pkg.width;
@@ -276,14 +298,16 @@ export async function renderPackageToWebM(
   output.setMetadataTags({ title: pkg.title, artist: "Ingredora Content Studio", date: new Date(pkg.createdAt) });
 
   const world = new THREE.Scene();
-  world.add(new THREE.HemisphereLight(0xffffff, 0x273b2c, 2.0));
-  const key = new THREE.DirectionalLight(0xffffff, 3.0);
-  key.position.set(-3, 5, 6);
-  key.castShadow = true;
-  world.add(key);
-  const rim = new THREE.DirectionalLight(0x9fcb83, 1.8);
-  rim.position.set(4, 2, -4);
-  world.add(rim);
+  if (pkg.visualPreset !== "nutella-supermarket") {
+    world.add(new THREE.HemisphereLight(0xffffff, 0x273b2c, 2.0));
+    const key = new THREE.DirectionalLight(0xffffff, 3.0);
+    key.position.set(-3, 5, 6);
+    key.castShadow = true;
+    world.add(key);
+    const rim = new THREE.DirectionalLight(0x9fcb83, 1.8);
+    rim.position.set(4, 2, -4);
+    world.add(rim);
+  }
 
   const camera = new THREE.PerspectiveCamera(34, pkg.width / pkg.height, 0.1, 100);
   const nutellaSet = pkg.visualPreset === "nutella-supermarket" ? createNutellaSet(world) : null;
