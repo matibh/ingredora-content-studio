@@ -1,4 +1,12 @@
+# Ingredora Content Studio
 
+## 📘 Guía principal: cómo producir videos
+
+**[Abrir la Guía Maestra de Producción de Video](docs/GUIA_MAESTRA_PRODUCCION_VIDEO.md)**
+
+Incluye el flujo completo desde la idea hasta el MP4 aprobado, el template para pedir nuevas producciones a ChatGPT, storyboard segundo a segundo, estructura del Production Package, render Three.js, audio/subtítulos, control de calidad, metadatos TXT y aprobación/subida a GitHub.
+
+---
 
 ## Operación del estudio: producción desde ChatGPT
 
