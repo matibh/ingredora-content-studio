@@ -401,8 +401,8 @@ export function drawCocaColaPoolsideOverlay(
     ctx.fillStyle = white;
     ctx.shadowColor = "rgba(0,0,0,.35)";
     ctx.shadowBlur = 12 * scale;
-    ctx.fillText("EL VASO MÁS ESPERADO", width / 2, height * 0.19, width * 0.9);
-    ctx.fillText("DEL VERANO", width / 2, height * 0.225, width * 0.9);
+    ctx.fillText("UNA COCA BIEN FRÍA", width / 2, height * 0.19, width * 0.9);
+    ctx.fillText("EN UN DÍA DE CALOR", width / 2, height * 0.225, width * 0.9);
     ctx.shadowBlur = 0;
   } else if (time < 10) {
     const freeze = ease((time - 7.2) / 0.25);
