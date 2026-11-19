@@ -1,7 +1,7 @@
 import asyncio
-import io
 import json
 from pathlib import Path
+import subprocess
 
 import edge_tts
 import imageio_ffmpeg
@@ -50,7 +50,25 @@ async def synthesize_segment(segment, index):
             })
     if not chunks or not words:
         raise RuntimeError(f"Edge TTS no devolvió audio y marcas de palabra para el segmento {index + 1}.")
-    audio = AudioSegment.from_file(io.BytesIO(b"".join(chunks)), format="mp3")
+    decoded = subprocess.run(
+        [
+            imageio_ffmpeg.get_ffmpeg_exe(),
+            "-hide_banner", "-loglevel", "error",
+            "-i", "pipe:0",
+            "-f", "s16le", "-acodec", "pcm_s16le",
+            "-ar", "24000", "-ac", "2", "pipe:1",
+        ],
+        input=b"".join(chunks),
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        check=True,
+    )
+    audio = AudioSegment(
+        data=decoded.stdout,
+        sample_width=2,
+        frame_rate=24_000,
+        channels=2,
+    )
     if len(audio) < 100:
         raise RuntimeError(f"El segmento {index + 1} quedó vacío.")
     return audio, words
