@@ -1,7 +1,25 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-19T20:00:00-03:00",
+  "updatedAt": "2026-11-19T20:30:00-03:00",
   "productions": [
+    {
+      "id": "ingredora-nutella-supermarket-spot-002",
+      "title": "Nutella — Detrás de la etiqueta (versión 2)",
+      "description": "Versión 2: guion plano a plano, góndola con más contraste, acercamiento de cámara y giro para revelar los ingredientes.",
+      "status": "rendering",
+      "packageUrl": "studio/packages/nutella-supermarket.v2.json",
+      "durationSeconds": 12,
+      "aspectRatio": "9:16",
+      "language": "Español",
+      "platforms": [
+        "TikTok",
+        "Instagram Reels",
+        "YouTube Shorts"
+      ],
+      "version": "2.1",
+      "createdAt": "2026-11-19T20:30:00-03:00",
+      "caption": "Un clásico de la góndola. 🍫 Detrás de la etiqueta hay siete ingredientes. ¿Cuántos recordás sin mirar? #Ingredora #Nutella #DesafíoDeIngredientes"
+    },
     {
       "id": "ingredora-nutella-supermarket-spot-001",
       "title": "Nutella — Detrás de la etiqueta",
