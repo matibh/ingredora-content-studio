@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "engineVersion": "1.0.0",
+  "id": "ingredora-nutella-supermarket-spot-007",
+  "title": "Nutella — Voz corregida y normalizada (versión 7)",
+  "description": "Versión de 15 segundos con narración argentina normalizada y priorizada sobre la música. La voz acompaña los captions e invita a jugar sin enumerar ingredientes.",
+  "createdAt": "2026-11-19T20:30:00-03:00",
+  "fps": 30,
+  "width": 720,
+  "height": 1280,
+  "visualPreset": "nutella-supermarket",
+  "voiceoverUrl": "studio/audio/nutella-v6-voice-es-AR.mp3",
+  "voiceoverOffsetSeconds": 0,
+  "scenes": [
+    {
+      "id": "supermarket-voice-audio-fixed-v7",
+      "startFrame": 0,
+      "durationFrames": 450,
+      "background": "#96978f",
+      "camera": {
+        "position": [
+          0.15,
+          0.48,
+          8.7
+        ],
+        "target": [
+          0,
+          -0.15,
+          0
+        ],
+        "fov": 32
+      },
+      "accentColor": "#d8f36a",
+      "headline": "NUTELLA.",
+      "subline": "DETRÁS DE LA ETIQUETA.",
+      "objects": []
+    }
+  ]
+}
