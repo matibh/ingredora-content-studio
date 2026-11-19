@@ -317,7 +317,7 @@ Esta revisión prevalece sobre los timelines anteriores. La pieza completa baja 
 | 00:16–00:22.8 | Revelación secuencial de ingredientes; seis tarjetas entran una tras otra y cafeína queda indicada aparte |
 | 00:22.8–00:27 | Cierre breve y CTA de Ingredora |
 
-El audio Edge TTS se vuelve a generar a 27 segundos con la voz Elena. Las frases finales se ubican en 00:23.10 y 00:24.70; la ventana de ingredientes permanece sin locución.
+El audio Edge TTS se vuelve a generar a 27 segundos con la voz Elena. Las frases finales se ubican en 00:22.95 y 00:25.35; la ventana de ingredientes permanece sin locución.
 
 ### Líquido de la botella y llenado del vaso
 
