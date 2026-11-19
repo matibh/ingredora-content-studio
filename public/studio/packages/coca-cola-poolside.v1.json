@@ -2,10 +2,10 @@
   "schemaVersion": 1,
   "engineVersion": "1.0.0",
   "id": "ingredora-coca-cola-poolside-002",
-  "title": "Coca-Cola — Una Coca bien fría",
-  "description": "Spot vertical cinematográfico de 34 segundos con voz femenina argentina Edge TTS, subtítulos palabra por palabra sincronizados, desafío de 15 segundos y revelación visual.",
+  "title": "Coca-Cola — Un día de playa, una Coca bien fría",
+  "description": "Spot vertical de 34 segundos ambientado en una playa realista, con vertido macro, Edge TTS Elena, subtítulos palabra por palabra, desafío de seis segundos y 60 FPS.",
   "createdAt": "2026-11-19T20:00:00-03:00",
-  "fps": 30,
+  "fps": 60,
   "width": 720,
   "height": 1280,
   "visualPreset": "coca-cola-poolside",
@@ -13,8 +13,8 @@
     {
       "id": "summer-poolside-pour-freeze-challenge-reveal",
       "startFrame": 0,
-      "durationFrames": 1020,
-      "background": "#8bd4f2",
+      "durationFrames": 2040,
+      "background": "#70b7e8",
       "camera": {
         "position": [
           0,
@@ -29,8 +29,8 @@
         "fov": 43
       },
       "accentColor": "#ef233c",
-      "headline": "EL VASO MÁS ESPERADO DEL VERANO",
-      "subline": "¿SABÉS QUÉ TIENE ADENTRO?",
+      "headline": "UN DÍA DE PLAYA",
+      "subline": "UNA COCA BIEN FRÍA",
       "objects": []
     }
   ],
