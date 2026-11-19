@@ -186,13 +186,6 @@ function drawNutellaOverlay(ctx: CanvasRenderingContext2D, frame: number, fps: n
   const rounded = (x:number,y:number,w:number,h:number,r:number) => {
     ctx.beginPath(); ctx.roundRect(x,y,w,h,r);
   };
-  const shadowText = (text:string,x:number,y:number,size:number,color:string,maxWidth:number,weight=900) => {
-    ctx.save(); ctx.textAlign="center"; ctx.textBaseline="middle";
-    ctx.font = weight + " " + Math.round(size) + "px Arial, Helvetica, sans-serif";
-    ctx.shadowColor="rgba(0,0,0,.48)"; ctx.shadowBlur=width*.018; ctx.shadowOffsetY=height*.004;
-    ctx.fillStyle=color; ctx.fillText(text,x,y,maxWidth); ctx.restore();
-  };
-
   // A permanent, unmistakable brand signature. It remains in the same safe area
   // throughout the spot, including the final call-to-action.
   const brandIn = ease(t/.42);
@@ -255,7 +248,6 @@ function drawNutellaOverlay(ctx: CanvasRenderingContext2D, frame: number, fps: n
       line.push(word);lineWidth+=w;
     }
     if(line.length)lines.push(line);
-    const totalH=lines.length*lineHeight;
     let wordIndex=0;
     lines.forEach((row,rowIndex)=>{
       const widths=row.map(word=>ctx.measureText(word).width);
