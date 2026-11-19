@@ -40,6 +40,10 @@ La dirección elegida es una fábrica audiovisual basada en escenas 3D programá
 | [14 — Analítica, métricas y experimentación](docs/14-analitica-metricas-y-experimentacion.md) | Embudo, atribución, KPIs, privacidad y experimentación | Borrador inicial |
 | [15 — Seguridad, presupuesto cero, roadmap y pruebas](docs/15-seguridad-presupuesto-cero-roadmap-y-pruebas.md) | Seguridad, licencias, costos, roadmap, pruebas y gates de aceptación | Borrador inicial |
 
+### Auditoría transversal
+
+- [Auditoría transversal](docs/auditoria-transversal.md): hallazgos de coherencia, viabilidad técnica, cuotas gratuitas, decisiones pendientes y plan de corrección. No es una aprobación de implementación.
+
 ## Estructura prevista
 
 ```text
@@ -85,7 +89,8 @@ Los esquemas JSON se incorporarán cuando el modelo conceptual esté suficientem
 - Analítica, métricas y experimentación: embudo de contenido a partidas, eventos first-party mínimos, atribución UTM, KPIs, cohortes, experimentación y privacidad.
 - Seguridad, presupuesto cero, roadmap y pruebas: controles de costos, seguridad de paquetes y secretos, licencias, fases de implementación, estrategia de pruebas, Definition of Done y gates de salida.
 - GitHub Pages: no se utilizará como hosting de la aplicación en esta etapa.
-- Documentación 00–15: borrador inicial completo; pendiente auditoría integral de coherencia y aprobación antes de implementar.
+- Documentación 00–15: borrador inicial completo.
+- Auditoría transversal: hallazgos documentados; decisiones D-01 a D-08 pendientes de aprobación. No comenzar implementación hasta cerrar Fase 0.
 - GitHub Actions: se habilitará solo para validaciones ligeras y sin habilitar billing.
 - Proveedor de hosting web: pendiente de evaluación y verificación de condiciones gratuitas.
 - Supabase: arquitectura y proyecto de destino pendientes de definición.
