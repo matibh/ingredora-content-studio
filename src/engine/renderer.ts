@@ -626,11 +626,11 @@ export async function renderPackageToWebM(
       poolsideSet.update(Math.min(time, 7.2));
       const ease = (value: number) => { const x = Math.max(0, Math.min(1, value)); return x * x * (3 - 2 * x); };
       const approach = ease(time / 3.2);
-      const cameraZ = 13.0 - approach * 4.2;
-      const cameraY = 2.6 - approach * 1.1;
+      const cameraZ = 9.8 - approach * 2.3;
+      const cameraY = 1.35 - approach * 0.25;
       camera.position.set(0, cameraY, cameraZ);
-      camera.lookAt(0, -0.45, -0.55);
-      camera.fov = 43 - approach * 5;
+      camera.lookAt(0, -0.62, 0.35);
+      camera.fov = 47 - approach * 5;
       camera.updateProjectionMatrix();
       renderer.render(world, camera);
       ctx.drawImage(renderer.domElement, 0, 0, pkg.width, pkg.height);
