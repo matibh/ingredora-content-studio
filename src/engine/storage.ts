@@ -1,7 +1,7 @@
 const DB_NAME = "ingredora-content-studio";
 const STORE_NAME = "renders";
 const DB_VERSION = 1;
-const RENDER_CACHE_VERSION = "audiovisual-v1";
+const RENDER_CACHE_VERSION = "audiovisual-v2";
 
 function cacheKey(id: string) {
   return `${id}:${RENDER_CACHE_VERSION}`;
