@@ -16,3 +16,10 @@ All notable documentation and specification changes are recorded here.
 - Recorded current official documentation references for Supabase, Cloudflare Pages, GitHub Actions, Three.js and browser media APIs.
 - Kept hosting provider, codec profiles, project schema, TTS and social publishing integrations explicitly undecided pending validation.
 - No application code or production infrastructure has been implemented.
+
+## 2026-11-19 — ChatGPT production protocol
+
+- Added `docs/03-chatgpt-produccion-y-protocolo.md` defining the explicit human-assisted handoff between ChatGPT and the app.
+- Specified Production Package structure, manifest concepts, separation of declarative data from executable engine code, validation stages, feedback, versioning, rights and deliverables.
+- Kept JSON schemas, import format, patch strategy and engine component registry open for later specifications and tests.
+- No application code or production infrastructure has been implemented.
