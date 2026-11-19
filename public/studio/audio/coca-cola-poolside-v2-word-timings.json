@@ -24,7 +24,7 @@
       "wordCount": 6
     },
     {
-      "text": "Tenés quince segundos para adivinar sus ingredientes.",
+      "text": "Tenés seis segundos para adivinar sus ingredientes.",
       "start": 10.5,
       "end": 14.124,
       "wordCount": 7
@@ -154,43 +154,43 @@
     {
       "text": "Tenés",
       "start": 10.5955,
-      "end": 10.9023,
+      "end": 10.8909,
       "segment": 3
     },
     {
-      "text": "quince",
-      "start": 10.9477,
-      "end": 11.1863,
+      "text": "seis",
+      "start": 10.8909,
+      "end": 11.1409,
       "segment": 3
     },
     {
       "text": "segundos",
-      "start": 11.2205,
-      "end": 11.6636,
+      "start": 11.1409,
+      "end": 11.6295,
       "segment": 3
     },
     {
       "text": "para",
-      "start": 11.7318,
-      "end": 11.8455,
+      "start": 11.6977,
+      "end": 11.8113,
       "segment": 3
     },
     {
       "text": "adivinar",
-      "start": 11.8455,
-      "end": 12.2773,
+      "start": 11.8114,
+      "end": 12.2432,
       "segment": 3
     },
     {
       "text": "sus",
-      "start": 12.3114,
-      "end": 12.4818,
+      "start": 12.2773,
+      "end": 12.4591,
       "segment": 3
     },
     {
       "text": "ingredientes",
-      "start": 12.4932,
-      "end": 13.2772,
+      "start": 12.4705,
+      "end": 13.2659,
       "segment": 3
     },
     {
