@@ -25,7 +25,7 @@ La dirección elegida es una fábrica audiovisual basada en escenas 3D programá
 |---|---|---|
 | [00 — Visión y alcance](docs/00-vision-y-alcance.md) | Objetivos, principios, límites y definición del producto | Borrador inicial |
 | [01 — Estrategia de contenido](docs/01-estrategia-de-contenido.md) | Audiencia, idiomas, pilares, campañas y medición | Borrador inicial |
-| 02 — Arquitectura general | Componentes y comunicación del sistema | Pendiente |
+| [02 — Arquitectura general](docs/02-arquitectura-general.md) | Componentes, flujos, render, almacenamiento, seguridad y límites gratuitos | Borrador inicial |
 | 03 — ChatGPT: producción y protocolo | Contrato de trabajo entre ChatGPT, GitHub, Supabase y la app | Pendiente |
 | 04 — Identidad visual | Sistema de marca y dirección artística | Pendiente |
 | 05 — Product Library | Catálogo, fuentes, verificación y derechos | Pendiente |
@@ -69,6 +69,7 @@ Los esquemas JSON se incorporarán cuando el modelo conceptual esté suficientem
 - Repositorio privado: confirmado.
 - Rama principal: `main`.
 - Aplicación: todavía no implementada.
+- Arquitectura general: especificación inicial incorporada; hosting, codecs y límites operativos siguen sujetos a pruebas.
 - GitHub Pages: no se utilizará como hosting de la aplicación en esta etapa.
 - GitHub Actions: se habilitará solo para validaciones ligeras y sin habilitar billing.
 - Proveedor de hosting web: pendiente de evaluación y verificación de condiciones gratuitas.
