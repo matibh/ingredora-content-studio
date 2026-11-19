@@ -1,39 +1,30 @@
-# Azure Speech F0 — configuración inicial de voz
+# Voz argentina gratuita — configuración automática
 
-Ingredora usa Azure Speech **Free F0** para sintetizar la locución. El nivel F0 incluye 500.000 caracteres al mes de voz neuronal estándar; el servicio no debe cambiarse a S0 ni habilitarse facturación de pago para este proyecto. La cuota y disponibilidad pueden cambiar; comprobar el nivel F0 en el portal antes de usarlo.
+Ingredora genera la locución con **Edge TTS** desde GitHub Actions. No hace falta crear una cuenta de Azure, configurar una suscripción, cargar una tarjeta ni guardar claves.
 
 ## Voz elegida
 
-- Localidad: español de Argentina (`es-AR`)
-- Voz: `es-AR-ElenaNeural`
-- Salida: MP3 mono 24 kHz
-- Uso inicial: una narración corta por producción
+- Voz: `es-AR-ElenaNeural` (español argentino, femenina).
+- Alternativa posible: `es-AR-TomasNeural` (español argentino, masculina).
+- Salida: MP3.
+- Generación: workflow manual de GitHub Actions.
+- La web no necesita formularios ni intervención del usuario.
 
-Microsoft documenta las voces `es-AR-ElenaNeural` y `es-AR-TomasNeural` como voces estándar neuronales.
+## Cómo funciona
 
-## Alta única requerida
+1. GitHub Actions instala el cliente abierto `edge-tts`.
+2. El script envía el guion al servicio de voz en línea de Microsoft Edge y recibe el audio.
+3. El workflow guarda el MP3 en `public/studio/audio/nutella-v5-voice-es-AR.mp3`.
+4. Una vez disponible el archivo, se activa el paquete V5 y el renderizador mezcla voz y música dentro del WebM.
 
-1. Crear una cuenta/suscripción Azure si todavía no existe.
-2. Crear un recurso **Speech** y seleccionar el nivel gratuito **F0**. No seleccionar S0.
-3. En el recurso, copiar la clave y el identificador de región.
-4. En el repositorio GitHub, abrir **Settings → Secrets and variables → Actions → New repository secret**.
-5. Crear estos dos secretos:
-   - `AZURE_SPEECH_KEY`: clave del recurso Speech.
-   - `AZURE_SPEECH_REGION`: región exacta del recurso (por ejemplo, `eastus`).
-6. Abrir **Actions → Generate Nutella voiceover → Run workflow** una vez.
+## Importante: gratuidad y disponibilidad
 
-El workflow genera `public/studio/audio/nutella-v5-voice-es-AR.mp3` y lo guarda en el repositorio para que GitHub Pages pueda servirlo. La clave nunca se copia al código, al paquete ni al sitio público.
+Esta alternativa no requiere API key ni una cuenta Azure y no genera un cargo de Azure. Utiliza el servicio de voz en línea para consumidores de Microsoft Edge mediante un cliente comunitario no oficial; no es una API empresarial con SLA, cuota garantizada ni soporte contractual. Microsoft puede cambiar el servicio o limitar el acceso, por lo que el workflow valida la respuesta y fallará de forma visible si el servicio deja de estar disponible.
 
-## Seguridad y presupuesto
+No se instala ningún secreto y no se publica ninguna credencial.
 
-- No introducir la clave en la web ni en un archivo del repositorio.
-- No usar credenciales de Azure en el navegador.
-- Mantener el recurso en F0 y revisar el consumo mensual en Azure Cost Management.
-- No activar S0 ni recursos adicionales de pago.
-- El workflow se ejecuta manualmente para evitar llamadas de voz inesperadas.
+## Referencias
 
-## Referencias oficiales
-
-- [Precios de Azure Speech](https://azure.microsoft.com/pricing/details/speech/): F0 incluye 0,5 millones de caracteres mensuales de voz neuronal estándar.
-- [Voces e idiomas](https://learn.microsoft.com/azure/ai-services/speech-service/language-support): voces argentinas Elena y Tomás.
-- [API REST de texto a voz](https://learn.microsoft.com/azure/ai-services/speech-service/rest-text-to-speech): autenticación por clave y solicitud SSML.
+- [Cliente Edge TTS para Python](https://github.com/rany2/edge-tts)
+- [Voces disponibles: Elena y Tomás en español argentino](https://github.com/bytectlgo/edge-tts/blob/main/voice-list.md)
+- [Información del cliente Node/TypeScript alternativo](https://github.com/andresayac/edge-tts)
