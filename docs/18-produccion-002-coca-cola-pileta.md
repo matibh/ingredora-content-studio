@@ -268,3 +268,34 @@ Los subtítulos palabra por palabra se mantienen basados en los eventos reales W
 - Paquete de render: `public/studio/packages/coca-cola-poolside.v1.json`
 
 **Estado:** revisión visual 4.0 en construcción. No aprobar ni subir hasta reproducir el WebM de 60 FPS y comprobar el macro del vertido, la orientación del envase, todos los subtítulos y el balance de audio.
+
+
+## 14. Corrección del vertido y eliminación de la mano — versión 5
+
+Se eliminó por completo el modelo de brazo, palma y dedos. La botella queda sin extremidad visible ni geometría humana improvisada.
+
+### Origen del líquido
+
+El chorro no se posiciona mediante un cilindro fijo ni se conecta a un punto externo arbitrario. Su primer anillo se ancla al centro de la abertura interior del cuello de la botella, transformado a coordenadas globales después de aplicar la inclinación de cada fotograma.
+
+### Trayectoria bajo gravedad
+
+- La velocidad inicial se orienta según el eje real de la boquilla de la botella.
+- La trayectoria se calcula con movimiento balístico: posición inicial + velocidad de salida × tiempo + aceleración gravitatoria × tiempo² / 2.
+- El tubo del chorro se deforma en cada fotograma siguiendo esa trayectoria; su sección transversal tiene una variación sutil para evitar el aspecto de tubo rígido.
+- Las gotas secundarias nacen desde la misma boca y siguen la misma velocidad inicial y gravedad.
+- El punto final de la trayectoria se transforma al espacio local del vaso y alimenta el efecto de impacto dentro del diámetro del vidrio.
+
+### Reacción del vaso
+
+- El nivel de Coca-Cola aumenta desde el momento en que comienza el vertido.
+- La superficie del líquido tiene ondulación y pequeñas ondas de impacto.
+- El hielo recibe una perturbación sutil mientras entra la bebida.
+- La espuma y las gotas de impacto se ubican alrededor del punto de entrada dentro del vaso.
+- El audio de efervescencia comienza junto con el vertido visible, a partir de 00:03.90.
+
+### Precisión técnica
+
+Esto es una simulación visual procedural determinista basada en cinemática balística, geometría deformable y partículas; no es un solver de dinámica de fluidos computacional (CFD). Busca representar de forma creíble el flujo, el impacto y la subida del líquido en un render reproducible a 60 FPS, sin depender de servicios externos.
+
+**Control obligatorio:** inspeccionar el WebM a velocidad normal y cuadro a cuadro en el inicio del chorro, contacto con el líquido, gotas, nivel y cierre. Comprobar especialmente que ningún tramo del flujo empiece fuera de la boca ni termine fuera del vaso.
