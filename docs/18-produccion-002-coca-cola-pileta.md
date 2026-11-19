@@ -1,6 +1,6 @@
 # Ingredora Originals 002 — Coca-Cola: un día de playa, una Coca bien fría
 
-**Versión vigente:** 6.0 · **Fecha:** 19 de noviembre de 2026  
+**Versión vigente:** 6.2 · **Fecha:** 19 de noviembre de 2026  
 **Package:** `ingredora-coca-cola-poolside-002`  
 **Engine:** Three.js · **Formato:** 720 × 1280 · 60 FPS · 9:16  
 **Duración vigente:** 27 segundos · **Desafío vigente:** 6 segundos  
@@ -338,3 +338,35 @@ El audio Edge TTS se vuelve a generar a 27 segundos con la voz Elena. Las frases
 - Mantener la locución claramente por encima de estos efectos y no cubrir el desafío ni la revelación.
 
 El modelo usa una simulación procedural basada en la ecuación balística, malla deformable, volumen interno animado y partículas. No es un solver CFD. La aprobación requiere comprobar que el líquido llega al pico, entra en el vaso, el nivel sube de forma coherente y no hay clipping ni derrames imposibles.
+
+
+## 16. Reencuadre del vertido y marca web — versión 6.2
+
+Esta revisión corrige el macro del servido: el zoom anterior priorizaba el vaso y el chorro, pero podía dejar la botella parcial o totalmente fuera del cuadro vertical.
+
+### Cámara y composición
+
+- La cámara se retira moderadamente durante el macro y desplaza el centro óptico hacia el espacio entre botella y vaso.
+- El encuadre mantiene ambos objetos completos durante el vertido; la botella se acerca al vaso en el espacio de escena.
+- Se conserva la lectura de playa y el plano sigue siendo un macro de producto, no un plano general lejano.
+- El movimiento de cámara llega al plano del desafío sin un salto brusco.
+
+### Chorro y boquilla
+
+- El tiempo de vuelo balístico se reduce para dar al flujo una velocidad de salida más convincente.
+- La sección del chorro se estrecha en la salida de la boquilla, gana cuerpo durante el recorrido y se afina antes del impacto.
+- Se añade irregularidad superficial muy sutil para quitar el aspecto de tubo rígido, sin desplazar la trayectoria calculada.
+- Se adelanta la actualización vertical de la botella para que el cálculo de la trayectoria use la misma posición que la geometría renderizada.
+- Se mantiene la salida centrada en la abertura y el impacto dentro de la superficie dinámica del vaso.
+
+### Marca
+
+- La etiqueta superior persistente pasa a decir **Ingredora.com**, alineada a la izquierda y dentro de una cápsula discreta.
+- El CTA principal del cierre permanece sin cambios.
+
+### Render y revisión
+
+- La caché local se invalida únicamente para Coca-Cola mediante una clave nueva de versión 6.2.
+- La clave de Nutella y sus archivos no se modifican.
+- El manifiesto conserva la producción en estado de render; el build publicado no equivale a la validación visual del WebM.
+- Reproducir el nuevo WebM en móvil y escritorio y comprobar botella completa, pico, continuidad del chorro, entrada en el vaso, lectura de la marca y ausencia de recortes antes de aprobar.

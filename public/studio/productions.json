@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-19T22:30:00-03:00",
+  "updatedAt": "2026-11-19T19:00:00-03:00",
   "productions": [
     {
       "id": "ingredora-coca-cola-poolside-002",
       "title": "Coca-Cola — Un día de playa, una Coca bien fría",
-      "description": "27 segundos a 60 FPS. Desafío de 6 segundos, revelación de ingredientes en 5 segundos y cierre de 6 segundos. Botella sin mano, líquido que migra hacia el pico, vertido balístico y vaso casi lleno.",
+      "description": "27 segundos a 60 FPS. Plano de vertido reencuadrado para mostrar botella y vaso completos; botella más próxima al vaso, chorro orgánico alineado con el pico y marca Ingredora.com arriba a la izquierda. Desafío de 6 segundos y revelación de ingredientes en 5 segundos.",
       "status": "rendering",
       "packageUrl": "studio/packages/coca-cola-poolside.v1.json",
       "durationSeconds": 27,
@@ -16,7 +16,7 @@
         "Instagram Reels",
         "YouTube Shorts"
       ],
-      "version": "6.1",
+      "version": "6.2",
       "createdAt": "2026-11-19T20:00:00-03:00",
       "caption": "Playa, sol y una Coca bien fría. Pero pará… ¿sabés qué tiene adentro? Tenés seis segundos para adivinar sus ingredientes. ¿Cuántos acertaste? ¡Jugá en Ingredora! #Ingredora #DesafíoDeIngredientes #CocaCola"
     },

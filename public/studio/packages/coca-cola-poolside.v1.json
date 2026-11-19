@@ -3,7 +3,7 @@
   "engineVersion": "1.0.0",
   "id": "ingredora-coca-cola-poolside-002",
   "title": "Coca-Cola — Un día de playa, una Coca bien fría",
-  "description": "Spot vertical de 27 segundos a 60 FPS. Desafío de 6 segundos, revelación ágil de ingredientes, cierre breve, vertido balístico y botella translúcida con líquido desplazándose hacia el pico.",
+  "description": "Spot vertical de 27 segundos a 60 FPS. Plano macro más abierto y recentrado para conservar la botella completa y el vaso; botella próxima al vaso, vertido orgánico desde el pico y marca Ingredora.com en la esquina superior izquierda.",
   "createdAt": "2026-11-19T20:00:00-03:00",
   "fps": 60,
   "width": 720,
@@ -17,16 +17,16 @@
       "background": "#70b7e8",
       "camera": {
         "position": [
-          0,
-          2.6,
-          13
+          0.7,
+          1.17,
+          6.85
         ],
         "target": [
-          0,
-          -0.45,
-          -0.55
+          0.7,
+          -0.63,
+          0.72
         ],
-        "fov": 43
+        "fov": 39.5
       },
       "accentColor": "#ef233c",
       "headline": "UN DÍA DE PLAYA",

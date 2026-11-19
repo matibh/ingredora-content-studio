@@ -492,7 +492,7 @@ export function createCocaColaPoolsideSet(world: THREE.Scene): PoolsideSet {
   }
 
   const bottle = makeBottle();
-  bottle.position.set(1.55, 0.86, 0.80);
+  bottle.position.set(1.15, 0.86, 0.80);
   bottle.rotation.set(-0.04, 0.02, 0.06);
   world.add(bottle);
   world.add(bottle.userData.removedCap as THREE.Group);
@@ -591,11 +591,11 @@ export function createCocaColaPoolsideSet(world: THREE.Scene): PoolsideSet {
   // A continuous, dynamically deformed liquid column. Its first vertex is
   // anchored to the bottle's actual inner mouth; gravity bends the stream.
   const streamMaterial = new THREE.MeshPhysicalMaterial({
-    color: "#632311",
-    roughness: 0.075,
-    metalness: 0.015,
+    color: "#5b2110",
+    roughness: 0.045,
+    metalness: 0,
     clearcoat: 1,
-    clearcoatRoughness: 0.045,
+    clearcoatRoughness: 0.025,
     side: THREE.DoubleSide,
   });
   const streamSegments = 36;
@@ -708,7 +708,7 @@ export function createCocaColaPoolsideSet(world: THREE.Scene): PoolsideSet {
   const streamPoint = new THREE.Vector3();
   const streamVelocity = new THREE.Vector3();
   const glassImpactLocal = new THREE.Vector3();
-  const streamFlightTime = 0.43;
+  const streamFlightTime = 0.34;
   const referenceAxis = new THREE.Vector3(0, 0, 1);
   const alternateAxis = new THREE.Vector3(1, 0, 0);
 
@@ -718,6 +718,9 @@ export function createCocaColaPoolsideSet(world: THREE.Scene): PoolsideSet {
   };
 
   const update = (time: number) => {
+    // Keep the bottle's animated position current before solving the nozzle-to-glass trajectory.
+    bottle.position.y = 0.86 + Math.sin(Math.min(time, 7.1) * 1.35) * 0.008;
+
     // The glass fills to just below its rim, not merely to the middle.
     const fillAmount = 0.20 + 1.00 * ease((time - 3.90) / 2.55);
     const surfaceY = 0.10 + fillAmount * 0.92;
@@ -740,7 +743,7 @@ export function createCocaColaPoolsideSet(world: THREE.Scene): PoolsideSet {
     const tiltOut = 1 - ease((time - 6.30) / 0.90);
     const tiltStrength = tiltIn * tiltOut;
     bottle.quaternion.copy(uprightQuaternion).slerp(pourQuaternion, tiltStrength);
-    bottle.position.y = 0.86 + Math.sin(Math.min(time, 7.1) * 1.35) * 0.008;
+    bottle.updateMatrixWorld(true);
 
     // When inverted, the remaining cola migrates toward local +Y — the neck
     // and spout — while the volume gradually drains into the glass.
@@ -778,13 +781,19 @@ export function createCocaColaPoolsideSet(world: THREE.Scene): PoolsideSet {
         streamTangent.copy(streamVelocity).addScaledVector(gravity, seconds).normalize();
         streamSide.crossVectors(streamTangent, zAxis).normalize();
         streamNormal.crossVectors(streamTangent, streamSide).normalize();
-        const pulse = 1 + Math.sin(time * 27 - u * 17) * 0.045;
-        const taper = 0.92 + 0.08 * Math.sin(Math.PI * u);
-        const radius = 0.061 * pulse * taper * (0.92 + 0.08 * pourStrength);
+        const pulse = 1 + Math.sin(time * 27 - u * 17) * 0.035;
+        const taper = 0.94 + 0.06 * Math.sin(Math.PI * u);
+        const nozzleFit = 0.76 + 0.24 * ease(u / 0.12);
+        const landingTaper = 1 - 0.08 * ease((u - 0.90) / 0.10);
+        const radius = 0.052 * pulse * taper * nozzleFit * landingTaper * (0.94 + 0.06 * pourStrength);
         for (let radial = 0; radial <= streamRadialSegments; radial += 1) {
           const angle = (radial / streamRadialSegments) * Math.PI * 2;
-          const offsetSide = Math.cos(angle) * radius;
-          const offsetNormal = Math.sin(angle) * radius;
+          const surfaceRipple = 1
+            + Math.sin(angle * 3 + u * 18 - time * 12) * 0.018
+            + Math.sin(angle * 5 - u * 11 + time * 8) * 0.009;
+          const surfaceRadius = radius * surfaceRipple;
+          const offsetSide = Math.cos(angle) * surfaceRadius;
+          const offsetNormal = Math.sin(angle) * surfaceRadius;
           const vertex = (ring * (streamRadialSegments + 1) + radial) * 3;
           array[vertex] = streamPoint.x + streamSide.x * offsetSide + streamNormal.x * offsetNormal;
           array[vertex + 1] = streamPoint.y + streamSide.y * offsetSide + streamNormal.y * offsetNormal;
@@ -949,14 +958,21 @@ export function drawCocaColaPoolsideOverlay(
   ctx.fillStyle = topShade;
   ctx.fillRect(0, 0, width, height * 0.24);
 
-  const brandW = width * 0.42;
-  const brandH = height * 0.038;
-  const brandX = (width - brandW) / 2;
-  const brandY = height * 0.045;
+  const brandW = width * 0.34;
+  const brandH = height * 0.036;
+  const brandX = width * 0.052;
+  const brandY = height * 0.038;
   roundedRect(ctx, brandX, brandY, brandW, brandH, brandH / 2);
-  ctx.fillStyle = "rgba(6,24,36,.72)";
+  ctx.fillStyle = "rgba(6,24,36,.76)";
   ctx.fill();
-  drawTextFit(ctx, "INGREDORA ORIGINALS", width / 2, brandY + brandH / 2, brandW * 0.88, 18 * scale, white, 900);
+  ctx.strokeStyle = "rgba(255,255,255,.24)";
+  ctx.lineWidth = 1.2 * scale;
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.arc(brandX + brandW * 0.105, brandY + brandH / 2, 4.2 * scale, 0, Math.PI * 2);
+  ctx.fillStyle = red;
+  ctx.fill();
+  drawTextFit(ctx, "Ingredora.com", brandX + brandW * 0.18, brandY + brandH / 2, brandW * 0.76, 18 * scale, white, 900, "left");
 
   if (time < 3.0) {
     const intro = ease(time / 0.36);
