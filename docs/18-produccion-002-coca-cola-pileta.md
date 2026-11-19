@@ -1,9 +1,9 @@
 # Ingredora Originals 002 — Coca-Cola: el vaso más esperado del verano
 
-**Versión:** 1.0 · **Fecha:** 19 de noviembre de 2026  
+**Versión vigente:** 4.0 · **Fecha:** 19 de noviembre de 2026  
 **Package:** `ingredora-coca-cola-poolside-002`  
-**Engine:** Three.js · **Formato:** 720 × 1280 · 30 FPS · 9:16  
-**Duración:** 34 segundos · **Desafío:** 15 segundos  
+**Engine:** Three.js · **Formato:** 720 × 1280 · 60 FPS · 9:16  
+**Duración:** 34 segundos · **Desafío vigente:** 6 segundos  
 **Estado:** primer render técnico en preparación; requiere revisión visual humana.
 
 ## 1. Objetivo creativo
@@ -210,3 +210,61 @@ La narración se genera por bloques para respetar los cortes de imagen. La venta
 - Motor de subtítulos: src/engine/renderer.ts
 
 El audio y el JSON de tiempos se generan en GitHub Actions usando el cliente gratuito de Edge TTS; no se exponen credenciales en el navegador. La generación no publica el video ni aprueba la producción.
+
+
+## 13. Revisión integral 4.0 — playa, vertido realista, 60 FPS
+
+La versión 4.0 sustituye el entorno de pileta por una escena de playa de mediodía. Esta sección prevalece sobre las direcciones visuales y los tiempos de las versiones anteriores.
+
+### Escena y arte 3D
+
+- Arena cálida con textura procedural de grano, vetas y pequeñas conchas.
+- Mar turquesa con movimiento suave, espuma fina y franja de arena húmeda.
+- Cielo azul con gradiente atmosférico, nubes delicadas con deriva lenta y sol con halo cálido.
+- Iluminación direccional de mediodía, rebote de cielo, sombras suaves de alta resolución y materiales PBR con reflejos controlados.
+- Elementos de playa integrados en segundo plano: palmera, sombrilla a paneles, toalla rayada, conservadora y accesorios.
+- Botella 3D con silueta PET más trabajada, hombros, cuello abierto, etiqueta roja, tapa retirada y condensación.
+- Vaso con paredes y borde de vidrio, base gruesa, cola, cubos de hielo facetados, burbujas y gotas de salpicadura.
+
+### Vertido y cámara
+
+- La botella se mantiene vertical en el inicio y rota progresivamente hacia una posición de servido natural.
+- El chorro ya no es un cilindro fijo: su punto inicial se calcula transformando la posición real de la boca de la botella, y su punto final queda alineado con la boca del vaso. La orientación y la longitud del chorro se recalculan en cada fotograma.
+- El nivel de líquido aumenta durante el vertido; el hielo reacciona sutilmente y se generan pequeñas salpicaduras.
+- Cámara con apertura general de playa, acercamiento macro al cuello de la botella y al vaso durante el vertido, pausa de impacto al congelarse la escena y retirada suave para la revelación y el cierre.
+- Composición vertical y foco visual en el producto; sin desenfoque artificial que comprometa la lectura.
+
+### Nuevo timeline
+
+| Tiempo | Acción |
+|---|---|
+| 00:00–00:03 | Plano de playa de mediodía y producto |
+| 00:03–00:07.2 | Acercamiento macro: botella inclinada y Coca-Cola cayendo desde la boca al vaso con hielo |
+| 00:07.2–00:10 | Congelamiento y pregunta |
+| 00:10–00:16 | Cuenta regresiva exacta de **6 segundos** |
+| 00:16–00:29.35 | Revelación de seis ingredientes y declaración separada de cafeína |
+| 00:29.35–00:34 | Cierre de Ingredora |
+
+### Voz y subtítulos
+
+La locución sigue siendo Edge TTS, Elena, español argentino. Se regenera el bloque de voz del desafío para decir «Tenés seis segundos para adivinar sus ingredientes». La locución no lee la lista de ingredientes.
+
+Los subtítulos palabra por palabra se mantienen basados en los eventos reales WordBoundary de Edge TTS. El render calcula el ancho de cada palabra, envuelve frases en líneas, reduce tipografía si hace falta y mantiene el panel dentro de márgenes seguros. Ninguna palabra puede superar el ancho útil del panel; el panel se mantiene dentro del 94% inferior del cuadro.
+
+### Render y control técnico
+
+- 720 × 1280, 9:16, **60 FPS**, 2.040 fotogramas para 34 segundos.
+- Oleaje y movimiento de nubes calculados desde el tiempo de la escena, no acumulados por fotograma; mantienen la misma velocidad visual a 60 FPS.
+- Caché de render invalidada únicamente para Coca-Cola; el render de Nutella conserva su clave anterior.
+- Build de TypeScript/Vite y despliegue de Pages obligatorios antes de revisar el render.
+- Revisión visual y auditiva humana obligatoria antes de aprobar. La actualización técnica no implica aprobación ni subida automática.
+
+### Archivos principales
+
+- Escena de playa y modelos: `src/engine/cocaColaPoolside.ts`
+- Cámara, sombras, render y subtítulos: `src/engine/renderer.ts`
+- Música y efectos del contador: `src/engine/audio.ts`
+- Guion Edge TTS: `scripts/generate-coca-cola-poolside-voice.py`
+- Paquete de render: `public/studio/packages/coca-cola-poolside.v1.json`
+
+**Estado:** revisión visual 4.0 en construcción. No aprobar ni subir hasta reproducir el WebM de 60 FPS y comprobar el macro del vertido, la orientación del envase, todos los subtítulos y el balance de audio.
