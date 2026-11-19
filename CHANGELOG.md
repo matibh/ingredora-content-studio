@@ -136,3 +136,16 @@ All notable documentation and specification changes are recorded here.
 - No Supabase integration or remote synchronization was added.
 - Existing browser data is local to the current browser profile and can be lost if browser storage is cleared.
 - Build execution and browser-level testing remain pending.
+
+## 2026-11-19 — Guion y storyboard
+
+### Added
+- Added per-campaign scene storyboard with create, edit, delete and reorder actions.
+- Added scene duration, narrative purpose, visual direction, camera, on-screen text, voiceover, audio/SFX and transition fields.
+- Added automatic total-duration calculation and responsive scene cards.
+- Persisted storyboard data alongside campaign briefs in browser localStorage.
+
+### Notes
+- Storyboard is a planning tool only; it does not generate or render video yet.
+- No cloud synchronization, external service or paid dependency was added.
+- Build and browser testing remain pending.
