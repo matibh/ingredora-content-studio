@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-19T20:30:00-03:00",
+  "updatedAt": "2026-11-19T20:49:00-03:00",
   "productions": [
     {
-      "id": "ingredora-nutella-supermarket-spot-002",
-      "title": "Nutella — Detrás de la etiqueta (versión 2)",
-      "description": "Versión 2: guion plano a plano, góndola con más contraste, acercamiento de cámara y giro para revelar los ingredientes.",
+      "id": "ingredora-nutella-supermarket-spot-003",
+      "title": "Nutella — La etiqueta en primer plano (versión 3)",
+      "description": "Versión 3: iluminación cinematográfica cálida, góndola con colores más naturales y etiqueta curva elevada. Durante la lectura, solo la etiqueta se acerca brevemente a cámara y vuelve a su posición.",
       "status": "rendering",
-      "packageUrl": "studio/packages/nutella-supermarket.v2.json",
+      "packageUrl": "studio/packages/nutella-supermarket.v3.json",
       "durationSeconds": 12,
       "aspectRatio": "9:16",
       "language": "Español",
@@ -16,27 +16,9 @@
         "Instagram Reels",
         "YouTube Shorts"
       ],
-      "version": "2.1",
-      "createdAt": "2026-11-19T20:30:00-03:00",
-      "caption": "Un clásico de la góndola. 🍫 Detrás de la etiqueta hay siete ingredientes. ¿Cuántos recordás sin mirar? #Ingredora #Nutella #DesafíoDeIngredientes"
-    },
-    {
-      "id": "ingredora-nutella-supermarket-spot-001",
-      "title": "Nutella — Detrás de la etiqueta",
-      "description": "Un recorrido cinematográfico por una góndola de supermercado. El frasco gira para revelar su etiqueta y sus siete ingredientes.",
-      "status": "rendering",
-      "packageUrl": "studio/packages/nutella-supermarket.v1.json",
-      "durationSeconds": 12,
-      "aspectRatio": "9:16",
-      "language": "Español",
-      "platforms": [
-        "TikTok",
-        "Instagram Reels",
-        "YouTube Shorts"
-      ],
-      "version": "2.0",
-      "createdAt": "2026-11-19T20:00:00-03:00",
-      "caption": "Un clásico de la góndola. 🍫 Detrás de la etiqueta hay siete ingredientes: ¿cuántos podés nombrar sin mirar? #Ingredora #Nutella #DesafíoDeIngredientes"
+      "version": "3.0",
+      "createdAt": "2026-11-19T20:49:00-03:00",
+      "caption": "Un clásico de la góndola. 🍫 Mirá de cerca la etiqueta: ¿cuántos ingredientes podés recordar? #Ingredora #Nutella #DesafíoDeIngredientes"
     }
   ]
 }
