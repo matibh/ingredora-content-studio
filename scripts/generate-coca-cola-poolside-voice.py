@@ -24,7 +24,8 @@ SEGMENTS = [
     {"start": 3.10, "text": "Una Coca bien fría, con hielo y burbujas."},
     {"start": 7.42, "text": "Pero pará... ¿sabés qué tiene adentro?"},
     {"start": 10.50, "text": "Tenés quince segundos para adivinar sus ingredientes."},
-    {"start": 31.05, "text": "¿Cuántos acertaste? ¡Jugá en Ingredora!"},
+    {"start": 29.45, "text": "¿Cuántos acertaste?"},
+    {"start": 31.35, "text": "¡Jugá en Ingredora!"},
 ]
 
 async def synthesize_segment(segment, index):
