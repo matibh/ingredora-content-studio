@@ -171,8 +171,10 @@ function App() {
     try {
       setMp4Stage("VALIDANDO GITHUB");
       if (!await isAuthorizedGithubUser(token)) {
-        clearGithubSession(); setGithubStatus("unauthorized");
-        throw new Error("La cuenta conectada no es @matibh. Ingresá con la cuenta correcta.");
+        clearGithubSession(); setGithubStatus("signed_out");
+        setApprovalMessage("Ingresá con la cuenta de GitHub @matibh.");
+        startGithubLogin();
+        return;
       }
       setGithubStatus("authorized");
       setMp4Stage("RECUPERANDO VIDEO");
@@ -262,8 +264,8 @@ function App() {
                   <strong>¿Aprobás esta producción?</strong>
                   <small>Al confirmar, convertimos el WebM original a MP4 y subimos el archivo a «Contenido a subir». Verificamos también el TXT correspondiente. No se publica nada en redes y el WebM original no se modifica.</small>
                   {githubStatus === "checking" ? <small>Comprobando conexión con GitHub…</small> : githubStatus === "authorized" ? <div className="github-connected"><span className="github-dot" /> GitHub conectado · @matibh <button type="button" onClick={() => { clearGithubSession(); setGithubStatus("signed_out"); setApprovalMessage(null); }}>DESCONECTAR</button></div> : <small>{githubStatus === "unauthorized" ? "La cuenta conectada no tiene permiso. Ingresá con @matibh." : "Conectá tu cuenta de GitHub para aprobar. Solo se autoriza @matibh."}</small>}
-                  <button className="approve-upload-button" type="button" onClick={convertAndUpload} disabled={githubStatus === "checking" || githubStatus === "unauthorized" || mp4Busy || approvalBusy}>
-                    {mp4Busy ? `${mp4Stage} · ${mp4Progress}%` : githubStatus === "authorized" ? "✓ CONVERTIR A MP4 Y SUBIR A GITHUB" : "CONECTAR GITHUB Y APROBAR"}
+                  <button className="approve-upload-button" type="button" onClick={convertAndUpload} disabled={githubStatus === "checking" || mp4Busy || approvalBusy}>
+                    {mp4Busy ? `${mp4Stage} · ${mp4Progress}%` : githubStatus === "authorized" ? "✓ CONVERTIR A MP4 Y SUBIR A GITHUB" : githubStatus === "unauthorized" ? "CAMBIAR CUENTA DE GITHUB" : "CONECTAR GITHUB Y APROBAR"}
                   </button>
                   {mp4Busy && <div className="render-progress-track mp4-progress" role="progressbar" aria-valuenow={mp4Progress} aria-valuemin={0} aria-valuemax={100}><span style={{ width: `${mp4Progress}%` }} /></div>}
                   {mp4Error && <small className="mp4-error">{mp4Error}</small>}
