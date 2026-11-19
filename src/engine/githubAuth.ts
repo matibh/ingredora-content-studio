@@ -81,5 +81,5 @@ export async function isAuthorizedGithubUser(token: string): Promise<boolean> {
   const githubIdentity = Array.isArray(user.identities)
     ? user.identities.find((identity: { provider?: string }) => identity.provider === "github")
     : null;
-  return githubIdentity?.identity_data?.login === "matibh";
+  return githubIdentity?.identity_data?.login === "matibh" || githubIdentity?.identity_data?.user_name === "matibh";
 }
