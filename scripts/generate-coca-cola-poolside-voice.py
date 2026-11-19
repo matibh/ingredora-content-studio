@@ -13,7 +13,7 @@ VOICE = "es-AR-ElenaNeural"
 RATE = "+10%"
 PITCH = "+4Hz"
 VOLUME = "+12%"
-DURATION_MS = 34_000
+DURATION_MS = 27_000
 OUTPUT = Path("public/studio/audio/coca-cola-poolside-v2-voice-es-AR.mp3")
 TIMINGS_OUTPUT = Path("public/studio/audio/coca-cola-poolside-v2-word-timings.json")
 
@@ -24,8 +24,8 @@ SEGMENTS = [
     {"start": 3.10, "text": "Una Coca bien fría, con hielo y burbujas."},
     {"start": 7.42, "text": "Pero pará... ¿sabés qué tiene adentro?"},
     {"start": 10.50, "text": "Tenés seis segundos para adivinar sus ingredientes."},
-    {"start": 29.45, "text": "¿Cuántos acertaste?"},
-    {"start": 31.60, "text": "¡Jugá en Ingredora!"},
+    {"start": 23.10, "text": "¿Cuántos acertaste?"},
+    {"start": 24.70, "text": "¡Jugá en Ingredora!"},
 ]
 
 async def synthesize_segment(segment, index):
