@@ -220,6 +220,7 @@ function drawNutellaOverlay(ctx: CanvasRenderingContext2D, frame: number, fps: n
     {text:"SIETE INGREDIENTES",accent:"SIETE"},
     {text:"LEÉLOS, MEMORIZALOS Y CONTAME",accent:"MEMORIZALOS"},
     {text:"¿CUÁNTOS RECORDÁS?",accent:"CUÁNTOS"},
+    {text:"INGREDORA ES EL JUEGO DE DESAFÍOS DIARIOS SOBRE INGREDIENTES",accent:"DESAFÍOS"},
     {text:"PARA SEGUIR JUGANDO",accent:"JUGANDO"},
     {text:"ENTRÁ A INGREDORA PUNTO COM",accent:"PUNTO"},
     {text:"O BUSCÁ EL LINK EN MI PERFIL. ¡TE ESPERO!",accent:"MI PERFIL"},
@@ -318,9 +319,9 @@ function drawNutellaOverlay(ctx: CanvasRenderingContext2D, frame: number, fps: n
 
   if (cue) drawKineticCaption(cue);
 
-  if (t>=19) {
+  if (t>=26) {
     // High-conversion end card: strong hierarchy, a tangible URL button and a clear fallback.
-    const p=ease((t-19)/.48);
+    const p=ease((t-26)/.48);
     ctx.save();ctx.globalAlpha=p;
     const glow=ctx.createRadialGradient(width/2,height*.43,0,width/2,height*.43,width*.78);
     glow.addColorStop(0,"rgba(216,243,106,.22)");glow.addColorStop(.48,"rgba(216,243,106,.07)");glow.addColorStop(1,"rgba(216,243,106,0)");
@@ -339,7 +340,7 @@ function drawNutellaOverlay(ctx: CanvasRenderingContext2D, frame: number, fps: n
     ctx.fillStyle=accent;ctx.shadowColor="rgba(216,243,106,.35)";ctx.shadowBlur=width*.012;
     ctx.fillText("TU PRÓXIMA PARTIDA EMPIEZA ACÁ",width/2,height*.355,width*.82);
 
-    const brandPulse=1+Math.sin((t-19)*3.4)*.014;
+    const brandPulse=1+Math.sin((t-26)*3.4)*.014;
     ctx.save();ctx.translate(width/2,height*.445);ctx.scale(brandPulse,brandPulse);
     ctx.font="900 "+Math.round(width*.091)+"px Arial, Helvetica, sans-serif";
     ctx.fillStyle=white;ctx.shadowColor="rgba(216,243,106,.72)";ctx.shadowBlur=width*.045;
@@ -347,7 +348,7 @@ function drawNutellaOverlay(ctx: CanvasRenderingContext2D, frame: number, fps: n
 
     // Bright button treatment with a moving sheen and a clear action verb.
     const buttonW=width*.72,buttonH=height*.092,buttonX=(width-buttonW)/2,buttonY=height*.515;
-    const buttonPulse=1+Math.sin((t-19.25)*4.2)*.012;
+    const buttonPulse=1+Math.sin((t-26.25)*4.2)*.012;
     ctx.save();ctx.translate(width/2,buttonY+buttonH/2);ctx.scale(buttonPulse,buttonPulse);
     const bx=-buttonW/2,by=-buttonH/2;
     const buttonGrad=ctx.createLinearGradient(bx,by,bx+buttonW,by+buttonH);
@@ -359,7 +360,7 @@ function drawNutellaOverlay(ctx: CanvasRenderingContext2D, frame: number, fps: n
     ctx.restore();
 
     // The profile link is a helpful alternative, not competing with the main action.
-    const secondaryIn=ease((t-21.15)/.4);
+    const secondaryIn=ease((t-28.15)/.4);
     ctx.globalAlpha=p*secondaryIn;
     const secondaryY=height*.665+(1-secondaryIn)*height*.018;
     ctx.font="700 "+Math.round(width*.027)+"px Arial, Helvetica, sans-serif";
@@ -370,7 +371,7 @@ function drawNutellaOverlay(ctx: CanvasRenderingContext2D, frame: number, fps: n
     ctx.fillText("TAMBIÉN TENÉS EL LINK EN MI PERFIL",width/2,height*.708,width*.9);
 
     // Animated underline sweep gives the final seconds a sense of momentum.
-    const sweep=smooth((t-21.25)/1.1);
+    const sweep=smooth((t-28.25)/1.1);
     ctx.globalAlpha=p*.9;ctx.fillStyle=accent;
     rounded(width*.2,height*.75,width*.6*sweep,height*.005,height*.003);ctx.fill();
     ctx.restore();
@@ -541,7 +542,7 @@ export async function renderPackageToWebM(
   const drawFrame = (frame: number) => {
     if (nutellaSet) {
       const time = frame / fps;
-       // 26-second storyboard: product reveal, memory challenge and sustained website end card.
+       // 33-second storyboard: product reveal, memory challenge and sustained website end card.
       const smooth = (v: number) => { const x = Math.max(0, Math.min(1, v)); return x*x*(3-2*x); };
       const turn = time < 4.5 ? 0 : time < 6.5 ? smooth((time-4.5)/2)*Math.PI : time < 12.5 ? Math.PI : Math.PI + smooth((time-12.5)/2)*Math.PI;
       nutellaSet.jar.rotation.y = turn;
