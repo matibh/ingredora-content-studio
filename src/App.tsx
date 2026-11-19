@@ -155,7 +155,7 @@ function App() {
           <div className="section-topline"><div><p className="eyebrow">THE SCREENING ROOM</p><h2>Última producción</h2></div><span className="section-index">01 — PLAY</span></div>
           {active ? (
             <div className="featured-layout">
-              <div className="video-frame">
+              <div className={`video-frame ratio-${(active.aspectRatio || "16:9").replace(":", "-")}`}>
                 <video key={active.id + activeVideoUrl} controls playsInline preload="metadata" poster={active.posterUrl} aria-label={`Reproducir ${active.title}`}>
                   <source src={activeVideoUrl} />
                   Tu navegador no puede reproducir este video.
