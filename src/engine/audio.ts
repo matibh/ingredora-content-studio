@@ -154,7 +154,7 @@ export async function generateOriginalSoundtrack({
       const fade = Math.pow(1 - i / fizzLength, 1.6);
       fizzData[i] = (random() * 2 - 1) * fade;
     }
-    for (let start = 3.12; start < 6.45; start += 0.19) {
+    for (let start = 3.90; start < 6.45; start += 0.19 {
       const source = context.createBufferSource();
       const filter = context.createBiquadFilter();
       const gain = context.createGain();
