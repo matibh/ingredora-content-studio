@@ -178,7 +178,7 @@ function createNutellaSet(world: THREE.Scene) {
 
 function drawNutellaOverlay(ctx: CanvasRenderingContext2D, frame: number, fps: number, width: number, height: number) {
   const t = frame / fps;
-  const phase = t < 2.5 ? 0 : t < 4.5 ? 1 : t < 6.5 ? 2 : t < 11.5 ? 3 : t < 13.5 ? 4 : 5;
+  const phase = t < 2.5 ? 0 : t < 4.5 ? 1 : t < 6.5 ? 2 : t < 12.5 ? 3 : t < 15.5 ? 4 : 5;
   const accent = "#d8f36a"; const y = height * .735;
   const gradient = ctx.createLinearGradient(0, y - 150, 0, height);
   gradient.addColorStop(0, "rgba(8,17,14,0)"); gradient.addColorStop(.25, "rgba(8,17,14,.78)"); gradient.addColorStop(1, "rgba(8,17,14,.96)");
