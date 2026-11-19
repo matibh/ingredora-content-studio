@@ -121,10 +121,10 @@ function makeBottle(): THREE.Group {
 }
 
 export function createCocaColaPoolsideSet(world: THREE.Scene): PoolsideSet {
-  world.background = new THREE.Color("#8bd4f2");
-  world.fog = new THREE.Fog("#8bd4f2", 18, 38);
+  world.background = new THREE.Color("#f2b77e");
+  world.fog = new THREE.Fog("#f2b77e", 26, 52);
 
-  const deckMaterial = new THREE.MeshStandardMaterial({ color: "#e8dfca", roughness: 0.86 });
+  const deckMaterial = new THREE.MeshStandardMaterial({ color: "#d8c4a2", roughness: 0.92 });
   const deck = new THREE.Mesh(new THREE.PlaneGeometry(24, 24), deckMaterial);
   deck.rotation.x = -Math.PI / 2;
   deck.position.set(0, -2.05, 0);
@@ -134,13 +134,12 @@ export function createCocaColaPoolsideSet(world: THREE.Scene): PoolsideSet {
   const waterGeometry = new THREE.PlaneGeometry(15, 8, 48, 28);
   waterGeometry.rotateX(-Math.PI / 2);
   const waterMaterial = new THREE.MeshPhysicalMaterial({
-    color: "#21a9d2",
-    roughness: 0.19,
-    metalness: 0.08,
-    clearcoat: 0.9,
-    clearcoatRoughness: 0.08,
-    transparent: true,
-    opacity: 0.93,
+    color: "#087f9e",
+    roughness: 0.27,
+    metalness: 0.02,
+    clearcoat: 0.72,
+    clearcoatRoughness: 0.16,
+    transparent: false,
   });
   const water = new THREE.Mesh(waterGeometry, waterMaterial);
   water.position.set(0, -1.91, -4.4);
@@ -162,7 +161,7 @@ export function createCocaColaPoolsideSet(world: THREE.Scene): PoolsideSet {
     world.add(edge);
   }
 
-  const tileMaterial = new THREE.MeshStandardMaterial({ color: "#bce8e9", roughness: 0.42 });
+  const tileMaterial = new THREE.MeshStandardMaterial({ color: "#d8e0cf", roughness: 0.52 });
   for (let i = 0; i < 12; i += 1) {
     const tile = new THREE.Mesh(new THREE.BoxGeometry(0.035, 0.012, 7.7), tileMaterial);
     tile.position.set(-6.7 + i * 1.22, -1.89, -4.4);
@@ -294,13 +293,13 @@ export function createCocaColaPoolsideSet(world: THREE.Scene): PoolsideSet {
   const key = new THREE.DirectionalLight("#fff2d0", 3.0);
   key.position.set(-3.5, 6.5, 5.5);
   world.add(key);
-  const fill = new THREE.DirectionalLight("#e6f9ff", 1.15);
+  const fill = new THREE.DirectionalLight("#ffe0b2", 1.0);
   fill.position.set(4.5, 2.8, 4);
   world.add(fill);
   const rimLight = new THREE.PointLight("#ffb46a", 18, 22);
   rimLight.position.set(-3, 1.8, -1);
   world.add(rimLight);
-  world.add(new THREE.HemisphereLight("#eafaff", "#486c57", 1.5));
+  world.add(new THREE.HemisphereLight("#ffe3c1", "#344b35", 1.35));
 
   const waterPosition = waterGeometry.attributes.position;
   const update = (time: number) => {
@@ -407,11 +406,11 @@ export function drawCocaColaPoolsideOverlay(
     ctx.shadowBlur = 0;
   } else if (time < 10) {
     const freeze = ease((time - 7.2) / 0.25);
-    ctx.fillStyle = "rgba(224,247,255," + (0.18 + freeze * 0.22) + ")";
+    ctx.fillStyle = "rgba(255,244,220," + (0.10 + freeze * 0.12) + ")";
     ctx.fillRect(0, 0, width, height);
     const vignette = ctx.createRadialGradient(width / 2, height / 2, width * 0.12, width / 2, height / 2, width * 0.85);
-    vignette.addColorStop(0, "rgba(224,247,255,0)");
-    vignette.addColorStop(1, "rgba(220,246,255,.48)");
+    vignette.addColorStop(0, "rgba(255,244,220,0)");
+    vignette.addColorStop(1, "rgba(255,220,174,.34)");
     ctx.fillStyle = vignette;
     ctx.fillRect(0, 0, width, height);
     ctx.font = "900 " + Math.round(48 * scale) + "px Arial, Helvetica, sans-serif";
