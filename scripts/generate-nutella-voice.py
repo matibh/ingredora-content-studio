@@ -10,6 +10,7 @@ TEXT = (
     "Vamos a mirar el dorso del frasco. "
     "La etiqueta tiene toda la información: siete ingredientes. "
     "Leelos, memorizalos y contame cuántos recordás. "
+    "Ingredora es el juego de desafíos diarios sobre ingredientes. "
     "Para seguir jugando, entrá a Ingredora punto com, "
     "o buscá el link en mi perfil. ¡Te espero!"
 )
