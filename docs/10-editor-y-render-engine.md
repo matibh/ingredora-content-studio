@@ -439,3 +439,21 @@ Se probarán navegadores y dispositivos objetivo. No se establecerá un límite 
 ---
 
 **Estado:** especificación inicial. No constituye implementación ni garantiza que todos los navegadores puedan renderizar 1080x1920 o exportar MP4. Los codecs, límites, almacenamiento y recuperación requieren pruebas reales antes del desarrollo.
+
+
+## 18. Prototipo de ejecución automática v1 (19/11/2026)
+
+La primera implementación funcional del flujo de render queda delimitada así:
+
+- El usuario no carga archivos, briefs, prompts ni parámetros en la web. ChatGPT prepara el paquete declarativo y lo incorpora al repositorio.
+- La página lee `public/studio/productions.json` y obtiene el paquete JSON referenciado por `packageUrl`.
+- El runtime valida el schema y los tipos de componentes permitidos. No evalúa código ni scripts incluidos en los paquetes.
+- Three.js compone escenas 3D con geometrías registradas, materiales, cámara, iluminación y animaciones calculadas desde el tiempo local de cada escena.
+- El primer perfil de prueba es 720×1280, 30 FPS y WebM mediante MediaRecorder. Se limita la resolución para proteger memoria y estabilidad del navegador.
+- El render se ejecuta en el navegador que abre el sitio. No se utiliza un servidor de render ni una API paga.
+- El archivo WebM se guarda en IndexedDB y se presenta automáticamente en el reproductor al terminar. En ese mismo navegador puede recuperarse después de recargar la página.
+- Esta persistencia es **local y provisional**: no sincroniza el video con otros dispositivos ni constituye un backup. La integración de Supabase Storage, con cuotas Free y permisos auditados, es una etapa posterior y obligatoria antes de considerar resuelta la persistencia compartida.
+- El prototipo no incorpora todavía música, voz, SFX, subtítulos temporizados, MP4/H.264, checkpoints de render ni reanudación de una codificación interrumpida.
+- La página informa errores de compatibilidad o render; nunca debe etiquetar como terminado un video inexistente o fallido.
+
+El primer paquete de prueba, `launch-teaser.v1.json`, es una pieza abstracta original de Ingredora. Sus formas 3D no representan un producto de mercado ni hacen afirmaciones sobre ingredientes o nutrición. Sirve para validar el trayecto paquete → motor 3D → WebM → IndexedDB → reproductor.
