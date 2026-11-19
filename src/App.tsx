@@ -51,6 +51,8 @@ function App() {
   const [localVideos, setLocalVideos] = useState<Record<string, string>>({});
   const [renderProgress, setRenderProgress] = useState<Record<string, RenderProgress>>({});
   const [renderErrors, setRenderErrors] = useState<Record<string, string>>({});
+  const [renderStages, setRenderStages] = useState<Record<string, string>>({});
+  const [retryToken, setRetryToken] = useState(0);
   const renderingIds = useRef(new Set<string>());
 
   const loadProductions = useCallback(async () => {
@@ -89,6 +91,7 @@ function App() {
     );
     if (!candidate) return;
     renderingIds.current.add(candidate.id);
+    setRenderStages((current) => ({ ...current, [candidate.id]: "Preparando el video y el audio…" }));
 
     const produce = async () => {
       try {
@@ -98,13 +101,16 @@ function App() {
           return;
         }
         setRenderErrors((current) => { const next = { ...current }; delete next[candidate.id]; return next; });
+        setRenderStages((current) => ({ ...current, [candidate.id]: "Cargando materiales de la producción…" }));
         const packageResponse = await fetch(import.meta.env.BASE_URL + candidate.packageUrl + "?v=1", { cache: "no-cache" });
         if (!packageResponse.ok) throw new Error("No se pudo cargar el paquete (" + packageResponse.status + ").");
         const productionPackage = await packageResponse.json() as ProductionPackage;
+        setRenderStages((current) => ({ ...current, [candidate.id]: "Renderizando cada fotograma. Puede tardar unos minutos…" }));
         const blob = await renderPackageToWebM(productionPackage, (progress) => {
           setRenderProgress((current) => ({ ...current, [candidate.id]: progress }));
         });
         if (!blob.size) throw new Error("El render terminó sin generar un archivo de video.");
+        setRenderStages((current) => ({ ...current, [candidate.id]: "Guardando el video para reproducirlo…" }));
         await saveRenderedVideo(candidate.id, blob);
         setLocalVideos((current) => ({ ...current, [candidate.id]: URL.createObjectURL(blob) }));
         setRenderProgress((current) => ({ ...current, [candidate.id]: { ...current[candidate.id], percent: 100 } }));
@@ -115,10 +121,11 @@ function App() {
         }));
       } finally {
         renderingIds.current.delete(candidate.id);
+        setRenderStages((current) => ({ ...current, [candidate.id]: "" }));
       }
     };
     void produce();
-  }, [manifest.productions, localVideos]);
+  }, [manifest.productions, localVideos, retryToken]);
 
   const ready = manifest.productions.filter((item) => (item.status === "ready" && item.videoUrl) || !!localVideos[item.id]);
   const active = ready.find((item) => item.id === activeId) ?? ready[0] ?? null;
@@ -208,7 +215,21 @@ function App() {
             <div className="pipeline-list">{inProgress.map((item) => {
               const progress = renderProgress[item.id];
               const error = renderErrors[item.id];
-              return <article className="pipeline-item" key={item.id}><span className="pipeline-icon">{error ? "!" : item.status === "rendering" ? "◌" : "✳"}</span><div><strong>{item.title}</strong><small>{error || item.description || (item.status === "rendering" ? "Renderizando en el navegador" : "En preparación")}{progress ? " · " + progress.percent + "%" : ""}</small></div><span className="pipeline-status">{error ? "REVISAR" : progress ? "RENDER " + progress.percent + "%" : item.status === "rendering" ? "PREPARANDO" : "EN PREPARACIÓN"}</span></article>;
+              const stage = renderStages[item.id] || (progress ? "El video se está construyendo en este dispositivo…" : "Preparando el entorno de render…");
+              return <article className={`pipeline-item ${error ? "has-error" : ""}`} key={item.id}>
+                <span className="pipeline-icon">{error ? "!" : "◌"}</span>
+                <div className="pipeline-copy">
+                  <strong>{item.title}</strong>
+                  {error ? <>
+                    <small className="pipeline-error">No pudimos terminar este video. {error}</small>
+                    <button className="retry-render" type="button" onClick={() => { setRenderErrors((current) => { const next = { ...current }; delete next[item.id]; return next; }); setRenderProgress((current) => { const next = { ...current }; delete next[item.id]; return next; }); setRetryToken((value) => value + 1); }}>VOLVER A INTENTAR</button>
+                  </> : <>
+                    <small>{stage}</small>
+                    <div className="render-progress-track" role="progressbar" aria-valuenow={progress?.percent ?? 0} aria-valuemin={0} aria-valuemax={100}><span style={{ width: `${progress?.percent ?? 0}%` }} /></div>
+                  </>}
+                </div>
+                <span className={`pipeline-status ${error ? "status-error" : ""}`}>{error ? "REQUIERE ATENCIÓN" : progress ? `${progress.percent}%` : "EN PROCESO"}</span>
+              </article>;
             })}</div>
           </section>
         )}
