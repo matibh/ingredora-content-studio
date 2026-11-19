@@ -718,7 +718,7 @@ export async function renderPackageToWebM(
   const output = new Output({ format: new WebMOutputFormat(), target });
   const videoSource = new CanvasSource(outputCanvas, {
     codec: videoCodec,
-    quality: new Quality({ bitrate: pkg.width >= 1000 ? 8_000_000 : 5_000_000 }),
+    quality: new Quality({ bitrate: pkg.fps >= 60 ? 8_000_000 : pkg.width >= 1000 ? 8_000_000 : 5_000_000 }),
   });
   const audioSource = new MediabunnyAudioBufferSource({
     codec: "opus",
