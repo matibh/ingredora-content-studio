@@ -509,7 +509,7 @@ export async function renderPackageToWebM(
 
   // Original music is synthesized offline. Narration, when configured, is fetched as a
   // pre-generated asset so provider credentials never enter the public browser bundle.
-  const soundtrack = await generateOriginalSoundtrack({ durationSeconds, sampleRate: 48_000 });
+  const soundtrack = await generateOriginalSoundtrack({ durationSeconds, sampleRate: 48_000, theme: pkg.visualPreset === "coca-cola-poolside" ? "summer-poolside" : undefined });
   let mixedSoundtrack = soundtrack;
   if (pkg.voiceoverUrl) {
     const voiceResponse = await fetch(import.meta.env.BASE_URL + pkg.voiceoverUrl);
@@ -626,8 +626,8 @@ export async function renderPackageToWebM(
       poolsideSet.update(Math.min(time, 7.2));
       const ease = (value: number) => { const x = Math.max(0, Math.min(1, value)); return x * x * (3 - 2 * x); };
       const approach = ease(time / 3.2);
-      const cameraZ = 13.0 - approach * 3.1;
-      const cameraY = 2.6 - approach * 0.85;
+      const cameraZ = 13.0 - approach * 4.2;
+      const cameraY = 2.6 - approach * 1.1;
       camera.position.set(0, cameraY, cameraZ);
       camera.lookAt(0, -0.45, -0.55);
       camera.fov = 43 - approach * 5;
