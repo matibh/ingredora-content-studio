@@ -72,3 +72,9 @@ All notable documentation and specification changes are recorded here.
 - Recorded the published Free-tier reference limits checked on 2026-11-19, with explicit warnings that quotas and provider terms can change.
 - Enforced the USD 0 rule: block operations before limits; no billing, paid fallback, automatic deletion of approved deliverables or remote rendering.
 - No application code, schema migration or Supabase project configuration has been implemented.
+
+## 2026-11-19 — Quality Assurance and Content Quality Gate
+
+- Added `docs/12-quality-assurance-y-content-quality-gate.md` defining quality gates from brief through publication, blocker/major/minor findings, factual claims, product/gameplay accuracy, rights, localization, audiovisual integrity, privacy and human approval.
+- Separated automated checks from mandatory human review; a render-complete state does not imply approval or permission to publish.
+- No application code, moderation service or publication integration has been implemented.
