@@ -23,3 +23,9 @@ All notable documentation and specification changes are recorded here.
 - Specified Production Package structure, manifest concepts, separation of declarative data from executable engine code, validation stages, feedback, versioning, rights and deliverables.
 - Kept JSON schemas, import format, patch strategy and engine component registry open for later specifications and tests.
 - No application code or production infrastructure has been implemented.
+
+## 2026-11-19 — Visual identity system
+
+- Added `docs/04-identidad-visual.md` defining the layered visual identity, product/packaging fidelity, typography roles, social composition, 3D art direction, camera/light presets, motion principles and approval workflow.
+- Kept logo, official palette, font selection, approved references and final art direction open until supplied or approved by the user.
+- No application code or production infrastructure has been implemented.
