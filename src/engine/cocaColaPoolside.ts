@@ -121,9 +121,9 @@ function makeBottle(): THREE.Group {
   model.add(mouth);
   const innerMouth = new THREE.Mesh(
     new THREE.CircleGeometry(0.125, 48),
-    new THREE.MeshBasicMaterial({ color: "#120806" }),
+    new THREE.MeshBasicMaterial({ color: "#160805" }),
   );
-  innerMouth.position.y = 1.81;
+  innerMouth.position.y = 1.785;
   innerMouth.rotation.x = -Math.PI / 2;
   model.add(innerMouth);
 
@@ -457,29 +457,10 @@ export function createCocaColaPoolsideSet(world: THREE.Scene): PoolsideSet {
   }
 
   const bottle = makeBottle();
-  bottle.position.set(1.48, 0.12, 0.72);
+  bottle.position.set(0.95, 0.12, 0.72);
   bottle.rotation.set(-0.04, 0.02, 0.06);
   world.add(bottle);
   world.add(bottle.userData.removedCap as THREE.Group);
-
-  const armMaterial = new THREE.MeshPhysicalMaterial({ color: "#c98560", roughness: 0.52, clearcoat: 0.12 });
-  const forearm = new THREE.Mesh(new THREE.CylinderGeometry(0.20, 0.25, 1.65, 28), armMaterial);
-  forearm.position.set(2.72, -0.30, 1.30);
-  forearm.rotation.z = -0.88;
-  forearm.castShadow = true;
-  world.add(forearm);
-  const palm = new THREE.Mesh(new THREE.SphereGeometry(0.27, 24, 18), armMaterial);
-  palm.position.set(1.82, -0.02, 1.43);
-  palm.scale.set(1.0, 0.78, 0.62);
-  palm.castShadow = true;
-  world.add(palm);
-  for (let i = 0; i < 4; i += 1) {
-    const finger = new THREE.Mesh(new THREE.SphereGeometry(0.105, 16, 12), armMaterial);
-    finger.position.set(1.55 + i * 0.12, 0.02 + Math.sin(i * 0.7) * 0.07, 1.57);
-    finger.scale.set(1.0, 0.65, 0.7);
-    finger.castShadow = true;
-    world.add(finger);
-  }
 
   const glass = new THREE.Group();
   glass.position.set(0.12, -2.045, 0.88);
@@ -528,11 +509,14 @@ export function createCocaColaPoolsideSet(world: THREE.Scene): PoolsideSet {
   liquid.scale.y = 0.28;
   liquid.castShadow = true;
   glass.add(liquid);
+  const liquidSurfaceGeometry = new THREE.CircleGeometry(0.333, 64);
+  liquidSurfaceGeometry.rotateX(-Math.PI / 2);
+  const liquidSurfacePositions = liquidSurfaceGeometry.attributes.position as THREE.BufferAttribute;
+  const liquidSurfaceBase = new Float32Array(liquidSurfacePositions.array as Float32Array);
   const liquidSurface = new THREE.Mesh(
-    new THREE.CircleGeometry(0.333, 64),
-    new THREE.MeshPhysicalMaterial({ color: "#7c2d16", roughness: 0.12, clearcoat: 1 }),
+    liquidSurfaceGeometry,
+    new THREE.MeshPhysicalMaterial({ color: "#7c2d16", roughness: 0.11, clearcoat: 1, side: THREE.DoubleSide }),
   );
-  liquidSurface.rotation.x = -Math.PI / 2;
   liquidSurface.position.y = 0.39;
   glass.add(liquidSurface);
 
@@ -569,35 +553,71 @@ export function createCocaColaPoolsideSet(world: THREE.Scene): PoolsideSet {
     glass.add(bubble);
   }
 
+  // A continuous, dynamically deformed liquid column. Its first vertex is
+  // anchored to the bottle's actual inner mouth; gravity bends the stream.
   const streamMaterial = new THREE.MeshPhysicalMaterial({
-    color: "#7f2a14",
-    roughness: 0.1,
-    metalness: 0.02,
-    transparent: true,
-    opacity: 0.94,
+    color: "#632311",
+    roughness: 0.075,
+    metalness: 0.015,
     clearcoat: 1,
+    clearcoatRoughness: 0.045,
+    side: THREE.DoubleSide,
   });
-  const stream = new THREE.Mesh(new THREE.CylinderGeometry(0.045, 0.062, 1, 24, 1), streamMaterial);
+  const streamSegments = 28;
+  const streamRadialSegments = 10;
+  const streamPositions = new Float32Array((streamSegments + 1) * (streamRadialSegments + 1) * 3);
+  const streamIndices: number[] = [];
+  for (let y = 0; y <= streamSegments; y += 1) {
+    for (let x = 0; x <= streamRadialSegments; x += 1) {
+      const current = y * (streamRadialSegments + 1) + x;
+      if (y < streamSegments && x < streamRadialSegments) {
+        const next = current + streamRadialSegments + 1;
+        streamIndices.push(current, next, current + 1, next, next + 1, current + 1);
+      }
+    }
+  }
+  const streamGeometry = new THREE.BufferGeometry();
+  const streamAttribute = new THREE.BufferAttribute(streamPositions, 3);
+  streamAttribute.setUsage(THREE.DynamicDrawUsage);
+  streamGeometry.setAttribute("position", streamAttribute);
+  streamGeometry.setIndex(streamIndices);
+  const stream = new THREE.Mesh(streamGeometry, streamMaterial);
+  stream.frustumCulled = false;
   stream.visible = false;
   stream.castShadow = true;
   world.add(stream);
+
+  // Satellite droplets follow the same nozzle velocity and gravity as the main stream.
+  const dropletMaterial = new THREE.MeshPhysicalMaterial({
+    color: "#8e351b",
+    roughness: 0.09,
+    metalness: 0.01,
+    clearcoat: 1,
+    transparent: true,
+    opacity: 0.95,
+  });
+  const dropletGeometry = new THREE.SphereGeometry(0.026, 12, 10);
   const splashDroplets: THREE.Mesh[] = [];
-  for (let i = 0; i < 12; i += 1) {
-    const drop = new THREE.Mesh(
-      new THREE.SphereGeometry(0.025 + (i % 4) * 0.012, 12, 10),
-      new THREE.MeshPhysicalMaterial({ color: "#9b411e", roughness: 0.12, transparent: true, opacity: 0.86, clearcoat: 1 }),
-    );
+  for (let i = 0; i < 18; i += 1) {
+    const drop = new THREE.Mesh(dropletGeometry, dropletMaterial);
+    const size = 0.42 + (i % 5) * 0.12;
+    drop.scale.setScalar(size);
+    drop.visible = false;
     world.add(drop);
     splashDroplets.push(drop);
   }
-  const foam = new THREE.Mesh(
-    new THREE.TorusGeometry(0.30, 0.025, 8, 56),
-    new THREE.MeshBasicMaterial({ color: "#fff3d9", transparent: true, opacity: 0.7 }),
-  );
+
+  const foamMaterial = new THREE.MeshPhysicalMaterial({
+    color: "#d9a77b",
+    roughness: 0.22,
+    transparent: true,
+    opacity: 0.34,
+    clearcoat: 0.65,
+  });
+  const foam = new THREE.Mesh(new THREE.TorusGeometry(0.19, 0.016, 8, 64), foamMaterial);
   foam.rotation.x = Math.PI / 2;
-  foam.position.set(0.12, -0.70, 0.88);
   foam.visible = false;
-  world.add(foam);
+  glass.add(foam);
 
   const key = new THREE.DirectionalLight("#fff1cf", 4.2);
   key.position.set(-5.5, 10.5, 5.0);
@@ -621,12 +641,24 @@ export function createCocaColaPoolsideSet(world: THREE.Scene): PoolsideSet {
   world.add(new THREE.HemisphereLight("#ccecff", "#9d8058", 1.35));
 
   const oceanPosition = oceanGeometry.attributes.position;
-  const up = new THREE.Vector3(0, 1, 0);
   const mouthLocal = bottle.userData.mouthPoint as THREE.Vector3;
   const mouthWorld = new THREE.Vector3();
-  const glassTarget = new THREE.Vector3(0.12, -0.77, 0.88);
-  const streamDirection = new THREE.Vector3();
-  const streamMidpoint = new THREE.Vector3();
+  const exitDirection = new THREE.Vector3();
+  const gravity = new THREE.Vector3(0, -9.81, 0);
+  const gravityHalf = new THREE.Vector3();
+  const streamTangent = new THREE.Vector3();
+  const streamSide = new THREE.Vector3();
+  const streamNormal = new THREE.Vector3();
+  const streamPoint = new THREE.Vector3();
+  const streamVelocity = new THREE.Vector3();
+  const glassImpact = new THREE.Vector3(0.12 - 0.22, -2.045 + 0.57, 0.88);
+  const streamFlightTime = 0.34;
+  const streamSpeed = 1.9;
+  const referenceAxis = new THREE.Vector3(0, 0, 1);
+  const alternateAxis = new THREE.Vector3(1, 0, 0);
+  const dropMatrix = new THREE.Matrix4();
+  const identityQuaternion = new THREE.Quaternion();
+  const dropScale = new THREE.Vector3();
 
   const ease = (value: number) => {
     const t = Math.max(0, Math.min(1, value));
@@ -634,34 +666,101 @@ export function createCocaColaPoolsideSet(world: THREE.Scene): PoolsideSet {
   };
 
   const update = (time: number) => {
-    const pourIn = ease((time - 3.05) / 0.72);
-    const pourOut = 1 - ease((time - 6.25) / 0.65);
-    const pourStrength = pourIn * pourOut;
-    const pourAngle = 0.06 + 2.08 * ease((time - 3.15) / 1.12);
-    const returnAngle = 2.14 * (1 - ease((time - 6.05) / 0.9));
-    bottle.rotation.z = time < 3.15 ? 0.06 : time < 6.05 ? pourAngle : 0.06 + returnAngle;
-    bottle.rotation.y = 0.02 + Math.sin(Math.min(time, 7.1) * 1.1) * 0.025;
+    const pourAngle = 0.06 + 2.29 * ease((time - 3.0) / 0.98);
+    const returnAngle = 2.29 * (1 - ease((time - 6.08) / 0.88));
+    bottle.rotation.z = time < 3.0 ? 0.06 : time < 6.08 ? pourAngle : 0.06 + returnAngle;
+    bottle.rotation.y = 0.02 + Math.sin(Math.min(time, 7.1) * 1.1) * 0.018;
     bottle.position.y = 0.12 + Math.sin(Math.min(time, 7.1) * 1.35) * 0.012;
+    bottle.updateMatrixWorld(true);
 
+    // The liquid only leaves the bottle once the neck is angled downward.
+    const pourIn = ease((time - 3.55) / 0.32);
+    const pourOut = 1 - ease((time - 6.38) / 0.34);
+    const pourStrength = pourIn * pourOut;
     bottle.localToWorld(mouthWorld.copy(mouthLocal));
-    streamDirection.copy(glassTarget).sub(mouthWorld);
-    const streamLength = Math.max(0.05, streamDirection.length());
-    streamMidpoint.copy(mouthWorld).add(glassTarget).multiplyScalar(0.5);
-    stream.position.copy(streamMidpoint);
-    stream.quaternion.setFromUnitVectors(up, streamDirection.normalize());
-    stream.scale.set(1, streamLength, 1);
-    stream.visible = pourStrength > 0.025;
-    (stream.material as THREE.MeshPhysicalMaterial).opacity = 0.92 * pourStrength;
+    exitDirection.set(0, 1, 0).applyQuaternion(bottle.quaternion).normalize();
 
-    const fillAmount = 0.28 + 0.58 * ease((time - 3.2) / 3.15);
+    // Ballistic trajectory: v is aligned to the bottle opening, then gravity
+    // accelerates the cola down into the inner footprint of the glass.
+    streamVelocity.copy(exitDirection).multiplyScalar(streamSpeed);
+    gravityHalf.copy(gravity).multiplyScalar(0.5);
+    const flightEnd = mouthWorld.clone()
+      .addScaledVector(streamVelocity, streamFlightTime)
+      .addScaledVector(gravityHalf, streamFlightTime * streamFlightTime);
+
+    stream.visible = pourStrength > 0.018;
+    if (stream.visible) {
+      const positions = streamGeometry.attributes.position as THREE.BufferAttribute;
+      const array = positions.array as Float32Array;
+      const zAxis = Math.abs(exitDirection.dot(referenceAxis)) > 0.92 ? alternateAxis : referenceAxis;
+      for (let ring = 0; ring <= streamSegments; ring += 1) {
+        const u = ring / streamSegments;
+        const seconds = u * streamFlightTime;
+        streamPoint.copy(mouthWorld)
+          .addScaledVector(streamVelocity, seconds)
+          .addScaledVector(gravityHalf, seconds * seconds);
+        streamTangent.copy(streamVelocity).addScaledVector(gravity, seconds).normalize();
+        streamSide.crossVectors(streamTangent, zAxis).normalize();
+        streamNormal.crossVectors(streamTangent, streamSide).normalize();
+        const pulse = 1 + Math.sin(time * 24 - u * 16) * 0.055;
+        const taper = 0.80 + 0.20 * Math.sin(Math.PI * u);
+        const radius = 0.044 * pulse * taper * (0.93 + 0.07 * pourStrength);
+        for (let radial = 0; radial <= streamRadialSegments; radial += 1) {
+          const angle = (radial / streamRadialSegments) * Math.PI * 2;
+          const offsetSide = Math.cos(angle) * radius;
+          const offsetNormal = Math.sin(angle) * radius;
+          const vertex = (ring * (streamRadialSegments + 1) + radial) * 3;
+          array[vertex] = streamPoint.x + streamSide.x * offsetSide + streamNormal.x * offsetNormal;
+          array[vertex + 1] = streamPoint.y + streamSide.y * offsetSide + streamNormal.y * offsetNormal;
+          array[vertex + 2] = streamPoint.z + streamSide.z * offsetSide + streamNormal.z * offsetNormal;
+        }
+      }
+      positions.needsUpdate = true;
+      streamGeometry.computeVertexNormals();
+      streamGeometry.computeBoundingSphere();
+    }
+
+    // Small satellite droplets are emitted from the same opening and use
+    // the same nozzle velocity and gravity, not arbitrary positions around the glass.
+    splashDroplets.forEach((drop, index) => {
+      const stagger = index * 0.035;
+      const cycle = 0.40;
+      const age = ((time - 3.62 + stagger) % cycle + cycle) % cycle;
+      const visible = time >= 3.62 && pourStrength > 0.14 && age < streamFlightTime;
+      drop.visible = visible;
+      if (!visible) return;
+      const lateral = Math.sin(index * 2.17) * 0.018;
+      drop.position.copy(mouthWorld)
+        .addScaledVector(streamVelocity, age)
+        .addScaledVector(gravityHalf, age * age)
+        .addScaledVector(streamSide, lateral);
+      const fade = Math.min(1, pourStrength * 2, (streamFlightTime - age) * 5);
+      drop.scale.setScalar((0.42 + (index % 5) * 0.12) * Math.max(0.2, fade));
+    });
+
+    // The cup level rises only while the stream is actually entering it.
+    const fillAmount = 0.24 + 0.43 * ease((time - 3.55) / 2.9);
     liquid.scale.y = fillAmount;
     liquid.position.y = 0.10 + fillAmount * 0.46;
-    liquidSurface.position.y = 0.10 + fillAmount * 0.92;
+    const surfaceY = 0.10 + fillAmount * 0.92;
+    liquidSurface.position.y = surfaceY;
+    const surfaceArray = liquidSurfacePositions.array as Float32Array;
+    for (let i = 0; i < surfaceArray.length; i += 3) {
+      const x = liquidSurfaceBase[i];
+      const z = liquidSurfaceBase[i + 2];
+      const radial = Math.sqrt(x * x + z * z);
+      const ripple = pourStrength * Math.max(0, 1 - radial / 0.34)
+        * (Math.sin(radial * 47 - time * 19) * 0.014 + Math.sin(x * 31 + z * 17 + time * 13) * 0.006);
+      surfaceArray[i + 1] = liquidSurfaceBase[i + 1] + ripple;
+    }
+    liquidSurfacePositions.needsUpdate = true;
+    liquidSurfaceGeometry.computeVertexNormals();
 
     iceCubes.forEach((cube, index) => {
-      cube.rotation.x = 0.12 * index + Math.sin(time * 1.15 + index) * 0.035;
+      const hitImpulse = pourStrength * (0.035 + (index % 2) * 0.012);
+      cube.rotation.x = 0.12 * index + Math.sin(time * 1.15 + index) * 0.035 + hitImpulse;
       cube.rotation.y = 0.28 * index + Math.sin(time * 1.35 + index) * 0.055;
-      cube.position.y = icePositions[index][1] + Math.sin(time * 1.4 + index) * 0.012 + pourStrength * 0.055;
+      cube.position.y = icePositions[index][1] + Math.sin(time * 1.4 + index) * 0.012 + hitImpulse;
     });
     bubbles.forEach((bubble, index) => {
       const phase = (time * 0.42 + index / bubbles.length) % 1;
@@ -670,16 +769,17 @@ export function createCocaColaPoolsideSet(world: THREE.Scene): PoolsideSet {
     });
 
     foam.visible = pourStrength > 0.08;
-    foam.scale.setScalar(0.82 + pourStrength * 0.46);
+    foam.position.set(-0.20, surfaceY + 0.012, 0.02);
+    foam.scale.setScalar(0.72 + pourStrength * 0.6);
+    (foam.material as THREE.MeshPhysicalMaterial).opacity = 0.18 + pourStrength * 0.26;
     splashDroplets.forEach((drop, index) => {
-      const phase = (time * 1.8 + index / splashDroplets.length) % 1;
+      if (!drop.visible) return;
+      // The particle stream finishes within the glass; the remaining splash is
+      // a small impact crown around that entry point, also kept inside the rim.
       const angle = index * 2.4;
-      drop.position.set(
-        glass.position.x + Math.cos(angle) * (0.16 + phase * 0.19),
-        -0.74 + Math.sin(phase * Math.PI) * (0.18 + (index % 3) * 0.045),
-        glass.position.z + Math.sin(angle) * (0.16 + phase * 0.19),
-      );
-      drop.visible = pourStrength > 0.12 && phase < 0.8;
+      const radius = 0.13 + (index % 3) * 0.035;
+      drop.position.x = mouthWorld.x - glass.position.x + Math.cos(angle) * radius;
+      drop.position.z = mouthWorld.z - glass.position.z + Math.sin(angle) * radius;
     });
 
     const positions = oceanPosition.array as Float32Array;
