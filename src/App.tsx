@@ -169,7 +169,7 @@ function App() {
       });
       const result = await response.json();
       if (!response.ok || !result.ok) throw new Error(result.error || "No se pudo subir la producción.");
-      setApprovalMessage("✓ Aprobado y subido: " + result.videoPath + " · TXT verificado: " + result.textPath);
+      setApprovalMessage(result.textUploaded ? "✓ MP4 y TXT subidos: " + result.videoPath + " · " + result.textPath : "✓ MP4 subido: " + result.videoPath + " · Aviso: no se encontró el TXT; el video se entregó igualmente.");
       setMp4Stage("COMPLETADO");
     } catch (error) {
       const message = error instanceof Error ? error.message : "No se pudo completar la conversión y subida.";
