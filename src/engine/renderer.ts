@@ -178,7 +178,7 @@ function createNutellaSet(world: THREE.Scene) {
 
 function drawNutellaOverlay(ctx: CanvasRenderingContext2D, frame: number, fps: number, width: number, height: number) {
   const t = frame / fps;
-  const phase = t < 1.5 ? 0 : t < 3 ? 1 : t < 4.8 ? 2 : t < 6.5 ? 3 : t < 9.6 ? 4 : 5;
+  const phase = t < 2.5 ? 0 : t < 4.5 ? 1 : t < 6.5 ? 2 : t < 11.5 ? 3 : 4;
   const accent = "#d8f36a"; const y = height * .735;
   const gradient = ctx.createLinearGradient(0, y - 150, 0, height);
   gradient.addColorStop(0, "rgba(8,17,14,0)"); gradient.addColorStop(.25, "rgba(8,17,14,.78)"); gradient.addColorStop(1, "rgba(8,17,14,.96)");
@@ -186,17 +186,17 @@ function drawNutellaOverlay(ctx: CanvasRenderingContext2D, frame: number, fps: n
   ctx.fillStyle = "rgba(8,17,14,.72)"; ctx.beginPath(); ctx.roundRect(width*.055,height*.035,width*.34,height*.05,18); ctx.fill();
   ctx.fillStyle = accent; ctx.font = "900 " + Math.round(width*.044) + "px Arial"; ctx.textAlign = "left"; ctx.textBaseline = "middle"; ctx.fillText("INGREDORA",width*.078,height*.06);
   ctx.textAlign = "center";
-  const eyebrow = ["EN LA GÓNDOLA","UN CLÁSICO","PERO… ¿QUÉ TIENE?","MIRÁ EL DORSO","ESTOS SON SUS INGREDIENTES","AHORA TE TOCA A VOS"][phase];
-  const headline = ["UN CLÁSICO DE SIEMPRE","NUTELLA.","HAY MÁS DETRÁS","LA ETIQUETA HABLA","7 INGREDIENTES","¿CUÁNTOS RECORDÁS?"][phase];
+  const eyebrow = ["EN LA GÓNDOLA","PERO… ¿QUÉ TIENE?","MIRÁ EL DORSO","SIETE INGREDIENTES","DESAFÍO INGREDORA"][phase];
+  const headline = ["UN CLÁSICO DE SIEMPRE","VAMOS A MIRAR","LA ETIQUETA REAL","LEÉ Y MEMORIZÁ","¿CUÁNTOS RECORDÁS?"][phase];
   ctx.fillStyle = accent; ctx.font = "800 " + Math.round(width*.027) + "px Arial"; ctx.fillText(eyebrow,width/2,height*.775);
   ctx.fillStyle = "#fff"; ctx.font = "900 " + Math.round(width*.064) + "px Arial"; ctx.fillText(headline,width/2,height*.832,width*.91);
-  if (phase === 4) {
+  if (phase === 3) {
     // Ingredient reveal: high-contrast two-column list, bold enough for a phone screen.
     ctx.fillStyle = "rgba(7,14,11,.88)";
     ctx.beginPath(); ctx.roundRect(width*.055,height*.855,width*.89,height*.112,18); ctx.fill();
     const ingredients = ["AZÚCAR","ACEITE VEGETAL","AVELLANAS","LECHE DESCREMADA EN POLVO","CACAO EN POLVO DESGRASADO","EMULSIFICANTE (LECITINAS)","SABORIZANTE"];
     ctx.textAlign = "left"; ctx.fillStyle = "#ffffff";
-    ctx.font = "900 " + Math.round(width*.025) + "px Arial";
+    ctx.font = "900 " + Math.round(width*.020) + "px Arial";
     ingredients.forEach((item,i) => {
       const col = i < 4 ? 0 : 1; const row = i < 4 ? i : i-4;
       const x = width*(col===0?.105:.555);
@@ -207,7 +207,7 @@ function drawNutellaOverlay(ctx: CanvasRenderingContext2D, frame: number, fps: n
     ctx.textAlign = "center";
   } else {
     ctx.fillStyle = "rgba(255,255,255,.96)"; ctx.font = "700 " + Math.round(width*.026) + "px Arial";
-    const sub = ["Un producto que reconocés a primera vista.","La etiqueta que todos conocemos.","Vamos a girar el frasco.","La información está del otro lado.","Siete ingredientes. Leelos y memorizalos.","Comentá cuántos pudiste nombrar sin mirar."][phase];
+    const sub = ["Lo reconocés enseguida.","Vamos a mirar el dorso del frasco.","La etiqueta tiene la información.","Siete ingredientes. Leelos y memorizalos.","Comentá cuántos recordabas y jugá con Ingredora."][phase];
     ctx.fillText(sub,width/2,height*.89,width*.92);
   }
   ctx.fillStyle = "rgba(255,255,255,.62)"; ctx.font = "700 " + Math.round(width*.018) + "px Arial";
@@ -263,8 +263,35 @@ export async function renderPackageToWebM(
   const videoCodec = await selectEncoders(pkg.width, pkg.height, fps);
   if (signal?.aborted) throw new Error("Render cancelado.");
 
-  // The soundtrack is synthesized offline; no AudioContext playback or user gesture is required.
+  // Original music is synthesized offline. Narration, when configured, is fetched as a
+  // pre-generated asset so provider credentials never enter the public browser bundle.
   const soundtrack = await generateOriginalSoundtrack({ durationSeconds, sampleRate: 48_000 });
+  let mixedSoundtrack = soundtrack;
+  if (pkg.voiceoverUrl) {
+    const voiceResponse = await fetch(import.meta.env.BASE_URL + pkg.voiceoverUrl);
+    if (!voiceResponse.ok) throw new Error("No se pudo cargar la narración (" + voiceResponse.status + ").");
+    const voiceBytes = await voiceResponse.arrayBuffer();
+    const decodeContext = new AudioContext({ sampleRate: 48_000 });
+    let voice: AudioBuffer;
+    try { voice = await decodeContext.decodeAudioData(voiceBytes); }
+    finally { await decodeContext.close(); }
+    const mixDuration = Math.max(durationSeconds, (pkg.voiceoverOffsetSeconds || 0) + voice.duration);
+    const frameCount = Math.ceil(mixDuration * 48_000);
+    const offline = new OfflineAudioContext(2, frameCount, 48_000);
+    const musicSource = offline.createBufferSource();
+    musicSource.buffer = soundtrack;
+    const musicGain = offline.createGain();
+    musicGain.gain.value = 0.24;
+    musicSource.connect(musicGain).connect(offline.destination);
+    musicSource.start(0);
+    const voiceSource = offline.createBufferSource();
+    voiceSource.buffer = voice;
+    const voiceGain = offline.createGain();
+    voiceGain.gain.value = 1.12;
+    voiceSource.connect(voiceGain).connect(offline.destination);
+    voiceSource.start(pkg.voiceoverOffsetSeconds || 0);
+    mixedSoundtrack = await offline.startRendering();
+  }
   if (signal?.aborted) throw new Error("Render cancelado.");
 
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false, powerPreference: "high-performance" });
@@ -320,16 +347,16 @@ export async function renderPackageToWebM(
       const time = frame / fps;
       // 12-second storyboard: establish aisle, push-in, front label, turn, ingredients, closing question.
       const smooth = (v: number) => { const x = Math.max(0, Math.min(1, v)); return x*x*(3-2*x); };
-      const turn = time < 3.6 ? 0 : time < 4.8 ? smooth((time-3.6)/1.2)*Math.PI : time < 9.6 ? Math.PI : Math.PI + smooth((time-9.6)/1.2)*Math.PI;
+      const turn = time < 4.5 ? 0 : time < 6.5 ? smooth((time-4.5)/2)*Math.PI : time < 11.5 ? Math.PI : Math.PI + smooth((time-11.5)/2)*Math.PI;
       nutellaSet.jar.rotation.y = turn;
       nutellaSet.jar.position.y = -.35 + Math.sin(time * 1.7) * .045;
       // A brief label-only push toward camera: jar and camera remain locked.
-      const labelIn = smooth((time-7.05)/.38);
-      const labelOut = 1-smooth((time-8.28)/.42);
+      const labelIn = smooth((time-7.0)/.38);
+      const labelOut = 1-smooth((time-8.25)/.42);
       const labelZoom = 1 + .26*Math.min(labelIn,labelOut);
       nutellaSet.backLabel.scale.set(labelZoom,labelZoom,labelZoom);
       nutellaSet.backLabel.position.z = -.13*Math.min(labelIn,labelOut);
-      const distance = time < 1.5 ? 10.8 - smooth(time/1.5)*1.6 : time < 3.6 ? 9.2 - smooth((time-1.5)/2.1)*1.1 : time < 9.6 ? 8.1 : 8.1 + smooth((time-9.6)/2.4)*.7;
+      const distance = time < 2.5 ? 10.8 - smooth(time/2.5)*1.6 : time < 4.5 ? 9.2 - smooth((time-2.5)/2)*1.1 : time < 11.5 ? 8.1 : 8.1 + smooth((time-11.5)/3.5)*.7;
       camera.position.set(.12 + Math.sin(time*.22)*.08,.48,distance); camera.lookAt(0,-.12,0); camera.fov=34; camera.updateProjectionMatrix();
       renderer.render(world,camera); ctx.drawImage(renderer.domElement,0,0,pkg.width,pkg.height);
       drawNutellaOverlay(ctx,frame,fps,pkg.width,pkg.height); return;
@@ -388,7 +415,7 @@ export async function renderPackageToWebM(
   try {
     await output.start();
     outputStarted = true;
-    await audioSource.add(soundtrack);
+    await audioSource.add(mixedSoundtrack);
     audioSource.close();
 
     for (let frame = 0; frame < totalFrames; frame += 1) {
