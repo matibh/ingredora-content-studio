@@ -92,3 +92,10 @@ All notable documentation and specification changes are recorded here.
 - Established privacy-by-design, data minimization and no paid analytics providers; MVP metrics are captured manually from platform dashboards and minimally from first-party game events.
 - Referenced Argentina's Personal Data Protection Law 25.326, its updated text and AAIP guidance.
 - Updated the document index: document 15 will consolidate security, zero-budget controls, implementation roadmap and testing.
+
+## 2026-11-19 — Security, Zero Budget, Roadmap and Testing
+
+- Added `docs/15-seguridad-presupuesto-cero-roadmap-y-pruebas.md` consolidating security controls, provider cost governance, licensing, supply-chain rules, incident response, phased implementation roadmap, test strategy, Definition of Done and release gates.
+- Reaffirmed USD 0: no paid plans, billing, cards, overages, paid APIs or automatic upgrades. Provider quotas must be revalidated and operations paused before limits are exceeded.
+- Documented current official references for Supabase Free/billing/pausing, GitHub Actions usage and Cloudflare Pages limits.
+- Completed the initial document set 00–15. This is a documentation milestone only; application implementation remains unstarted and requires a cross-document audit and approval of data contracts.
