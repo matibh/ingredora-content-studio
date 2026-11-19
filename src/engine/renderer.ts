@@ -244,10 +244,17 @@ function drawNutellaOverlay(ctx: CanvasRenderingContext2D, frame: number, fps: n
     searchFrom=found+tokens.length;
     return {...definition,a:matched[0].start,b:matched[matched.length-1].end,wordTimings:matched};
   });
-  const cue = cues.find((item)=>t>=item.a && t<=item.b+0.18);
+  const cueIndex = cues.findIndex((item,index)=>{
+    const nextStart=cues[index+1]?.a ?? Number.POSITIVE_INFINITY;
+    const displayEnd=Math.min(item.b+.5,nextStart);
+    return t>=item.a && t<displayEnd;
+  });
+  const cue = cueIndex>=0 ? cues[cueIndex] : undefined;
   const drawKineticCaption = (item: typeof cues[number]) => {
     const p=(t-item.a)/Math.max(.01,item.b-item.a);
-    const intro=ease(p/.17), outro=1-smooth((p-.86)/.14);
+    const nextStart=cues[cueIndex+1]?.a ?? Number.POSITIVE_INFINITY;
+    const displayEnd=Math.min(item.b+.5,nextStart);
+    const intro=ease(p/.17), outro=1-smooth((t-(displayEnd-.12))/.12);
     const alpha=intro*outro;
     const lift=(1-intro)*height*.045;
     const words=item.text.split(" ");
