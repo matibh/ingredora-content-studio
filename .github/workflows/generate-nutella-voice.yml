@@ -2,6 +2,10 @@ name: Generate Nutella voiceover
 
 on:
   workflow_dispatch:
+  push:
+    paths:
+      - "scripts/generate-nutella-voice.py"
+      - ".github/workflows/generate-nutella-voice.yml"
 
 permissions:
   contents: write
