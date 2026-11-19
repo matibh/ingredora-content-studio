@@ -78,12 +78,20 @@ function validatePackage(pkg: ProductionPackage) {
   if (!Number.isInteger(pkg.fps) || pkg.fps < 24 || pkg.fps > 60) throw new Error("FPS fuera del rango permitido (24–60).");
   if (pkg.width < 320 || pkg.height < 320 || pkg.width * pkg.height > 2_500_000) throw new Error("Resolución no permitida para el render inicial.");
   const ids = new Set<string>();
-  for (const scene of pkg.scenes) {
-    if (!scene.id || ids.has(scene.id) || scene.startFrame < 0 || scene.durationFrames < 1) throw new Error("Escena inválida o con ID duplicado.");
+  const orderedScenes = [...pkg.scenes].sort((a, b) => a.startFrame - b.startFrame);
+  if (orderedScenes[0].startFrame !== 0) throw new Error("La primera escena debe comenzar en el frame 0.");
+  let expectedStart = 0;
+  for (const scene of orderedScenes) {
+    if (!scene.id || ids.has(scene.id) || scene.startFrame !== expectedStart || scene.durationFrames < 1) throw new Error("La línea de tiempo tiene escenas duplicadas, superpuestas o con espacios vacíos.");
     ids.add(scene.id);
+    expectedStart = scene.startFrame + scene.durationFrames;
+    if (!/^#[0-9a-f]{6}$/i.test(scene.background) || (scene.accentColor && !/^#[0-9a-f]{6}$/i.test(scene.accentColor))) throw new Error("Color de escena inválido.");
+    const objectIds = new Set<string>();
     for (const item of scene.objects) {
-      if (!item.id || !["box", "sphere", "cylinder", "torus", "cone"].includes(item.shape)) throw new Error("Objeto de escena no reconocido.");
-      if (![...item.position, ...item.scale].every(Number.isFinite)) throw new Error("Transformación de objeto inválida.");
+      if (!item.id || objectIds.has(item.id) || !["box", "sphere", "cylinder", "torus", "cone"].includes(item.shape)) throw new Error("Objeto de escena no reconocido o con ID duplicado.");
+      objectIds.add(item.id);
+      if (![...item.position, ...item.scale, ...(item.rotation || [])].every(Number.isFinite) || item.scale.some((value) => value === 0)) throw new Error("Transformación de objeto inválida.");
+      if (!/^#[0-9a-f]{6}$/i.test(item.color)) throw new Error("Color de objeto inválido.");
     }
   }
 }
@@ -113,7 +121,14 @@ export async function renderPackageToWebM(
   const ctx = output.getContext("2d", { alpha: false });
   if (!ctx) { renderer.dispose(); throw new Error("No se pudo preparar el lienzo de composición."); }
 
-  const stream = output.captureStream(fps);
+  // Manual frame requests avoid browser-side duplicate captures when a frame takes longer than its target interval.
+  const stream = output.captureStream(0);
+  const videoTrack = stream.getVideoTracks()[0] as (MediaStreamTrack & { requestFrame?: () => void }) | undefined;
+  if (typeof videoTrack?.requestFrame !== "function") {
+    stream.getTracks().forEach((track) => track.stop());
+    renderer.dispose();
+    throw new Error("Este navegador no permite solicitar capturas de frame controladas. Usá una versión actualizada de Chrome o Edge.");
+  }
   const mimeType = ["video/webm;codecs=vp9", "video/webm;codecs=vp8", "video/webm"].find((type) => MediaRecorder.isTypeSupported(type));
   if (!mimeType) { stream.getTracks().forEach((track) => track.stop()); renderer.dispose(); throw new Error("No hay un codec WebM compatible en este navegador."); }
   const recorder = new MediaRecorder(stream, { mimeType, videoBitsPerSecond: pkg.width >= 1000 ? 8_000_000 : 5_000_000 });
@@ -189,6 +204,7 @@ export async function renderPackageToWebM(
     renderer.render(world, camera);
     ctx.drawImage(renderer.domElement, 0, 0, pkg.width, pkg.height);
     drawOverlay(ctx, current, pkg.width, pkg.height);
+    videoTrack.requestFrame();
   };
 
   return new Promise<Blob>((resolve, reject) => {
