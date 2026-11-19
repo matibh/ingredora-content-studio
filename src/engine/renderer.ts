@@ -162,8 +162,8 @@ export async function renderPackageToWebM(
     world.background = new THREE.Color(current.background);
     const cameraPosition = current.camera?.position || [0, 0.4, 7];
     const cameraTarget = current.camera?.target || [0, 0, 0];
-    camera.position.set(...cameraPosition);
-    camera.lookAt(...cameraTarget);
+    camera.position.set(cameraPosition[0], cameraPosition[1], cameraPosition[2]);
+    camera.lookAt(cameraTarget[0], cameraTarget[1], cameraTarget[2]);
     camera.fov = current.camera?.fov || 34;
     camera.updateProjectionMatrix();
 
