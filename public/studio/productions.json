@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-19T20:00:00-03:00",
+  "updatedAt": "2026-11-19T21:05:00-03:00",
   "productions": [
     {
       "id": "ingredora-coca-cola-poolside-002",
       "title": "Coca-Cola — El vaso más esperado del verano",
       "description": "Un día de pileta, un vaso helado y una pregunta que congela el momento: ¿sabés qué ingredientes tiene?",
       "status": "rendering",
-      "packageUrl": "studio/packages/coca-cola-poolside.v1.json",
+      "packageUrl": "studio/packages/coca-cola-poolside.v1.json?v=2",
       "durationSeconds": 34,
       "aspectRatio": "9:16",
       "language": "Español argentino",
@@ -16,7 +16,7 @@
         "Instagram Reels",
         "YouTube Shorts"
       ],
-      "version": "1.0",
+      "version": "2.0",
       "createdAt": "2026-11-19T20:00:00-03:00",
       "caption": "Un día de calor, pileta y una Coca bien fría… pero pará: ¿sabés qué tiene adentro? Tenés 15 segundos para descubrirlo. ¿Cuántos acertaste? Jugá en Ingredora.com. #Ingredora #DesafíoDeIngredientes #CocaCola"
     },
