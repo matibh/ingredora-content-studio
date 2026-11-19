@@ -16,15 +16,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Set up Node
-        uses: actions/setup-node@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          node-version: 22
-      - name: Generate Argentine Spanish narration
-        env:
-          AZURE_SPEECH_KEY: ${{ secrets.AZURE_SPEECH_KEY }}
-          AZURE_SPEECH_REGION: ${{ secrets.AZURE_SPEECH_REGION }}
-        run: node scripts/generate-nutella-voice.mjs
+          python-version: "3.11"
+      - name: Install free Edge TTS client
+        run: python -m pip install --disable-pip-version-check edge-tts
+      - name: Generate Argentine Spanish neural narration
+        run: python scripts/generate-nutella-voice.py
       - name: Commit generated audio
         run: |
           git config user.name "github-actions[bot]"
