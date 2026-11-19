@@ -280,6 +280,7 @@ El chorro no se posiciona mediante un cilindro fijo ni se conecta a un punto ext
 
 ### Trayectoria bajo gravedad
 
+- La botella tiene una carcasa PET translúcida y un volumen interno de Coca-Cola independiente; el nivel del contenido interior baja gradualmente mientras se sirve.
 - La velocidad inicial se orienta según el eje real de la boquilla de la botella.
 - La trayectoria se calcula con movimiento balístico: posición inicial + velocidad de salida × tiempo + aceleración gravitatoria × tiempo² / 2.
 - El tubo del chorro se deforma en cada fotograma siguiendo esa trayectoria; su sección transversal tiene una variación sutil para evitar el aspecto de tubo rígido.
