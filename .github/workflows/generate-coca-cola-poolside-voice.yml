@@ -11,7 +11,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: coca-cola-poolside-voiceover
+  group: coca-cola-poolside-voiceover-v2
   cancel-in-progress: true
 
 jobs:
