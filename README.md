@@ -30,7 +30,7 @@ La dirección elegida es una fábrica audiovisual basada en escenas 3D programá
 | [04 — Identidad visual](docs/04-identidad-visual.md) | Sistema de marca, packaging, gráfica y dirección artística | Borrador inicial |
 | [05 — Product Library](docs/05-product-library.md) | Catálogo, fuentes, verificación, packaging y derechos | Borrador inicial |
 | [06 — 3D Product Studio](docs/06-3d-product-studio.md) | Envases paramétricos, materiales, texturas y modelos 3D | Borrador inicial |
-| 07 — Personajes y animaciones | Personajes, rigging, acciones y biblioteca de movimientos | Pendiente |
+| [07 — Personajes y animaciones](docs/07-personajes-y-animaciones.md) | Personajes estilizados, rigs, expresiones e interacciones | Borrador inicial |
 | 08 — Cinematic Scene Engine | Escenarios, cámara, iluminación, partículas y composición | Pendiente |
 | 09 — Audio y Voice Studio | Música, efectos, voz y mezcla | Pendiente |
 | 10 — Editor y Render Engine | Timeline, previsualización, render por escenas y exportación | Pendiente |
@@ -74,6 +74,7 @@ Los esquemas JSON se incorporarán cuando el modelo conceptual esté suficientem
 - Identidad visual: sistema inicial de capas, dirección de arte 3D, composición y tokens; assets oficiales y decisiones de marca pendientes.
 - Product Library: modelo conceptual de productos, marcas, variantes, fuentes, assets, derechos, fidelidad 3D y versionado incorporado.
 - 3D Product Studio: familias de envases, geometría paramétrica, materiales, UVs, animaciones, revisión y rendimiento especificados.
+- Personajes y animaciones: sistema modular de personajes estilizados, rigs, expresiones, acciones, agarres de producto y timeline especificado.
 - GitHub Pages: no se utilizará como hosting de la aplicación en esta etapa.
 - GitHub Actions: se habilitará solo para validaciones ligeras y sin habilitar billing.
 - Proveedor de hosting web: pendiente de evaluación y verificación de condiciones gratuitas.
