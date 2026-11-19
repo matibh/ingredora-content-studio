@@ -1,6 +1,7 @@
 export type SoundtrackOptions = {
   durationSeconds: number;
   sampleRate?: number;
+  theme?: "summer-poolside";
 };
 
 /**
@@ -10,6 +11,7 @@ export type SoundtrackOptions = {
 export async function generateOriginalSoundtrack({
   durationSeconds,
   sampleRate = 48_000,
+  theme,
 }: SoundtrackOptions): Promise<AudioBuffer> {
   if (typeof OfflineAudioContext === "undefined") {
     throw new Error("Este navegador no admite generación de audio offline.");
@@ -139,6 +141,47 @@ export async function generateOriginalSoundtrack({
     gain.connect(panner);
     panner.connect(master);
     source.start(start);
+  }
+
+
+  if (theme === "summer-poolside") {
+    // Original procedural summer SFX: fizz/pour texture, ice clinks, freeze hit,
+    // one-second countdown ticks and a short reveal chime. No external samples.
+    const fizzLength = Math.ceil(sampleRate * 0.24);
+    const fizzBuffer = context.createBuffer(1, fizzLength, sampleRate);
+    const fizzData = fizzBuffer.getChannelData(0);
+    for (let i = 0; i < fizzLength; i += 1) {
+      const fade = Math.pow(1 - i / fizzLength, 1.6);
+      fizzData[i] = (random() * 2 - 1) * fade;
+    }
+    for (let start = 3.12; start < 6.45; start += 0.19) {
+      const source = context.createBufferSource();
+      const filter = context.createBiquadFilter();
+      const gain = context.createGain();
+      source.buffer = fizzBuffer;
+      filter.type = "bandpass";
+      filter.frequency.value = 4_800 + random() * 1_700;
+      filter.Q.value = 0.62;
+      gain.gain.setValueAtTime(0.0001, start);
+      gain.gain.linearRampToValueAtTime(0.026, start + 0.025);
+      gain.gain.exponentialRampToValueAtTime(0.0001, Math.min(durationSeconds, start + 0.24));
+      source.connect(filter);
+      filter.connect(gain);
+      gain.connect(master);
+      source.start(start);
+    }
+    addTone(1_480, 3.34, 0.16, "sine", 0.075, 6_000, -0.24);
+    addTone(1_960, 3.42, 0.13, "sine", 0.055, 7_000, 0.24);
+    addTone(1_180, 4.12, 0.18, "triangle", 0.04, 5_000, 0.18);
+    addTone(92, 7.18, 0.42, "sine", 0.18, 420, 0);
+    addTone(740, 7.20, 0.36, "triangle", 0.035, 3_600, 0);
+    for (let second = 10; second < 25; second += 1) {
+      const finalTick = second >= 22;
+      addTone(finalTick ? 1_120 : 880, second, 0.065, "sine", finalTick ? 0.052 : 0.032, 4_200, 0);
+    }
+    addTone(523.25, 25.02, 0.48, "sine", 0.07, 4_800, -0.18);
+    addTone(659.25, 25.10, 0.52, "sine", 0.06, 5_200, 0.12);
+    addTone(783.99, 25.18, 0.62, "triangle", 0.055, 5_600, 0.28);
   }
 
   return context.startRendering();
