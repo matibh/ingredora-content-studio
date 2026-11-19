@@ -58,7 +58,6 @@ function App() {
   const [mp4Busy, setMp4Busy] = useState(false);
   const [mp4Progress, setMp4Progress] = useState(0);
   const [mp4Error, setMp4Error] = useState<string | null>(null);
-  const [mp4Blob, setMp4Blob] = useState<Blob | null>(null);
   const [approvalBusy, setApprovalBusy] = useState(false);
   const [githubStatus, setGithubStatus] = useState<"checking" | "signed_out" | "authorized" | "unauthorized">("checking");
   const [mp4Stage, setMp4Stage] = useState("");
