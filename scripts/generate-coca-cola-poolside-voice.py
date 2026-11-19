@@ -18,12 +18,12 @@ OUTPUT = Path("public/studio/audio/coca-cola-poolside-v2-voice-es-AR.mp3")
 TIMINGS_OUTPUT = Path("public/studio/audio/coca-cola-poolside-v2-word-timings.json")
 
 # Each line is synthesized separately so the narration follows the visual beats.
-# The 15-second guessing window and the ingredient reveal intentionally stay quiet.
+# The six-second guessing window and the ingredient reveal intentionally stay quiet.
 SEGMENTS = [
     {"start": 0.22, "text": "Un día de calor..."},
     {"start": 3.10, "text": "Una Coca bien fría, con hielo y burbujas."},
     {"start": 7.42, "text": "Pero pará... ¿sabés qué tiene adentro?"},
-    {"start": 10.50, "text": "Tenés quince segundos para adivinar sus ingredientes."},
+    {"start": 10.50, "text": "Tenés seis segundos para adivinar sus ingredientes."},
     {"start": 29.45, "text": "¿Cuántos acertaste?"},
     {"start": 31.60, "text": "¡Jugá en Ingredora!"},
 ]
