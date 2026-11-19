@@ -190,8 +190,11 @@ function drawNutellaOverlay(ctx: CanvasRenderingContext2D, frame: number, fps: n
   ctx.textAlign = "center";
   const eyebrow = ["EN LA GÓNDOLA","PERO… ¿QUÉ TIENE?","MIRÁ EL DORSO","SIETE INGREDIENTES","TU TURNO","SEGUÍ JUGANDO"][phase];
   const headline = ["UN CLÁSICO DE SIEMPRE","VAMOS A MIRAR","LA ETIQUETA REAL","LEÉ Y MEMORIZÁ","¿CUÁNTOS RECORDÁS?",""][phase];
-  ctx.fillStyle = accent; ctx.font = "800 " + Math.round(width*.027) + "px Arial"; ctx.fillText(eyebrow,width/2,height*.775);
-  ctx.fillStyle = "#fff"; ctx.font = "900 " + Math.round(width*.064) + "px Arial"; ctx.fillText(headline,width/2,height*.832,width*.91);
+  // The end card has its own typography; never draw the generic phase title over it.
+  if (phase !== 5) {
+    ctx.fillStyle = accent; ctx.font = "800 " + Math.round(width*.027) + "px Arial"; ctx.fillText(eyebrow,width/2,height*.775);
+    ctx.fillStyle = "#fff"; ctx.font = "900 " + Math.round(width*.064) + "px Arial"; ctx.fillText(headline,width/2,height*.832,width*.91);
+  }
   if (phase === 3) {
     // Ingredient reveal: high-contrast two-column list, bold enough for a phone screen.
     ctx.fillStyle = "rgba(7,14,11,.88)";
@@ -210,20 +213,21 @@ function drawNutellaOverlay(ctx: CanvasRenderingContext2D, frame: number, fps: n
   } else if (phase === 5) {
     // End card uses a fixed vertical rhythm and generous safe areas to prevent collisions.
     ctx.fillStyle = "rgba(5,13,10,.62)";
-    ctx.beginPath(); ctx.roundRect(width*.055,height*.665,width*.89,height*.285,24); ctx.fill();
+    ctx.beginPath(); ctx.roundRect(width*.055,height*.635,width*.89,height*.325,24); ctx.fill();
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     ctx.fillStyle = accent;
-    ctx.font = "900 " + Math.round(width*.030) + "px Arial";
-    ctx.fillText("ENTRÁ Y SEGUÍ JUGANDO",width/2,height*.715,width*.82);
+    ctx.font = "900 " + Math.round(width*.029) + "px Arial";
+    ctx.fillText("ENTRÁ A",width/2,height*.685,width*.82);
     ctx.fillStyle = "#ffffff";
-    ctx.font = "900 " + Math.round(width*.082) + "px Arial";
-    ctx.fillText("ingredora.com",width/2,height*.805,width*.84);
+    ctx.font = "900 " + Math.round(width*.078) + "px Arial";
+    ctx.fillText("ingredora.com",width/2,height*.765,width*.84);
     ctx.fillStyle = "rgba(255,255,255,.98)";
-    ctx.font = "800 " + Math.round(width*.027) + "px Arial";
-    ctx.fillText("O BUSCÁ EL LINK EN MI PERFIL",width/2,height*.885,width*.82);
+    ctx.font = "800 " + Math.round(width*.025) + "px Arial";
+    ctx.fillText("O BUSCÁ EL LINK",width/2,height*.845,width*.82);
+    ctx.fillText("EN MI PERFIL",width/2,height*.885,width*.82);
     ctx.fillStyle = accent;
-    ctx.font = "900 " + Math.round(width*.024) + "px Arial";
+    ctx.font = "900 " + Math.round(width*.023) + "px Arial";
     ctx.fillText("INGREDORA",width/2,height*.935,width*.82);
   } else {
     ctx.fillStyle = "rgba(255,255,255,.96)"; ctx.font = "700 " + Math.round(width*.026) + "px Arial";
