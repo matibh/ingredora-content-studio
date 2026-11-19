@@ -90,8 +90,27 @@ function createNutellaSet(world: THREE.Scene) {
   world.background = new THREE.Color("#e9dfcc"); world.fog = new THREE.Fog("#e9dfcc", 27, 52);
   const floor = new THREE.Mesh(new THREE.PlaneGeometry(24, 26), new THREE.MeshStandardMaterial({ color: "#c8b99d", roughness: 0.88 }));
   floor.rotation.x = -Math.PI / 2; floor.position.set(0, -2.25, -2); world.add(floor);
-  const wall = new THREE.Mesh(new THREE.PlaneGeometry(18, 12), new THREE.MeshStandardMaterial({ color: "#f6eddd", roughness: 1 }));
+  // Painted supermarket back wall: warm greige, subtle plaster variation, no empty white void.
+  const wallTexture = makeCanvasTexture((ctx,w,h) => {
+    ctx.fillStyle = "#96978f"; ctx.fillRect(0,0,w,h);
+    for (let i=0;i<4200;i++) {
+      const x=(i*1973)%w, y=(i*3251)%h;
+      const alpha=.018+((i*13)%10)/1000;
+      ctx.fillStyle = i%2 ? `rgba(255,245,225,${alpha})` : `rgba(35,39,35,${alpha})`;
+      ctx.fillRect(x,y,2+(i%5),2+(i%4));
+    }
+    const wash=ctx.createLinearGradient(0,0,w,h);
+    wash.addColorStop(0,"rgba(255,239,210,.10)"); wash.addColorStop(.55,"rgba(255,255,255,0)"); wash.addColorStop(1,"rgba(37,43,39,.13)");
+    ctx.fillStyle=wash;ctx.fillRect(0,0,w,h);
+  },1024,768);
+  wallTexture.wrapS=THREE.RepeatWrapping; wallTexture.wrapT=THREE.RepeatWrapping;
+  wallTexture.repeat.set(2,1);
+  const wall = new THREE.Mesh(new THREE.PlaneGeometry(18, 12), new THREE.MeshStandardMaterial({ map:wallTexture, color:"#d0cfc5", roughness:1 }));
   wall.position.set(0, 2.5, -5.5); world.add(wall);
+  const wallTrim = new THREE.Mesh(new THREE.BoxGeometry(18,.16,.12),new THREE.MeshStandardMaterial({color:"#777b73",roughness:.82}));
+  wallTrim.position.set(0,-1.65,-5.38);world.add(wallTrim);
+  const wallTopTrim = new THREE.Mesh(new THREE.BoxGeometry(18,.10,.10),new THREE.MeshStandardMaterial({color:"#b6b4a9",roughness:.8}));
+  wallTopTrim.position.set(0,4.8,-5.4);world.add(wallTopTrim);
   const shelfMat = new THREE.MeshStandardMaterial({ color: "#303a35", roughness: 0.58, metalness: 0.32 });
   const edgeMat = new THREE.MeshStandardMaterial({ color: "#d9d1c2", roughness: 0.45, metalness: 0.55 });
   const colors = ["#f2d36b","#d83c2f","#e8a928","#3e8b62","#f1eee4","#3776a8","#d87932","#8eaa59","#8b4f9d","#e8a5b5"];
