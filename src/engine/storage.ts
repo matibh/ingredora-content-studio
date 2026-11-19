@@ -1,7 +1,7 @@
 const DB_NAME = "ingredora-content-studio";
 const STORE_NAME = "renders";
 const DB_VERSION = 1;
-const RENDER_CACHE_VERSION = "nutella-v9-kinetic-captions-v5";
+const RENDER_CACHE_VERSION = "nutella-v9-kinetic-captions-v6";
 
 function cacheKey(id: string) {
   return `${id}:${RENDER_CACHE_VERSION}`;
