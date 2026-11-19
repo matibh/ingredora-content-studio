@@ -47,3 +47,5 @@ jobs:
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v4
+
+# Redeploy trigger: ensure the latest generated public assets are included.
