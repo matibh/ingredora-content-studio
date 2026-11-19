@@ -53,12 +53,25 @@ function makeBottle(): THREE.Group {
   model.position.y = -0.95;
   pivot.add(model);
 
-  const cola = new THREE.MeshPhysicalMaterial({
-    color: "#32120c",
-    roughness: 0.18,
-    metalness: 0.01,
+  const bottlePlastic = new THREE.MeshPhysicalMaterial({
+    color: "#f4e8d8",
+    roughness: 0.075,
+    metalness: 0,
+    transparent: true,
+    opacity: 0.34,
+    transmission: 0.62,
+    thickness: 0.12,
     clearcoat: 1,
-    clearcoatRoughness: 0.1,
+    clearcoatRoughness: 0.045,
+    side: THREE.DoubleSide,
+    depthWrite: false,
+  });
+  const colaInside = new THREE.MeshPhysicalMaterial({
+    color: "#351006",
+    roughness: 0.075,
+    metalness: 0.005,
+    clearcoat: 1,
+    clearcoatRoughness: 0.045,
   });
   const profile = [
     new THREE.Vector2(0.27, 0.02),
@@ -77,7 +90,24 @@ function makeBottle(): THREE.Group {
     new THREE.Vector2(0.155, 1.82),
     new THREE.Vector2(0, 1.82),
   ];
-  const body = new THREE.Mesh(new THREE.LatheGeometry(profile, 112), cola);
+  const fillProfile = [
+    new THREE.Vector2(0, 0.085),
+    new THREE.Vector2(0.25, 0.085),
+    new THREE.Vector2(0.31, 0.16),
+    new THREE.Vector2(0.335, 0.34),
+    new THREE.Vector2(0.335, 0.70),
+    new THREE.Vector2(0.325, 0.94),
+    new THREE.Vector2(0.29, 1.10),
+    new THREE.Vector2(0.22, 1.22),
+    new THREE.Vector2(0.12, 1.32),
+    new THREE.Vector2(0, 1.32),
+  ];
+  const bottleContents = new THREE.Mesh(new THREE.LatheGeometry(fillProfile, 112), colaInside);
+  bottleContents.position.y = 0.02;
+  bottleContents.castShadow = true;
+  model.add(bottleContents);
+
+  const body = new THREE.Mesh(new THREE.LatheGeometry(profile, 112), bottlePlastic);
   body.castShadow = true;
   body.receiveShadow = true;
   model.add(body);
@@ -109,7 +139,7 @@ function makeBottle(): THREE.Group {
   label.castShadow = true;
   model.add(label);
 
-  const neck = new THREE.Mesh(new THREE.CylinderGeometry(0.15, 0.19, 0.24, 64, 1, true), cola);
+  const neck = new THREE.Mesh(new THREE.CylinderGeometry(0.15, 0.19, 0.24, 64, 1, true), bottlePlastic);
   neck.position.y = 1.68;
   model.add(neck);
   const mouth = new THREE.Mesh(
@@ -162,6 +192,7 @@ function makeBottle(): THREE.Group {
   }
 
   pivot.userData.model = model;
+  pivot.userData.contents = bottleContents;
   pivot.userData.removedCap = removedCap;
   pivot.userData.mouthPoint = new THREE.Vector3(0, 0.865, 0);
   return pivot;
@@ -682,6 +713,10 @@ export function createCocaColaPoolsideSet(world: THREE.Scene): PoolsideSet {
     bottle.rotation.z = time < 3.0 ? 0.06 : time < 6.08 ? pourAngle : 0.06 + returnAngle;
     bottle.rotation.y = 0.02 + Math.sin(Math.min(time, 7.1) * 1.1) * 0.018;
     bottle.position.y = 0.12 + Math.sin(Math.min(time, 7.1) * 1.35) * 0.012;
+    const bottleContents = bottle.userData.contents as THREE.Mesh;
+    const bottleDrain = 0.12 * ease((time - 3.90) / 2.55);
+    bottleContents.scale.y = 1 - bottleDrain;
+    bottleContents.position.y = 0.02 + 0.085 * bottleDrain;
     bottle.updateMatrixWorld(true);
 
     // The liquid only leaves the bottle once the neck is angled downward.
