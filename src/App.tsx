@@ -3,7 +3,6 @@ import { renderPackageToWebM, type RenderProgress } from "./engine/renderer";
 import { convertWebMToMp4 } from "./engine/mp4Converter";
 import { getRenderedVideo, saveRenderedVideo } from "./engine/storage";
 import type { ProductionPackage } from "./engine/types";
-import { clearGithubSession, consumeGithubCallback, getGithubAccessToken, isAuthorizedGithubUser, startGithubLogin } from "./engine/githubAuth";
 
 type Production = {
   id: string;
@@ -59,28 +58,10 @@ function App() {
   const [mp4Progress, setMp4Progress] = useState(0);
   const [mp4Error, setMp4Error] = useState<string | null>(null);
   const [approvalBusy, setApprovalBusy] = useState(false);
-  const [githubStatus, setGithubStatus] = useState<"checking" | "signed_out" | "authorized" | "unauthorized">("checking");
+  const [approvalKey, setApprovalKey] = useState("");
   const [mp4Stage, setMp4Stage] = useState("");
   const [approvalMessage, setApprovalMessage] = useState<string | null>(null);
   const renderingIds = useRef(new Set<string>());
-
-  useEffect(() => {
-    const callbackError = consumeGithubCallback();
-    if (callbackError) {
-      setApprovalMessage("No se pudo iniciar sesión con GitHub: " + callbackError);
-      setGithubStatus("signed_out");
-      return;
-    }
-    void (async () => {
-      try {
-        const token = await getGithubAccessToken();
-        if (!token) { setGithubStatus("signed_out"); return; }
-        const authorized = await isAuthorizedGithubUser(token);
-        setGithubStatus(authorized ? "authorized" : "unauthorized");
-        if (!authorized) setApprovalMessage("La cuenta conectada no es la autorizada. Iniciá sesión con @matibh.");
-      } catch { setGithubStatus("signed_out"); }
-    })();
-  }, []);
 
   const loadProductions = useCallback(async () => {
     try {
@@ -160,22 +141,10 @@ function App() {
 
   const convertAndUpload = async () => {
     if (!active || mp4Busy || approvalBusy) return;
-    const token = await getGithubAccessToken();
-    if (!token) {
-      setApprovalMessage("Conectá tu cuenta de GitHub para aprobar y subir la producción.");
-      startGithubLogin();
-      return;
-    }
+    if (!approvalKey.trim()) { setApprovalMessage("Ingresá la contraseña de aprobación."); return; }
     setMp4Busy(true); setApprovalBusy(true); setMp4Progress(0); setMp4Error(null); setApprovalMessage(null);
     try {
-      setMp4Stage("VALIDANDO GITHUB");
-      if (!await isAuthorizedGithubUser(token)) {
-        clearGithubSession(); setGithubStatus("signed_out");
-        setApprovalMessage("Ingresá con la cuenta de GitHub @matibh.");
-        startGithubLogin();
-        return;
-      }
-      setGithubStatus("authorized");
+      setMp4Stage("PREPARANDO SUBIDA");
       setMp4Stage("RECUPERANDO VIDEO");
       let sourceBlob = await getRenderedVideo(active.id);
       if (!sourceBlob && activeVideoUrl) {
@@ -195,7 +164,7 @@ function App() {
       setMp4Stage("SUBIENDO A GITHUB");
       const response = await fetch("https://xblqghhhchffuqkmzgta.supabase.co/functions/v1/approve-content-upload", {
         method: "POST",
-        headers: { apikey: "sb_publishable__TDF6zsAZEvsWgSkAntJgw_qxYYuUop", Authorization: "Bearer " + token },
+        headers: { apikey: "sb_publishable__TDF6zsAZEvsWgSkAntJgw_qxYYuUop", "x-studio-approval-key": approvalKey },
         body: form,
       });
       const result = await response.json();
@@ -262,9 +231,10 @@ function App() {
                   <p className="eyebrow">REVISIÓN EDITORIAL</p>
                   <strong>¿Aprobás esta producción?</strong>
                   <small>Al confirmar, convertimos el WebM original a MP4 y subimos el archivo a «Contenido a subir». Verificamos también el TXT correspondiente. No se publica nada en redes y el WebM original no se modifica.</small>
-                  {githubStatus === "checking" ? <small>Comprobando conexión con GitHub…</small> : githubStatus === "authorized" ? <div className="github-connected"><span className="github-dot" /> GitHub conectado · @matibh <button type="button" onClick={() => { clearGithubSession(); setGithubStatus("signed_out"); setApprovalMessage(null); }}>DESCONECTAR</button></div> : <small>{githubStatus === "unauthorized" ? "La cuenta conectada no tiene permiso. Ingresá con @matibh." : "Conectá tu cuenta de GitHub para aprobar. Solo se autoriza @matibh."}</small>}
-                  <button className="approve-upload-button" type="button" onClick={convertAndUpload} disabled={githubStatus === "checking" || mp4Busy || approvalBusy}>
-                    {mp4Busy ? `${mp4Stage} · ${mp4Progress}%` : githubStatus === "authorized" ? "✓ CONVERTIR A MP4 Y SUBIR A GITHUB" : githubStatus === "unauthorized" ? "CAMBIAR CUENTA DE GITHUB" : "CONECTAR GITHUB Y APROBAR"}
+                  <label className="approval-password-label" htmlFor="approval-password">CONTRASEÑA DE APROBACIÓN</label>
+                  <input id="approval-password" className="approval-password-input" type="password" autoComplete="current-password" value={approvalKey} onChange={(event) => setApprovalKey(event.target.value)} placeholder="Ingresá tu contraseña" />
+                  <button className="approve-upload-button" type="button" onClick={convertAndUpload} disabled={!approvalKey.trim() || mp4Busy || approvalBusy}>
+                    {mp4Busy ? `${mp4Stage} · ${mp4Progress}%` : "✓ CONVERTIR A MP4 Y SUBIR A GITHUB"}
                   </button>
                   {mp4Busy && <div className="render-progress-track mp4-progress" role="progressbar" aria-valuenow={mp4Progress} aria-valuemin={0} aria-valuemax={100}><span style={{ width: `${mp4Progress}%` }} /></div>}
                   {mp4Error && <small className="mp4-error">{mp4Error}</small>}
