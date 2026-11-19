@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "engineVersion": "1.0.0",
+  "id": "ingredora-coca-cola-poolside-002",
+  "title": "Coca-Cola — El vaso más esperado del verano",
+  "description": "Spot vertical cinematográfico de 34 segundos: un día de pileta, una Coca-Cola servida sobre hielo, congelamiento de la escena y desafío de 15 segundos para adivinar la composición declarada.",
+  "createdAt": "2026-11-19T20:00:00-03:00",
+  "fps": 30,
+  "width": 720,
+  "height": 1280,
+  "visualPreset": "coca-cola-poolside",
+  "scenes": [
+    {
+      "id": "summer-poolside-pour-freeze-challenge-reveal",
+      "startFrame": 0,
+      "durationFrames": 1020,
+      "background": "#8bd4f2",
+      "camera": {
+        "position": [
+          0,
+          2.6,
+          13
+        ],
+        "target": [
+          0,
+          -0.45,
+          -0.55
+        ],
+        "fov": 43
+      },
+      "accentColor": "#ef233c",
+      "headline": "EL VASO MÁS ESPERADO DEL VERANO",
+      "subline": "¿SABÉS QUÉ TIENE ADENTRO?",
+      "objects": []
+    }
+  ]
+}
