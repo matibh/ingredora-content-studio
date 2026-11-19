@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-19T20:51:00-03:00",
+  "updatedAt": "2026-11-19T21:05:00-03:00",
   "productions": [
     {
-      "id": "ingredora-nutella-supermarket-spot-003",
-      "title": "Nutella — La etiqueta en primer plano (versión 3)",
-      "description": "Versión 3: iluminación cinematográfica cálida, góndola con colores más naturales y etiqueta curva elevada. Durante la lectura, solo la etiqueta se acerca brevemente a cámara y vuelve a su posición.",
+      "id": "ingredora-nutella-supermarket-spot-004",
+      "title": "Nutella — Góndola con pared pintada (versión 4)",
+      "description": "Versión 4: pared posterior gris cálida con acabado de pintura y textura sutil, más zócalos para dar profundidad y eliminar el fondo blanco vacío. Conserva la iluminación cinematográfica y el acercamiento exclusivo de la etiqueta.",
       "status": "rendering",
-      "packageUrl": "studio/packages/nutella-supermarket.v3.json",
+      "packageUrl": "studio/packages/nutella-supermarket.v4.json",
       "durationSeconds": 12,
       "aspectRatio": "9:16",
       "language": "Español",
@@ -16,8 +16,8 @@
         "Instagram Reels",
         "YouTube Shorts"
       ],
-      "version": "3.0",
-      "createdAt": "2026-11-19T20:49:00-03:00",
+      "version": "4.0",
+      "createdAt": "2026-11-19T21:05:00-03:00",
       "caption": "Un clásico de la góndola. 🍫 Mirá de cerca la etiqueta: ¿cuántos ingredientes podés recordar? #Ingredora #Nutella #DesafíoDeIngredientes"
     }
   ]
