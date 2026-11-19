@@ -111,26 +111,62 @@ function createNutellaSet(world: THREE.Scene) {
   wallTrim.position.set(0,-1.65,-5.38);world.add(wallTrim);
   const wallTopTrim = new THREE.Mesh(new THREE.BoxGeometry(18,.10,.10),new THREE.MeshStandardMaterial({color:"#b6b4a9",roughness:.8}));
   wallTopTrim.position.set(0,4.8,-5.4);world.add(wallTopTrim);
-  const shelfMat = new THREE.MeshStandardMaterial({ color: "#303a35", roughness: 0.58, metalness: 0.32 });
-  const edgeMat = new THREE.MeshStandardMaterial({ color: "#d9d1c2", roughness: 0.45, metalness: 0.55 });
-  const colors = ["#f2d36b","#d83c2f","#e8a928","#3e8b62","#f1eee4","#3776a8","#d87932","#8eaa59","#8b4f9d","#e8a5b5"];
-  for (let row=0; row<4; row++) {
-    const y=-1.25+row*1.05;
-    const shelf=new THREE.Mesh(new THREE.BoxGeometry(14,.12,1.15),shelfMat); shelf.position.set(0,y,-4.15); world.add(shelf);
-    const lip=new THREE.Mesh(new THREE.BoxGeometry(14,.13,.09),edgeMat); lip.position.set(0,y-.01,-3.55); world.add(lip);
-    for(let i=0;i<20;i++){
-      const x=-6.4+i*.67, h=.46+((i*7+row*3)%5)*.085, w=.34+(i%3)*.045;
-      const box=new THREE.Mesh(new THREE.BoxGeometry(w,h,.48),new THREE.MeshStandardMaterial({color:colors[(i+row*2)%colors.length],roughness:.72}));
-      box.position.set(x,y+.12+h/2,-4.25+(i%2)*.04); world.add(box);
+  // Premium supermarket gondola: powder-coated steel, perforated backing and reinforced shelves.
+  const shelfMat=new THREE.MeshStandardMaterial({color:"#26332f",roughness:.42,metalness:.58});
+  const edgeMat=new THREE.MeshStandardMaterial({color:"#b9bcb5",roughness:.34,metalness:.72});
+  const darkMat=new THREE.MeshStandardMaterial({color:"#202a26",roughness:.62,metalness:.38});
+  const backPanel=new THREE.Mesh(new THREE.BoxGeometry(14.1,5,.10),darkMat);backPanel.position.set(0,.35,-4.92);world.add(backPanel);
+  const holeMat=new THREE.MeshBasicMaterial({color:"#66716a"});
+  for(let r=0;r<25;r++)for(let col=0;col<67;col++){const hole=new THREE.Mesh(new THREE.CircleGeometry(.012,8),holeMat);hole.position.set(-6.85+col*.207,-2.02+r*.195,-4.855);world.add(hole);}
+  const products=[
+    ["#e9bd45","#9e3329","CEREALES","DESAYUNO"],["#d8e2cf","#315f48","PASTA","TRADICIONAL"],
+    ["#bd4b37","#f4e5c8","SALSA","TOMATE"],["#e8d9b8","#493b2d","GALLETITAS","CLÁSICAS"],
+    ["#315c4b","#f0d88c","CAFÉ","INTENSO"],["#e7a34e","#6c3526","SNACK","ORIGINAL"],
+    ["#e8e7dd","#c33b2d","LECHE","ENTERA"],["#5b6c8c","#f2e8cb","ARROZ","SELECCIÓN"],
+    ["#d8c5a5","#714c32","GALLETAS","VAINILLA"],["#76934e","#f4e8bf","ACEITE","GIRASOL"],
+    ["#a84a36","#f6e7cf","CONSERVAS","VEGETALES"],["#d5b75f","#55412a","AVENA","INTEGRAL"]
+  ];
+  const packMats=products.map(([base,accent,name,sub],i)=>new THREE.MeshStandardMaterial({map:makeCanvasTexture((ctx,w,h)=>{
+    ctx.fillStyle=base;ctx.fillRect(0,0,w,h);
+    const g=ctx.createLinearGradient(0,0,w,h);g.addColorStop(0,"rgba(255,255,255,.3)");g.addColorStop(1,"rgba(0,0,0,.2)");ctx.fillStyle=g;ctx.fillRect(0,0,w,h);
+    ctx.fillStyle=accent;ctx.fillRect(0,h*.12,w,h*.22);ctx.textAlign="center";ctx.textBaseline="middle";
+    ctx.fillStyle="#fffaf0";ctx.font="900 82px Arial";ctx.fillText(name,w/2,h*.235,w*.9);
+    ctx.fillStyle=accent;ctx.font="800 43px Arial";ctx.fillText(sub,w/2,h*.53,w*.9);
+    ctx.fillStyle="rgba(255,250,240,.9)";ctx.font="700 24px Arial";ctx.fillText(i%3===0?"CALIDAD":"SELECCIÓN",w/2,h*.84);
+    ctx.strokeStyle="rgba(255,255,255,.55)";ctx.lineWidth=8;ctx.strokeRect(12,12,w-24,h-24);
+  },256,384),roughness:.66}));
+  const canMats=products.map(([base])=>new THREE.MeshStandardMaterial({color:base,roughness:.28,metalness:.42}));
+  const ticketMats=Array.from({length:12},(_,i)=>new THREE.MeshBasicMaterial({map:makeCanvasTexture((ctx,w,h)=>{
+    const promo=i===3||i===8;ctx.fillStyle=promo?"#fff0bd":"#f7f7f1";ctx.fillRect(0,0,w,h);
+    ctx.fillStyle=promo?"#c7352c":"#26332f";ctx.fillRect(0,0,w,38);ctx.fillStyle="#fff";ctx.font="800 27px Arial";ctx.fillText(promo?"OFERTA":"PRECIO",18,28);
+    ctx.fillStyle="#252923";ctx.font="900 78px Arial";ctx.fillText(["$ 1.890","$ 2.450","$ 3.190","$ 1.250","$ 4.890","$ 2.790","$ 1.690","$ 3.450","$ 2.190","$ 5.290","$ 1.990","$ 2.590"][i],18,126);
+    ctx.fillStyle="#555b54";ctx.font="600 22px Arial";ctx.fillText("PRECIO POR UNIDAD",18,166);ctx.strokeStyle="#c8c9c1";ctx.lineWidth=4;ctx.strokeRect(3,3,w-6,h-6);
+  },256,190),side:THREE.DoubleSide}));
+  const shelfYs=[-1.25,-.20,.85,1.90];
+  for(let row=0;row<4;row++){
+    const y=shelfYs[row];
+    const deck=new THREE.Mesh(new THREE.BoxGeometry(14,.105,1.34),shelfMat);deck.position.set(0,y,-4.18);deck.castShadow=true;deck.receiveShadow=true;world.add(deck);
+    const beam=new THREE.Mesh(new THREE.BoxGeometry(14,.105,.10),edgeMat);beam.position.set(0,y-.005,-3.49);world.add(beam);
+    const underside=new THREE.Mesh(new THREE.BoxGeometry(13.8,.035,1.22),darkMat);underside.position.set(0,y-.075,-4.16);world.add(underside);
+    for(let depth=0;depth<2;depth++)for(let i=0;i<15;i++){
+      const x=-6.35+i*.905+(depth?.12:0),v=(i*3+row*5+depth*7)%products.length,h=.48+((i*7+row*3+depth)%5)*.105,w=.38+(i%3)*.045;
+      const can=(i+row+depth)%5===0;
+      const pack=can?new THREE.Mesh(new THREE.CylinderGeometry(w*.48,w*.48,h,24),canMats[v]):new THREE.Mesh(new THREE.BoxGeometry(w,h,.34),packMats[v]);
+      if(can){const rim=new THREE.Mesh(new THREE.TorusGeometry(w*.47,.018,8,24),edgeMat);rim.position.y=h/2;pack.add(rim);}
+      if(!can&&(i+row)%4===0){const fold=new THREE.Mesh(new THREE.BoxGeometry(w*.72,.065,.31),packMats[v]);fold.position.y=h/2+.025;pack.add(fold);}
+      pack.position.set(x,y+.105+h/2,depth===0?-3.91:-4.52);pack.castShadow=true;pack.receiveShadow=true;world.add(pack);
     }
-    const strip=new THREE.Mesh(new THREE.BoxGeometry(14,.18,.08),new THREE.MeshStandardMaterial({color:"#c8c2b5",roughness:.8}));
-    strip.position.set(0,y-.08,-3.49); world.add(strip);
-    for(let i=0;i<7;i++){
-      const tag=new THREE.Mesh(new THREE.BoxGeometry(.7,.09,.025),new THREE.MeshBasicMaterial({color:i===2?"#c83b2b":"#343a35"}));
-      tag.position.set(-6+i*1.8,y-.08,-3.43); world.add(tag);
-    }
+    const rail=new THREE.Mesh(new THREE.BoxGeometry(14,.205,.075),new THREE.MeshStandardMaterial({color:"#e6e5dc",roughness:.38,metalness:.32}));rail.position.set(0,y-.16,-3.425);world.add(rail);
+    for(let i=0;i<12;i++){const tag=new THREE.Mesh(new THREE.PlaneGeometry(.91,.175),ticketMats[(i+row*3)%12]);tag.position.set(-6+i*1.09,y-.16,-3.382);world.add(tag);}
+    const glint=new THREE.Mesh(new THREE.BoxGeometry(13.9,.012,.012),new THREE.MeshBasicMaterial({color:"#f6e8c8"}));glint.position.set(0,y+.055,-3.48);world.add(glint);
   }
-  for(const x of [-7.15,7.15]){const upright=new THREE.Mesh(new THREE.BoxGeometry(.16,5.4,.18),edgeMat);upright.position.set(x,.4,-4.05);world.add(upright);}
+  for(const x of [-7.12,7.12]){
+    const upright=new THREE.Mesh(new THREE.BoxGeometry(.18,5.55,.22),edgeMat);upright.position.set(x,.36,-4.02);upright.castShadow=true;world.add(upright);
+    for(let i=0;i<39;i++){const slot=new THREE.Mesh(new THREE.BoxGeometry(.055,.045,.012),darkMat);slot.position.set(x,.36-2.55+i*.135,-3.902);world.add(slot);}
+    const foot=new THREE.Mesh(new THREE.BoxGeometry(.32,.12,.62),darkMat);foot.position.set(x,-2.35,-3.98);world.add(foot);
+  }
+  const header=new THREE.Mesh(new THREE.BoxGeometry(14.2,.34,.18),shelfMat);header.position.set(0,3.05,-4.02);world.add(header);
+  const headerLine=new THREE.Mesh(new THREE.BoxGeometry(13.8,.025,.015),new THREE.MeshBasicMaterial({color:"#d8f36a"}));headerLine.position.set(0,2.88,-3.91);world.add(headerLine);
   const light=new THREE.Mesh(new THREE.BoxGeometry(5.2,.08,.45),new THREE.MeshBasicMaterial({color:"#fff4d8"}));light.position.set(-1.1,4.1,-1.5);world.add(light);
 
   const jar=new THREE.Group(); jar.position.set(0,-.35,.15); world.add(jar);
