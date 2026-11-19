@@ -142,14 +142,40 @@ function createNutellaSet(world: THREE.Scene) {
   const cap=new THREE.Mesh(new THREE.CylinderGeometry(.69,.69,.32,96),capMat);cap.position.y=1.34;cap.castShadow=true;jar.add(cap);
   for(let i=0;i<48;i++){const a=i/48*Math.PI*2,ridge=new THREE.Mesh(new THREE.BoxGeometry(.035,.22,.035),capMat);ridge.position.set(Math.sin(a)*.685,1.34,Math.cos(a)*.685);ridge.rotation.y=a;jar.add(ridge);}
   const frontTex=makeCanvasTexture((ctx,w,h)=>{
-    ctx.fillStyle="#f8f6ee";ctx.fillRect(0,0,w,h);
-    // Nutella's recognizable wordmark: black initial, red remaining letters.
-    ctx.textAlign="left";ctx.textBaseline="alphabetic";ctx.font="900 178px Arial, Helvetica, sans-serif";
-    ctx.fillStyle="#171717";ctx.fillText("n",105,285);ctx.fillStyle="#d32622";ctx.fillText("utella",238,285);
-    ctx.fillStyle="#6d371e";ctx.beginPath();ctx.ellipse(510,575,300,142,-.08,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle="#8a4b28";ctx.beginPath();ctx.ellipse(500,540,255,95,-.08,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle="#f3d8a2";ctx.font="800 44px Arial";ctx.textAlign="center";ctx.fillText("HAZELNUT SPREAD",w/2,790);
-    ctx.fillStyle="#574334";ctx.font="700 31px Arial";ctx.fillText("WITH COCOA",w/2,840);
+    // Classic Argentine Nutella front: white band, black/red wordmark,
+    // bread with cocoa-hazelnut spread, milk glass and hazelnuts.
+    ctx.fillStyle="#fbfaf5";ctx.fillRect(0,0,w,h);
+    const paper=ctx.createLinearGradient(0,0,0,h);
+    paper.addColorStop(0,"rgba(255,255,255,.3)");paper.addColorStop(.5,"rgba(239,234,222,.04)");paper.addColorStop(1,"rgba(205,194,174,.16)");
+    ctx.fillStyle=paper;ctx.fillRect(0,0,w,h);
+    ctx.textAlign="left";ctx.textBaseline="alphabetic";
+    ctx.font="900 224px Arial, Helvetica, sans-serif";
+    ctx.fillStyle="#171717";ctx.fillText("n",104,270);
+    ctx.fillStyle="#df242b";ctx.fillText("utella",238,270);
+    ctx.font="700 25px Arial, Helvetica, sans-serif";ctx.fillStyle="#25211d";ctx.fillText("FERRERO",108,299);
+    ctx.font="700 29px Arial, Helvetica, sans-serif";ctx.fillStyle="#29251f";ctx.fillText("®",815,186);
+    // Toasted bread silhouette and glossy spread.
+    ctx.save();ctx.shadowColor="rgba(65,39,20,.22)";ctx.shadowBlur=18;ctx.shadowOffsetY=8;
+    ctx.fillStyle="#c88743";ctx.beginPath();ctx.moveTo(115,405);ctx.bezierCurveTo(125,350,185,331,250,348);ctx.bezierCurveTo(315,323,385,352,402,407);ctx.lineTo(390,650);ctx.quadraticCurveTo(255,696,126,645);ctx.closePath();ctx.fill();ctx.restore();
+    ctx.fillStyle="#f2d39a";ctx.beginPath();ctx.moveTo(139,421);ctx.bezierCurveTo(155,374,205,361,254,375);ctx.bezierCurveTo(318,352,367,382,378,423);ctx.lineTo(366,624);ctx.quadraticCurveTo(255,665,151,620);ctx.closePath();ctx.fill();
+    ctx.save();ctx.shadowColor="rgba(66,30,15,.35)";ctx.shadowBlur=12;
+    ctx.fillStyle="#542817";ctx.beginPath();ctx.moveTo(151,432);ctx.bezierCurveTo(183,389,225,398,259,405);ctx.bezierCurveTo(304,380,350,407,367,446);ctx.lineTo(354,564);ctx.bezierCurveTo(286,594,205,588,158,556);ctx.closePath();ctx.fill();ctx.restore();
+    ctx.strokeStyle="#8a4a27";ctx.lineWidth=8;ctx.lineCap="round";ctx.beginPath();ctx.moveTo(170,468);ctx.bezierCurveTo(215,423,278,451,343,432);ctx.stroke();
+    // Spreader knife.
+    ctx.save();ctx.translate(332,400);ctx.rotate(-.55);ctx.fillStyle="#d8d9d4";ctx.beginPath();ctx.moveTo(-12,0);ctx.lineTo(2,-105);ctx.quadraticCurveTo(10,-124,19,-104);ctx.lineTo(18,0);ctx.closePath();ctx.fill();ctx.fillStyle="#7b5138";ctx.fillRect(-8,0,24,110);ctx.restore();
+    // Milk glass with subtle cool reflections.
+    ctx.save();ctx.fillStyle="#f4f7f2";ctx.beginPath();ctx.moveTo(510,370);ctx.lineTo(660,370);ctx.lineTo(642,645);ctx.quadraticCurveTo(584,664,528,645);ctx.closePath();ctx.fill();
+    ctx.strokeStyle="#a9c1c2";ctx.lineWidth=9;ctx.beginPath();ctx.moveTo(510,370);ctx.lineTo(660,370);ctx.lineTo(642,645);ctx.quadraticCurveTo(584,664,528,645);ctx.closePath();ctx.stroke();
+    ctx.fillStyle="rgba(255,255,255,.7)";ctx.fillRect(524,391,15,220);ctx.restore();
+    // Hazelnuts and green leaves.
+    const nut=(x:number,y:number,r:number)=>{ctx.fillStyle="#9a5526";ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();ctx.strokeStyle="#d99a55";ctx.lineWidth=7;ctx.stroke();ctx.fillStyle="#e3b77c";ctx.beginPath();ctx.arc(x-r*.25,y-r*.25,r*.22,0,Math.PI*2);ctx.fill();};
+    nut(742,574,51);nut(824,610,43);nut(695,650,34);
+    ctx.fillStyle="#4d7b42";ctx.beginPath();ctx.ellipse(760,492,29,72,-.75,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle="#71964b";ctx.beginPath();ctx.ellipse(835,510,24,62,.65,0,Math.PI*2);ctx.fill();
+    ctx.textAlign="center";ctx.fillStyle="#29251f";ctx.font="800 31px Arial, Helvetica, sans-serif";
+    ctx.fillText("PASTA DULCE CON AVELLANAS Y CACAO",w/2,766);
+    ctx.textAlign="right";ctx.font="700 34px Arial, Helvetica, sans-serif";ctx.fillText("PESO NETO",930,832);
+    ctx.font="900 49px Arial, Helvetica, sans-serif";ctx.fillText("140 g",930,881);
   },1024,900);
   const backTex=makeCanvasTexture((ctx,w,h)=>{
     ctx.fillStyle="#f7f4e9";ctx.fillRect(0,0,w,h);
