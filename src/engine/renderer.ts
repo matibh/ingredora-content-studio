@@ -238,7 +238,7 @@ function drawNutellaOverlay(ctx: CanvasRenderingContext2D, frame: number, fps: n
     const words=item.text.split(" ");
     const fontSize=width*(item.text.length>31?.047:item.text.length>22?.054:.066);
     ctx.save(); ctx.globalAlpha=alpha;
-    const panelW=width*.91, panelH=height*.145, panelX=(width-panelW)/2, panelY=height*.755+lift;
+    const panelW=width*.91, panelH=height*.145, panelX=(width-panelW)/2, panelY=(t>=8.25 && t<15 ? height*.66 : height*.755)+lift;
     const panel=ctx.createLinearGradient(panelX,panelY,panelX+panelW,panelY+panelH);
     panel.addColorStop(0,"rgba(5,17,12,.91)"); panel.addColorStop(.5,"rgba(11,29,20,.94)"); panel.addColorStop(1,"rgba(5,17,12,.91)");
     rounded(panelX,panelY,panelW,panelH,panelH*.18); ctx.fillStyle=panel; ctx.fill();
