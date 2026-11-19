@@ -35,3 +35,9 @@ All notable documentation and specification changes are recorded here.
 - Added `docs/05-product-library.md` defining product/brand/variant records, evidence provenance, asset rights, fidelity levels, versioning and campaign references.
 - Explicitly separated factual verification, visual observations, model fidelity and publication permissions; no product facts or brand permissions are assumed.
 - No application code or production infrastructure has been implemented.
+
+## 2026-11-19 — 3D Product Studio
+
+- Added `docs/06-3d-product-studio.md` defining browser-based parametric packaging models, material presets, UV/textures, product animations, versioning, security and performance constraints.
+- Kept geometry limits, GLB/glTF pipeline, browser compatibility and device benchmarks open pending prototypes.
+- No application code or production infrastructure has been implemented.
