@@ -32,7 +32,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add public/studio/audio/nutella-v8-voice-es-AR.mp3
+          git add public/studio/audio/nutella-v9-voice-es-AR.mp3
           git diff --cached --quiet || git commit -m "Add Nutella v8 Argentine Spanish voiceover"
           git pull --rebase origin main
           git push
