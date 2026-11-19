@@ -31,14 +31,14 @@
     },
     {
       "text": "¿Cuántos acertaste?",
-      "start": 22.8,
-      "end": 24.768,
+      "start": 21.1,
+      "end": 23.068,
       "wordCount": 2
     },
     {
       "text": "¡Jugá en Ingredora!",
-      "start": 24.95,
-      "end": 26.966,
+      "start": 23.25,
+      "end": 25.266,
       "wordCount": 3
     }
   ],
@@ -195,32 +195,32 @@
     },
     {
       "text": "Cuántos",
-      "start": 22.8955,
-      "end": 23.2591,
+      "start": 21.1955,
+      "end": 21.5591,
       "segment": 4
     },
     {
       "text": "acertaste",
-      "start": 23.2591,
-      "end": 23.8841,
+      "start": 21.5591,
+      "end": 22.1841,
       "segment": 4
     },
     {
       "text": "Jugá",
-      "start": 25.0466,
-      "end": 25.3989,
+      "start": 23.3466,
+      "end": 23.6989,
       "segment": 5
     },
     {
       "text": "en",
-      "start": 25.4216,
-      "end": 25.5011,
+      "start": 23.7216,
+      "end": 23.8011,
       "segment": 5
     },
     {
       "text": "Ingredora",
-      "start": 25.5239,
-      "end": 26.092,
+      "start": 23.8239,
+      "end": 24.392,
       "segment": 5
     }
   ]
