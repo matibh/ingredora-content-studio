@@ -1,0 +1,353 @@
+{
+  "schemaVersion": 1,
+  "engineVersion": "1.0.0",
+  "id": "ingredora-15-seconds-teaser-001",
+  "title": "Un producto. 15 segundos.",
+  "description": "Teaser vertical de lanzamiento para el desafío de Ingredora. Diseño 3D abstracto original; no representa un producto comercial real.",
+  "createdAt": "2026-11-19T20:00:00-03:00",
+  "fps": 30,
+  "width": 720,
+  "height": 1280,
+  "scenes": [
+    {
+      "id": "opening-product-reveal",
+      "startFrame": 0,
+      "durationFrames": 80,
+      "background": "#173b2a",
+      "camera": {
+        "position": [
+          0,
+          0.25,
+          6.6
+        ],
+        "target": [
+          0,
+          0,
+          0
+        ],
+        "fov": 34
+      },
+      "accentColor": "#d8f36a",
+      "headline": "UN PRODUCTO.",
+      "subline": "15 SEGUNDOS.",
+      "objects": [
+        {
+          "id": "jar-body",
+          "shape": "cylinder",
+          "color": "#d8e3b7",
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            1.3,
+            2.2,
+            1.3
+          ],
+          "rotation": [
+            0,
+            0,
+            0
+          ],
+          "animation": {
+            "type": "float-rotate",
+            "speed": 0.8,
+            "amount": 0.08
+          }
+        },
+        {
+          "id": "jar-cap",
+          "shape": "cylinder",
+          "color": "#315b3e",
+          "position": [
+            0,
+            1.18,
+            0
+          ],
+          "scale": [
+            0.72,
+            0.18,
+            0.72
+          ]
+        },
+        {
+          "id": "label-band",
+          "shape": "torus",
+          "color": "#b4c86a",
+          "position": [
+            0,
+            -0.05,
+            0
+          ],
+          "scale": [
+            1.28,
+            1.28,
+            1.28
+          ],
+          "rotation": [
+            1.5708,
+            0,
+            0
+          ]
+        },
+        {
+          "id": "seed-a",
+          "shape": "sphere",
+          "color": "#e3bd72",
+          "position": [
+            -1.45,
+            -1.25,
+            0.4
+          ],
+          "scale": [
+            0.22,
+            0.22,
+            0.22
+          ],
+          "animation": {
+            "type": "float-rotate",
+            "speed": 1.5,
+            "amount": 0.14
+          }
+        },
+        {
+          "id": "seed-b",
+          "shape": "sphere",
+          "color": "#a6c67b",
+          "position": [
+            1.35,
+            1.2,
+            0.2
+          ],
+          "scale": [
+            0.18,
+            0.18,
+            0.18
+          ],
+          "animation": {
+            "type": "float-rotate",
+            "speed": 1.2,
+            "amount": 0.18,
+            "phase": 1.4
+          }
+        }
+      ]
+    },
+    {
+      "id": "ingredient-challenge",
+      "startFrame": 80,
+      "durationFrames": 80,
+      "background": "#244b35",
+      "camera": {
+        "position": [
+          0,
+          0,
+          7.2
+        ],
+        "target": [
+          0,
+          0,
+          0
+        ],
+        "fov": 37
+      },
+      "accentColor": "#e5c47b",
+      "headline": "¿CUÁNTOS RECONOCÉS?",
+      "subline": "PONÉ A PRUEBA TU OJO.",
+      "objects": [
+        {
+          "id": "orb-green",
+          "shape": "sphere",
+          "color": "#a8c47b",
+          "position": [
+            -1.35,
+            0.3,
+            0
+          ],
+          "scale": [
+            0.9,
+            0.9,
+            0.9
+          ],
+          "animation": {
+            "type": "float-rotate",
+            "speed": 1.2,
+            "amount": 0.24
+          }
+        },
+        {
+          "id": "orb-gold",
+          "shape": "sphere",
+          "color": "#e3bd72",
+          "position": [
+            0,
+            0.05,
+            0.3
+          ],
+          "scale": [
+            1.1,
+            1.1,
+            1.1
+          ],
+          "animation": {
+            "type": "float-rotate",
+            "speed": 1.4,
+            "amount": 0.18,
+            "phase": 1.2
+          }
+        },
+        {
+          "id": "orb-cream",
+          "shape": "sphere",
+          "color": "#e8e0c8",
+          "position": [
+            1.35,
+            -0.25,
+            0
+          ],
+          "scale": [
+            0.78,
+            0.78,
+            0.78
+          ],
+          "animation": {
+            "type": "float-rotate",
+            "speed": 1.1,
+            "amount": 0.22,
+            "phase": 2.1
+          }
+        },
+        {
+          "id": "ring-a",
+          "shape": "torus",
+          "color": "#d8f36a",
+          "position": [
+            -1.35,
+            0.3,
+            -0.55
+          ],
+          "scale": [
+            1.05,
+            1.05,
+            1.05
+          ],
+          "rotation": [
+            0.7,
+            0.3,
+            0
+          ]
+        },
+        {
+          "id": "ring-b",
+          "shape": "torus",
+          "color": "#e3bd72",
+          "position": [
+            1.35,
+            -0.25,
+            -0.55
+          ],
+          "scale": [
+            0.95,
+            0.95,
+            0.95
+          ],
+          "rotation": [
+            0.2,
+            0.8,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "id": "call-to-play",
+      "startFrame": 160,
+      "durationFrames": 80,
+      "background": "#142e22",
+      "camera": {
+        "position": [
+          0,
+          0.1,
+          6.4
+        ],
+        "target": [
+          0,
+          0,
+          0
+        ],
+        "fov": 35
+      },
+      "accentColor": "#d8f36a",
+      "headline": "¿TE ANIMÁS?",
+      "subline": "JUGÁ EN INGREDORA.",
+      "objects": [
+        {
+          "id": "hero-cube",
+          "shape": "box",
+          "color": "#d8f36a",
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            1.75,
+            1.75,
+            1.75
+          ],
+          "rotation": [
+            0.3,
+            0.5,
+            0
+          ],
+          "animation": {
+            "type": "float-rotate",
+            "speed": 0.65,
+            "amount": 0.12
+          }
+        },
+        {
+          "id": "orbit-one",
+          "shape": "torus",
+          "color": "#e8e0c8",
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            2.05,
+            2.05,
+            2.05
+          ],
+          "rotation": [
+            1.2,
+            0.25,
+            0
+          ]
+        },
+        {
+          "id": "orbit-two",
+          "shape": "torus",
+          "color": "#9ab875",
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "scale": [
+            2.35,
+            2.35,
+            2.35
+          ],
+          "rotation": [
+            0.5,
+            0.8,
+            0
+          ]
+        }
+      ]
+    }
+  ]
+}
