@@ -174,3 +174,39 @@ Cambios aplicados al motor:
 El diseño sonoro continúa siendo original y procedural: textura de efervescencia/vertido, acentos de hielo, golpe de congelamiento, ticks del contador y acorde de revelación. No se agregan grabaciones comerciales ni se presenta la pieza como publicidad oficial.
 
 **Pendiente de validación visual:** volver a renderizar desde el navegador y revisar el WebM real en móvil. El cambio de código y el build de Pages no sustituyen la inspección del video. No aprobar ni subir hasta revisar el resultado.
+
+## 12. Voz en off y subtítulos palabra por palabra — versión 3
+
+La versión 3 incorpora locución femenina neuronal mediante **Edge TTS**, con la voz es-AR-ElenaNeural (español argentino), velocidad +10%, tono +4Hz y volumen +12%.
+
+La narración se genera por bloques para respetar los cortes de imagen. La ventana de 15 segundos para adivinar y la revelación de ingredientes permanecen deliberadamente sin locución: la voz no lee la lista de ingredientes.
+
+### Guion de locución
+
+| Inicio previsto | Locución |
+|---:|---|
+| 00:00.22 | «Un día de calor…» |
+| 00:03.10 | «Una Coca bien fría, con hielo y burbujas.» |
+| 00:07.42 | «Pero pará… ¿sabés qué tiene adentro?» |
+| 00:10.50 | «Tenés quince segundos para adivinar sus ingredientes.» |
+| 00:31.05 | «¿Cuántos acertaste? Entrá a Ingredora punto com y jugá.» |
+
+### Sincronización
+
+- Edge TTS entrega eventos WordBoundary; el generador conserva text, start y end de cada palabra.
+- Cada bloque de voz se ubica en su instante de escena y se mezcla en una pista MP3 de 34 segundos.
+- El renderizador dibuja subtítulos sobre el video, palabra por palabra: las palabras ya pronunciadas permanecen visibles y la palabra activa se resalta.
+- La música baja de volumen automáticamente cuando hay narración. Los efectos originales permanecen en la mezcla.
+- No se inventan tiempos manuales: las marcas se derivan de los eventos de Edge TTS.
+- La pieza no se aprueba hasta revisar reproducción, pronunciación, sincronización y mezcla real.
+
+### Archivos
+
+- Generador: scripts/generate-coca-cola-poolside-voice.py
+- Workflow: .github/workflows/generate-coca-cola-poolside-voice.yml
+- Voz: public/studio/audio/coca-cola-poolside-v2-voice-es-AR.mp3
+- Tiempos por palabra: public/studio/audio/coca-cola-poolside-v2-word-timings.json
+- Paquete: public/studio/packages/coca-cola-poolside.v1.json
+- Motor de subtítulos: src/engine/renderer.ts
+
+El audio y el JSON de tiempos se generan en GitHub Actions usando el cliente gratuito de Edge TTS; no se exponen credenciales en el navegador. La generación no publica el video ni aprueba la producción.
