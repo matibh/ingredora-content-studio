@@ -3,7 +3,7 @@
   "engineVersion": "1.0.0",
   "id": "ingredora-coca-cola-poolside-002",
   "title": "Coca-Cola — Un día de playa, una Coca bien fría",
-  "description": "Spot vertical de 34 segundos ambientado en una playa realista, con vertido macro, Edge TTS Elena, subtítulos palabra por palabra, desafío de seis segundos y 60 FPS.",
+  "description": "Spot vertical 60 FPS en playa de mediodía. Sin mano visible: botella abierta con flujo de cola desde el interior de la boca, trayectoria balística bajo gravedad, gotas secundarias, impacto y nivel del vaso sincronizados.",
   "createdAt": "2026-11-19T20:00:00-03:00",
   "fps": 60,
   "width": 720,
@@ -11,7 +11,7 @@
   "visualPreset": "coca-cola-poolside",
   "scenes": [
     {
-      "id": "summer-poolside-pour-freeze-challenge-reveal",
+      "id": "summer-beach-bottle-to-glass-ballistic-pour",
       "startFrame": 0,
       "durationFrames": 2040,
       "background": "#70b7e8",
