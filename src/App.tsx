@@ -1,10 +1,15 @@
 import { useEffect, useState, type FormEvent } from "react";
 
 type Status = "Borrador" | "En preparación" | "En revisión" | "Aprobada";
+type Scene = {
+  id: number; title: string; seconds: number; purpose: string; visual: string;
+  camera: string; screenText: string; voiceover: string; audio: string; transition: string;
+};
 type Campaign = {
   id: number; name: string; format: string; updated: string; objective: string;
   product: string; audience: string; language: string; platform: string;
   duration: string; concept: string; callToAction: string; status: Status;
+  scenes?: Scene[];
 };
 type SectionId = "home" | "campaigns" | "products" | "product-studio" | "characters" | "scenes" | "editor" | "library" | "distribution" | "analytics";
 const STORAGE_KEY = "ingredora-content-studio:campaigns:v1";
@@ -65,6 +70,23 @@ function App() {
     setCampaigns((items)=>items.map((item)=>item.id===id?{...item,...changes,updated:"Editada"}:item));
   }
 
+  function addScene(campaign:Campaign) {
+    const next:Scene={id:Date.now(),title:"Nueva escena",seconds:5,purpose:"",visual:"",camera:"Plano medio",screenText:"",voiceover:"",audio:"",transition:"Corte"};
+    patch(campaign.id,{scenes:[...(campaign.scenes??[]),next]});
+  }
+  function patchScene(campaign:Campaign,sceneId:number,changes:Partial<Scene>) {
+    patch(campaign.id,{scenes:(campaign.scenes??[]).map((scene)=>scene.id===sceneId?{...scene,...changes}:scene)});
+  }
+  function removeScene(campaign:Campaign,sceneId:number) {
+    patch(campaign.id,{scenes:(campaign.scenes??[]).filter((scene)=>scene.id!==sceneId)});
+  }
+  function moveScene(campaign:Campaign,index:number,direction:-1|1) {
+    const scenes=[...(campaign.scenes??[])],target=index+direction;
+    if(target<0||target>=scenes.length)return;
+    [scenes[index],scenes[target]]=[scenes[target],scenes[index]];
+    patch(campaign.id,{scenes});
+  }
+
   const page = copy[section];
   return <div className="app-shell">
     <aside className="sidebar">
@@ -95,7 +117,7 @@ function App() {
           <label>Concepto / idea central<textarea rows={5} value={selected.concept} placeholder="¿Qué sucede en el video? ¿Cuál es el hook? ¿Qué queremos que haga la audiencia?" onChange={(e)=>patch(selected.id,{concept:e.target.value})}/></label>
           <label>Call to action<input value={selected.callToAction} onChange={(e)=>patch(selected.id,{callToAction:e.target.value})}/></label>
           <label>Estado<select value={selected.status} onChange={(e)=>patch(selected.id,{status:e.target.value as Status})}><option>Borrador</option><option>En preparación</option><option>En revisión</option><option>Aprobada</option></select></label>
-        </div></section><aside className="content-card production-next"><p className="eyebrow">02 / PRÓXIMOS PASOS</p><h3>Construí la historia.</h3><p>La ficha ya organiza la intención de la campaña. Después sumaremos guion, storyboard, escenas y recursos.</p><div className="next-step-list"><div><span>01</span><p><strong>Brief creativo</strong><small>Disponible ahora</small></p><b>✓</b></div><div><span>02</span><p><strong>Guion y storyboard</strong><small>Siguiente módulo</small></p><b>—</b></div><div><span>03</span><p><strong>Producción audiovisual</strong><small>Product Studio + Scene Engine</small></p><b>—</b></div><div><span>04</span><p><strong>Render y distribución</strong><small>Editor + Quality Gate</small></p><b>—</b></div></div><div className="detail-note">Los cambios se guardan automáticamente en este navegador. Todavía no existe sincronización en la nube.</div></aside></div></section>}
+        </div></section><section className="content-card storyboard-card"><div className="card-heading"><div><p className="eyebrow">02 / NARRATIVA</p><h3>Guion y storyboard</h3><p className="storyboard-intro">Diseñá cada momento antes de pasar a la producción audiovisual.</p></div><button className="primary-button" type="button" onClick={()=>addScene(selected)}>＋ Agregar escena</button></div><div className="storyboard-summary"><div><strong>{(selected.scenes??[]).length.toString().padStart(2,"0")}</strong><span>Escenas</span></div><div><strong>{(selected.scenes??[]).reduce((sum,scene)=>sum+Math.max(0,Number(scene.seconds)||0),0)}s</strong><span>Duración total</span></div><div><strong>{selected.duration}</strong><span>Objetivo de campaña</span></div></div>{(selected.scenes??[]).length===0?<div className="storyboard-empty"><span>✳</span><strong>La historia todavía no tiene escenas.</strong><p>Agregá la primera escena y empezá por el hook: ¿qué ve la audiencia en los primeros segundos?</p><button className="secondary-button" type="button" onClick={()=>addScene(selected)}>Crear primera escena</button></div>:<div className="scene-list">{(selected.scenes??[]).map((scene,index)=><article className="scene-card" key={scene.id}><div className="scene-card-top"><div className="scene-index">ESCENA {String(index+1).padStart(2,"0")}</div><div className="scene-controls"><span>{scene.seconds}s</span><button type="button" aria-label="Mover escena arriba" disabled={index===0} onClick={()=>moveScene(selected,index,-1)}>↑</button><button type="button" aria-label="Mover escena abajo" disabled={index===(selected.scenes??[]).length-1} onClick={()=>moveScene(selected,index,1)}>↓</button><button type="button" aria-label="Eliminar escena" onClick={()=>removeScene(selected,scene.id)}>×</button></div></div><div className="scene-fields"><label>Título<input value={scene.title} maxLength={80} onChange={(e)=>patchScene(selected,scene.id,{title:e.target.value})}/></label><label>Duración (segundos)<input type="number" min="1" max="120" value={scene.seconds} onChange={(e)=>patchScene(selected,scene.id,{seconds:Math.max(1,Math.min(120,Number(e.target.value)||1))})}/></label><label>Objetivo narrativo<input value={scene.purpose} placeholder="Ej. Generar curiosidad" onChange={(e)=>patchScene(selected,scene.id,{purpose:e.target.value})}/></label><label>Acción / descripción visual<textarea rows={3} value={scene.visual} placeholder="Qué aparece, qué sucede y cómo interactúa el producto..." onChange={(e)=>patchScene(selected,scene.id,{visual:e.target.value})}/></label><label>Cámara<select value={scene.camera} onChange={(e)=>patchScene(selected,scene.id,{camera:e.target.value})}><option>Plano medio</option><option>Plano general</option><option>Primer plano</option><option>Macro de producto</option><option>Travelling / seguimiento</option><option>Órbita 3D</option><option>Picado</option><option>Contrapicado</option><option>Cámara fija</option></select></label><label>Texto en pantalla<input value={scene.screenText} placeholder="Titular o subtítulo" onChange={(e)=>patchScene(selected,scene.id,{screenText:e.target.value})}/></label><label>Locución / voz<textarea rows={2} value={scene.voiceover} placeholder="Texto hablado (opcional)" onChange={(e)=>patchScene(selected,scene.id,{voiceover:e.target.value})}/></label><label>Audio / SFX<input value={scene.audio} placeholder="Música, ambiente o efecto" onChange={(e)=>patchScene(selected,scene.id,{audio:e.target.value})}/></label><label>Transición<select value={scene.transition} onChange={(e)=>patchScene(selected,scene.id,{transition:e.target.value})}><option>Corte</option><option>Fundido</option><option>Desplazamiento</option><option>Zoom</option><option>Match cut</option></select></label></div></article>)}</div>}<p className="storyboard-footnote">Storyboard editable guardado en este navegador. Todavía no genera video ni sincroniza datos con la nube.</p></section><aside className="content-card production-next"><p className="eyebrow">02 / PRÓXIMOS PASOS</p><h3>Construí la historia.</h3><p>El brief define la intención y el storyboard organiza la narrativa escena por escena. El próximo paso será conectar estas escenas con el motor visual.</p><div className="next-step-list"><div><span>01</span><p><strong>Brief creativo</strong><small>Disponible ahora</small></p><b>✓</b></div><div><span>02</span><p><strong>Guion y storyboard</strong><small>Disponible ahora</small></p><b>✓</b></div><div><span>03</span><p><strong>Producción audiovisual</strong><small>Product Studio + Scene Engine</small></p><b>—</b></div><div><span>04</span><p><strong>Render y distribución</strong><small>Editor + Quality Gate</small></p><b>—</b></div></div><div className="detail-note">Los cambios se guardan automáticamente en este navegador. Todavía no existe sincronización en la nube.</div></aside></div></section>}
         {section!=="home"&&section!=="campaigns"&&<section className="module-placeholder"><div className="placeholder-icon">{groups.flatMap((g)=>g.items).find((item)=>item.id===section)?.icon}</div><p className="eyebrow">MÓDULO PREPARADO</p><h2>Estamos construyendo este espacio.</h2><p>La sección ya forma parte de la estructura de Ingredora Content Studio. Su funcionalidad se incorporará por etapas, manteniendo el flujo de trabajo y el presupuesto cero.</p><button className="secondary-button" onClick={()=>setSection("home")} type="button">Volver al inicio</button></section>}
         <footer className="page-footer"><span>INGREDORA CONTENT STUDIO</span><span>CREAR CON INTENCIÓN · PRODUCIR CON LIBERTAD</span><span>v0.2.0</span></footer>
       </div>
