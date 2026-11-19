@@ -696,7 +696,9 @@ export async function renderPackageToWebM(
   renderer.setSize(pkg.width, pkg.height, false);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 0.92;
+  renderer.toneMappingExposure = pkg.visualPreset === "coca-cola-poolside" ? 1.08 : 0.92;
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
   const outputCanvas = document.createElement("canvas");
   outputCanvas.width = pkg.width;
@@ -764,14 +766,58 @@ export async function renderPackageToWebM(
   const drawFrame = (frame: number) => {
     if (poolsideSet) {
       const time = frame / fps;
-      poolsideSet.update(Math.min(time, 7.2));
+      poolsideSet.update(time);
       const ease = (value: number) => { const x = Math.max(0, Math.min(1, value)); return x * x * (3 - 2 * x); };
-      const approach = ease(time / 3.2);
-      const cameraZ = 9.8 - approach * 2.3;
-      const cameraY = 1.35 - approach * 0.25;
-      camera.position.set(0, cameraY, cameraZ);
-      camera.lookAt(0, -0.62, 0.35);
-      camera.fov = 47 - approach * 5;
+      let cameraX = 0.15;
+      let cameraY = 2.25;
+      let cameraZ = 10.8;
+      let targetX = 0;
+      let targetY = -0.05;
+      let targetZ = -3.1;
+      let fieldOfView = 43;
+
+      if (time >= 2.35 && time < 7.2) {
+        const macro = ease((time - 2.35) / 1.0);
+        const pourZoom = ease((time - 3.0) / 3.3);
+        cameraX = 0.12 + macro * 0.46;
+        cameraY = 1.75 - macro * 0.72;
+        cameraZ = 9.4 - macro * 2.25 - pourZoom * 0.35;
+        targetX = 0.35 + macro * 0.26;
+        targetY = -0.08 - macro * 0.36;
+        targetZ = 0.72;
+        fieldOfView = 43 - macro * 5.5 - pourZoom * 1.5;
+      } else if (time >= 7.2 && time < 16) {
+        const settle = ease((time - 7.2) / 0.55);
+        cameraX = 0.58;
+        cameraY = 1.03;
+        cameraZ = 6.8 + settle * 0.18;
+        targetX = 0.62;
+        targetY = -0.42;
+        targetZ = 0.86;
+        fieldOfView = 37.5;
+      } else if (time >= 16 && time < 29.35) {
+        const revealPullback = ease((time - 16) / 2.2);
+        cameraX = 0.58 * (1 - revealPullback);
+        cameraY = 1.03 + revealPullback * 0.74;
+        cameraZ = 7.0 + revealPullback * 2.2;
+        targetX = 0.25 * (1 - revealPullback);
+        targetY = -0.42 + revealPullback * 0.08;
+        targetZ = 0.35 - revealPullback * 2.0;
+        fieldOfView = 37.5 + revealPullback * 3.5;
+      } else if (time >= 29.35) {
+        const endMove = ease((time - 29.35) / 0.85);
+        cameraX = 0;
+        cameraY = 1.77 + endMove * 0.18;
+        cameraZ = 9.2 + endMove * 0.55;
+        targetX = 0;
+        targetY = -0.12;
+        targetZ = -1.7;
+        fieldOfView = 41;
+      }
+
+      camera.position.set(cameraX, cameraY, cameraZ);
+      camera.lookAt(targetX, targetY, targetZ);
+      camera.fov = fieldOfView;
       camera.updateProjectionMatrix();
       renderer.render(world, camera);
       ctx.drawImage(renderer.domElement, 0, 0, pkg.width, pkg.height);
