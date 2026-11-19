@@ -1,24 +1,24 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-19T21:05:00-03:00",
+  "updatedAt": "2026-11-19T15:20:00-03:00",
   "productions": [
     {
-      "id": "ingredora-nutella-supermarket-spot-004",
-      "title": "Nutella — Góndola con pared pintada (versión 4)",
-      "description": "Versión 4: pared posterior gris cálida con acabado de pintura y textura sutil, más zócalos para dar profundidad y eliminar el fondo blanco vacío. Conserva la iluminación cinematográfica y el acercamiento exclusivo de la etiqueta.",
+      "id": "ingredora-nutella-supermarket-spot-005",
+      "title": "Nutella — Luz cinematográfica y desafío con voz (versión 5)",
+      "description": "Versión de 15 segundos: iluminación con más contraste, etiqueta curva mejor integrada, ingredientes en negrita y narración neuronal argentina mezclada con la música.",
       "status": "rendering",
-      "packageUrl": "studio/packages/nutella-supermarket.v4.json",
-      "durationSeconds": 12,
+      "packageUrl": "studio/packages/nutella-supermarket.v5.json",
+      "durationSeconds": 15,
       "aspectRatio": "9:16",
-      "language": "Español",
+      "language": "Español argentino",
       "platforms": [
         "TikTok",
         "Instagram Reels",
         "YouTube Shorts"
       ],
-      "version": "4.0",
-      "createdAt": "2026-11-19T21:05:00-03:00",
-      "caption": "Un clásico de la góndola. 🍫 Mirá de cerca la etiqueta: ¿cuántos ingredientes podés recordar? #Ingredora #Nutella #DesafíoDeIngredientes"
+      "version": "5.0",
+      "createdAt": "2026-11-19T15:20:00-03:00",
+      "caption": "Lo reconocés enseguida, pero… ¿sabés qué tiene realmente? 🍫 Mirá el dorso y jugá con Ingredora: ¿cuántos ingredientes recordabas? #Ingredora #Nutella #DesafíoDeIngredientes"
     }
   ]
 }
