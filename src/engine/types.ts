@@ -37,5 +37,6 @@ export type ProductionPackage = {
   fps: number;
   width: number;
   height: number;
-  scenes: ProductionScene[];\n  visualPreset?: "nutella-supermarket";
+  scenes: ProductionScene[];
+  visualPreset?: "nutella-supermarket";
 };
