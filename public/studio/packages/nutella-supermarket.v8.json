@@ -3,7 +3,7 @@
   "engineVersion": "1.0.0",
   "id": "ingredora-nutella-supermarket-spot-009",
   "title": "Nutella — Desafío y visita a Ingredora (versión 9)",
-  "description": "Spot vertical de 26 segundos: desafío de memoria, invitación a entrar a ingredora.com y alternativa de buscar el enlace en el perfil.",
+  "description": "Spot vertical de 33 segundos: desafío de memoria, invitación a entrar a ingredora.com y alternativa de buscar el enlace en el perfil.",
   "createdAt": "2026-11-19T16:00:00-03:00",
   "fps": 30,
   "width": 720,
@@ -15,7 +15,7 @@
     {
       "id": "supermarket-memory-challenge-site-cta-v9",
       "startFrame": 0,
-      "durationFrames": 780,
+      "durationFrames": 990,
       "background": "#96978f",
       "camera": {
         "position": [
