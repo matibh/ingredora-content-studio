@@ -78,3 +78,10 @@ All notable documentation and specification changes are recorded here.
 - Added `docs/12-quality-assurance-y-content-quality-gate.md` defining quality gates from brief through publication, blocker/major/minor findings, factual claims, product/gameplay accuracy, rights, localization, audiovisual integrity, privacy and human approval.
 - Separated automated checks from mandatory human review; a render-complete state does not imply approval or permission to publish.
 - No application code, moderation service or publication integration has been implemented.
+
+## 2026-11-19 — Social Distribution and Publishing
+
+- Added `docs/13-distribucion-y-publicacion-social.md` defining channel strategy, platform-specific Social Packages, export adaptations, metadata, manual publishing, UTM attribution and future API evaluation.
+- Kept TikTok, Instagram and YouTube manual in the MVP; excluded X API due to pay-per-use pricing.
+- Documented TikTok Direct Post audit and intended-use restrictions, Instagram professional-account/public-media considerations and YouTube API quota caveats.
+- No social account connection, OAuth flow or publication integration has been implemented.
