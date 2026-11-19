@@ -1,4 +1,7 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { renderPackageToWebM, type RenderProgress } from "./engine/renderer";
+import { getRenderedVideo, saveRenderedVideo } from "./engine/storage";
+import type { ProductionPackage } from "./engine/types";
 
 type Production = {
   id: string;
@@ -6,6 +9,7 @@ type Production = {
   description?: string;
   status: "ready" | "rendering" | "planned";
   videoUrl?: string;
+  packageUrl?: string;
   posterUrl?: string;
   durationSeconds?: number;
   aspectRatio?: "9:16" | "1:1" | "16:9";
@@ -44,6 +48,10 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [connection, setConnection] = useState<"connected" | "error">("connected");
   const [activeId, setActiveId] = useState<string | null>(null);
+  const [localVideos, setLocalVideos] = useState<Record<string, string>>({});
+  const [renderProgress, setRenderProgress] = useState<Record<string, RenderProgress>>({});
+  const [renderErrors, setRenderErrors] = useState<Record<string, string>>({});
+  const renderingIds = useRef(new Set<string>());
 
   const loadProductions = useCallback(async () => {
     try {
@@ -75,9 +83,52 @@ function App() {
     };
   }, [loadProductions]);
 
-  const ready = manifest.productions.filter((item) => item.status === "ready" && item.videoUrl);
+  useEffect(() => {
+    const candidate = manifest.productions.find((item) =>
+      item.packageUrl && !item.videoUrl && !localVideos[item.id] && !renderingIds.current.has(item.id)
+    );
+    if (!candidate) return;
+    let cancelled = false;
+    renderingIds.current.add(candidate.id);
+
+    const produce = async () => {
+      try {
+        const stored = await getRenderedVideo(candidate.id);
+        if (cancelled) return;
+        if (stored) {
+          setLocalVideos((current) => ({ ...current, [candidate.id]: URL.createObjectURL(stored) }));
+          return;
+        }
+        setRenderErrors((current) => { const next = { ...current }; delete next[candidate.id]; return next; });
+        const packageResponse = await fetch(import.meta.env.BASE_URL + candidate.packageUrl + "?v=1", { cache: "no-cache" });
+        if (!packageResponse.ok) throw new Error("No se pudo cargar el paquete (" + packageResponse.status + ").");
+        const productionPackage = await packageResponse.json() as ProductionPackage;
+        const blob = await renderPackageToWebM(productionPackage, (progress) => {
+          if (!cancelled) setRenderProgress((current) => ({ ...current, [candidate.id]: progress }));
+        });
+        if (cancelled) return;
+        if (!blob.size) throw new Error("El render terminó sin generar un archivo de video.");
+        await saveRenderedVideo(candidate.id, blob);
+        if (cancelled) return;
+        setLocalVideos((current) => ({ ...current, [candidate.id]: URL.createObjectURL(blob) }));
+        setRenderProgress((current) => ({ ...current, [candidate.id]: { ...current[candidate.id], percent: 100 } }));
+      } catch (error) {
+        if (!cancelled) setRenderErrors((current) => ({
+          ...current,
+          [candidate.id]: error instanceof Error ? error.message : "No se pudo completar el render."
+        }));
+      } finally {
+        renderingIds.current.delete(candidate.id);
+      }
+    };
+    void produce();
+    return () => { cancelled = true; };
+  }, [manifest.productions, localVideos]);
+
+  const ready = manifest.productions.filter((item) => (item.status === "ready" && item.videoUrl) || !!localVideos[item.id]);
   const active = ready.find((item) => item.id === activeId) ?? ready[0] ?? null;
-  const inProgress = manifest.productions.filter((item) => item.status !== "ready");
+  const activeVideoUrl = active ? (active.videoUrl || localVideos[active.id]) : undefined;
+  const inProgress = manifest.productions.filter((item) => !ready.some((readyItem) => readyItem.id === item.id));
 
   return (
     <div className="studio-shell">
@@ -110,8 +161,8 @@ function App() {
           {active ? (
             <div className="featured-layout">
               <div className="video-frame">
-                <video key={active.id + active.videoUrl} controls playsInline preload="metadata" poster={active.posterUrl} aria-label={`Reproducir ${active.title}`}>
-                  <source src={active.videoUrl} type="video/mp4" />
+                <video key={active.id + activeVideoUrl} controls playsInline preload="metadata" poster={active.posterUrl} aria-label={`Reproducir ${active.title}`}>
+                  <source src={activeVideoUrl} />
                   Tu navegador no puede reproducir este video.
                 </video>
                 <div className="video-corner-label">INGREDORA / ORIGINAL</div>
@@ -159,7 +210,11 @@ function App() {
         {inProgress.length > 0 && (
           <section className="pipeline-section">
             <div className="section-topline"><div><p className="eyebrow">IN THE WORKS</p><h2>En producción</h2></div><span className="section-index">{String(inProgress.length).padStart(2, "0")} PROYECTOS</span></div>
-            <div className="pipeline-list">{inProgress.map((item) => <article className="pipeline-item" key={item.id}><span className="pipeline-icon">{item.status === "rendering" ? "◌" : "✳"}</span><div><strong>{item.title}</strong><small>{item.description || (item.status === "rendering" ? "Renderizando en el estudio" : "En preparación")}</small></div><span className="pipeline-status">{item.status === "rendering" ? "RENDERIZANDO" : "EN PREPARACIÓN"}</span></article>)}</div>
+            <div className="pipeline-list">{inProgress.map((item) => {
+              const progress = renderProgress[item.id];
+              const error = renderErrors[item.id];
+              return <article className="pipeline-item" key={item.id}><span className="pipeline-icon">{error ? "!" : item.status === "rendering" ? "◌" : "✳"}</span><div><strong>{item.title}</strong><small>{error || item.description || (item.status === "rendering" ? "Renderizando en el navegador" : "En preparación")}{progress ? " · " + progress.percent + "%" : ""}</small></div><span className="pipeline-status">{error ? "REVISAR" : progress ? "RENDER " + progress.percent + "%" : item.status === "rendering" ? "PREPARANDO" : "EN PREPARACIÓN"}</span></article>;
+            })}</div>
           </section>
         )}
       </main>
