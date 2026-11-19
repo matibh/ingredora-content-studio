@@ -65,3 +65,10 @@ All notable documentation and specification changes are recorded here.
 - Added `docs/10-editor-y-render-engine.md` defining campaign workspace, Production Package import, scene and timeline editing, preview profiles, deterministic browser rendering, batch queue, recovery, encoding validation and Supabase Storage deliverables.
 - Explicitly kept codec support, memory/duration limits, upload strategy and free storage capacity subject to real-device tests; no remote rendering or paid fallback.
 - No application code or production infrastructure has been implemented.
+
+## 2026-11-19 — Supabase and Storage
+
+- Added `docs/11-supabase-y-almacenamiento.md` defining the logical data model, private Storage buckets, RLS, ownership, upload consistency, retention, recovery, monitoring and quota guardrails.
+- Recorded the published Free-tier reference limits checked on 2026-11-19, with explicit warnings that quotas and provider terms can change.
+- Enforced the USD 0 rule: block operations before limits; no billing, paid fallback, automatic deletion of approved deliverables or remote rendering.
+- No application code, schema migration or Supabase project configuration has been implemented.
