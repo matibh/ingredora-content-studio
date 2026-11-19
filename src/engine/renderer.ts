@@ -783,14 +783,14 @@ export async function renderPackageToWebM(
 
       if (time >= 2.35 && time < 7.2) {
         const macro = ease((time - 2.35) / 1.0);
-        const pourZoom = ease((time - 3.0) / 3.3);
-        cameraX = 0.12 + macro * 0.46;
-        cameraY = 1.75 - macro * 0.72;
-        cameraZ = 9.4 - macro * 2.25 - pourZoom * 0.35;
-        targetX = 0.35 + macro * 0.26;
-        targetY = -0.08 - macro * 0.36;
+        const pourZoom = ease((time - 3.25) / 0.78);
+        cameraX = 0.12 + macro * 0.13;
+        cameraY = 1.75 - macro * 0.66;
+        cameraZ = 9.4 - macro * 3.35 - pourZoom * 0.42;
+        targetX = 0.35 - macro * 0.15;
+        targetY = -0.08 - macro * 0.55;
         targetZ = 0.72;
-        fieldOfView = 43 - macro * 5.5 - pourZoom * 1.5;
+        fieldOfView = 43 - macro * 9.0 - pourZoom * 1.0;
       } else if (time >= 7.2 && time < 16) {
         const settle = ease((time - 7.2) / 0.55);
         cameraX = 0.58;
