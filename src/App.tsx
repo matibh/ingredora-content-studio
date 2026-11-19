@@ -88,13 +88,11 @@ function App() {
       item.packageUrl && !item.videoUrl && !localVideos[item.id] && !renderingIds.current.has(item.id)
     );
     if (!candidate) return;
-    let cancelled = false;
     renderingIds.current.add(candidate.id);
 
     const produce = async () => {
       try {
         const stored = await getRenderedVideo(candidate.id);
-        if (cancelled) return;
         if (stored) {
           setLocalVideos((current) => ({ ...current, [candidate.id]: URL.createObjectURL(stored) }));
           return;
@@ -104,7 +102,7 @@ function App() {
         if (!packageResponse.ok) throw new Error("No se pudo cargar el paquete (" + packageResponse.status + ").");
         const productionPackage = await packageResponse.json() as ProductionPackage;
         const blob = await renderPackageToWebM(productionPackage, (progress) => {
-          if (!cancelled) setRenderProgress((current) => ({ ...current, [candidate.id]: progress }));
+          setRenderProgress((current) => ({ ...current, [candidate.id]: progress }));
         });
         if (cancelled) return;
         if (!blob.size) throw new Error("El render terminó sin generar un archivo de video.");
@@ -113,7 +111,7 @@ function App() {
         setLocalVideos((current) => ({ ...current, [candidate.id]: URL.createObjectURL(blob) }));
         setRenderProgress((current) => ({ ...current, [candidate.id]: { ...current[candidate.id], percent: 100 } }));
       } catch (error) {
-        if (!cancelled) setRenderErrors((current) => ({
+        setRenderErrors((current) => ({
           ...current,
           [candidate.id]: error instanceof Error ? error.message : "No se pudo completar el render."
         }));
@@ -122,7 +120,6 @@ function App() {
       }
     };
     void produce();
-    return () => { cancelled = true; };
   }, [manifest.productions, localVideos]);
 
   const ready = manifest.productions.filter((item) => (item.status === "ready" && item.videoUrl) || !!localVideos[item.id]);
