@@ -176,7 +176,9 @@ function createNutellaSet(world: THREE.Scene) {
   return {jar,frontLabel:front,backLabel:back};
 }
 
-function drawNutellaOverlay(ctx: CanvasRenderingContext2D, frame: number, fps: number, width: number, height: number) {
+type VoiceWordTiming = { text: string; start: number; end: number };
+function normalizeCaptionWord(value: string) { return value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]/g, ""); }
+function drawNutellaOverlay(ctx: CanvasRenderingContext2D, frame: number, fps: number, width: number, height: number, voiceWords: VoiceWordTiming[]) {
   const t = frame / fps;
   const accent = "#d8f36a";
   const white = "#fffdf7";
@@ -210,21 +212,33 @@ function drawNutellaOverlay(ctx: CanvasRenderingContext2D, frame: number, fps: n
   lower.addColorStop(0,"rgba(5,14,10,0)"); lower.addColorStop(.34,"rgba(5,14,10,.46)"); lower.addColorStop(1,"rgba(5,14,10,.86)");
   ctx.fillStyle=lower; ctx.fillRect(0,height*.57,width,height*.43);
 
-  const cues = [
-    {a:0,b:2.65,text:"¡LO RECONOCÉS ENSEGUIDA!",accent:"RECONOCÉS"},
-    {a:2.65,b:5.65,text:"PERO… ¿SABÉS QUÉ TIENE REALMENTE?",accent:"REALMENTE"},
-    {a:5.65,b:8.25,text:"VAMOS A MIRAR EL DORSO DEL FRASCO",accent:"DORSO"},
-    {a:8.25,b:11.65,text:"LA ETIQUETA TIENE TODA LA INFORMACIÓN",accent:"TODA"},
-    {a:11.65,b:13.35,text:"SIETE INGREDIENTES",accent:"SIETE"},
-    {a:13.35,b:16.15,text:"LEÉLOS, MEMORIZALOS…",accent:"MEMORIZALOS"},
-    {a:16.15,b:19.0,text:"¿CUÁNTOS RECORDÁS?",accent:"CUÁNTOS"},
-    {a:19.0,b:21.0,text:"PARA SEGUIR JUGANDO",accent:"JUGANDO"},
-    {a:21.0,b:23.35,text:"ENTRÁ A INGREDORA.COM",accent:"INGREDORA.COM"},
-    {a:23.35,b:26.0,text:"O BUSCÁ EL LINK EN MI PERFIL",accent:"MI PERFIL"},
+  const cueDefinitions = [
+    {text:"¡LO RECONOCÉS ENSEGUIDA!",accent:"RECONOCÉS"},
+    {text:"PERO… ¿SABÉS QUÉ TIENE REALMENTE?",accent:"REALMENTE"},
+    {text:"VAMOS A MIRAR EL DORSO DEL FRASCO",accent:"DORSO"},
+    {text:"LA ETIQUETA TIENE TODA LA INFORMACIÓN",accent:"INFORMACIÓN"},
+    {text:"SIETE INGREDIENTES",accent:"SIETE"},
+    {text:"LEÉLOS, MEMORIZALOS Y CONTAME",accent:"MEMORIZALOS"},
+    {text:"¿CUÁNTOS RECORDÁS?",accent:"CUÁNTOS"},
+    {text:"PARA SEGUIR JUGANDO",accent:"JUGANDO"},
+    {text:"ENTRÁ A INGREDORA.COM",accent:"INGREDORA.COM"},
+    {text:"O BUSCÁ EL LINK EN MI PERFIL. ¡TE ESPERO!",accent:"MI PERFIL"},
   ];
-  const cue = cues.find((item)=>t>=item.a && t<item.b);
+  let searchFrom=0;
+  const cues=cueDefinitions.map((definition)=>{
+    const tokens=definition.text.split(/\\s+/).map(normalizeCaptionWord).filter(Boolean);
+    let found=-1;
+    for(let i=searchFrom;i<=voiceWords.length-tokens.length;i++){
+      if(tokens.every((token,j)=>normalizeCaptionWord(voiceWords[i+j]?.text||"")===token)){found=i;break;}
+    }
+    if(found<0) throw new Error("No se pudieron sincronizar los subtítulos con la locución: "+definition.text);
+    const matched=voiceWords.slice(found,found+tokens.length);
+    searchFrom=found+tokens.length;
+    return {...definition,a:matched[0].start,b:matched[matched.length-1].end,wordTimings:matched};
+  });
+  const cue = cues.find((item)=>t>=item.a && t<=item.b+0.18);
   const drawKineticCaption = (item: typeof cues[number]) => {
-    const p=(t-item.a)/(item.b-item.a);
+    const p=(t-item.a)/Math.max(.01,item.b-item.a);
     const intro=ease(p/.17), outro=1-smooth((p-.86)/.14);
     const alpha=intro*outro;
     const lift=(1-intro)*height*.045;
@@ -255,13 +269,13 @@ function drawNutellaOverlay(ctx: CanvasRenderingContext2D, frame: number, fps: n
       let x=width/2-rowW/2;
       const y=panelY+panelH*.59+(rowIndex-(lines.length-1)/2)*lineHeight;
       row.forEach((word,i)=>{
-        const local=wordIndex/(words.length+1);
-        const reveal=ease((p-local*.46)/.20);
+        const timing=item.wordTimings[wordIndex];
+        const reveal=ease((t-timing.start)/.12);
         const isAccent=word.replace(/[¡!¿?,…]/g,"")===item.accent.replace(/[¡!¿?,…]/g,"");
         const wordW=widths[i];
         const center=x+wordW/2;
         ctx.save(); ctx.globalAlpha*=reveal;
-        const currentWord=p>.12 && p<.82 && Math.abs(p-(local*.46+.28))<.11;
+        const currentWord=t>=timing.start && t<=timing.end;
         if(isAccent || currentWord){
           ctx.fillStyle=isAccent?"rgba(216,243,106,.16)":"rgba(255,255,255,.10)";
           rounded(x-fontSize*.10,y-lineHeight*.39,wordW+fontSize*.20,lineHeight*.78,fontSize*.15);ctx.fill();
@@ -269,7 +283,7 @@ function drawNutellaOverlay(ctx: CanvasRenderingContext2D, frame: number, fps: n
         ctx.fillStyle=isAccent?accent:white;
         ctx.shadowColor=isAccent?"rgba(216,243,106,.55)":"rgba(0,0,0,.35)";
         ctx.shadowBlur=isAccent?width*.018:width*.006;
-        const scale=pop(Math.max(0,Math.min(1,(p-local*.46)/.25)));
+        const scale=pop(Math.max(0,Math.min(1,(t-timing.start)/.16)));
         ctx.translate(center,y);ctx.scale(scale,scale);ctx.fillText(word,0,0);ctx.restore();
         x+=wordW+fontSize*.24;wordIndex++;
       });
@@ -280,7 +294,7 @@ function drawNutellaOverlay(ctx: CanvasRenderingContext2D, frame: number, fps: n
     ctx.restore();
   };
 
-  const phase = t < 3 ? 0 : t < 5.5 ? 1 : t < 8 ? 2 : t < 15 ? 3 : t < 19 ? 4 : 5;
+  const phase = t < cues[3].a ? 0 : t < cues[7].a ? 3 : 5;
   if (phase === 3) {
     // Ingredients are presented as a clean editorial checklist, separate from subtitles.
     const cardY=height*.835, cardH=height*.132, cardX=width*.055, cardW=width*.89;
@@ -481,6 +495,14 @@ export async function renderPackageToWebM(
 
   const camera = new THREE.PerspectiveCamera(34, pkg.width / pkg.height, 0.1, 100);
   const nutellaSet = pkg.visualPreset === "nutella-supermarket" ? createNutellaSet(world) : null;
+  let nutellaVoiceWords: VoiceWordTiming[] = [];
+  if (nutellaSet) {
+    const timingResponse = await fetch(import.meta.env.BASE_URL + "studio/audio/nutella-v9-word-timings.json");
+    if (!timingResponse.ok) throw new Error("No se pudieron cargar los tiempos reales de la locución (" + timingResponse.status + ").");
+    const timingData = await timingResponse.json() as { words?: VoiceWordTiming[] };
+    if (!Array.isArray(timingData.words) || timingData.words.length < 10) throw new Error("El archivo de sincronización de voz está vacío o incompleto.");
+    nutellaVoiceWords = timingData.words;
+  }
   const sceneObjects = new Map<string, THREE.Mesh>();
   const materialObjects = new Map<string, SceneObject>();
   let lastSceneId = "";
@@ -502,7 +524,7 @@ export async function renderPackageToWebM(
       const distance = time < 2.5 ? 10.8 - smooth(time/2.5)*1.6 : time < 4.5 ? 9.2 - smooth((time-2.5)/2)*1.1 : time < 12.5 ? 8.1 : 8.1 + smooth((time-12.5)/2.5)*.7;
       camera.position.set(.12 + Math.sin(time*.22)*.08,.48,distance); camera.lookAt(0,-.12,0); camera.fov=34; camera.updateProjectionMatrix();
       renderer.render(world,camera); ctx.drawImage(renderer.domElement,0,0,pkg.width,pkg.height);
-      drawNutellaOverlay(ctx,frame,fps,pkg.width,pkg.height); return;
+      drawNutellaOverlay(ctx,frame,fps,pkg.width,pkg.height,nutellaVoiceWords); return;
     }
     const current = sceneAtFrame(pkg, frame);
     if (current.id !== lastSceneId) {
