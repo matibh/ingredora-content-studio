@@ -7,13 +7,13 @@ VOICE = "es-AR-ElenaNeural"
 # No enumera ni lee la lista de ingredientes.
 TEXT = (
     "¡Lo reconocés enseguida! Pero… ¿sabés qué tiene realmente? "
-    "¡Vamos a mirar el dorso del frasco! "
-    "La etiqueta real tiene toda la información. "
-    "¡Siete ingredientes! ¡Leelos y memorizalos! "
-    "¡Ahora te toca a vos! ¿Cuántos recordabas? "
-    "Comentá y jugá con Ingredora."
+    "Vamos a mirar el dorso del frasco. "
+    "La etiqueta tiene toda la información: siete ingredientes. "
+    "Leelos y memorizalos. "
+    "Ahora te toca a vos: ¿cuántos recordás? "
+    "Comentá tu respuesta y desafiá a alguien a jugar con Ingredora."
 )
-OUTPUT = Path("public/studio/audio/nutella-v6-voice-es-AR.mp3")
+OUTPUT = Path("public/studio/audio/nutella-v8-voice-es-AR.mp3")
 
 async def main():
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
