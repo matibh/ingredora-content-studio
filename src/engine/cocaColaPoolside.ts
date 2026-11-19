@@ -102,8 +102,9 @@ function makeBottle(): THREE.Group {
     new THREE.Vector2(0.175, 1.34),
     new THREE.Vector2(0.155, 1.48),
     new THREE.Vector2(0.135, 1.62),
-    new THREE.Vector2(0.12, 1.72),
-    new THREE.Vector2(0, 1.74),
+    new THREE.Vector2(0.12, 1.74),
+    new THREE.Vector2(0.105, 1.78),
+    new THREE.Vector2(0, 1.80),
   ];
   const bottleContents = new THREE.Mesh(new THREE.LatheGeometry(fillProfile, 112), colaInside);
   bottleContents.position.y = 0.02;
@@ -747,7 +748,7 @@ export function createCocaColaPoolsideSet(world: THREE.Scene): PoolsideSet {
     const bottleDrain = 0.48 * ease((time - 3.90) / 2.45);
     const bottleContentsScale = 1 - bottleDrain;
     bottleContents.scale.y = bottleContentsScale;
-    bottleContents.position.y = 0.02 + 1.74 * (1 - bottleContentsScale);
+    bottleContents.position.y = 0.02 + 1.80 * (1 - bottleContentsScale);
     bottle.updateMatrixWorld(true);
 
     const pourIn = ease((time - 3.90) / 0.28);
