@@ -4,7 +4,10 @@ import json
 from pathlib import Path
 
 import edge_tts
+import imageio_ffmpeg
 from pydub import AudioSegment
+
+AudioSegment.converter = imageio_ffmpeg.get_ffmpeg_exe()
 
 VOICE = "es-AR-ElenaNeural"
 RATE = "+10%"
