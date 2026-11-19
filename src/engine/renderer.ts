@@ -785,10 +785,10 @@ export async function renderPackageToWebM(
         const macro = ease((time - 2.35) / 1.0);
         const pourZoom = ease((time - 3.25) / 0.78);
         // Frame the bottle and glass together instead of pushing the bottle beyond the portrait crop.
-        cameraX = 0.42 + macro * 0.28;
+        cameraX = 0.15 + macro * 0.55;
         cameraY = 1.75 - macro * 0.58;
         cameraZ = 9.4 - macro * 2.35 - pourZoom * 0.20;
-        targetX = 0.48 + macro * 0.22;
+        targetX = macro * 0.70;
         targetY = -0.08 - macro * 0.55;
         targetZ = 0.72;
         fieldOfView = 43 - macro * 3.5;
