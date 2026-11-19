@@ -121,3 +121,18 @@ All notable documentation and specification changes are recorded here.
 ### Notes
 - No Supabase project, external API, paid service, authentication or persistent storage has been connected.
 - A production build has not yet been executed; compilation verification remains pending.
+
+
+## 2026-11-19 — Campaign workspace
+
+### Added
+- Replaced session-only campaign drafts with a campaign model persisted in browser localStorage.
+- Added campaign creation fields for objective, language, platform and format.
+- Added a campaign detail workspace with editable creative brief: objective, product/brand, audience, language, platform, format, target duration, concept, CTA and status.
+- Added automatic local saving and a clear notice that data is not synchronized to the cloud.
+- Added responsive layout for the campaign brief editor.
+
+### Notes
+- No Supabase integration or remote synchronization was added.
+- Existing browser data is local to the current browser profile and can be lost if browser storage is cleared.
+- Build execution and browser-level testing remain pending.
