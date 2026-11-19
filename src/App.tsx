@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type FormEvent } from "react";
 
 type SectionId =
   | "home"
@@ -121,7 +121,7 @@ function App() {
 
   const copy = sectionCopy[activeSection];
 
-  function createProject(event: React.FormEvent<HTMLFormElement>) {
+  function createProject(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const name = projectName.trim();
     if (!name) return;
