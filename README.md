@@ -44,6 +44,12 @@ La dirección elegida es una fábrica audiovisual basada en escenas 3D programá
 
 - [Auditoría transversal](docs/auditoria-transversal.md): hallazgos de coherencia, viabilidad técnica, cuotas gratuitas, decisiones pendientes y plan de corrección. No es una aprobación de implementación.
 
+## Publicación web (GitHub Pages)
+
+El despliegue está preparado para GitHub Pages mediante GitHub Actions. La URL prevista del proyecto es `https://matibh.github.io/ingredora-content-studio/`, pero solo estará disponible después de hacer público el repositorio, habilitar Pages con origen **GitHub Actions** y completar correctamente el primer workflow. El repositorio público expone el código y la documentación; no almacenar secretos, tokens privados ni claves de servicio en el frontend.
+
+La aplicación es una SPA estática. Las funciones que requieran backend, autenticación o almacenamiento remoto deberán conectarse por separado y respetar el presupuesto de USD 0.
+
 ## Estructura prevista
 
 ```text
