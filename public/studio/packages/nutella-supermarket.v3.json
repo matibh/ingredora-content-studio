@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "engineVersion": "1.0.0",
+  "id": "ingredora-nutella-supermarket-spot-003",
+  "title": "Nutella — La etiqueta en primer plano (versión 3)",
+  "description": "Spot vertical cinematográfico con góndola de supermercado más cálida y colorida, etiqueta curva separada del envase y acercamiento exclusivo de la etiqueta trasera.",
+  "createdAt": "2026-11-19T20:49:00-03:00",
+  "fps": 30,
+  "width": 720,
+  "height": 1280,
+  "visualPreset": "nutella-supermarket",
+  "scenes": [
+    {
+      "id": "supermarket-label-reveal-v3",
+      "startFrame": 0,
+      "durationFrames": 360,
+      "background": "#e9dfcc",
+      "camera": {
+        "position": [
+          0.15,
+          0.48,
+          8.7
+        ],
+        "target": [
+          0,
+          -0.15,
+          0
+        ],
+        "fov": 32
+      },
+      "accentColor": "#d8f36a",
+      "headline": "NUTELLA.",
+      "subline": "DETRÁS DE LA ETIQUETA.",
+      "objects": []
+    }
+  ]
+}
