@@ -26,3 +26,7 @@
 .github-dot{width:7px;height:7px;border-radius:50%;background:#79a95f;display:inline-block}
 .github-connected button{border:0;background:transparent;color:#89958a;font-size:8px;font-weight:800;letter-spacing:.8px;text-decoration:underline;cursor:pointer;padding:4px}
 .approval-panel .approve-upload-button{margin-top:4px;max-width:100%;line-height:1.5}
+
+.approval-password-label{display:block;margin-top:12px;font-size:9px;font-weight:800;letter-spacing:1.2px;color:#7b837b}
+.approval-password-input{display:block;width:100%;box-sizing:border-box;margin-top:7px;padding:12px 14px;border:1px solid #d9ded6;border-radius:4px;background:#fff;color:#252a24;font:inherit;font-size:13px;outline:none}
+.approval-password-input:focus{border-color:#7d9673;box-shadow:0 0 0 2px rgba(125,150,115,.12)}
