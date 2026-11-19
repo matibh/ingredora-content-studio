@@ -275,19 +275,20 @@ export async function renderPackageToWebM(
     let voice: AudioBuffer;
     try { voice = await decodeContext.decodeAudioData(voiceBytes); }
     finally { await decodeContext.close(); }
-    const mixDuration = Math.max(durationSeconds, (pkg.voiceoverOffsetSeconds || 0) + voice.duration);
+    if (!voice.duration || voice.length < 1) throw new Error("La narración se descargó, pero no contiene audio reproducible.");
+    const mixDuration = durationSeconds;
     const frameCount = Math.ceil(mixDuration * 48_000);
     const offline = new OfflineAudioContext(2, frameCount, 48_000);
     const musicSource = offline.createBufferSource();
     musicSource.buffer = soundtrack;
     const musicGain = offline.createGain();
-    musicGain.gain.value = 0.24;
+    musicGain.gain.value = 0.12;
     musicSource.connect(musicGain).connect(offline.destination);
     musicSource.start(0);
     const voiceSource = offline.createBufferSource();
     voiceSource.buffer = voice;
     const voiceGain = offline.createGain();
-    voiceGain.gain.value = 1.12;
+    voiceGain.gain.value = 1.35;
     voiceSource.connect(voiceGain).connect(offline.destination);
     voiceSource.start(pkg.voiceoverOffsetSeconds || 0);
     mixedSoundtrack = await offline.startRendering();
