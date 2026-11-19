@@ -48,4 +48,4 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v4
 
-# Redeploy trigger: ensure the latest generated public assets are included.
+# Redeploy trigger: include generated voiceover and word-level caption timing assets.
