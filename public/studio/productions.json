@@ -3,12 +3,12 @@
   "updatedAt": "2026-11-19T20:00:00-03:00",
   "productions": [
     {
-      "id": "ingredora-15-seconds-teaser-001",
-      "title": "Un producto. 15 segundos.",
-      "description": "Un teaser cinematográfico para presentar el desafío de Ingredora.",
+      "id": "ingredora-nutella-supermarket-spot-001",
+      "title": "Nutella — Detrás de la etiqueta",
+      "description": "Un recorrido cinematográfico por una góndola de supermercado. El frasco gira para revelar su etiqueta y sus siete ingredientes.",
       "status": "rendering",
-      "packageUrl": "studio/packages/launch-teaser.v1.json",
-      "durationSeconds": 8,
+      "packageUrl": "studio/packages/nutella-supermarket.v1.json",
+      "durationSeconds": 12,
       "aspectRatio": "9:16",
       "language": "Español",
       "platforms": [
@@ -16,8 +16,9 @@
         "Instagram Reels",
         "YouTube Shorts"
       ],
-      "version": "1.0",
-      "createdAt": "2026-11-19T20:00:00-03:00"
+      "version": "2.0",
+      "createdAt": "2026-11-19T20:00:00-03:00",
+      "caption": "Un clásico de la góndola. 🍫 Detrás de la etiqueta hay siete ingredientes: ¿cuántos podés nombrar sin mirar? #Ingredora #Nutella #DesafíoDeIngredientes"
     }
   ]
 }
