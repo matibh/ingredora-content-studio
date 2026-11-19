@@ -196,3 +196,24 @@ h1 { font: 800 clamp(25px, 3vw, 34px)/1.16 "Manrope", sans-serif; letter-spacing
 .create-modal .brief-two-col{margin-bottom:3px}
 @media(max-width:900px){.detail-grid{grid-template-columns:1fr}}
 @media(max-width:560px){.brief-two-col{grid-template-columns:1fr}.brief-card,.production-next{padding:15px}}
+
+/* Campaign storyboard */
+.storyboard-card{margin-top:22px}.storyboard-intro{color:var(--muted);font-size:13px;margin:7px 0 0}
+.storyboard-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:22px 0}
+.storyboard-summary>div{background:#f6f8f3;border:1px solid var(--line);border-radius:12px;padding:14px}
+.storyboard-summary strong{display:block;font-size:22px;color:var(--green)}.storyboard-summary span{font-size:11px;color:var(--muted)}
+.storyboard-empty{border:1px dashed #cbd5c8;border-radius:14px;padding:32px 18px;text-align:center;display:flex;align-items:center;flex-direction:column;gap:9px}
+.storyboard-empty>span{font-size:30px;color:#8ba65a}.storyboard-empty strong{font-size:15px}
+.storyboard-empty p{max-width:430px;color:var(--muted);font-size:13px;line-height:1.6;margin:0 0 8px}
+.scene-list{display:flex;flex-direction:column;gap:14px}.scene-card{border:1px solid var(--line);border-radius:14px;padding:18px;background:#fff}
+.scene-card-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}
+.scene-index{font-size:10px;letter-spacing:1.2px;font-weight:800;color:var(--green)}
+.scene-controls{display:flex;align-items:center;gap:6px}.scene-controls span{font-size:12px;color:var(--muted);margin-right:6px}
+.scene-controls button{width:30px;height:30px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);font-size:16px}
+.scene-controls button:disabled{opacity:.35;cursor:not-allowed}.scene-controls button:last-child{color:#a04444}
+.scene-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
+.scene-fields label{display:flex;flex-direction:column;gap:6px;font-size:11px;font-weight:700;color:#59645c}
+.scene-fields label:nth-child(4),.scene-fields label:nth-child(7){grid-column:1/-1}
+.scene-fields input,.scene-fields select,.scene-fields textarea{width:100%;border:1px solid #e1e6dd;border-radius:8px;padding:10px 11px;background:#fbfcfa;color:var(--ink);font:inherit;font-size:13px;min-width:0}
+.scene-fields textarea{resize:vertical;line-height:1.5}.storyboard-footnote{font-size:11px;color:var(--muted);margin:16px 0 0}
+@media(max-width:650px){.storyboard-summary>div{padding:10px}.storyboard-summary strong{font-size:18px}.scene-fields{grid-template-columns:1fr}.scene-fields label:nth-child(4),.scene-fields label:nth-child(7){grid-column:auto}.scene-card{padding:13px}}
