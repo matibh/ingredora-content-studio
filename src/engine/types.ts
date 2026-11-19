@@ -39,4 +39,7 @@ export type ProductionPackage = {
   height: number;
   scenes: ProductionScene[];
   visualPreset?: "nutella-supermarket";
+  /** Public, pre-generated narration asset; never store provider credentials in the client. */
+  voiceoverUrl?: string;
+  voiceoverOffsetSeconds?: number;
 };
