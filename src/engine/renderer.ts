@@ -87,14 +87,14 @@ function makeCanvasTexture(draw: (ctx: CanvasRenderingContext2D, width: number, 
 }
 
 function createNutellaSet(world: THREE.Scene) {
-  world.background = new THREE.Color("#f3ead9"); world.fog = new THREE.Fog("#f3ead9", 19, 38);
+  world.background = new THREE.Color("#e9dfcc"); world.fog = new THREE.Fog("#e9dfcc", 27, 52);
   const floor = new THREE.Mesh(new THREE.PlaneGeometry(24, 26), new THREE.MeshStandardMaterial({ color: "#c8b99d", roughness: 0.88 }));
   floor.rotation.x = -Math.PI / 2; floor.position.set(0, -2.25, -2); world.add(floor);
   const wall = new THREE.Mesh(new THREE.PlaneGeometry(18, 12), new THREE.MeshStandardMaterial({ color: "#f6eddd", roughness: 1 }));
   wall.position.set(0, 2.5, -5.5); world.add(wall);
   const shelfMat = new THREE.MeshStandardMaterial({ color: "#303a35", roughness: 0.58, metalness: 0.32 });
   const edgeMat = new THREE.MeshStandardMaterial({ color: "#d9d1c2", roughness: 0.45, metalness: 0.55 });
-  const colors = ["#e6d5ad","#9d3428","#d6a92c","#426b53","#e5e0d3","#3c4650","#bd6e35","#8b9a6d"];
+  const colors = ["#f2d36b","#d83c2f","#e8a928","#3e8b62","#f1eee4","#3776a8","#d87932","#8eaa59","#8b4f9d","#e8a5b5"];
   for (let row=0; row<4; row++) {
     const y=-1.25+row*1.05;
     const shelf=new THREE.Mesh(new THREE.BoxGeometry(14,.12,1.15),shelfMat); shelf.position.set(0,y,-4.15); world.add(shelf);
@@ -132,13 +132,20 @@ function createNutellaSet(world: THREE.Scene) {
     ["Azúcar, aceite vegetal,","avellanas, leche descremada","en polvo, cacao en polvo","desgrasado, emulsificante","(lecitinas) y saborizante."].forEach((line,i)=>ctx.fillText(line,72,270+i*94));
     ctx.fillStyle="#6b6255";ctx.font="34px Arial";ctx.fillText("Nutella Argentina",72,805);
   },1024,900);
-  const front=new THREE.Mesh(new THREE.PlaneGeometry(1.47,1.25),new THREE.MeshStandardMaterial({map:frontTex,roughness:.62}));front.position.set(0,.02,.835);jar.add(front);
-  const back=new THREE.Mesh(new THREE.PlaneGeometry(1.47,1.25),new THREE.MeshStandardMaterial({map:backTex,roughness:.7,side:THREE.DoubleSide}));back.position.set(0,.02,-.835);back.rotation.y=Math.PI;jar.add(back);
-  const key=new THREE.DirectionalLight("#fff4df",5.5);key.position.set(-3.5,5.5,6);world.add(key);
-  const fill=new THREE.DirectionalLight("#ffffff",3.2);fill.position.set(4,1.8,4);world.add(fill);
-  const rim=new THREE.PointLight("#ffbd73",48,16);rim.position.set(-2.8,.6,-.3);world.add(rim);
-  world.add(new THREE.HemisphereLight("#fff8eb","#76543c",2.2));
-  return {jar};
+  // Curved label shells sit just outside the jar instead of cutting through its surface.
+  const labelRadius = .925;
+  const labelArc = 1.62;
+  const labelGeometry = () => new THREE.CylinderGeometry(labelRadius,labelRadius,1.25,64,1,true,-labelArc/2,labelArc);
+  const front=new THREE.Mesh(labelGeometry(),new THREE.MeshStandardMaterial({map:frontTex,roughness:.58,side:THREE.DoubleSide}));
+  front.position.set(0,.02,0); jar.add(front);
+  const back=new THREE.Mesh(labelGeometry(),new THREE.MeshStandardMaterial({map:backTex,roughness:.62,side:THREE.DoubleSide}));
+  back.position.set(0,.02,0); back.rotation.y=Math.PI; jar.add(back);
+  const key=new THREE.DirectionalLight("#fff0d5",3.8);key.position.set(-3.5,5.5,6);world.add(key);
+  const fill=new THREE.DirectionalLight("#fff8e9",2.4);fill.position.set(4,1.8,4);world.add(fill);
+  const rim=new THREE.PointLight("#ffb35c",34,18);rim.position.set(-2.8,.6,-.3);world.add(rim);
+  const aisleLight=new THREE.PointLight("#fff1d6",22,20);aisleLight.position.set(1.5,3.8,1.2);world.add(aisleLight);
+  world.add(new THREE.HemisphereLight("#fff8eb","#826448",1.8));
+  return {jar,frontLabel:front,backLabel:back};
 }
 
 function drawNutellaOverlay(ctx: CanvasRenderingContext2D, frame: number, fps: number, width: number, height: number) {
@@ -224,7 +231,7 @@ export async function renderPackageToWebM(
   renderer.setSize(pkg.width, pkg.height, false);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.15;
+  renderer.toneMappingExposure = 1.28;
 
   const outputCanvas = document.createElement("canvas");
   outputCanvas.width = pkg.width;
@@ -273,6 +280,12 @@ export async function renderPackageToWebM(
       const turn = time < 3.6 ? 0 : time < 4.8 ? smooth((time-3.6)/1.2)*Math.PI : time < 9.6 ? Math.PI : Math.PI + smooth((time-9.6)/1.2)*Math.PI;
       nutellaSet.jar.rotation.y = turn;
       nutellaSet.jar.position.y = -.35 + Math.sin(time * 1.7) * .045;
+      // A brief label-only push toward camera: jar and camera remain locked.
+      const labelIn = smooth((time-7.05)/.38);
+      const labelOut = 1-smooth((time-8.28)/.42);
+      const labelZoom = 1 + .26*Math.min(labelIn,labelOut);
+      nutellaSet.backLabel.scale.set(labelZoom,labelZoom,labelZoom);
+      nutellaSet.backLabel.position.z = -.13*Math.min(labelIn,labelOut);
       const distance = time < 1.5 ? 10.8 - smooth(time/1.5)*1.6 : time < 3.6 ? 9.2 - smooth((time-1.5)/2.1)*1.1 : time < 9.6 ? 8.1 : 8.1 + smooth((time-9.6)/2.4)*.7;
       camera.position.set(.12 + Math.sin(time*.22)*.08,.48,distance); camera.lookAt(0,-.12,0); camera.fov=34; camera.updateProjectionMatrix();
       renderer.render(world,camera); ctx.drawImage(renderer.domElement,0,0,pkg.width,pkg.height);
