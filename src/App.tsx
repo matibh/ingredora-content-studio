@@ -3,6 +3,7 @@ import { renderPackageToWebM, type RenderProgress } from "./engine/renderer";
 import { convertWebMToMp4 } from "./engine/mp4Converter";
 import { getRenderedVideo, saveRenderedVideo } from "./engine/storage";
 import type { ProductionPackage } from "./engine/types";
+import { clearGithubSession, consumeGithubCallback, getGithubAccessToken, isAuthorizedGithubUser, startGithubLogin } from "./engine/githubAuth";
 
 type Production = {
   id: string;
@@ -58,10 +59,29 @@ function App() {
   const [mp4Progress, setMp4Progress] = useState(0);
   const [mp4Error, setMp4Error] = useState<string | null>(null);
   const [mp4Blob, setMp4Blob] = useState<Blob | null>(null);
-  const [approvalKey, setApprovalKey] = useState("");
   const [approvalBusy, setApprovalBusy] = useState(false);
+  const [githubStatus, setGithubStatus] = useState<"checking" | "signed_out" | "authorized" | "unauthorized">("checking");
+  const [mp4Stage, setMp4Stage] = useState("");
   const [approvalMessage, setApprovalMessage] = useState<string | null>(null);
   const renderingIds = useRef(new Set<string>());
+
+  useEffect(() => {
+    const callbackError = consumeGithubCallback();
+    if (callbackError) {
+      setApprovalMessage("No se pudo iniciar sesión con GitHub: " + callbackError);
+      setGithubStatus("signed_out");
+      return;
+    }
+    void (async () => {
+      try {
+        const token = await getGithubAccessToken();
+        if (!token) { setGithubStatus("signed_out"); return; }
+        const authorized = await isAuthorizedGithubUser(token);
+        setGithubStatus(authorized ? "authorized" : "unauthorized");
+        if (!authorized) setApprovalMessage("La cuenta conectada no es la autorizada. Iniciá sesión con @matibh.");
+      } catch { setGithubStatus("signed_out"); }
+    })();
+  }, []);
 
   const loadProductions = useCallback(async () => {
     try {
@@ -139,14 +159,23 @@ function App() {
   const active = ready.find((item) => item.id === activeId) ?? ready[0] ?? null;
   const activeVideoUrl = active ? (active.videoUrl || localVideos[active.id]) : undefined;
 
-  const exportActiveAsMp4 = async () => {
-    if (!active || mp4Busy) return;
-    setMp4Busy(true);
-    setMp4Progress(0);
-    setMp4Error(null);
+  const convertAndUpload = async () => {
+    if (!active || mp4Busy || approvalBusy) return;
+    const token = await getGithubAccessToken();
+    if (!token) {
+      setApprovalMessage("Conectá tu cuenta de GitHub para aprobar y subir la producción.");
+      startGithubLogin();
+      return;
+    }
+    setMp4Busy(true); setApprovalBusy(true); setMp4Progress(0); setMp4Error(null); setApprovalMessage(null);
     try {
-      // Prefer the exact original render from IndexedDB; conversion is a separate,
-      // non-destructive step and never overwrites the WebM used by the player.
+      setMp4Stage("VALIDANDO GITHUB");
+      if (!await isAuthorizedGithubUser(token)) {
+        clearGithubSession(); setGithubStatus("unauthorized");
+        throw new Error("La cuenta conectada no es @matibh. Ingresá con la cuenta correcta.");
+      }
+      setGithubStatus("authorized");
+      setMp4Stage("RECUPERANDO VIDEO");
       let sourceBlob = await getRenderedVideo(active.id);
       if (!sourceBlob && activeVideoUrl) {
         const response = await fetch(activeVideoUrl);
@@ -154,52 +183,28 @@ function App() {
         sourceBlob = await response.blob();
       }
       if (!sourceBlob) throw new Error("El video original todavía no está disponible en este dispositivo.");
-
-      const mp4Blob = await convertWebMToMp4(sourceBlob, setMp4Progress);
-      setMp4Blob(mp4Blob);
-      const objectUrl = URL.createObjectURL(mp4Blob);
-      const anchor = document.createElement("a");
-      anchor.href = objectUrl;
-      anchor.download = active.id === "ingredora-nutella-supermarket-spot-009"
-        ? "001-nutella.mp4"
-        : `${active.id.replace(/[^a-z0-9-]+/gi, "-").toLowerCase()}.mp4`;
-      document.body.appendChild(anchor);
-      anchor.click();
-      anchor.remove();
-      window.setTimeout(() => URL.revokeObjectURL(objectUrl), 60_000);
-    } catch (error) {
-      setMp4Error(error instanceof Error ? error.message : "No se pudo convertir el video.");
-    } finally {
-      setMp4Busy(false);
-    }
-  };
-  const approveAndUpload = async () => {
-    if (!active || !mp4Blob || !approvalKey.trim() || approvalBusy) return;
-    setApprovalBusy(true);
-    setApprovalMessage(null);
-    try {
+      setMp4Stage("CONVIRTIENDO A MP4");
+      const mp4 = await convertWebMToMp4(sourceBlob, setMp4Progress);
+      if (!mp4.size) throw new Error("La conversión no generó un MP4 válido.");
       const basename = active.id === "ingredora-nutella-supermarket-spot-009" ? "001-nutella" : active.id.replace(/[^a-z0-9-]+/gi, "-").toLowerCase();
       const form = new FormData();
-      form.append("video", new File([mp4Blob], basename + ".mp4", { type: "video/mp4" }));
+      form.append("video", new File([mp4], basename + ".mp4", { type: "video/mp4" }));
       form.append("basename", basename);
       form.append("txtName", basename + ".txt");
+      setMp4Stage("SUBIENDO A GITHUB");
       const response = await fetch("https://xblqghhhchffuqkmzgta.supabase.co/functions/v1/approve-content-upload", {
         method: "POST",
-        headers: {
-          "apikey": "sb_publishable__TDF6zsAZEvsWgSkAntJgw_qxYYuUop",
-          "x-studio-approval-key": approvalKey.trim(),
-        },
+        headers: { apikey: "sb_publishable__TDF6zsAZEvsWgSkAntJgw_qxYYuUop", Authorization: "Bearer " + token },
         body: form,
       });
       const result = await response.json();
       if (!response.ok || !result.ok) throw new Error(result.error || "No se pudo subir la producción.");
-      setApprovalMessage("Aprobado y subido: " + result.videoPath + " · TXT verificado: " + result.textPath);
-      setApprovalKey("");
+      setApprovalMessage("✓ Aprobado y subido: " + result.videoPath + " · TXT verificado: " + result.textPath);
+      setMp4Stage("COMPLETADO");
     } catch (error) {
-      setApprovalMessage(error instanceof Error ? error.message : "No se pudo completar la subida.");
-    } finally {
-      setApprovalBusy(false);
-    }
+      const message = error instanceof Error ? error.message : "No se pudo completar la conversión y subida.";
+      setMp4Error(message); setApprovalMessage(message);
+    } finally { setMp4Busy(false); setApprovalBusy(false); }
   };
 
   const inProgress = manifest.productions.filter((item) => !ready.some((readyItem) => readyItem.id === item.id));
@@ -252,24 +257,17 @@ function App() {
                   <div><span>VERSIÓN</span><strong>{active.version || "Final"}</strong></div>
                 </div>
                 <div className="platform-tags">{(active.platforms || []).map((platform) => <span key={platform}>{platform}</span>)}</div>
-                <div className="mp4-export">
-                  <button className="mp4-export-button" type="button" onClick={exportActiveAsMp4} disabled={mp4Busy}>
-                    {mp4Busy ? `CONVIRTIENDO A MP4 · ${mp4Progress}%` : "DESCARGAR VERSIÓN MP4"}
-                  </button>
-                  {mp4Busy && <div className="render-progress-track mp4-progress" role="progressbar" aria-valuenow={mp4Progress} aria-valuemin={0} aria-valuemax={100}><span style={{ width: `${mp4Progress}%` }} /></div>}
-                  {mp4Error && <small className="mp4-error">{mp4Error}</small>}
-                  <small className="mp4-hint">Paso independiente. El WebM original no se modifica.</small>
-                </div>
                 <div className="approval-panel">
                   <p className="eyebrow">REVISIÓN EDITORIAL</p>
                   <strong>¿Aprobás esta producción?</strong>
-                  <small>Al aprobar, se sube el MP4 y se verifica el TXT correspondiente en «Contenido a subir». No se publica nada en redes.</small>
-                  <input aria-label="Clave privada de aprobación" type="password" autoComplete="off" placeholder="Clave privada de aprobación" value={approvalKey} onChange={(event) => setApprovalKey(event.target.value)} />
-                  <button className="approve-upload-button" type="button" onClick={approveAndUpload} disabled={!mp4Blob || !approvalKey.trim() || approvalBusy}>
-                    {approvalBusy ? "SUBIENDO A GITHUB…" : "✓ APROBAR Y SUBIR A CONTENIDO A SUBIR"}
+                  <small>Al confirmar, convertimos el WebM original a MP4 y subimos el archivo a «Contenido a subir». Verificamos también el TXT correspondiente. No se publica nada en redes y el WebM original no se modifica.</small>
+                  {githubStatus === "checking" ? <small>Comprobando conexión con GitHub…</small> : githubStatus === "authorized" ? <div className="github-connected"><span className="github-dot" /> GitHub conectado · @matibh <button type="button" onClick={() => { clearGithubSession(); setGithubStatus("signed_out"); setApprovalMessage(null); }}>DESCONECTAR</button></div> : <small>{githubStatus === "unauthorized" ? "La cuenta conectada no tiene permiso. Ingresá con @matibh." : "Conectá tu cuenta de GitHub para aprobar. Solo se autoriza @matibh."}</small>}
+                  <button className="approve-upload-button" type="button" onClick={convertAndUpload} disabled={githubStatus === "checking" || githubStatus === "unauthorized" || mp4Busy || approvalBusy}>
+                    {mp4Busy ? `${mp4Stage} · ${mp4Progress}%` : githubStatus === "authorized" ? "✓ CONVERTIR A MP4 Y SUBIR A GITHUB" : "CONECTAR GITHUB Y APROBAR"}
                   </button>
+                  {mp4Busy && <div className="render-progress-track mp4-progress" role="progressbar" aria-valuenow={mp4Progress} aria-valuemin={0} aria-valuemax={100}><span style={{ width: `${mp4Progress}%` }} /></div>}
+                  {mp4Error && <small className="mp4-error">{mp4Error}</small>}
                   {approvalMessage && <small className="approval-result">{approvalMessage}</small>}
-                  {!mp4Blob && <small className="mp4-hint">Primero convertí el video a MP4 para habilitar la aprobación.</small>}
                 </div>
                 <p className="date-note">{formatDate(active.createdAt)}</p>
               </div>
