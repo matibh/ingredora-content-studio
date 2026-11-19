@@ -36,7 +36,7 @@ La dirección elegida es una fábrica audiovisual basada en escenas 3D programá
 | [10 — Editor y Render Engine](docs/10-editor-y-render-engine.md) | Timeline, previsualización, render por escenas y exportación | Borrador inicial |
 | [11 — Supabase y almacenamiento](docs/11-supabase-y-almacenamiento.md) | Datos, Storage, cuotas, RLS y recuperación | Borrador inicial |
 | [12 — Quality Assurance y Content Quality Gate](docs/12-quality-assurance-y-content-quality-gate.md) | Validaciones, derechos, veracidad y aprobación | Borrador inicial |
-| 13 — Distribución social | Adaptaciones, metadatos y publicación futura | Pendiente |
+| [13 — Distribución y publicación social](docs/13-distribucion-y-publicacion-social.md) | Adaptaciones, metadatos, publicación manual e integraciones | Borrador inicial |
 | 14 — Seguridad y presupuesto cero | Límites de gasto, secretos, licencias y operación segura | Pendiente |
 | 15 — Roadmap y pruebas | Fases, hitos, criterios de aceptación y piloto | Pendiente |
 
@@ -80,6 +80,7 @@ Los esquemas JSON se incorporarán cuando el modelo conceptual esté suficientem
 - Editor y Render Engine: workspace de campañas, importación de paquetes, editor de escenas/timeline, preview, render determinista, cola, recuperación y almacenamiento de entregables especificados.
 - Supabase y almacenamiento: modelo lógico de datos, buckets privados, RLS, cuotas Free, egress, límites de archivos, retención, recuperación y controles para impedir cargos.
 - Quality Assurance y Content Quality Gate: gates desde brief hasta publicación, severidad de hallazgos, veracidad, precisión de producto, derechos, localización, calidad audiovisual, privacidad y aprobación humana.
+- Distribución y publicación social: Social Packages por canal, variantes, copy, UTM, flujo manual y evaluación de APIs bajo la regla USD 0.
 - GitHub Pages: no se utilizará como hosting de la aplicación en esta etapa.
 - GitHub Actions: se habilitará solo para validaciones ligeras y sin habilitar billing.
 - Proveedor de hosting web: pendiente de evaluación y verificación de condiciones gratuitas.
