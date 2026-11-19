@@ -253,55 +253,122 @@ function drawPoolsideVoiceCaption(
 ) {
   const activeIndex = words.findIndex((word, index) => {
     const nextWord = words[index + 1];
-    const wordWindowEnd = nextWord?.segment === word.segment ? nextWord.start : word.end + 0.28;
-    return time >= word.start && time < wordWindowEnd;
+    const endOfWindow = nextWord?.segment === word.segment ? nextWord.start : word.end + 0.22;
+    return time >= word.start && time < endOfWindow;
   });
-  const active = activeIndex >= 0 ? words[activeIndex] : undefined;
-  if (!active) return;
+  if (activeIndex < 0) return;
+
+  const active = words[activeIndex];
   const phrase = words.filter((word) => word.segment === active.segment);
   const spoken = phrase.filter((word) => word.start <= time);
   if (!spoken.length) return;
 
   const scale = width / 720;
-  const fontSize = Math.round(27 * scale);
-  const gap = 11 * scale;
-  ctx.save();
-  ctx.font = `900 ${fontSize}px Arial, Helvetica, sans-serif`;
-  const widths = spoken.map((word) => ctx.measureText(word.text).width);
-  const totalWidth = widths.reduce((sum, value) => sum + value, 0) + gap * Math.max(0, spoken.length - 1);
-  const panelWidth = Math.min(width * 0.92, totalWidth + width * 0.10);
-  const panelHeight = height * 0.092;
+  const maxTextWidth = width * 0.80;
+  const gap = 12 * scale;
+  let fontSize = 30 * scale;
+  let rows: VoiceWordTiming[][] = [];
+  let rowWidths: number[] = [];
+
+  const measureRows = () => {
+    rows = [];
+    rowWidths = [];
+    let row: VoiceWordTiming[] = [];
+    let rowWidth = 0;
+    ctx.font = "900 " + Math.round(fontSize) + "px Arial, Helvetica, sans-serif";
+    phrase.forEach((word) => {
+      const wordWidth = ctx.measureText(word.text).width;
+      const nextWidth = row.length ? rowWidth + gap + wordWidth : wordWidth;
+      if (row.length && nextWidth > maxTextWidth) {
+        rows.push(row);
+        rowWidths.push(rowWidth);
+        row = [word];
+        rowWidth = wordWidth;
+      } else {
+        row.push(word);
+        rowWidth = nextWidth;
+      }
+    });
+    if (row.length) {
+      rows.push(row);
+      rowWidths.push(rowWidth);
+    }
+  };
+
+  measureRows();
+  while ((rows.length > 2 || rowWidths.some((value) => value > maxTextWidth)) && fontSize > 21 * scale) {
+    fontSize -= 1.5 * scale;
+    measureRows();
+  }
+  if (rows.length > 3) {
+    fontSize = 21 * scale;
+    measureRows();
+  }
+
+  const lineHeight = fontSize * 1.34;
+  const panelWidth = width * 0.92;
+  const panelHeight = Math.max(height * 0.105, rows.length * lineHeight + 48 * scale);
   const panelX = (width - panelWidth) / 2;
-  const panelY = height * 0.775;
-  ctx.globalAlpha = 0.97;
-  ctx.beginPath();
-  ctx.roundRect(panelX, panelY, panelWidth, panelHeight, panelHeight * 0.20);
-  ctx.fillStyle = "rgba(4, 17, 25, .88)";
+  const panelY = Math.max(height * 0.72, Math.min(height * 0.82, height * 0.93 - panelHeight));
+  const panelBottom = Math.min(height * 0.94, panelY + panelHeight);
+
+  ctx.save();
+  ctx.globalAlpha = 0.985;
+  ctx.shadowColor = "rgba(0,0,0,.24)";
+  ctx.shadowBlur = 22 * scale;
+  roundedRect(ctx, panelX, panelY, panelWidth, panelBottom - panelY, 22 * scale);
+  const panel = ctx.createLinearGradient(panelX, panelY, panelX, panelBottom);
+  panel.addColorStop(0, "rgba(5,19,29,.94)");
+  panel.addColorStop(1, "rgba(8,27,38,.96)");
+  ctx.fillStyle = panel;
   ctx.fill();
-  ctx.strokeStyle = "rgba(255, 240, 174, .72)";
-  ctx.lineWidth = Math.max(1, scale * 1.5);
+  ctx.shadowBlur = 0;
+  ctx.strokeStyle = "rgba(255,240,183,.72)";
+  ctx.lineWidth = Math.max(1.5, 1.6 * scale);
   ctx.stroke();
 
-  const contentWidth = totalWidth;
-  let x = (width - contentWidth) / 2;
-  const y = panelY + panelHeight * 0.54;
-  spoken.forEach((word, index) => {
-    const isCurrent = word === active;
-    const wordWidth = widths[index];
-    if (isCurrent) {
-      ctx.beginPath();
-      ctx.roundRect(x - 5 * scale, y - fontSize * 0.72, wordWidth + 10 * scale, fontSize * 1.42, 7 * scale);
-      ctx.fillStyle = "rgba(239, 35, 60, .95)";
-      ctx.fill();
-    }
-    ctx.fillStyle = isCurrent ? "#fffdf8" : "rgba(255,255,255,.82)";
-    ctx.shadowColor = isCurrent ? "rgba(239,35,60,.48)" : "transparent";
-    ctx.shadowBlur = isCurrent ? 10 * scale : 0;
-    ctx.textAlign = "left";
-    ctx.textBaseline = "middle";
-    ctx.fillText(word.text, x, y);
-    x += wordWidth + gap;
+  const firstBaseline = panelY + (panelBottom - panelY) * 0.49 - ((rows.length - 1) * lineHeight) / 2;
+  rows.forEach((row, rowIndex) => {
+    const rowWidth = rowWidths[rowIndex];
+    let x = width / 2 - rowWidth / 2;
+    const y = firstBaseline + rowIndex * lineHeight;
+    row.forEach((word) => {
+      const wordWidth = ctx.measureText(word.text).width;
+      const isSpoken = word.start <= time;
+      const isCurrent = word === active;
+      if (isSpoken) {
+        if (isCurrent) {
+          roundedRect(ctx, x - 6 * scale, y - fontSize * 0.68, wordWidth + 12 * scale, fontSize * 1.32, 8 * scale);
+          ctx.fillStyle = "#e72b3b";
+          ctx.fill();
+        } else {
+          roundedRect(ctx, x - 4 * scale, y - fontSize * 0.62, wordWidth + 8 * scale, fontSize * 1.22, 7 * scale);
+          ctx.fillStyle = "rgba(255,255,255,.055)";
+          ctx.fill();
+        }
+        ctx.font = "900 " + Math.round(fontSize) + "px Arial, Helvetica, sans-serif";
+        ctx.textAlign = "left";
+        ctx.textBaseline = "middle";
+        ctx.fillStyle = isCurrent ? "#ffffff" : "rgba(255,255,255,.88)";
+        ctx.shadowColor = isCurrent ? "rgba(239,35,60,.55)" : "transparent";
+        ctx.shadowBlur = isCurrent ? 10 * scale : 0;
+        ctx.fillText(word.text, x, y);
+        ctx.shadowBlur = 0;
+      }
+      x += wordWidth + gap;
+    });
   });
+
+  const progress = Math.max(0, Math.min(1, (time - phrase[0].start) / Math.max(0.05, phrase[phrase.length - 1].end - phrase[0].start)));
+  const railX = panelX + panelWidth * 0.07;
+  const railY = panelBottom - 12 * scale;
+  const railW = panelWidth * 0.86;
+  roundedRect(ctx, railX, railY, railW, 3.5 * scale, 2 * scale);
+  ctx.fillStyle = "rgba(255,255,255,.22)";
+  ctx.fill();
+  roundedRect(ctx, railX, railY, railW * progress, 3.5 * scale, 2 * scale);
+  ctx.fillStyle = "#f4c65e";
+  ctx.fill();
   ctx.restore();
 }
 function normalizeCaptionWord(value: string) { return value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]/g, ""); }
