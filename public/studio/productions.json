@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-19T22:20:00-03:00",
+  "updatedAt": "2026-11-19T22:30:00-03:00",
   "productions": [
     {
       "id": "ingredora-coca-cola-poolside-002",
       "title": "Coca-Cola — Un día de playa, una Coca bien fría",
-      "description": "Spot de 27 segundos a 60 FPS: desafío de seis segundos, revelación secuencial de ingredientes en cinco segundos, cierre de seis segundos y vertido físico desde el interior de una botella que llena casi por completo el vaso.",
+      "description": "27 segundos a 60 FPS. Desafío de 6 segundos, revelación de ingredientes en 5 segundos y cierre de 6 segundos. Botella sin mano, líquido que migra hacia el pico, vertido balístico y vaso casi lleno.",
       "status": "rendering",
       "packageUrl": "studio/packages/coca-cola-poolside.v1.json",
       "durationSeconds": 27,
