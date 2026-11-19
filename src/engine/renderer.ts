@@ -319,29 +319,60 @@ function drawNutellaOverlay(ctx: CanvasRenderingContext2D, frame: number, fps: n
   if (cue) drawKineticCaption(cue);
 
   if (t>=19) {
-    // The closing slate gives the URL first priority and animates the invitation beneath it.
-    const p=smooth((t-19)/.55);
+    // High-conversion end card: strong hierarchy, a tangible URL button and a clear fallback.
+    const p=ease((t-19)/.48);
     ctx.save();ctx.globalAlpha=p;
-    const glow=ctx.createRadialGradient(width/2,height*.39,0,width/2,height*.39,width*.72);
-    glow.addColorStop(0,"rgba(216,243,106,.14)");glow.addColorStop(1,"rgba(216,243,106,0)");
-    ctx.fillStyle=glow;ctx.fillRect(0,height*.12,width,height*.58);
-    const brandPulse=1+Math.sin((t-19)*3.2)*.018;
-    ctx.translate(width/2,height*.37);ctx.scale(brandPulse,brandPulse);
+    const glow=ctx.createRadialGradient(width/2,height*.43,0,width/2,height*.43,width*.78);
+    glow.addColorStop(0,"rgba(216,243,106,.22)");glow.addColorStop(.48,"rgba(216,243,106,.07)");glow.addColorStop(1,"rgba(216,243,106,0)");
+    ctx.fillStyle=glow;ctx.fillRect(0,height*.13,width,height*.66);
+
+    // A subtle spotlight panel separates the call-to-action from the supermarket scene.
+    const panelW=width*.91,panelH=height*.43,panelX=(width-panelW)/2,panelY=height*.285;
+    const panelGrad=ctx.createLinearGradient(panelX,panelY,panelX+panelW,panelY+panelH);
+    panelGrad.addColorStop(0,"rgba(7,22,15,.84)");panelGrad.addColorStop(.5,"rgba(13,35,23,.94)");panelGrad.addColorStop(1,"rgba(5,18,12,.88)");
+    rounded(panelX,panelY,panelW,panelH,height*.045);ctx.fillStyle=panelGrad;ctx.fill();
+    ctx.strokeStyle="rgba(216,243,106,.58)";ctx.lineWidth=Math.max(2,width*.0025);ctx.stroke();
+
+    // Small invitation label, then the URL as the unmistakable hero.
     ctx.textAlign="center";ctx.textBaseline="middle";
-    ctx.font="900 "+Math.round(width*.095)+"px Arial, Helvetica, sans-serif";
-    ctx.shadowColor="rgba(216,243,106,.48)";ctx.shadowBlur=width*.04;
-    ctx.fillStyle=white;ctx.fillText("INGREDORA.COM",0,0,width*.9);
+    ctx.font="800 "+Math.round(width*.027)+"px Arial, Helvetica, sans-serif";
+    ctx.fillStyle=accent;ctx.shadowColor="rgba(216,243,106,.35)";ctx.shadowBlur=width*.012;
+    ctx.fillText("TU PRÓXIMA PARTIDA EMPIEZA ACÁ",width/2,height*.355,width*.82);
+
+    const brandPulse=1+Math.sin((t-19)*3.4)*.014;
+    ctx.save();ctx.translate(width/2,height*.445);ctx.scale(brandPulse,brandPulse);
+    ctx.font="900 "+Math.round(width*.091)+"px Arial, Helvetica, sans-serif";
+    ctx.fillStyle=white;ctx.shadowColor="rgba(216,243,106,.72)";ctx.shadowBlur=width*.045;
+    ctx.fillText("INGREDORA.COM",0,0,width*.84);ctx.restore();
+
+    // Bright button treatment with a moving sheen and a clear action verb.
+    const buttonW=width*.72,buttonH=height*.092,buttonX=(width-buttonW)/2,buttonY=height*.515;
+    const buttonPulse=1+Math.sin((t-19.25)*4.2)*.012;
+    ctx.save();ctx.translate(width/2,buttonY+buttonH/2);ctx.scale(buttonPulse,buttonPulse);
+    const bx=-buttonW/2,by=-buttonH/2;
+    const buttonGrad=ctx.createLinearGradient(bx,by,bx+buttonW,by+buttonH);
+    buttonGrad.addColorStop(0,"#e8ff91");buttonGrad.addColorStop(.48,"#d8f36a");buttonGrad.addColorStop(1,"#b9df45");
+    rounded(bx,by,buttonW,buttonH,buttonH*.48);ctx.fillStyle=buttonGrad;ctx.shadowColor="rgba(216,243,106,.42)";ctx.shadowBlur=width*.025;ctx.fill();
+    ctx.shadowBlur=0;ctx.strokeStyle="rgba(255,255,255,.7)";ctx.lineWidth=Math.max(1,width*.0015);ctx.stroke();
+    ctx.fillStyle="#142116";ctx.font="900 "+Math.round(width*.043)+"px Arial, Helvetica, sans-serif";
+    ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText("ENTRÁ Y SEGUÍ JUGANDO  ›",0,0,buttonW*.91);
     ctx.restore();
-    const ctaAlpha=ease((t-20.15)/.35);
-    ctx.save();ctx.globalAlpha=ctaAlpha;
-    const ctaY=height*.56+(1-ctaAlpha)*height*.035;
-    ctx.textAlign="center";ctx.textBaseline="middle";
-    ctx.font="900 "+Math.round(width*.046)+"px Arial, Helvetica, sans-serif";
-    ctx.fillStyle=accent;ctx.shadowColor="rgba(216,243,106,.35)";ctx.shadowBlur=width*.018;
-    ctx.fillText("ENTRÁ Y SEGUÍ JUGANDO",width/2,ctaY,width*.88);
-    ctx.font="700 "+Math.round(width*.029)+"px Arial, Helvetica, sans-serif";
-    ctx.fillStyle=white;ctx.shadowBlur=0;
-    ctx.fillText("También encontrás el link en mi perfil",width/2,height*.635,width*.88);
+
+    // The profile link is a helpful alternative, not competing with the main action.
+    const secondaryIn=ease((t-21.15)/.4);
+    ctx.globalAlpha=p*secondaryIn;
+    const secondaryY=height*.665+(1-secondaryIn)*height*.018;
+    ctx.font="700 "+Math.round(width*.027)+"px Arial, Helvetica, sans-serif";
+    ctx.fillStyle="rgba(255,253,247,.94)";ctx.shadowColor="rgba(0,0,0,.55)";ctx.shadowBlur=width*.008;
+    ctx.fillText("¿PREFERÍS ENTRAR DESPUÉS?",width/2,secondaryY,width*.82);
+    ctx.font="800 "+Math.round(width*.031)+"px Arial, Helvetica, sans-serif";
+    ctx.fillStyle=accent;ctx.shadowColor="rgba(216,243,106,.3)";ctx.shadowBlur=width*.01;
+    ctx.fillText("TAMBIÉN TENÉS EL LINK EN MI PERFIL",width/2,height*.708,width*.9);
+
+    // Animated underline sweep gives the final seconds a sense of momentum.
+    const sweep=smooth((t-21.25)/1.1);
+    ctx.globalAlpha=p*.9;ctx.fillStyle=accent;
+    rounded(width*.2,height*.75,width*.6*sweep,height*.005,height*.003);ctx.fill();
     ctx.restore();
   }
 }
