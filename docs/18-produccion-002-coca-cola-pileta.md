@@ -1,9 +1,9 @@
 # Ingredora Originals 002 — Coca-Cola: un día de playa, una Coca bien fría
 
-**Versión vigente:** 4.0 · **Fecha:** 19 de noviembre de 2026  
+**Versión vigente:** 6.0 · **Fecha:** 19 de noviembre de 2026  
 **Package:** `ingredora-coca-cola-poolside-002`  
 **Engine:** Three.js · **Formato:** 720 × 1280 · 60 FPS · 9:16  
-**Duración:** 34 segundos · **Desafío vigente:** 6 segundos  
+**Duración vigente:** 27 segundos · **Desafío vigente:** 6 segundos  
 **Estado:** primer render técnico en preparación; requiere revisión visual humana.
 
 ## 1. Objetivo creativo
@@ -300,3 +300,41 @@ El chorro no se posiciona mediante un cilindro fijo ni se conecta a un punto ext
 Esto es una simulación visual procedural determinista basada en cinemática balística, geometría deformable y partículas; no es un solver de dinámica de fluidos computacional (CFD). Busca representar de forma creíble el flujo, el impacto y la subida del líquido en un render reproducible a 60 FPS, sin depender de servicios externos.
 
 **Control obligatorio:** inspeccionar el WebM a velocidad normal y cuadro a cuadro en el inicio del chorro, contacto con el líquido, gotas, nivel y cierre. Comprobar especialmente que ningún tramo del flujo empiece fuera de la boca ni termine fuera del vaso.
+
+
+## 15. Ajuste de ritmo y física del líquido — versión 6
+
+Esta revisión prevalece sobre los timelines anteriores. La pieza completa baja de 34 a **27 segundos** para evitar que la lista de ingredientes quede sostenida demasiado tiempo después de reducir el contador a seis segundos.
+
+### Timeline vigente
+
+| Tiempo | Acción |
+|---|---|
+| 00:00–00:03 | Playa, mediodía y presentación del producto |
+| 00:03–00:07.2 | Vertido macro de Coca-Cola sobre hielo |
+| 00:07.2–00:10 | Congelamiento y pregunta |
+| 00:10–00:16 | Desafío exacto de seis segundos |
+| 00:16–00:22.8 | Revelación secuencial de ingredientes; seis tarjetas entran una tras otra y cafeína queda indicada aparte |
+| 00:22.8–00:27 | Cierre breve y CTA de Ingredora |
+
+El audio Edge TTS se vuelve a generar a 27 segundos con la voz Elena. Las frases finales se ubican en 00:23.10 y 00:24.70; la ventana de ingredientes permanece sin locución.
+
+### Líquido de la botella y llenado del vaso
+
+- El contenido interior de la botella se extiende hasta el cuello y el pico, no termina en el hombro.
+- Al inclinar la botella, el volumen restante se desplaza hacia el extremo local +Y, que corresponde al pico una vez invertida.
+- El volumen interno se reduce de forma visible durante el vertido, manteniendo el líquido junto a la boquilla.
+- El chorro se resuelve desde la abertura hasta la superficie móvil de la bebida. La velocidad de salida se calcula para que la dirección inicial coincida con el eje de la botella y la trayectoria balística bajo gravedad termine dentro del vaso.
+- El chorro es más ancho y continuo, con pequeñas variaciones de sección y gotas secundarias.
+- El vaso sube desde un nivel bajo hasta casi el borde, dejando un margen para el hielo y sin rebasar el vidrio.
+- Las piezas de hielo flotan con el ascenso de la bebida y reciben una perturbación sutil del impacto.
+- La superficie del líquido ondula alrededor del punto de entrada; la espuma y las gotas de impacto siguen ese punto real.
+
+### Sonido del servido
+
+- Capa continua y suave de líquido filtrado, con entrada y salida progresivas.
+- Hiss de gas/carbonatación de menor volumen que el cuerpo del vertido.
+- Dos o tres pequeños tintineos de hielo, suaves y no electrónicos.
+- Mantener la locución claramente por encima de estos efectos y no cubrir el desafío ni la revelación.
+
+El modelo usa una simulación procedural basada en la ecuación balística, malla deformable, volumen interno animado y partículas. No es un solver CFD. La aprobación requiere comprobar que el líquido llega al pico, entra en el vaso, el nivel sube de forma coherente y no hay clipping ni derrames imposibles.
