@@ -11,6 +11,7 @@ import {
 } from "mediabunny";
 import { generateOriginalSoundtrack } from "./audio";
 import type { ProductionPackage, ProductionScene, SceneObject } from "./types";
+import { createCocaColaPoolsideSet, drawCocaColaPoolsideOverlay } from "./cocaColaPoolside";
 
 export type RenderProgress = { frame: number; totalFrames: number; percent: number };
 
@@ -593,7 +594,7 @@ export async function renderPackageToWebM(
   output.setMetadataTags({ title: pkg.title, artist: "Ingredora Content Studio", date: new Date(pkg.createdAt) });
 
   const world = new THREE.Scene();
-  if (pkg.visualPreset !== "nutella-supermarket") {
+  if (pkg.visualPreset !== "nutella-supermarket" && pkg.visualPreset !== "coca-cola-poolside") {
     world.add(new THREE.HemisphereLight(0xffffff, 0x273b2c, 2.0));
     const key = new THREE.DirectionalLight(0xffffff, 3.0);
     key.position.set(-3, 5, 6);
@@ -606,6 +607,7 @@ export async function renderPackageToWebM(
 
   const camera = new THREE.PerspectiveCamera(34, pkg.width / pkg.height, 0.1, 100);
   const nutellaSet = pkg.visualPreset === "nutella-supermarket" ? createNutellaSet(world) : null;
+  const poolsideSet = pkg.visualPreset === "coca-cola-poolside" ? createCocaColaPoolsideSet(world) : null;
   let nutellaVoiceWords: VoiceWordTiming[] = [];
   if (nutellaSet) {
     const timingResponse = await fetch(import.meta.env.BASE_URL + "studio/audio/nutella-v9-word-timings.json");
@@ -619,6 +621,22 @@ export async function renderPackageToWebM(
   let lastSceneId = "";
 
   const drawFrame = (frame: number) => {
+    if (poolsideSet) {
+      const time = frame / fps;
+      poolsideSet.update(Math.min(time, 7.2));
+      const ease = (value: number) => { const x = Math.max(0, Math.min(1, value)); return x * x * (3 - 2 * x); };
+      const approach = ease(time / 3.2);
+      const cameraZ = 13.0 - approach * 3.1;
+      const cameraY = 2.6 - approach * 0.85;
+      camera.position.set(0, cameraY, cameraZ);
+      camera.lookAt(0, -0.45, -0.55);
+      camera.fov = 43 - approach * 5;
+      camera.updateProjectionMatrix();
+      renderer.render(world, camera);
+      ctx.drawImage(renderer.domElement, 0, 0, pkg.width, pkg.height);
+      drawCocaColaPoolsideOverlay(ctx, time, pkg.width, pkg.height);
+      return;
+    }
     if (nutellaSet) {
       const time = frame / fps;
        // 33-second storyboard: product reveal, memory challenge and sustained website end card.
