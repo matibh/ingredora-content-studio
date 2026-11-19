@@ -178,63 +178,165 @@ function createNutellaSet(world: THREE.Scene) {
 
 function drawNutellaOverlay(ctx: CanvasRenderingContext2D, frame: number, fps: number, width: number, height: number) {
   const t = frame / fps;
-  const phase = t < 3 ? 0 : t < 5.5 ? 1 : t < 8 ? 2 : t < 15 ? 3 : t < 19 ? 4 : 5;
-  const accent = "#d8f36a"; const y = height * .735;
-  const gradient = ctx.createLinearGradient(0, y - 150, 0, height);
-  gradient.addColorStop(0, "rgba(8,17,14,0)"); gradient.addColorStop(.25, "rgba(8,17,14,.78)"); gradient.addColorStop(1, "rgba(8,17,14,.96)");
-  ctx.fillStyle = gradient; ctx.fillRect(0, y - 150, width, height - y + 150);
-  if (phase !== 5) {
-    ctx.fillStyle = "rgba(8,17,14,.72)"; ctx.beginPath(); ctx.roundRect(width*.055,height*.035,width*.34,height*.05,18); ctx.fill();
-    ctx.fillStyle = accent; ctx.font = "900 " + Math.round(width*.044) + "px Arial"; ctx.textAlign = "left"; ctx.textBaseline = "middle"; ctx.fillText("INGREDORA",width*.078,height*.06);
-  }
-  ctx.textAlign = "center";
-  const eyebrow = ["EN LA GÓNDOLA","PERO… ¿QUÉ TIENE?","MIRÁ EL DORSO","SIETE INGREDIENTES","TU TURNO","SEGUÍ JUGANDO"][phase];
-  const headline = ["UN CLÁSICO DE SIEMPRE","VAMOS A MIRAR","LA ETIQUETA REAL","LEÉ Y MEMORIZÁ","¿CUÁNTOS RECORDÁS?",""][phase];
-  // The end card has its own typography; never draw the generic phase title over it.
-  if (phase !== 5) {
-    ctx.fillStyle = accent; ctx.font = "800 " + Math.round(width*.027) + "px Arial"; ctx.fillText(eyebrow,width/2,height*.775);
-    ctx.fillStyle = "#fff"; ctx.font = "900 " + Math.round(width*.064) + "px Arial"; ctx.fillText(headline,width/2,height*.832,width*.91);
-  }
-  if (phase === 3) {
-    // Ingredient reveal: high-contrast two-column list, bold enough for a phone screen.
-    ctx.fillStyle = "rgba(7,14,11,.88)";
-    ctx.beginPath(); ctx.roundRect(width*.055,height*.855,width*.89,height*.112,18); ctx.fill();
-    const ingredients = ["AZÚCAR","ACEITE VEGETAL","AVELLANAS","LECHE DESCREMADA EN POLVO","CACAO EN POLVO DESGRASADO","EMULSIFICANTE (LECITINAS)","SABORIZANTE"];
-    ctx.textAlign = "left"; ctx.fillStyle = "#ffffff";
-    ctx.font = "900 " + Math.round(width*.020) + "px Arial";
-    ingredients.forEach((item,i) => {
-      const col = i < 4 ? 0 : 1; const row = i < 4 ? i : i-4;
-      const x = width*(col===0?.105:.555);
-      const yy = height*(.873 + row*.024);
-      ctx.fillStyle = accent; ctx.beginPath(); ctx.arc(x,yy,5,0,Math.PI*2); ctx.fill();
-      ctx.fillStyle = "#ffffff"; ctx.fillText(item,x+15,yy+1,width*.37);
-    });
-    ctx.textAlign = "center";
-  } else if (phase === 5) {
-    // End card: each phrase is rendered on its own fixed row, with width-fitted text.
-    ctx.fillStyle = "rgba(5,13,10,.68)";
-    ctx.beginPath(); ctx.roundRect(width*.055,height*.635,width*.89,height*.325,24); ctx.fill();
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    const endCardLine = (text: string, y: number, size: number, color: string) => {
-      ctx.fillStyle = color;
-      ctx.font = "900 " + Math.round(width*size) + "px Arial";
-      ctx.fillText(text,width/2,height*y,width*.82);
-    };
-    endCardLine("ENTRÁ A",.685,.029,accent);
-    endCardLine("ingredora.com",.755,.071,"#ffffff");
-    endCardLine("O BUSCÁ EL LINK",.835,.025,"rgba(255,255,255,.98)");
-    endCardLine("EN MI PERFIL",.885,.025,"rgba(255,255,255,.98)");
-    endCardLine("INGREDORA",.935,.023,accent);
+  const accent = "#d8f36a";
+  const white = "#fffdf7";
+  const ease = (v: number) => { const x = Math.max(0, Math.min(1, v)); return 1 - Math.pow(1 - x, 3); };
+  const smooth = (v: number) => { const x = Math.max(0, Math.min(1, v)); return x*x*(3-2*x); };
+  const pop = (v: number) => { const x = Math.max(0, Math.min(1, v)); return 1 + Math.sin(x*Math.PI)*.055; };
+  const rounded = (x:number,y:number,w:number,h:number,r:number) => {
+    ctx.beginPath(); ctx.roundRect(x,y,w,h,r);
+  };
+  const shadowText = (text:string,x:number,y:number,size:number,color:string,maxWidth:number,weight=900) => {
+    ctx.save(); ctx.textAlign="center"; ctx.textBaseline="middle";
+    ctx.font = weight + " " + Math.round(size) + "px Arial, Helvetica, sans-serif";
+    ctx.shadowColor="rgba(0,0,0,.48)"; ctx.shadowBlur=width*.018; ctx.shadowOffsetY=height*.004;
+    ctx.fillStyle=color; ctx.fillText(text,x,y,maxWidth); ctx.restore();
+  };
 
-  } else {
-    ctx.fillStyle = "rgba(255,255,255,.96)"; ctx.font = "700 " + Math.round(width*.026) + "px Arial";
-    const sub = ["Lo reconocés enseguida.","Vamos a mirar el dorso del frasco.","La etiqueta tiene toda la información.","Son siete ingredientes. Leelos y memorizalos.","¿Cuántos recordás?",""][phase];
-    ctx.fillText(sub,width/2,height*.89,width*.92);
+  // A permanent, unmistakable brand signature. It remains in the same safe area
+  // throughout the spot, including the final call-to-action.
+  const brandIn = ease(t/.42);
+  const brandY = -height*.075*(1-brandIn);
+  ctx.save();
+  ctx.globalAlpha=brandIn;
+  ctx.translate(0,brandY);
+  const brandW=width*.56, brandH=height*.066, brandX=(width-brandW)/2, brandY0=height*.045;
+  const brandGrad=ctx.createLinearGradient(brandX,brandY0,brandX+brandW,brandY0+brandH);
+  brandGrad.addColorStop(0,"rgba(7,19,14,.94)"); brandGrad.addColorStop(1,"rgba(20,39,27,.92)");
+  rounded(brandX,brandY0,brandW,brandH,brandH*.48); ctx.fillStyle=brandGrad; ctx.fill();
+  ctx.strokeStyle="rgba(216,243,106,.72)"; ctx.lineWidth=Math.max(1,width*.002); ctx.stroke();
+  ctx.fillStyle=accent; ctx.beginPath(); ctx.arc(brandX+brandH*.62,brandY0+brandH/2,brandH*.13,0,Math.PI*2); ctx.fill();
+  ctx.textAlign="center"; ctx.textBaseline="middle";
+  ctx.font="900 "+Math.round(width*.039)+"px Arial, Helvetica, sans-serif";
+  ctx.fillStyle=white; ctx.shadowColor="rgba(216,243,106,.35)"; ctx.shadowBlur=width*.012;
+  ctx.fillText("INGREDORA.COM",width/2+brandH*.12,brandY0+brandH/2,width*.47);
+  ctx.restore();
+
+  // Subtle lower vignette keeps every caption legible without hiding the product.
+  const lower=ctx.createLinearGradient(0,height*.57,0,height);
+  lower.addColorStop(0,"rgba(5,14,10,0)"); lower.addColorStop(.34,"rgba(5,14,10,.46)"); lower.addColorStop(1,"rgba(5,14,10,.86)");
+  ctx.fillStyle=lower; ctx.fillRect(0,height*.57,width,height*.43);
+
+  const cues = [
+    {a:0,b:2.65,text:"¡LO RECONOCÉS ENSEGUIDA!",accent:"RECONOCÉS"},
+    {a:2.65,b:5.65,text:"PERO… ¿SABÉS QUÉ TIENE REALMENTE?",accent:"REALMENTE"},
+    {a:5.65,b:8.25,text:"VAMOS A MIRAR EL DORSO DEL FRASCO",accent:"DORSO"},
+    {a:8.25,b:11.65,text:"LA ETIQUETA TIENE TODA LA INFORMACIÓN",accent:"TODA"},
+    {a:11.65,b:13.35,text:"SIETE INGREDIENTES",accent:"SIETE"},
+    {a:13.35,b:16.15,text:"LEÉLOS, MEMORIZALOS…",accent:"MEMORIZALOS"},
+    {a:16.15,b:19.0,text:"¿CUÁNTOS RECORDÁS?",accent:"CUÁNTOS"},
+    {a:19.0,b:21.0,text:"PARA SEGUIR JUGANDO",accent:"JUGANDO"},
+    {a:21.0,b:23.35,text:"ENTRÁ A INGREDORA.COM",accent:"INGREDORA.COM"},
+    {a:23.35,b:26.0,text:"O BUSCÁ EL LINK EN MI PERFIL",accent:"MI PERFIL"},
+  ];
+  const cue = cues.find((item)=>t>=item.a && t<item.b);
+  const drawKineticCaption = (item: typeof cues[number]) => {
+    const p=(t-item.a)/(item.b-item.a);
+    const intro=ease(p/.17), outro=1-smooth((p-.86)/.14);
+    const alpha=intro*outro;
+    const lift=(1-intro)*height*.045;
+    const words=item.text.split(" ");
+    const fontSize=width*(item.text.length>31?.047:item.text.length>22?.054:.066);
+    ctx.save(); ctx.globalAlpha=alpha;
+    const panelW=width*.91, panelH=height*.145, panelX=(width-panelW)/2, panelY=height*.755+lift;
+    const panel=ctx.createLinearGradient(panelX,panelY,panelX+panelW,panelY+panelH);
+    panel.addColorStop(0,"rgba(5,17,12,.91)"); panel.addColorStop(.5,"rgba(11,29,20,.94)"); panel.addColorStop(1,"rgba(5,17,12,.91)");
+    rounded(panelX,panelY,panelW,panelH,panelH*.18); ctx.fillStyle=panel; ctx.fill();
+    ctx.strokeStyle="rgba(216,243,106,.52)"; ctx.lineWidth=Math.max(1,width*.0018); ctx.stroke();
+    // A short animated accent rail signals each new spoken phrase.
+    ctx.fillStyle=accent; rounded(panelX+panelW*.07,panelY+panelH*.17,panelW*.12*ease(p/.2),height*.006,height*.003); ctx.fill();
+    ctx.font="900 "+Math.round(fontSize)+"px Arial, Helvetica, sans-serif";
+    ctx.textAlign="center"; ctx.textBaseline="middle";
+    const maxLine=panelW*.84, lineHeight=fontSize*1.18;
+    const lines:string[][]=[]; let line:string[]=[]; let lineWidth=0;
+    for(const word of words){
+      const w=ctx.measureText(word+" ").width;
+      if(line.length && lineWidth+w>maxLine){lines.push(line);line=[];lineWidth=0;}
+      line.push(word);lineWidth+=w;
+    }
+    if(line.length)lines.push(line);
+    const totalH=lines.length*lineHeight;
+    let wordIndex=0;
+    lines.forEach((row,rowIndex)=>{
+      const widths=row.map(word=>ctx.measureText(word).width);
+      const rowW=widths.reduce((sum,value)=>sum+value,0)+fontSize*.24*(row.length-1);
+      let x=width/2-rowW/2;
+      const y=panelY+panelH*.59+(rowIndex-(lines.length-1)/2)*lineHeight;
+      row.forEach((word,i)=>{
+        const local=wordIndex/(words.length+1);
+        const reveal=ease((p-local*.46)/.20);
+        const isAccent=word.replace(/[¡!¿?,…]/g,"")===item.accent.replace(/[¡!¿?,…]/g,"");
+        const wordW=widths[i];
+        const center=x+wordW/2;
+        ctx.save(); ctx.globalAlpha*=reveal;
+        const currentWord=p>.12 && p<.82 && Math.abs(p-(local*.46+.28))<.11;
+        if(isAccent || currentWord){
+          ctx.fillStyle=isAccent?"rgba(216,243,106,.16)":"rgba(255,255,255,.10)";
+          rounded(x-fontSize*.10,y-lineHeight*.39,wordW+fontSize*.20,lineHeight*.78,fontSize*.15);ctx.fill();
+        }
+        ctx.fillStyle=isAccent?accent:white;
+        ctx.shadowColor=isAccent?"rgba(216,243,106,.55)":"rgba(0,0,0,.35)";
+        ctx.shadowBlur=isAccent?width*.018:width*.006;
+        const scale=pop(Math.max(0,Math.min(1,(p-local*.46)/.25)));
+        ctx.translate(center,y);ctx.scale(scale,scale);ctx.fillText(word,0,0);ctx.restore();
+        x+=wordW+fontSize*.24;wordIndex++;
+      });
+    });
+    // Progress indicator follows the narration phrase, not an unrelated timer.
+    ctx.fillStyle="rgba(255,255,255,.18)"; rounded(panelX+panelW*.07,panelY+panelH*.88,panelW*.86,height*.004,height*.002);ctx.fill();
+    ctx.fillStyle=accent; rounded(panelX+panelW*.07,panelY+panelH*.88,panelW*.86*smooth(p),height*.004,height*.002);ctx.fill();
+    ctx.restore();
+  };
+
+  const phase = t < 3 ? 0 : t < 5.5 ? 1 : t < 8 ? 2 : t < 15 ? 3 : t < 19 ? 4 : 5;
+  if (phase === 3) {
+    // Ingredients are presented as a clean editorial checklist, separate from subtitles.
+    const cardY=height*.835, cardH=height*.132, cardX=width*.055, cardW=width*.89;
+    const cardIn=ease((t-8.05)/.35);
+    ctx.save();ctx.globalAlpha=cardIn;
+    rounded(cardX,cardY,cardW,cardH,cardH*.12);ctx.fillStyle="rgba(5,14,11,.91)";ctx.fill();
+    ctx.strokeStyle="rgba(216,243,106,.42)";ctx.lineWidth=Math.max(1,width*.0015);ctx.stroke();
+    ctx.textAlign="left";ctx.textBaseline="middle";
+    ctx.font="900 "+Math.round(width*.021)+"px Arial, Helvetica, sans-serif";
+    const ingredients=["AZÚCAR","ACEITE VEGETAL","AVELLANAS","LECHE DESCREMADA EN POLVO","CACAO EN POLVO DESGRASADO","EMULSIFICANTE (LECITINAS)","SABORIZANTE"];
+    ingredients.forEach((item,i)=>{
+      const col=i<4?0:1,row=i<4?i:i-4;
+      const x=cardX+cardW*(col===0?.055:.535), y=cardY+cardH*(.19+row*.205);
+      const itemIn=ease((t-(8.15+i*.12))/.22);
+      ctx.globalAlpha=cardIn*itemIn;
+      ctx.fillStyle=accent;ctx.beginPath();ctx.arc(x,y,width*.004,0,Math.PI*2);ctx.fill();
+      ctx.fillStyle=white;ctx.fillText(item,x+width*.016,y,cardW*.43);
+    });
+    ctx.restore();
   }
-  if (phase !== 5) {
-    ctx.fillStyle = "rgba(255,255,255,.62)"; ctx.font = "700 " + Math.round(width*.018) + "px Arial";
-    ctx.fillText("UN PRODUCTO REAL. UN DESAFÍO PARA TU MEMORIA.",width/2,height*.96);
+
+  if (cue) drawKineticCaption(cue);
+
+  if (t>=19) {
+    // The closing slate gives the URL first priority and animates the invitation beneath it.
+    const p=smooth((t-19)/.55);
+    ctx.save();ctx.globalAlpha=p;
+    const glow=ctx.createRadialGradient(width/2,height*.39,0,width/2,height*.39,width*.72);
+    glow.addColorStop(0,"rgba(216,243,106,.14)");glow.addColorStop(1,"rgba(216,243,106,0)");
+    ctx.fillStyle=glow;ctx.fillRect(0,height*.12,width,height*.58);
+    const brandPulse=1+Math.sin((t-19)*3.2)*.018;
+    ctx.translate(width/2,height*.37);ctx.scale(brandPulse,brandPulse);
+    ctx.textAlign="center";ctx.textBaseline="middle";
+    ctx.font="900 "+Math.round(width*.095)+"px Arial, Helvetica, sans-serif";
+    ctx.shadowColor="rgba(216,243,106,.48)";ctx.shadowBlur=width*.04;
+    ctx.fillStyle=white;ctx.fillText("INGREDORA.COM",0,0,width*.9);
+    ctx.restore();
+    const ctaAlpha=ease((t-20.15)/.35);
+    ctx.save();ctx.globalAlpha=ctaAlpha;
+    const ctaY=height*.56+(1-ctaAlpha)*height*.035;
+    ctx.textAlign="center";ctx.textBaseline="middle";
+    ctx.font="900 "+Math.round(width*.046)+"px Arial, Helvetica, sans-serif";
+    ctx.fillStyle=accent;ctx.shadowColor="rgba(216,243,106,.35)";ctx.shadowBlur=width*.018;
+    ctx.fillText("ENTRÁ Y SEGUÍ JUGANDO",width/2,ctaY,width*.88);
+    ctx.font="700 "+Math.round(width*.029)+"px Arial, Helvetica, sans-serif";
+    ctx.fillStyle=white;ctx.shadowBlur=0;
+    ctx.fillText("También encontrás el link en mi perfil",width/2,height*.635,width*.88);
+    ctx.restore();
   }
 }
 function sceneAtFrame(pkg: ProductionPackage, frame: number): ProductionScene {
