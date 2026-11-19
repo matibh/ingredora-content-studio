@@ -20,7 +20,7 @@ SEGMENTS = [
     {"start": 0.22, "text": "Un día de calor..."},
     {"start": 3.10, "text": "Una Coca bien fría, con hielo y burbujas."},
     {"start": 7.42, "text": "Pero pará... ¿sabés qué tiene adentro?"},
-    {"start": 10.18, "text": "Tenés quince segundos para adivinar sus ingredientes."},
+    {"start": 10.50, "text": "Tenés quince segundos para adivinar sus ingredientes."},
     {"start": 31.05, "text": "¿Cuántos acertaste? Entrá a Ingredora punto com y jugá."},
 ]
 
