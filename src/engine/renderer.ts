@@ -276,22 +276,46 @@ export async function renderPackageToWebM(
     try { voice = await decodeContext.decodeAudioData(voiceBytes); }
     finally { await decodeContext.close(); }
     if (!voice.duration || voice.length < 1) throw new Error("La narración se descargó, pero no contiene audio reproducible.");
+    // Measure the decoded narration before mixing. This catches a valid-looking but silent MP3.
+    let voicePeak = 0;
+    let voiceEnergy = 0;
+    let voiceSamples = 0;
+    for (let channel = 0; channel < voice.numberOfChannels; channel += 1) {
+      const samples = voice.getChannelData(channel);
+      for (let i = 0; i < samples.length; i += 1) {
+        const magnitude = Math.abs(samples[i]);
+        if (magnitude > voicePeak) voicePeak = magnitude;
+        voiceEnergy += samples[i] * samples[i];
+        voiceSamples += 1;
+      }
+    }
+    const voiceRms = Math.sqrt(voiceEnergy / Math.max(1, voiceSamples));
+    if (voicePeak < 0.0005 || voiceRms < 0.00005) {
+      throw new Error("El MP3 de narración llegó, pero está prácticamente en silencio (pico " + voicePeak.toFixed(6) + ").");
+    }
     const mixDuration = durationSeconds;
     const frameCount = Math.ceil(mixDuration * 48_000);
     const offline = new OfflineAudioContext(2, frameCount, 48_000);
     const musicSource = offline.createBufferSource();
     musicSource.buffer = soundtrack;
     const musicGain = offline.createGain();
-    musicGain.gain.value = 0.12;
+    musicGain.gain.value = 0.055;
     musicSource.connect(musicGain).connect(offline.destination);
     musicSource.start(0);
     const voiceSource = offline.createBufferSource();
     voiceSource.buffer = voice;
     const voiceGain = offline.createGain();
-    voiceGain.gain.value = 1.35;
+    // Normalize quiet source files and keep the spoken track clearly above the music.
+    voiceGain.gain.value = Math.min(4, Math.max(1.8, 0.82 / voicePeak));
     voiceSource.connect(voiceGain).connect(offline.destination);
     voiceSource.start(pkg.voiceoverOffsetSeconds || 0);
     mixedSoundtrack = await offline.startRendering();
+    let mixedPeak = 0;
+    for (let channel = 0; channel < mixedSoundtrack.numberOfChannels; channel += 1) {
+      const samples = mixedSoundtrack.getChannelData(channel);
+      for (let i = 0; i < samples.length; i += 1) mixedPeak = Math.max(mixedPeak, Math.abs(samples[i]));
+    }
+    if (mixedPeak < 0.0005) throw new Error("La mezcla final quedó en silencio; se canceló el video para no publicar otro render sin voz.");
   }
   if (signal?.aborted) throw new Error("Render cancelado.");
 
