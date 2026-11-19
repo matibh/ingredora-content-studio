@@ -110,7 +110,7 @@ function App() {
         }
         setRenderErrors((current) => { const next = { ...current }; delete next[candidate.id]; return next; });
         setRenderStages((current) => ({ ...current, [candidate.id]: "Cargando materiales de la producción…" }));
-        const packageResponse = await fetch(import.meta.env.BASE_URL + candidate.packageUrl + "?v=6", { cache: "no-cache" });
+        const packageResponse = await fetch(import.meta.env.BASE_URL + candidate.packageUrl + "?v=6.1", { cache: "no-cache" });
         if (!packageResponse.ok) throw new Error("No se pudo cargar el paquete (" + packageResponse.status + ").");
         const productionPackage = await packageResponse.json() as ProductionPackage;
         setRenderStages((current) => ({ ...current, [candidate.id]: "Renderizando cada fotograma. Puede tardar unos minutos…" }));
