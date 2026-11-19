@@ -59,3 +59,9 @@ All notable documentation and specification changes are recorded here.
 - Added `docs/09-audio-y-voice-studio.md` defining procedural music, sound effects, ambience, optional voice recordings, audio timeline, mixing, synchronization, export compatibility, metadata and rights.
 - Kept synthetic voice explicitly unapproved pending a separate cost, licensing, language and browser feasibility review. The MVP can work without voice.
 - No application code or production infrastructure has been implemented.
+
+## 2026-11-19 — Editor and Render Engine
+
+- Added `docs/10-editor-y-render-engine.md` defining campaign workspace, Production Package import, scene and timeline editing, preview profiles, deterministic browser rendering, batch queue, recovery, encoding validation and Supabase Storage deliverables.
+- Explicitly kept codec support, memory/duration limits, upload strategy and free storage capacity subject to real-device tests; no remote rendering or paid fallback.
+- No application code or production infrastructure has been implemented.
