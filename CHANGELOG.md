@@ -47,3 +47,9 @@ All notable documentation and specification changes are recorded here.
 - Added `docs/07-personajes-y-animaciones.md` defining stylized modular characters, rigging, facial expressions, reusable actions, hand/product interaction, timeline clips, performance and representation safeguards.
 - Kept final character art direction, rig implementation, IK approach and device benchmarks open pending prototypes.
 - No application code or production infrastructure has been implemented.
+
+## 2026-11-19 — Cinematic Scene Engine
+
+- Added `docs/08-cinematic-scene-engine.md` defining environments, camera direction, lighting, deterministic timeline, particles, transitions, overlays, narrative composition, preview and browser rendering constraints.
+- Kept visual presets, scene contracts, post-processing strategy and performance limits open pending prototypes.
+- No application code or production infrastructure has been implemented.
