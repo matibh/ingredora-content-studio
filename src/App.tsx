@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { renderPackageToWebM, type RenderProgress } from "./engine/renderer";
+import { convertWebMToMp4 } from "./engine/mp4Converter";
 import { getRenderedVideo, saveRenderedVideo } from "./engine/storage";
 import type { ProductionPackage } from "./engine/types";
 
@@ -53,6 +54,9 @@ function App() {
   const [renderErrors, setRenderErrors] = useState<Record<string, string>>({});
   const [renderStages, setRenderStages] = useState<Record<string, string>>({});
   const [retryToken, setRetryToken] = useState(0);
+  const [mp4Busy, setMp4Busy] = useState(false);
+  const [mp4Progress, setMp4Progress] = useState(0);
+  const [mp4Error, setMp4Error] = useState<string | null>(null);
   const renderingIds = useRef(new Set<string>());
 
   const loadProductions = useCallback(async () => {
@@ -130,6 +134,40 @@ function App() {
   const ready = manifest.productions.filter((item) => (item.status === "ready" && item.videoUrl) || !!localVideos[item.id]);
   const active = ready.find((item) => item.id === activeId) ?? ready[0] ?? null;
   const activeVideoUrl = active ? (active.videoUrl || localVideos[active.id]) : undefined;
+
+  const exportActiveAsMp4 = async () => {
+    if (!active || mp4Busy) return;
+    setMp4Busy(true);
+    setMp4Progress(0);
+    setMp4Error(null);
+    try {
+      // Prefer the exact original render from IndexedDB; conversion is a separate,
+      // non-destructive step and never overwrites the WebM used by the player.
+      let sourceBlob = await getRenderedVideo(active.id);
+      if (!sourceBlob && activeVideoUrl) {
+        const response = await fetch(activeVideoUrl);
+        if (!response.ok) throw new Error("No pudimos recuperar el video original.");
+        sourceBlob = await response.blob();
+      }
+      if (!sourceBlob) throw new Error("El video original todavía no está disponible en este dispositivo.");
+
+      const mp4Blob = await convertWebMToMp4(sourceBlob, setMp4Progress);
+      const objectUrl = URL.createObjectURL(mp4Blob);
+      const anchor = document.createElement("a");
+      anchor.href = objectUrl;
+      anchor.download = active.id === "ingredora-nutella-supermarket-spot-009"
+        ? "001-nutella.mp4"
+        : `${active.id.replace(/[^a-z0-9-]+/gi, "-").toLowerCase()}.mp4`;
+      document.body.appendChild(anchor);
+      anchor.click();
+      anchor.remove();
+      window.setTimeout(() => URL.revokeObjectURL(objectUrl), 60_000);
+    } catch (error) {
+      setMp4Error(error instanceof Error ? error.message : "No se pudo convertir el video.");
+    } finally {
+      setMp4Busy(false);
+    }
+  };
   const inProgress = manifest.productions.filter((item) => !ready.some((readyItem) => readyItem.id === item.id));
 
   return (
@@ -180,6 +218,14 @@ function App() {
                   <div><span>VERSIÓN</span><strong>{active.version || "Final"}</strong></div>
                 </div>
                 <div className="platform-tags">{(active.platforms || []).map((platform) => <span key={platform}>{platform}</span>)}</div>
+                <div className="mp4-export">
+                  <button className="mp4-export-button" type="button" onClick={exportActiveAsMp4} disabled={mp4Busy}>
+                    {mp4Busy ? `CONVIRTIENDO A MP4 · ${mp4Progress}%` : "DESCARGAR VERSIÓN MP4"}
+                  </button>
+                  {mp4Busy && <div className="render-progress-track mp4-progress" role="progressbar" aria-valuenow={mp4Progress} aria-valuemin={0} aria-valuemax={100}><span style={{ width: `${mp4Progress}%` }} /></div>}
+                  {mp4Error && <small className="mp4-error">{mp4Error}</small>}
+                  <small className="mp4-hint">Paso independiente. El WebM original no se modifica.</small>
+                </div>
                 <p className="date-note">{formatDate(active.createdAt)}</p>
               </div>
             </div>
