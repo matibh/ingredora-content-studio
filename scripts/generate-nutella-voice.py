@@ -3,23 +3,26 @@ from pathlib import Path
 import edge_tts
 
 VOICE = "es-AR-ElenaNeural"
+# Locución breve: acompaña los textos que aparecen en pantalla y cierra con una invitación.
+# No enumera ni lee la lista de ingredientes.
 TEXT = (
-    "Lo reconocés enseguida. Pero… ¿sabés qué tiene realmente? "
-    "Vamos a mirar el dorso del frasco. "
-    "Siete ingredientes: azúcar, aceite vegetal, avellanas, leche descremada en polvo, "
-    "cacao en polvo desgrasado, emulsificante, lecitinas y saborizante. "
-    "Ahora te toca a vos: ¿cuántos recordabas? Comentá y jugá con Ingredora."
+    "¡Lo reconocés enseguida! Pero… ¿sabés qué tiene realmente? "
+    "¡Vamos a mirar el dorso del frasco! "
+    "La etiqueta real tiene toda la información. "
+    "¡Siete ingredientes! ¡Leelos y memorizalos! "
+    "¡Ahora te toca a vos! ¿Cuántos recordabas? "
+    "Comentá y jugá con Ingredora."
 )
-OUTPUT = Path("public/studio/audio/nutella-v5-voice-es-AR.mp3")
+OUTPUT = Path("public/studio/audio/nutella-v6-voice-es-AR.mp3")
 
 async def main():
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     communicate = edge_tts.Communicate(
         TEXT,
         VOICE,
-        rate="+3%",
-        pitch="+1Hz",
-        volume="+0%",
+        rate="+14%",
+        pitch="+4Hz",
+        volume="+12%",
     )
     await communicate.save(str(OUTPUT))
     data = OUTPUT.read_bytes()
