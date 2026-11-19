@@ -226,7 +226,7 @@ function drawNutellaOverlay(ctx: CanvasRenderingContext2D, frame: number, fps: n
   ];
   let searchFrom=0;
   const cues=cueDefinitions.map((definition)=>{
-    const tokens=definition.text.split(/\\s+/).map(normalizeCaptionWord).filter(Boolean);
+    const tokens=definition.text.split(/\s+/).map(normalizeCaptionWord).filter(Boolean);
     let found=-1;
     for(let i=searchFrom;i<=voiceWords.length-tokens.length;i++){
       if(tokens.every((token,j)=>normalizeCaptionWord(voiceWords[i+j]?.text||"")===token)){found=i;break;}
