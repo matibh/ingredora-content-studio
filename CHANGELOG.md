@@ -41,3 +41,9 @@ All notable documentation and specification changes are recorded here.
 - Added `docs/06-3d-product-studio.md` defining browser-based parametric packaging models, material presets, UV/textures, product animations, versioning, security and performance constraints.
 - Kept geometry limits, GLB/glTF pipeline, browser compatibility and device benchmarks open pending prototypes.
 - No application code or production infrastructure has been implemented.
+
+## 2026-11-19 — Characters and animation system
+
+- Added `docs/07-personajes-y-animaciones.md` defining stylized modular characters, rigging, facial expressions, reusable actions, hand/product interaction, timeline clips, performance and representation safeguards.
+- Kept final character art direction, rig implementation, IK approach and device benchmarks open pending prototypes.
+- No application code or production infrastructure has been implemented.
