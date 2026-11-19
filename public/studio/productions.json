@@ -1,14 +1,14 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-19T15:42:00-03:00",
+  "updatedAt": "2026-11-19T16:05:00-03:00",
   "productions": [
     {
-      "id": "ingredora-nutella-supermarket-spot-008",
-      "title": "Nutella — Guion completo y llamada a la acción (versión 8)",
-      "description": "Spot de 18 segundos con narración argentina ajustada al montaje y cierre explícito para comentar y desafiar a alguien a jugar.",
+      "id": "ingredora-nutella-supermarket-spot-009",
+      "title": "Nutella — Desafío y visita a Ingredora (versión 9)",
+      "description": "Spot de 26 segundos con desafío de memoria y cierre visual para entrar a ingredora.com o buscar el enlace en el perfil.",
       "status": "rendering",
       "packageUrl": "studio/packages/nutella-supermarket.v8.json",
-      "durationSeconds": 18,
+      "durationSeconds": 26,
       "aspectRatio": "9:16",
       "language": "Español argentino",
       "platforms": [
@@ -16,9 +16,9 @@
         "Instagram Reels",
         "YouTube Shorts"
       ],
-      "version": "8.0",
-      "createdAt": "2026-11-19T21:20:00-03:00",
-      "caption": "Lo reconocés enseguida, pero… ¿sabés qué tiene realmente? 🍫 Mirá el dorso, memorizá los ingredientes y comentá cuántos recordaste. Desafiá a alguien a jugar con Ingredora. #Ingredora #Nutella #DesafíoDeIngredientes"
+      "version": "9.0",
+      "createdAt": "2026-11-19T16:00:00-03:00",
+      "caption": "¿Cuántos ingredientes recordás? Entrá a ingredora.com y seguí jugando. También podés encontrar el link en mi perfil. #Ingredora #Nutella #DesafíoDeIngredientes"
     }
   ]
 }
