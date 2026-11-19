@@ -129,6 +129,7 @@ export async function renderPackageToWebM(
     renderer.dispose();
     throw new Error("Este navegador no permite solicitar capturas de frame controladas. Usá una versión actualizada de Chrome o Edge.");
   }
+  const requestVideoFrame = videoTrack.requestFrame.bind(videoTrack);
   const mimeType = ["video/webm;codecs=vp9", "video/webm;codecs=vp8", "video/webm"].find((type) => MediaRecorder.isTypeSupported(type));
   if (!mimeType) { stream.getTracks().forEach((track) => track.stop()); renderer.dispose(); throw new Error("No hay un codec WebM compatible en este navegador."); }
   const recorder = new MediaRecorder(stream, { mimeType, videoBitsPerSecond: pkg.width >= 1000 ? 8_000_000 : 5_000_000 });
@@ -204,7 +205,7 @@ export async function renderPackageToWebM(
     renderer.render(world, camera);
     ctx.drawImage(renderer.domElement, 0, 0, pkg.width, pkg.height);
     drawOverlay(ctx, current, pkg.width, pkg.height);
-    videoTrack.requestFrame();
+    requestVideoFrame();
   };
 
   return new Promise<Blob>((resolve, reject) => {
