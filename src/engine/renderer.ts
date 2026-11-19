@@ -87,13 +87,13 @@ function makeCanvasTexture(draw: (ctx: CanvasRenderingContext2D, width: number, 
 }
 
 function createNutellaSet(world: THREE.Scene) {
-  world.background = new THREE.Color("#d8d4c9"); world.fog = new THREE.Fog("#d8d4c9", 11, 24);
-  const floor = new THREE.Mesh(new THREE.PlaneGeometry(24, 26), new THREE.MeshStandardMaterial({ color: "#aaa69b", roughness: 0.88 }));
+  world.background = new THREE.Color("#f3ead9"); world.fog = new THREE.Fog("#f3ead9", 19, 38);
+  const floor = new THREE.Mesh(new THREE.PlaneGeometry(24, 26), new THREE.MeshStandardMaterial({ color: "#c8b99d", roughness: 0.88 }));
   floor.rotation.x = -Math.PI / 2; floor.position.set(0, -2.25, -2); world.add(floor);
-  const wall = new THREE.Mesh(new THREE.PlaneGeometry(18, 12), new THREE.MeshStandardMaterial({ color: "#e7e4dc", roughness: 1 }));
+  const wall = new THREE.Mesh(new THREE.PlaneGeometry(18, 12), new THREE.MeshStandardMaterial({ color: "#f6eddd", roughness: 1 }));
   wall.position.set(0, 2.5, -5.5); world.add(wall);
-  const shelfMat = new THREE.MeshStandardMaterial({ color: "#45494a", roughness: 0.58, metalness: 0.32 });
-  const edgeMat = new THREE.MeshStandardMaterial({ color: "#c5c4bd", roughness: 0.45, metalness: 0.55 });
+  const shelfMat = new THREE.MeshStandardMaterial({ color: "#303a35", roughness: 0.58, metalness: 0.32 });
+  const edgeMat = new THREE.MeshStandardMaterial({ color: "#d9d1c2", roughness: 0.45, metalness: 0.55 });
   const colors = ["#e6d5ad","#9d3428","#d6a92c","#426b53","#e5e0d3","#3c4650","#bd6e35","#8b9a6d"];
   for (let row=0; row<4; row++) {
     const y=-1.25+row*1.05;
@@ -134,26 +134,37 @@ function createNutellaSet(world: THREE.Scene) {
   },1024,900);
   const front=new THREE.Mesh(new THREE.PlaneGeometry(1.47,1.25),new THREE.MeshStandardMaterial({map:frontTex,roughness:.62}));front.position.set(0,.02,.835);jar.add(front);
   const back=new THREE.Mesh(new THREE.PlaneGeometry(1.47,1.25),new THREE.MeshStandardMaterial({map:backTex,roughness:.7,side:THREE.DoubleSide}));back.position.set(0,.02,-.835);back.rotation.y=Math.PI;jar.add(back);
-  const key=new THREE.DirectionalLight("#fff1d8",4.2);key.position.set(-3.5,5.5,6);world.add(key);
-  const fill=new THREE.DirectionalLight("#ffffff",2.1);fill.position.set(4,1.8,4);world.add(fill);
-  const rim=new THREE.PointLight("#ffbd73",32,12);rim.position.set(-2.8,.6,-.3);world.add(rim);
-  world.add(new THREE.HemisphereLight("#ffffff","#665142",1.4));
+  const key=new THREE.DirectionalLight("#fff4df",5.5);key.position.set(-3.5,5.5,6);world.add(key);
+  const fill=new THREE.DirectionalLight("#ffffff",3.2);fill.position.set(4,1.8,4);world.add(fill);
+  const rim=new THREE.PointLight("#ffbd73",48,16);rim.position.set(-2.8,.6,-.3);world.add(rim);
+  world.add(new THREE.HemisphereLight("#fff8eb","#76543c",2.2));
   return {jar};
 }
 
 function drawNutellaOverlay(ctx: CanvasRenderingContext2D, frame: number, fps: number, width: number, height: number) {
-  const time=frame/fps, back=time>=4.3&&time<8.1, y=height*.755;
-  const gradient=ctx.createLinearGradient(0,y-90,0,height);gradient.addColorStop(0,"rgba(10,17,15,0)");gradient.addColorStop(.32,"rgba(10,17,15,.78)");gradient.addColorStop(1,"rgba(10,17,15,.92)");
-  ctx.fillStyle=gradient;ctx.fillRect(0,y-90,width,height-y+90);
-  ctx.fillStyle="rgba(8,17,14,.48)";ctx.beginPath();ctx.roundRect(width*.055,height*.035,width*.33,height*.047,18);ctx.fill();
-  ctx.fillStyle="#d8f36a";ctx.font=`900 ${Math.round(width*.044)}px Arial`;ctx.textAlign="left";ctx.textBaseline="middle";ctx.fillText("INGREDORA",width*.078,height*.058);
-  ctx.textAlign="center";ctx.fillStyle="#d8f36a";ctx.font=`800 ${Math.round(width*.026)}px Arial`;ctx.fillText(back?"DETRÁS DE LA ETIQUETA":"UN CLÁSICO EN LA GÓNDOLA",width/2,height*.785);
-  ctx.fillStyle="#fff";ctx.font=`900 ${Math.round(width*.073)}px Arial`;ctx.fillText(back?"7 INGREDIENTES.":"NUTELLA.",width/2,height*.842);
-  ctx.fillStyle="rgba(255,255,255,.9)";ctx.font=`500 ${Math.round(width*.025)}px Arial`;
-  ctx.fillText(back?"Azúcar · aceite vegetal · avellanas · leche · cacao · lecitinas · saborizante":"Una receta reconocible. ¿Cuántos ingredientes conocés?",width/2,height*.895,width*.92);
-  ctx.fillStyle="rgba(255,255,255,.62)";ctx.font=`600 ${Math.round(width*.018)}px Arial`;ctx.fillText("UN PRODUCTO REAL. UN DESAFÍO PARA TU MEMORIA.",width/2,height*.955);
+  const t = frame / fps;
+  const phase = t < 1.5 ? 0 : t < 3 ? 1 : t < 4.8 ? 2 : t < 6.5 ? 3 : t < 9.6 ? 4 : 5;
+  const accent = "#d8f36a"; const y = height * .735;
+  const gradient = ctx.createLinearGradient(0, y - 150, 0, height);
+  gradient.addColorStop(0, "rgba(8,17,14,0)"); gradient.addColorStop(.25, "rgba(8,17,14,.78)"); gradient.addColorStop(1, "rgba(8,17,14,.96)");
+  ctx.fillStyle = gradient; ctx.fillRect(0, y - 150, width, height - y + 150);
+  ctx.fillStyle = "rgba(8,17,14,.72)"; ctx.beginPath(); ctx.roundRect(width*.055,height*.035,width*.34,height*.05,18); ctx.fill();
+  ctx.fillStyle = accent; ctx.font = "900 " + Math.round(width*.044) + "px Arial"; ctx.textAlign = "left"; ctx.textBaseline = "middle"; ctx.fillText("INGREDORA",width*.078,height*.06);
+  ctx.textAlign = "center";
+  const eyebrow = ["EN LA GÓNDOLA","UN CLÁSICO","PERO… ¿QUÉ TIENE?","MIRÁ EL DORSO","ESTOS SON SUS INGREDIENTES","AHORA TE TOCA A VOS"][phase];
+  const headline = ["UN CLÁSICO DE SIEMPRE","NUTELLA.","HAY MÁS DETRÁS","LA ETIQUETA HABLA","7 INGREDIENTES","¿CUÁNTOS RECORDÁS?"][phase];
+  ctx.fillStyle = accent; ctx.font = "800 " + Math.round(width*.027) + "px Arial"; ctx.fillText(eyebrow,width/2,height*.775);
+  ctx.fillStyle = "#fff"; ctx.font = "900 " + Math.round(width*.064) + "px Arial"; ctx.fillText(headline,width/2,height*.832,width*.91);
+  ctx.fillStyle = "rgba(255,255,255,.94)"; ctx.font = "500 " + Math.round(width*.026) + "px Arial";
+  if (phase === 4) {
+    ["Azúcar · aceite vegetal · avellanas","leche descremada en polvo · cacao","lecitinas (emulsificante) · saborizante"].forEach((line,i)=>ctx.fillText(line,width/2,height*(.882+i*.027),width*.93));
+  } else {
+    const sub = ["Un producto que reconocés a primera vista.","La etiqueta que todos conocemos.","Vamos a girar el frasco.","La información está del otro lado.","Una receta con siete componentes declarados.","Comentá cuántos pudiste nombrar sin mirar."][phase];
+    ctx.fillText(sub,width/2,height*.89,width*.92);
+  }
+  ctx.fillStyle = "rgba(255,255,255,.62)"; ctx.font = "700 " + Math.round(width*.018) + "px Arial";
+  ctx.fillText("UN PRODUCTO REAL. UN DESAFÍO PARA TU MEMORIA.",width/2,height*.96);
 }
-
 function sceneAtFrame(pkg: ProductionPackage, frame: number): ProductionScene {
   return [...pkg.scenes].reverse().find((scene) => frame >= scene.startFrame) ?? pkg.scenes[0];
 }
@@ -257,10 +268,13 @@ export async function renderPackageToWebM(
   const drawFrame = (frame: number) => {
     if (nutellaSet) {
       const time = frame / fps;
-      const turn = time < 3.2 ? 0 : time < 4.5 ? ((time - 3.2) / 1.3) * Math.PI : time < 8 ? Math.PI : Math.PI + ((time - 8) / Math.max(.1, durationSeconds - 8)) * Math.PI;
+      // 12-second storyboard: establish aisle, push-in, front label, turn, ingredients, closing question.
+      const smooth = (v: number) => { const x = Math.max(0, Math.min(1, v)); return x*x*(3-2*x); };
+      const turn = time < 3.6 ? 0 : time < 4.8 ? smooth((time-3.6)/1.2)*Math.PI : time < 9.6 ? Math.PI : Math.PI + smooth((time-9.6)/1.2)*Math.PI;
       nutellaSet.jar.rotation.y = turn;
-      nutellaSet.jar.position.y = -.35 + Math.sin(time * 1.4) * .035;
-      camera.position.set(.15,.48,8.7); camera.lookAt(0,-.15,0); camera.fov=32; camera.updateProjectionMatrix();
+      nutellaSet.jar.position.y = -.35 + Math.sin(time * 1.7) * .045;
+      const distance = time < 1.5 ? 10.8 - smooth(time/1.5)*1.6 : time < 3.6 ? 9.2 - smooth((time-1.5)/2.1)*1.1 : time < 9.6 ? 8.1 : 8.1 + smooth((time-9.6)/2.4)*.7;
+      camera.position.set(.12 + Math.sin(time*.22)*.08,.48,distance); camera.lookAt(0,-.12,0); camera.fov=34; camera.updateProjectionMatrix();
       renderer.render(world,camera); ctx.drawImage(renderer.domElement,0,0,pkg.width,pkg.height);
       drawNutellaOverlay(ctx,frame,fps,pkg.width,pkg.height); return;
     }
