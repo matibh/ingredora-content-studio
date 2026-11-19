@@ -1,10 +1,13 @@
 const DB_NAME = "ingredora-content-studio";
 const STORE_NAME = "renders";
 const DB_VERSION = 1;
-const RENDER_CACHE_VERSION = "ingredora-render-v15-cocacola-poolside-reframe";
+const RENDER_CACHE_VERSION = "nutella-v9-price-label-fit-products-scale-v14";
 
 function cacheKey(id: string) {
-  return `${id}:${RENDER_CACHE_VERSION}`;
+  const version = id === "ingredora-coca-cola-poolside-002"
+    ? "coca-cola-poolside-v2-reframe"
+    : RENDER_CACHE_VERSION;
+  return `${id}:${version}`;
 }
 
 function openDatabase(): Promise<IDBDatabase> {
