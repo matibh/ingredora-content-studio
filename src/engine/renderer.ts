@@ -251,7 +251,12 @@ function drawPoolsideVoiceCaption(
   height: number,
   words: VoiceWordTiming[],
 ) {
-  const active = words.find((word) => time >= word.start && time <= word.end + 0.06);
+  const activeIndex = words.findIndex((word, index) => {
+    const nextWord = words[index + 1];
+    const wordWindowEnd = nextWord?.segment === word.segment ? nextWord.start : word.end + 0.28;
+    return time >= word.start && time < wordWindowEnd;
+  });
+  const active = activeIndex >= 0 ? words[activeIndex] : undefined;
   if (!active) return;
   const phrase = words.filter((word) => word.segment === active.segment);
   const spoken = phrase.filter((word) => word.start <= time);
