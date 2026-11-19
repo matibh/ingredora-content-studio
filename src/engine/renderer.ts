@@ -108,8 +108,6 @@ function validatePackage(pkg: ProductionPackage) {
 }
 
 async function selectEncoders(width: number, height: number, fps: number) {
-  const videoCodec = (["vp9", "vp8"] as const).find(async () => false);
-  void videoCodec;
   for (const codec of ["vp9", "vp8"] as const) {
     if (await canEncodeVideo(codec, { width, height, frameRate: fps })) {
       if (await canEncodeAudio("opus", { numberOfChannels: 2, sampleRate: 48_000 })) return codec;
