@@ -70,14 +70,14 @@ Los esquemas JSON se incorporarán cuando el modelo conceptual esté suficientem
 
 ## Estado actual
 
-- Interfaz inicial: dashboard responsive, navegación por módulos y formulario de creación de producciones de prueba.
-- Persistencia: no implementada; los borradores creados desde la interfaz viven solo en el estado de la sesión.
+- Interfaz: dashboard responsive, navegación por módulos y workspace de campañas.
+- Persistencia: campañas y briefs guardados en localStorage del navegador. No hay sincronización entre dispositivos ni backup en la nube.
 - Integraciones externas: ninguna conectada. No hay claves ni secretos en el frontend.
-- Validación de build: pendiente de ejecución; no se declara compilación verificada todavía.
+- Validación de build: pendiente de ejecución en entorno de compilación; no se declara compilación verificada todavía.
 
 - Repositorio privado: confirmado.
 - Rama principal: `main`.
-- Aplicación: foundation inicial implementada en React 19 + TypeScript 7 + Vite 8; dashboard y navegación inicial disponibles en el código fuente.
+- Aplicación: base React + TypeScript + Vite; dashboard, navegación y módulo de campañas con brief editable y persistencia local.
 - Arquitectura general: especificación inicial incorporada; hosting, codecs y límites operativos siguen sujetos a pruebas.
 - Protocolo ChatGPT-app: especificación inicial incorporada; schemas y mecanismo de importación quedan pendientes.
 - Identidad visual: sistema inicial de capas, dirección de arte 3D, composición y tokens; assets oficiales y decisiones de marca pendientes.
@@ -101,4 +101,4 @@ Los esquemas JSON se incorporarán cuando el modelo conceptual esté suficientem
 
 ## Próximo paso
 
-Continuar el desarrollo de la aplicación por etapas. Próximo objetivo: validar la compilación, refinar el sistema visual y convertir la creación de producciones en un flujo persistente cuando la capa de datos esté definida y aprobada.
+Continuar el desarrollo de la aplicación por etapas. Próximo objetivo: validar la compilación y continuar con el flujo de producción (guion, storyboard y paquetes de producción). La persistencia actual es local al navegador; la sincronización remota se evaluará más adelante.
