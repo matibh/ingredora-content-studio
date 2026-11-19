@@ -1,14 +1,14 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-19T21:20:00-03:00",
+  "updatedAt": "2026-11-19T21:24:00-03:00",
   "productions": [
     {
       "id": "ingredora-nutella-supermarket-spot-008",
       "title": "Nutella — Guion completo y llamada a la acción (versión 8)",
-      "description": "Spot de 15 segundos con narración argentina ajustada al montaje y cierre explícito para comentar y desafiar a alguien a jugar.",
+      "description": "Spot de 18 segundos con narración argentina ajustada al montaje y cierre explícito para comentar y desafiar a alguien a jugar.",
       "status": "rendering",
       "packageUrl": "studio/packages/nutella-supermarket.v8.json",
-      "durationSeconds": 15,
+      "durationSeconds": 18,
       "aspectRatio": "9:16",
       "language": "Español argentino",
       "platforms": [
