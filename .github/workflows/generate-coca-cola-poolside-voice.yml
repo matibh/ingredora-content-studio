@@ -1,0 +1,41 @@
+name: Generate Coca-Cola poolside voiceover
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "scripts/generate-coca-cola-poolside-voice.py"
+      - ".github/workflows/generate-coca-cola-poolside-voice.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: coca-cola-poolside-voiceover
+  cancel-in-progress: false
+
+jobs:
+  synthesize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install free Edge TTS and MP3 tooling
+        run: |
+          python -m pip install --disable-pip-version-check edge-tts pydub
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+      - name: Generate Argentine Spanish neural narration and word timings
+        run: python scripts/generate-coca-cola-poolside-voice.py
+      - name: Commit generated audio and word timings
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/studio/audio/coca-cola-poolside-v2-voice-es-AR.mp3 public/studio/audio/coca-cola-poolside-v2-word-timings.json
+          git diff --cached --quiet || git commit -m "Add Coca-Cola poolside voiceover and word-level subtitles"
+          git pull --rebase origin main
+          git push
