@@ -28,7 +28,7 @@ La dirección elegida es una fábrica audiovisual basada en escenas 3D programá
 | [02 — Arquitectura general](docs/02-arquitectura-general.md) | Componentes, flujos, render, almacenamiento, seguridad y límites gratuitos | Borrador inicial |
 | [03 — ChatGPT: producción y protocolo](docs/03-chatgpt-produccion-y-protocolo.md) | Paquetes de producción, roles, validación, feedback y versionado | Borrador inicial |
 | [04 — Identidad visual](docs/04-identidad-visual.md) | Sistema de marca, packaging, gráfica y dirección artística | Borrador inicial |
-| 05 — Product Library | Catálogo, fuentes, verificación y derechos | Pendiente |
+| [05 — Product Library](docs/05-product-library.md) | Catálogo, fuentes, verificación, packaging y derechos | Borrador inicial |
 | 06 — 3D Product Studio | Envases, materiales, texturas y modelos reutilizables | Pendiente |
 | 07 — Personajes y animaciones | Personajes, rigging, acciones y biblioteca de movimientos | Pendiente |
 | 08 — Cinematic Scene Engine | Escenarios, cámara, iluminación, partículas y composición | Pendiente |
@@ -72,6 +72,7 @@ Los esquemas JSON se incorporarán cuando el modelo conceptual esté suficientem
 - Arquitectura general: especificación inicial incorporada; hosting, codecs y límites operativos siguen sujetos a pruebas.
 - Protocolo ChatGPT-app: especificación inicial incorporada; schemas y mecanismo de importación quedan pendientes.
 - Identidad visual: sistema inicial de capas, dirección de arte 3D, composición y tokens; assets oficiales y decisiones de marca pendientes.
+- Product Library: modelo conceptual de productos, marcas, variantes, fuentes, assets, derechos, fidelidad 3D y versionado incorporado.
 - GitHub Pages: no se utilizará como hosting de la aplicación en esta etapa.
 - GitHub Actions: se habilitará solo para validaciones ligeras y sin habilitar billing.
 - Proveedor de hosting web: pendiente de evaluación y verificación de condiciones gratuitas.
