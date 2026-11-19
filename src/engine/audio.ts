@@ -175,13 +175,13 @@ export async function generateOriginalSoundtrack({
     addTone(1_180, 4.12, 0.18, "triangle", 0.04, 5_000, 0.18);
     addTone(92, 7.18, 0.42, "sine", 0.18, 420, 0);
     addTone(740, 7.20, 0.36, "triangle", 0.035, 3_600, 0);
-    for (let second = 10; second < 25; second += 1) {
-      const finalTick = second >= 22;
+    for (let second = 10; second < 16; second += 1) {
+      const finalTick = second >= 14;
       addTone(finalTick ? 1_120 : 880, second, 0.065, "sine", finalTick ? 0.052 : 0.032, 4_200, 0);
     }
-    addTone(523.25, 25.02, 0.48, "sine", 0.07, 4_800, -0.18);
-    addTone(659.25, 25.10, 0.52, "sine", 0.06, 5_200, 0.12);
-    addTone(783.99, 25.18, 0.62, "triangle", 0.055, 5_600, 0.28);
+    addTone(523.25, 16.02, 0.48, "sine", 0.07, 4_800, -0.18);
+    addTone(659.25, 16.10, 0.52, "sine", 0.06, 5_200, 0.12);
+    addTone(783.99, 16.18, 0.62, "triangle", 0.055, 5_600, 0.28);
   }
 
   return context.startRendering();
