@@ -71,7 +71,8 @@ Los esquemas JSON se incorporarán cuando el modelo conceptual esté suficientem
 ## Estado actual
 
 - Interfaz: dashboard responsive, navegación por módulos y workspace de campañas.
-- Persistencia: campañas y briefs guardados en localStorage del navegador. No hay sincronización entre dispositivos ni backup en la nube.
+- Campañas: brief editable y storyboard con escenas, duración, objetivo narrativo, acción visual, cámara, texto, locución, audio, transición y reordenamiento.
+- Persistencia: campañas, briefs y storyboards guardados en localStorage del navegador. No hay sincronización entre dispositivos ni backup en la nube.
 - Integraciones externas: ninguna conectada. No hay claves ni secretos en el frontend.
 - Validación de build: pendiente de ejecución en entorno de compilación; no se declara compilación verificada todavía.
 
