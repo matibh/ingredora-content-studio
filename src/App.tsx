@@ -57,6 +57,10 @@ function App() {
   const [mp4Busy, setMp4Busy] = useState(false);
   const [mp4Progress, setMp4Progress] = useState(0);
   const [mp4Error, setMp4Error] = useState<string | null>(null);
+  const [mp4Blob, setMp4Blob] = useState<Blob | null>(null);
+  const [approvalKey, setApprovalKey] = useState("");
+  const [approvalBusy, setApprovalBusy] = useState(false);
+  const [approvalMessage, setApprovalMessage] = useState<string | null>(null);
   const renderingIds = useRef(new Set<string>());
 
   const loadProductions = useCallback(async () => {
@@ -152,6 +156,7 @@ function App() {
       if (!sourceBlob) throw new Error("El video original todavía no está disponible en este dispositivo.");
 
       const mp4Blob = await convertWebMToMp4(sourceBlob, setMp4Progress);
+      setMp4Blob(mp4Blob);
       const objectUrl = URL.createObjectURL(mp4Blob);
       const anchor = document.createElement("a");
       anchor.href = objectUrl;
@@ -168,6 +173,35 @@ function App() {
       setMp4Busy(false);
     }
   };
+  const approveAndUpload = async () => {
+    if (!active || !mp4Blob || !approvalKey.trim() || approvalBusy) return;
+    setApprovalBusy(true);
+    setApprovalMessage(null);
+    try {
+      const basename = active.id === "ingredora-nutella-supermarket-spot-009" ? "001-nutella" : active.id.replace(/[^a-z0-9-]+/gi, "-").toLowerCase();
+      const form = new FormData();
+      form.append("video", new File([mp4Blob], basename + ".mp4", { type: "video/mp4" }));
+      form.append("basename", basename);
+      form.append("txtName", basename + ".txt");
+      const response = await fetch("https://xblqghhhchffuqkmzgta.supabase.co/functions/v1/approve-content-upload", {
+        method: "POST",
+        headers: {
+          "apikey": "sb_publishable__TDF6zsAZEvsWgSkAntJgw_qxYYuUop",
+          "x-studio-approval-key": approvalKey.trim(),
+        },
+        body: form,
+      });
+      const result = await response.json();
+      if (!response.ok || !result.ok) throw new Error(result.error || "No se pudo subir la producción.");
+      setApprovalMessage("Aprobado y subido: " + result.videoPath + " · TXT verificado: " + result.textPath);
+      setApprovalKey("");
+    } catch (error) {
+      setApprovalMessage(error instanceof Error ? error.message : "No se pudo completar la subida.");
+    } finally {
+      setApprovalBusy(false);
+    }
+  };
+
   const inProgress = manifest.productions.filter((item) => !ready.some((readyItem) => readyItem.id === item.id));
 
   return (
@@ -225,6 +259,17 @@ function App() {
                   {mp4Busy && <div className="render-progress-track mp4-progress" role="progressbar" aria-valuenow={mp4Progress} aria-valuemin={0} aria-valuemax={100}><span style={{ width: `${mp4Progress}%` }} /></div>}
                   {mp4Error && <small className="mp4-error">{mp4Error}</small>}
                   <small className="mp4-hint">Paso independiente. El WebM original no se modifica.</small>
+                </div>
+                <div className="approval-panel">
+                  <p className="eyebrow">REVISIÓN EDITORIAL</p>
+                  <strong>¿Aprobás esta producción?</strong>
+                  <small>Al aprobar, se sube el MP4 y se verifica el TXT correspondiente en «Contenido a subir». No se publica nada en redes.</small>
+                  <input aria-label="Clave privada de aprobación" type="password" autoComplete="off" placeholder="Clave privada de aprobación" value={approvalKey} onChange={(event) => setApprovalKey(event.target.value)} />
+                  <button className="approve-upload-button" type="button" onClick={approveAndUpload} disabled={!mp4Blob || !approvalKey.trim() || approvalBusy}>
+                    {approvalBusy ? "SUBIENDO A GITHUB…" : "✓ APROBAR Y SUBIR A CONTENIDO A SUBIR"}
+                  </button>
+                  {approvalMessage && <small className="approval-result">{approvalMessage}</small>}
+                  {!mp4Blob && <small className="mp4-hint">Primero convertí el video a MP4 para habilitar la aprobación.</small>}
                 </div>
                 <p className="date-note">{formatDate(active.createdAt)}</p>
               </div>
