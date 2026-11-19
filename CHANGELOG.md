@@ -106,3 +106,18 @@ All notable documentation and specification changes are recorded here.
 - Identified blockers: inconsistent social channel priorities, Supabase Free video storage limits, unproven browser codec pipeline, gameplay analytics ownership, retention identity and limits of automated quota guards.
 - Added recommendations for a reduced vertical-slice MVP and documented that implementation remains blocked pending approval of decisions D-01 through D-08.
 - Cleaned duplicate project-status text in README and linked the audit.
+
+
+## [0.1.0] - 2026-11-19
+
+### Added
+- Initial React + TypeScript + Vite application foundation.
+- Responsive workspace shell with navigation for campaigns, products, 3D production, characters, scenes, editor, deliverables, social distribution and analytics.
+- Initial dashboard with transparent empty states and no fabricated activity metrics.
+- New-production form with session-only draft state, clearly labeled as non-persistent.
+- Initial visual identity for Ingredora Content Studio and responsive layouts.
+- Frontend .gitignore rules for dependencies, build output and environment files.
+
+### Notes
+- No Supabase project, external API, paid service, authentication or persistent storage has been connected.
+- A production build has not yet been executed; compilation verification remains pending.
