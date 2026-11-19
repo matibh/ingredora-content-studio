@@ -5,10 +5,10 @@
     {
       "id": "ingredora-nutella-supermarket-spot-009",
       "title": "Nutella — Desafío y visita a Ingredora (versión 9)",
-      "description": "Spot de 26 segundos con desafío de memoria y cierre visual para entrar a ingredora.com o buscar el enlace en el perfil.",
+      "description": "Spot de 33 segundos con desafío de memoria y cierre visual para entrar a ingredora.com o buscar el enlace en el perfil.",
       "status": "rendering",
       "packageUrl": "studio/packages/nutella-supermarket.v8.json",
-      "durationSeconds": 26,
+      "durationSeconds": 33,
       "aspectRatio": "9:16",
       "language": "Español argentino",
       "platforms": [
@@ -16,9 +16,9 @@
         "Instagram Reels",
         "YouTube Shorts"
       ],
-      "version": "9.0",
+      "version": "10.0",
       "createdAt": "2026-11-19T16:00:00-03:00",
-      "caption": "¿Cuántos ingredientes recordás? Entrá a ingredora.com y seguí jugando. También podés encontrar el link en mi perfil. #Ingredora #Nutella #DesafíoDeIngredientes"
+      "caption": "¿Cuántos ingredientes recordás? Ingredora es el juego de desafíos diarios sobre ingredientes. Entrá a ingredora.com y poné a prueba lo que sabés. También podés encontrar el link en mi perfil. #Ingredora #Nutella #DesafíoDeIngredientes"
     }
   ]
 }
