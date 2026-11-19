@@ -53,3 +53,9 @@ All notable documentation and specification changes are recorded here.
 - Added `docs/08-cinematic-scene-engine.md` defining environments, camera direction, lighting, deterministic timeline, particles, transitions, overlays, narrative composition, preview and browser rendering constraints.
 - Kept visual presets, scene contracts, post-processing strategy and performance limits open pending prototypes.
 - No application code or production infrastructure has been implemented.
+
+## 2026-11-19 — Audio and Voice Studio
+
+- Added `docs/09-audio-y-voice-studio.md` defining procedural music, sound effects, ambience, optional voice recordings, audio timeline, mixing, synchronization, export compatibility, metadata and rights.
+- Kept synthetic voice explicitly unapproved pending a separate cost, licensing, language and browser feasibility review. The MVP can work without voice.
+- No application code or production infrastructure has been implemented.
