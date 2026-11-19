@@ -6,7 +6,7 @@ Ingredora Content Studio es el proyecto de una herramienta web para planificar, 
 
 La dirección elegida es una fábrica audiovisual basada en escenas 3D programáticas con Three.js, edición y composición en navegador, proyectos estructurados y almacenamiento controlado. ChatGPT, desde la conversación de trabajo, actúa como director creativo, guionista, diseñador audiovisual y programador de los materiales de cada producción. La aplicación ejecuta proyectos preparados y validados; no incorpora un agente generativo propio ni depende de una API de IA paga.
 
-> **Estado del proyecto: PLANIFICACIÓN.** Este repositorio documenta y especifica el sistema. La implementación de la aplicación no debe comenzar hasta que se aprueben la arquitectura, las decisiones técnicas críticas, los límites gratuitos y el plan de pruebas.
+> **Estado del proyecto: IMPLEMENTACIÓN INICIAL.** La documentación 00–15 se conserva como referencia funcional. Por decisión del usuario, la construcción de la aplicación comienza antes de la auditoría transversal; los hallazgos y decisiones pendientes se resolverán progresivamente sin bloquear la creación de la primera base funcional.
 
 ## Principios no negociables
 
@@ -96,4 +96,4 @@ Los esquemas JSON se incorporarán cuando el modelo conceptual esté suficientem
 
 ## Próximo paso
 
-Completar la especificación de visión, estrategia, arquitectura y protocolo de producción. Después se definirán los contratos JSON y recién entonces se iniciará el desarrollo.
+Continuar el desarrollo de la aplicación por etapas. Próximo objetivo: validar la compilación, refinar el sistema visual y convertir la creación de producciones en un flujo persistente cuando la capa de datos esté definida y aprobada.
