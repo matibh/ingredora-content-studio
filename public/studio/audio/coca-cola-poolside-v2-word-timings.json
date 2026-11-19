@@ -1,0 +1,227 @@
+{
+  "voice": "es-AR-ElenaNeural",
+  "rate": "+10%",
+  "pitch": "+4Hz",
+  "volume": "+12%",
+  "durationSeconds": 34.0,
+  "segments": [
+    {
+      "text": "Un día de calor...",
+      "start": 0.22,
+      "end": 2.092,
+      "wordCount": 4
+    },
+    {
+      "text": "Una Coca bien fría, con hielo y burbujas.",
+      "start": 3.1,
+      "end": 6.7,
+      "wordCount": 8
+    },
+    {
+      "text": "Pero pará... ¿sabés qué tiene adentro?",
+      "start": 7.42,
+      "end": 10.348,
+      "wordCount": 6
+    },
+    {
+      "text": "Tenés quince segundos para adivinar sus ingredientes.",
+      "start": 10.5,
+      "end": 14.124,
+      "wordCount": 7
+    },
+    {
+      "text": "¿Cuántos acertaste?",
+      "start": 29.45,
+      "end": 31.418,
+      "wordCount": 2
+    },
+    {
+      "text": "¡Jugá en Ingredora!",
+      "start": 31.6,
+      "end": 33.616,
+      "wordCount": 3
+    }
+  ],
+  "words": [
+    {
+      "text": "Un",
+      "start": 0.3155,
+      "end": 0.4518,
+      "segment": 0
+    },
+    {
+      "text": "día",
+      "start": 0.4973,
+      "end": 0.6677,
+      "segment": 0
+    },
+    {
+      "text": "de",
+      "start": 0.7132,
+      "end": 0.77,
+      "segment": 0
+    },
+    {
+      "text": "calor",
+      "start": 0.8268,
+      "end": 1.1791,
+      "segment": 0
+    },
+    {
+      "text": "Una",
+      "start": 3.1955,
+      "end": 3.4114,
+      "segment": 1
+    },
+    {
+      "text": "Coca",
+      "start": 3.4795,
+      "end": 3.6841,
+      "segment": 1
+    },
+    {
+      "text": "bien",
+      "start": 3.7182,
+      "end": 3.9113,
+      "segment": 1
+    },
+    {
+      "text": "fría",
+      "start": 3.9227,
+      "end": 4.3318,
+      "segment": 1
+    },
+    {
+      "text": "con",
+      "start": 4.5932,
+      "end": 4.7182,
+      "segment": 1
+    },
+    {
+      "text": "hielo",
+      "start": 4.7523,
+      "end": 5.0137,
+      "segment": 1
+    },
+    {
+      "text": "y",
+      "start": 5.0477,
+      "end": 5.0932,
+      "segment": 1
+    },
+    {
+      "text": "burbujas",
+      "start": 5.1159,
+      "end": 5.8205,
+      "segment": 1
+    },
+    {
+      "text": "Pero",
+      "start": 7.5155,
+      "end": 7.7086,
+      "segment": 2
+    },
+    {
+      "text": "pará",
+      "start": 7.7768,
+      "end": 8.0609,
+      "segment": 2
+    },
+    {
+      "text": "sabés",
+      "start": 8.2768,
+      "end": 8.595,
+      "segment": 2
+    },
+    {
+      "text": "qué",
+      "start": 8.6518,
+      "end": 8.7087,
+      "segment": 2
+    },
+    {
+      "text": "tiene",
+      "start": 8.7768,
+      "end": 8.9814,
+      "segment": 2
+    },
+    {
+      "text": "adentro",
+      "start": 8.9814,
+      "end": 9.4814,
+      "segment": 2
+    },
+    {
+      "text": "Tenés",
+      "start": 10.5955,
+      "end": 10.9023,
+      "segment": 3
+    },
+    {
+      "text": "quince",
+      "start": 10.9477,
+      "end": 11.1863,
+      "segment": 3
+    },
+    {
+      "text": "segundos",
+      "start": 11.2205,
+      "end": 11.6636,
+      "segment": 3
+    },
+    {
+      "text": "para",
+      "start": 11.7318,
+      "end": 11.8455,
+      "segment": 3
+    },
+    {
+      "text": "adivinar",
+      "start": 11.8455,
+      "end": 12.2773,
+      "segment": 3
+    },
+    {
+      "text": "sus",
+      "start": 12.3114,
+      "end": 12.4818,
+      "segment": 3
+    },
+    {
+      "text": "ingredientes",
+      "start": 12.4932,
+      "end": 13.2772,
+      "segment": 3
+    },
+    {
+      "text": "Cuántos",
+      "start": 29.5455,
+      "end": 29.9091,
+      "segment": 4
+    },
+    {
+      "text": "acertaste",
+      "start": 29.9091,
+      "end": 30.5341,
+      "segment": 4
+    },
+    {
+      "text": "Jugá",
+      "start": 31.6966,
+      "end": 32.0489,
+      "segment": 5
+    },
+    {
+      "text": "en",
+      "start": 32.0716,
+      "end": 32.1511,
+      "segment": 5
+    },
+    {
+      "text": "Ingredora",
+      "start": 32.1739,
+      "end": 32.742,
+      "segment": 5
+    }
+  ]
+}
