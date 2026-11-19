@@ -5,7 +5,7 @@ const RENDER_CACHE_VERSION = "nutella-v9-price-label-fit-products-scale-v14";
 
 function cacheKey(id: string) {
   const version = id === "ingredora-coca-cola-poolside-002"
-    ? "coca-cola-poolside-v3-voice-word-captions"
+    ? "coca-cola-beach-v4-60fps-real-pour-captions"
     : RENDER_CACHE_VERSION;
   return `${id}:${version}`;
 }
