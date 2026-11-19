@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "engineVersion": "1.0.0",
+  "id": "ingredora-nutella-supermarket-spot-004",
+  "title": "Nutella — Góndola con pared pintada (versión 4)",
+  "description": "Spot vertical con fondo de supermercado terminado: pared gris cálida tipo pintura mineral con textura sutil y zócalos, evitando el vacío blanco detrás de las góndolas.",
+  "createdAt": "2026-11-19T21:05:00-03:00",
+  "fps": 30,
+  "width": 720,
+  "height": 1280,
+  "visualPreset": "nutella-supermarket",
+  "scenes": [
+    {
+      "id": "supermarket-painted-wall-v4",
+      "startFrame": 0,
+      "durationFrames": 360,
+      "background": "#96978f",
+      "camera": {
+        "position": [
+          0.15,
+          0.48,
+          8.7
+        ],
+        "target": [
+          0,
+          -0.15,
+          0
+        ],
+        "fov": 32
+      },
+      "accentColor": "#d8f36a",
+      "headline": "NUTELLA.",
+      "subline": "DETRÁS DE LA ETIQUETA.",
+      "objects": []
+    }
+  ]
+}
