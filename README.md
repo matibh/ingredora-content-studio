@@ -38,7 +38,7 @@ La dirección elegida es una fábrica audiovisual basada en escenas 3D programá
 | [12 — Quality Assurance y Content Quality Gate](docs/12-quality-assurance-y-content-quality-gate.md) | Validaciones, derechos, veracidad y aprobación | Borrador inicial |
 | [13 — Distribución y publicación social](docs/13-distribucion-y-publicacion-social.md) | Adaptaciones, metadatos, publicación manual e integraciones | Borrador inicial |
 | [14 — Analítica, métricas y experimentación](docs/14-analitica-metricas-y-experimentacion.md) | Embudo, atribución, KPIs, privacidad y experimentación | Borrador inicial |
-| 15 — Seguridad, presupuesto cero, roadmap y pruebas | Límites de gasto, secretos, licencias, fases, hitos y piloto | Pendiente |
+| [15 — Seguridad, presupuesto cero, roadmap y pruebas](docs/15-seguridad-presupuesto-cero-roadmap-y-pruebas.md) | Seguridad, licencias, costos, roadmap, pruebas y gates de aceptación | Borrador inicial |
 
 ## Estructura prevista
 
@@ -81,8 +81,11 @@ Los esquemas JSON se incorporarán cuando el modelo conceptual esté suficientem
 - Supabase y almacenamiento: modelo lógico de datos, buckets privados, RLS, cuotas Free, egress, límites de archivos, retención, recuperación y controles para impedir cargos.
 - Quality Assurance y Content Quality Gate: gates desde brief hasta publicación, severidad de hallazgos, veracidad, precisión de producto, derechos, localización, calidad audiovisual, privacidad y aprobación humana.
 - Distribución y publicación social: Social Packages por canal, variantes, copy, UTM, flujo manual y evaluación de APIs bajo la regla USD 0.
+- Seguridad, presupuesto cero, roadmap y pruebas: especificación transversal de seguridad, licencias, límites de gasto, plan incremental, pruebas y criterios de finalización.
 - Analítica, métricas y experimentación: embudo de contenido a partidas, eventos first-party mínimos, atribución UTM, KPIs, cohortes, experimentación y privacidad.
+- Seguridad, presupuesto cero, roadmap y pruebas: controles de costos, seguridad de paquetes y secretos, licencias, fases de implementación, estrategia de pruebas, Definition of Done y gates de salida.
 - GitHub Pages: no se utilizará como hosting de la aplicación en esta etapa.
+- Documentación 00–15: borrador inicial completo; pendiente auditoría integral de coherencia y aprobación antes de implementar.
 - GitHub Actions: se habilitará solo para validaciones ligeras y sin habilitar billing.
 - Proveedor de hosting web: pendiente de evaluación y verificación de condiciones gratuitas.
 - Supabase: arquitectura y proyecto de destino pendientes de definición.
