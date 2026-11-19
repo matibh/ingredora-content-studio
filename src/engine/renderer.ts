@@ -221,7 +221,7 @@ function drawNutellaOverlay(ctx: CanvasRenderingContext2D, frame: number, fps: n
     {text:"LEÉLOS, MEMORIZALOS Y CONTAME",accent:"MEMORIZALOS"},
     {text:"¿CUÁNTOS RECORDÁS?",accent:"CUÁNTOS"},
     {text:"PARA SEGUIR JUGANDO",accent:"JUGANDO"},
-    {text:"ENTRÁ A INGREDORA.COM",accent:"INGREDORA.COM"},
+    {text:"ENTRÁ A INGREDORA PUNTO COM",accent:"PUNTO"},
     {text:"O BUSCÁ EL LINK EN MI PERFIL. ¡TE ESPERO!",accent:"MI PERFIL"},
   ];
   let searchFrom=0;
