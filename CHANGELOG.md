@@ -85,3 +85,10 @@ All notable documentation and specification changes are recorded here.
 - Kept TikTok, Instagram and YouTube manual in the MVP; excluded X API due to pay-per-use pricing.
 - Documented TikTok Direct Post audit and intended-use restrictions, Instagram professional-account/public-media considerations and YouTube API quota caveats.
 - No social account connection, OAuth flow or publication integration has been implemented.
+
+## 2026-11-19 — Analytics and Experimentation
+
+- Added `docs/14-analitica-metricas-y-experimentacion.md` defining the content-to-game funnel, platform metrics, first-party gameplay events, UTM attribution, KPI formulas, campaign dashboard, cohorts and creative experiments.
+- Established privacy-by-design, data minimization and no paid analytics providers; MVP metrics are captured manually from platform dashboards and minimally from first-party game events.
+- Referenced Argentina's Personal Data Protection Law 25.326, its updated text and AAIP guidance.
+- Updated the document index: document 15 will consolidate security, zero-budget controls, implementation roadmap and testing.
