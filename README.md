@@ -70,9 +70,14 @@ Los esquemas JSON se incorporarán cuando el modelo conceptual esté suficientem
 
 ## Estado actual
 
+- Interfaz inicial: dashboard responsive, navegación por módulos y formulario de creación de producciones de prueba.
+- Persistencia: no implementada; los borradores creados desde la interfaz viven solo en el estado de la sesión.
+- Integraciones externas: ninguna conectada. No hay claves ni secretos en el frontend.
+- Validación de build: pendiente de ejecución; no se declara compilación verificada todavía.
+
 - Repositorio privado: confirmado.
 - Rama principal: `main`.
-- Aplicación: todavía no implementada.
+- Aplicación: foundation inicial implementada en React 19 + TypeScript 7 + Vite 8; dashboard y navegación inicial disponibles en el código fuente.
 - Arquitectura general: especificación inicial incorporada; hosting, codecs y límites operativos siguen sujetos a pruebas.
 - Protocolo ChatGPT-app: especificación inicial incorporada; schemas y mecanismo de importación quedan pendientes.
 - Identidad visual: sistema inicial de capas, dirección de arte 3D, composición y tokens; assets oficiales y decisiones de marca pendientes.
