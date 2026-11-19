@@ -232,8 +232,15 @@ function drawNutellaOverlay(ctx: CanvasRenderingContext2D, frame: number, fps: n
     for(let i=searchFrom;i<=voiceWords.length-tokens.length;i++){
       if(tokens.every((token,j)=>normalizeCaptionWord(voiceWords[i+j]?.text||"")===token)){found=i;break;}
     }
-    if(found<0) throw new Error("No se pudieron sincronizar los subtítulos con la locución: "+definition.text);
-    const matched=voiceWords.slice(found,found+tokens.length);
+    // Keep the video renderable if a TTS provider changes punctuation or tokenization.
+    // Prefer exact phrase matching; otherwise align this caption to the next spoken words
+    // rather than aborting the entire production.
+    if(found<0){
+      const firstTokenIndex=voiceWords.findIndex((word,index)=>index>=searchFrom && normalizeCaptionWord(word.text)===tokens[0]);
+      found=firstTokenIndex>=0 ? firstTokenIndex : searchFrom;
+    }
+    const matched=voiceWords.slice(found,Math.min(voiceWords.length,found+tokens.length));
+    if(matched.length===0) throw new Error("No hay marcas de tiempo suficientes para los subtítulos.");
     searchFrom=found+tokens.length;
     return {...definition,a:matched[0].start,b:matched[matched.length-1].end,wordTimings:matched};
   });
