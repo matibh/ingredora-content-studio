@@ -750,7 +750,7 @@ export function createCocaColaPoolsideSet(world: THREE.Scene): PoolsideSet {
     });
 
     // The cup level rises only while the stream is actually entering it.
-    const fillAmount = 0.24 + 0.43 * ease((time - 3.55) / 2.9);
+    const fillAmount = 0.24 + 0.43 * ease((time - 3.90) / 2.55);
     liquid.scale.y = fillAmount;
     liquid.position.y = 0.10 + fillAmount * 0.46;
     const surfaceY = 0.10 + fillAmount * 0.92;
