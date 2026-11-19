@@ -242,7 +242,63 @@ function createNutellaSet(world: THREE.Scene) {
   return {jar,frontLabel:front,backLabel:back};
 }
 
-type VoiceWordTiming = { text: string; start: number; end: number };
+type VoiceWordTiming = { text: string; start: number; end: number; segment?: number };
+
+function drawPoolsideVoiceCaption(
+  ctx: CanvasRenderingContext2D,
+  time: number,
+  width: number,
+  height: number,
+  words: VoiceWordTiming[],
+) {
+  const active = words.find((word) => time >= word.start && time <= word.end + 0.06);
+  if (!active) return;
+  const phrase = words.filter((word) => word.segment === active.segment);
+  const spoken = phrase.filter((word) => word.start <= time);
+  if (!spoken.length) return;
+
+  const scale = width / 720;
+  const fontSize = Math.round(27 * scale);
+  const gap = 11 * scale;
+  ctx.save();
+  ctx.font = `900 ${fontSize}px Arial, Helvetica, sans-serif`;
+  const widths = spoken.map((word) => ctx.measureText(word.text).width);
+  const totalWidth = widths.reduce((sum, value) => sum + value, 0) + gap * Math.max(0, spoken.length - 1);
+  const panelWidth = Math.min(width * 0.92, totalWidth + width * 0.10);
+  const panelHeight = height * 0.092;
+  const panelX = (width - panelWidth) / 2;
+  const panelY = height * 0.775;
+  ctx.globalAlpha = 0.97;
+  ctx.beginPath();
+  ctx.roundRect(panelX, panelY, panelWidth, panelHeight, panelHeight * 0.20);
+  ctx.fillStyle = "rgba(4, 17, 25, .88)";
+  ctx.fill();
+  ctx.strokeStyle = "rgba(255, 240, 174, .72)";
+  ctx.lineWidth = Math.max(1, scale * 1.5);
+  ctx.stroke();
+
+  const contentWidth = totalWidth;
+  let x = (width - contentWidth) / 2;
+  const y = panelY + panelHeight * 0.54;
+  spoken.forEach((word, index) => {
+    const isCurrent = word === active;
+    const wordWidth = widths[index];
+    if (isCurrent) {
+      ctx.beginPath();
+      ctx.roundRect(x - 5 * scale, y - fontSize * 0.72, wordWidth + 10 * scale, fontSize * 1.42, 7 * scale);
+      ctx.fillStyle = "rgba(239, 35, 60, .95)";
+      ctx.fill();
+    }
+    ctx.fillStyle = isCurrent ? "#fffdf8" : "rgba(255,255,255,.82)";
+    ctx.shadowColor = isCurrent ? "rgba(239,35,60,.48)" : "transparent";
+    ctx.shadowBlur = isCurrent ? 10 * scale : 0;
+    ctx.textAlign = "left";
+    ctx.textBaseline = "middle";
+    ctx.fillText(word.text, x, y);
+    x += wordWidth + gap;
+  });
+  ctx.restore();
+}
 function normalizeCaptionWord(value: string) { return value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]/g, ""); }
 function drawNutellaOverlay(ctx: CanvasRenderingContext2D, frame: number, fps: number, width: number, height: number, voiceWords: VoiceWordTiming[]) {
   const t = frame / fps;
@@ -609,6 +665,19 @@ export async function renderPackageToWebM(
   const nutellaSet = pkg.visualPreset === "nutella-supermarket" ? createNutellaSet(world) : null;
   const poolsideSet = pkg.visualPreset === "coca-cola-poolside" ? createCocaColaPoolsideSet(world) : null;
   let nutellaVoiceWords: VoiceWordTiming[] = [];
+  let poolsideVoiceWords: VoiceWordTiming[] = [];
+  if (poolsideSet && pkg.wordTimingsUrl) {
+    const timingResponse = await fetch(import.meta.env.BASE_URL + pkg.wordTimingsUrl);
+    if (!timingResponse.ok) throw new Error("No se pudieron cargar los tiempos palabra por palabra de la voz de Coca-Cola.");
+    const timingData = await timingResponse.json() as { words?: VoiceWordTiming[] };
+    if (!Array.isArray(timingData.words) || timingData.words.length < 10) {
+      throw new Error("El archivo de sincronización de la voz de Coca-Cola está vacío o incompleto.");
+    }
+    if (timingData.words.some((word) => !Number.isFinite(word.start) || !Number.isFinite(word.end) || word.end <= word.start)) {
+      throw new Error("El archivo de subtítulos contiene marcas de tiempo inválidas.");
+    }
+    poolsideVoiceWords = timingData.words;
+  }
   if (nutellaSet) {
     const timingResponse = await fetch(import.meta.env.BASE_URL + "studio/audio/nutella-v9-word-timings.json");
     if (!timingResponse.ok) throw new Error("No se pudieron cargar los tiempos reales de la locución (" + timingResponse.status + ").");
@@ -635,6 +704,7 @@ export async function renderPackageToWebM(
       renderer.render(world, camera);
       ctx.drawImage(renderer.domElement, 0, 0, pkg.width, pkg.height);
       drawCocaColaPoolsideOverlay(ctx, time, pkg.width, pkg.height);
+      drawPoolsideVoiceCaption(ctx, time, pkg.width, pkg.height, poolsideVoiceWords);
       return;
     }
     if (nutellaSet) {
