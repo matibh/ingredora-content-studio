@@ -194,9 +194,9 @@ function drawNutellaOverlay(ctx: CanvasRenderingContext2D, frame: number, fps: n
     // Ingredient reveal: high-contrast two-column list, bold enough for a phone screen.
     ctx.fillStyle = "rgba(7,14,11,.88)";
     ctx.beginPath(); ctx.roundRect(width*.055,height*.855,width*.89,height*.112,18); ctx.fill();
-    const ingredients = ["AZÚCAR","ACEITE VEGETAL","AVELLANAS","LECHE EN POLVO","CACAO","LECITINAS","SABORIZANTE"];
+    const ingredients = ["AZÚCAR","ACEITE VEGETAL","AVELLANAS","LECHE DESCREMADA EN POLVO","CACAO EN POLVO DESGRASADO","EMULSIFICANTE (LECITINAS)","SABORIZANTE"];
     ctx.textAlign = "left"; ctx.fillStyle = "#ffffff";
-    ctx.font = "900 " + Math.round(width*.029) + "px Arial";
+    ctx.font = "900 " + Math.round(width*.025) + "px Arial";
     ingredients.forEach((item,i) => {
       const col = i < 4 ? 0 : 1; const row = i < 4 ? i : i-4;
       const x = width*(col===0?.105:.555);
