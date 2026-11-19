@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-19T20:47:00-03:00",
+  "updatedAt": "2026-11-19T21:05:00-03:00",
   "productions": [
     {
-      "id": "ingredora-nutella-supermarket-spot-006",
-      "title": "Nutella — Voz más enérgica y desafío (versión 6)",
-      "description": "Voz femenina argentina más arriba, alegre y enfática. Acompaña los captions y termina invitando a jugar; no lee la lista de ingredientes.",
+      "id": "ingredora-nutella-supermarket-spot-007",
+      "title": "Nutella — Voz corregida y normalizada (versión 7)",
+      "description": "Narración argentina comprobada contra silencio, normalizada y priorizada sobre la música. Acompaña los captions e invita a jugar; no enumera los ingredientes.",
       "status": "rendering",
-      "packageUrl": "studio/packages/nutella-supermarket.v6.json",
+      "packageUrl": "studio/packages/nutella-supermarket.v7.json",
       "durationSeconds": 15,
       "aspectRatio": "9:16",
       "language": "Español argentino",
@@ -16,8 +16,8 @@
         "Instagram Reels",
         "YouTube Shorts"
       ],
-      "version": "6.0",
-      "createdAt": "2026-11-19T20:30:00-03:00",
+      "version": "7.0",
+      "createdAt": "2026-11-19T21:05:00-03:00",
       "caption": "Lo reconocés enseguida, pero… ¿sabés qué tiene realmente? 🍫 Mirá el dorso, memorizá los ingredientes y jugá con Ingredora. ¿Cuántos recordabas? #Ingredora #Nutella #DesafíoDeIngredientes"
     }
   ]
