@@ -248,7 +248,8 @@ export async function renderPackageToWebM(
   rim.position.set(4, 2, -4);
   world.add(rim);
 
-  const camera = new THREE.PerspectiveCamera(34, pkg.width / pkg.height, 0.1, 100);\n  const nutellaSet = pkg.visualPreset === "nutella-supermarket" ? createNutellaSet(world) : null;
+  const camera = new THREE.PerspectiveCamera(34, pkg.width / pkg.height, 0.1, 100);
+  const nutellaSet = pkg.visualPreset === "nutella-supermarket" ? createNutellaSet(world) : null;
   const sceneObjects = new Map<string, THREE.Mesh>();
   const materialObjects = new Map<string, SceneObject>();
   let lastSceneId = "";
