@@ -1032,7 +1032,7 @@ export function drawCocaColaPoolsideOverlay(
     ctx.fillStyle = red;
     ctx.fill();
     drawTextFit(ctx, "PARA ADIVINAR", width / 2, height * 0.685, width * 0.8, 25 * scale, white, 800);
-  } else if (time < 29.35) {
+  } else if (time < 22.8) {
     const reveal = ease((time - 16) / 0.34);
     ctx.save();
     ctx.fillStyle = "rgba(4,18,27,.76)";
@@ -1056,6 +1056,11 @@ export function drawCocaColaPoolsideOverlay(
     const cardW = (gridW - gapX) / 2;
     const cardH = height * 0.155;
     ingredients.forEach((ingredient, index) => {
+      const cardReveal = ease((time - (16 + index * 0.46)) / 0.28);
+      if (cardReveal <= 0) return;
+      ctx.save();
+      ctx.globalAlpha *= cardReveal;
+      ctx.translate(0, (1 - cardReveal) * height * 0.018);
       const col = index % 2;
       const row = Math.floor(index / 2);
       const x = gridX + col * (cardW + gapX);
@@ -1094,14 +1099,21 @@ export function drawCocaColaPoolsideOverlay(
       lines.slice(0, 3).forEach((line, lineIndex) => {
         ctx.fillText(line, textX, textStartY + lineIndex * lineHeight, textWidth);
       });
+      ctx.restore();
     });
-    roundedRect(ctx, width * 0.12, height * 0.77, width * 0.76, height * 0.062, height * 0.031);
-    ctx.fillStyle = "rgba(239,35,60,.94)";
-    ctx.fill();
-    drawTextFit(ctx, "TAMBIÉN CONTIENE CAFEÍNA", width / 2, height * 0.801, width * 0.70, 21 * scale, white, 900);
+    const caffeineReveal = ease((time - 19.1) / 0.32);
+    if (caffeineReveal > 0) {
+      ctx.save();
+      ctx.globalAlpha *= caffeineReveal;
+      roundedRect(ctx, width * 0.12, height * 0.77, width * 0.76, height * 0.062, height * 0.031);
+      ctx.fillStyle = "rgba(239,35,60,.94)";
+      ctx.fill();
+      drawTextFit(ctx, "TAMBIÉN CONTIENE CAFEÍNA", width / 2, height * 0.801, width * 0.70, 21 * scale, white, 900);
+      ctx.restore();
+    }
     ctx.restore();
   } else {
-    const p = ease((time - 29.35) / 0.42);
+    const p = ease((time - 22.8) / 0.36);
     ctx.save();
     ctx.fillStyle = "rgba(3,17,27,.58)";
     ctx.fillRect(0, height * 0.10, width, height * 0.82);
