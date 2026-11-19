@@ -211,24 +211,22 @@ function drawNutellaOverlay(ctx: CanvasRenderingContext2D, frame: number, fps: n
     });
     ctx.textAlign = "center";
   } else if (phase === 5) {
-    // End card uses a fixed vertical rhythm and generous safe areas to prevent collisions.
-    ctx.fillStyle = "rgba(5,13,10,.62)";
+    // End card: each phrase is rendered on its own fixed row, with width-fitted text.
+    ctx.fillStyle = "rgba(5,13,10,.68)";
     ctx.beginPath(); ctx.roundRect(width*.055,height*.635,width*.89,height*.325,24); ctx.fill();
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
-    ctx.fillStyle = accent;
-    ctx.font = "900 " + Math.round(width*.029) + "px Arial";
-    ctx.fillText("ENTRÁ A",width/2,height*.685,width*.82);
-    ctx.fillStyle = "#ffffff";
-    ctx.font = "900 " + Math.round(width*.078) + "px Arial";
-    ctx.fillText("ingredora.com",width/2,height*.765,width*.84);
-    ctx.fillStyle = "rgba(255,255,255,.98)";
-    ctx.font = "800 " + Math.round(width*.025) + "px Arial";
-    ctx.fillText("O BUSCÁ EL LINK",width/2,height*.845,width*.82);
-    ctx.fillText("EN MI PERFIL",width/2,height*.885,width*.82);
-    ctx.fillStyle = accent;
-    ctx.font = "900 " + Math.round(width*.023) + "px Arial";
-    ctx.fillText("INGREDORA",width/2,height*.935,width*.82);
+    const endCardLine = (text: string, y: number, size: number, color: string) => {
+      ctx.fillStyle = color;
+      ctx.font = "900 " + Math.round(width*size) + "px Arial";
+      ctx.fillText(text,width/2,height*y,width*.82);
+    };
+    endCardLine("ENTRÁ A",.685,.029,accent);
+    endCardLine("ingredora.com",.755,.071,"#ffffff");
+    endCardLine("O BUSCÁ EL LINK",.835,.025,"rgba(255,255,255,.98)");
+    endCardLine("EN MI PERFIL",.885,.025,"rgba(255,255,255,.98)");
+    endCardLine("INGREDORA",.935,.023,accent);
+
   } else {
     ctx.fillStyle = "rgba(255,255,255,.96)"; ctx.font = "700 " + Math.round(width*.026) + "px Arial";
     const sub = ["Lo reconocés enseguida.","Vamos a mirar el dorso del frasco.","La etiqueta tiene toda la información.","Son siete ingredientes. Leelos y memorizalos.","¿Cuántos recordás?",""][phase];
