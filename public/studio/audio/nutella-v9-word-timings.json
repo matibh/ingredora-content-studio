@@ -1,0 +1,235 @@
+{
+  "voice": "es-AR-ElenaNeural",
+  "words": [
+    {
+      "text": "Lo",
+      "start": 0.095458,
+      "end": 0.265916
+    },
+    {
+      "text": "reconocés",
+      "start": 0.3,
+      "end": 0.845458
+    },
+    {
+      "text": "enseguida",
+      "start": 0.845458,
+      "end": 1.402291
+    },
+    {
+      "text": "Pero",
+      "start": 2.284083,
+      "end": 2.613624
+    },
+    {
+      "text": "sabés",
+      "start": 2.840916,
+      "end": 3.170457
+    },
+    {
+      "text": "qué",
+      "start": 3.215916,
+      "end": 3.284082
+    },
+    {
+      "text": "tiene",
+      "start": 3.352291,
+      "end": 3.556832
+    },
+    {
+      "text": "realmente",
+      "start": 3.590916,
+      "end": 4.159082
+    },
+    {
+      "text": "Vamos",
+      "start": 5.022708,
+      "end": 5.363624
+    },
+    {
+      "text": "a",
+      "start": 5.363625,
+      "end": 5.409083
+    },
+    {
+      "text": "mirar",
+      "start": 5.443166,
+      "end": 5.693166
+    },
+    {
+      "text": "el",
+      "start": 5.693166,
+      "end": 5.784082
+    },
+    {
+      "text": "dorso",
+      "start": 5.829541,
+      "end": 6.079541
+    },
+    {
+      "text": "del",
+      "start": 6.125,
+      "end": 6.215916
+    },
+    {
+      "text": "frasco",
+      "start": 6.238625,
+      "end": 6.704541
+    },
+    {
+      "text": "La",
+      "start": 7.568166,
+      "end": 7.704541
+    },
+    {
+      "text": "etiqueta",
+      "start": 7.727291,
+      "end": 8.136374
+    },
+    {
+      "text": "tiene",
+      "start": 8.204541,
+      "end": 8.386374
+    },
+    {
+      "text": "toda",
+      "start": 8.465916,
+      "end": 8.636374
+    },
+    {
+      "text": "la",
+      "start": 8.670458,
+      "end": 8.704541
+    },
+    {
+      "text": "información",
+      "start": 8.715916,
+      "end": 9.443207
+    },
+    {
+      "text": "siete",
+      "start": 9.715916,
+      "end": 10.022707
+    },
+    {
+      "text": "ingredientes",
+      "start": 10.022708,
+      "end": 10.874999
+    },
+    {
+      "text": "Leelos",
+      "start": 11.715916,
+      "end": 12.306832
+    },
+    {
+      "text": "memorizalos",
+      "start": 12.454541,
+      "end": 13.124999
+    },
+    {
+      "text": "y",
+      "start": 13.136375,
+      "end": 13.170458
+    },
+    {
+      "text": "contame",
+      "start": 13.215916,
+      "end": 13.568207
+    },
+    {
+      "text": "cuántos",
+      "start": 13.636375,
+      "end": 13.920458
+    },
+    {
+      "text": "recordás",
+      "start": 13.943166,
+      "end": 14.545457
+    },
+    {
+      "text": "Para",
+      "start": 15.397708,
+      "end": 15.602249
+    },
+    {
+      "text": "seguir",
+      "start": 15.636375,
+      "end": 15.89775
+    },
+    {
+      "text": "jugando",
+      "start": 15.920458,
+      "end": 16.488624
+    },
+    {
+      "text": "entrá",
+      "start": 16.772708,
+      "end": 17.034083
+    },
+    {
+      "text": "a",
+      "start": 17.034083,
+      "end": 17.090916
+    },
+    {
+      "text": "Ingredora",
+      "start": 17.125,
+      "end": 17.556833
+    },
+    {
+      "text": "punto",
+      "start": 17.636375,
+      "end": 17.89775
+    },
+    {
+      "text": "com",
+      "start": 17.965916,
+      "end": 18.227291
+    },
+    {
+      "text": "o",
+      "start": 18.375,
+      "end": 18.431833
+    },
+    {
+      "text": "buscá",
+      "start": 18.454541,
+      "end": 18.795457
+    },
+    {
+      "text": "el",
+      "start": 18.840916,
+      "end": 18.886374
+    },
+    {
+      "text": "link",
+      "start": 18.886375,
+      "end": 19.181833
+    },
+    {
+      "text": "en",
+      "start": 19.181833,
+      "end": 19.249999
+    },
+    {
+      "text": "mi",
+      "start": 19.25,
+      "end": 19.352291
+    },
+    {
+      "text": "perfil",
+      "start": 19.409083,
+      "end": 19.852249
+    },
+    {
+      "text": "Te",
+      "start": 20.659083,
+      "end": 20.749999
+    },
+    {
+      "text": "espero",
+      "start": 20.75,
+      "end": 21.238625
+    }
+  ]
+}
