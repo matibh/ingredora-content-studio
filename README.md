@@ -10,18 +10,19 @@ Incluye el flujo completo desde la idea hasta el MP4 aprobado, el template para 
 
 ## Operación del estudio: producción desde ChatGPT
 
-Ingredora Content Studio es una **pantalla de reproducción y exhibición**, no una herramienta de carga o edición manual. El usuario no debe completar briefs, prompts, formularios, storyboards ni parámetros dentro de la web.
+Ingredora Content Studio combina la preparación creativa desde ChatGPT con la ejecución y revisión en la aplicación. El usuario no tiene que completar briefs, prompts ni storyboards manualmente dentro de la web.
 
-- La dirección creativa, los guiones, storyboards, escenas, assets, metadatos y paquetes de producción se preparan en la conversación de ChatGPT.
-- Los archivos versionados del repositorio y el manifiesto `public/studio/productions.json` son el puente de entrega hacia la aplicación.
-- La página lee el manifiesto automáticamente al abrirse, al recuperar el foco y cada 60 segundos.
-- Los videos listos se muestran en el reproductor HTML5. La única acción de usuario prevista en la web es reproducir/pausar y controlar la visualización.
-- Los proyectos que todavía no tienen video pueden figurar como `planned` o `rendering`; nunca se muestran como terminados si no existe un archivo reproducible.
-- Los videos finales y posters se alojarán en almacenamiento aprobado para el proyecto. No se deben introducir claves privadas ni credenciales en el frontend público.
-- No hay publicación automática en redes sociales. Cualquier distribución externa queda fuera del reproductor y requiere aprobación explícita.
+- La dirección creativa, guiones, storyboards, escenas, assets, audio, subtítulos y metadatos se preparan desde la conversación y se entregan como paquetes versionados.
+- El motor del Studio valida y ejecuta las producciones, renderiza en el navegador y permite obtener el video para revisión.
+- El render base genera WebM. La conversión a MP4 es un paso adicional y conserva el WebM original.
+- Supabase se utiliza para persistir datos y recursos; no es el motor de render.
+- GitHub mantiene el código y la documentación. La carpeta `Contenido a subir` es el destino acordado para los archivos aprobados.
+- La aprobación es manual y requiere la contraseña en la aplicación. No se guardan secretos en el frontend ni se comparten por chat.
+- La función de aprobación actual sube el MP4 y verifica la existencia del TXT asociado; comprobar su implementación antes de asumir que también sube el TXT.
+- No hay publicación automática en redes sociales. Aprobar y subir a GitHub no equivale a publicar.
 
 ### Manifiesto de producciones
 
-El esquema inicial es `schemaVersion: 1`. Cada elemento de `productions` incluye un `id`, `title` y `status` (`planned`, `rendering` o `ready`). Para que aparezca el reproductor debe tener `status: "ready"` y una URL `videoUrl` reproducible. Los campos opcionales incluyen `description`, `posterUrl`, `durationSeconds`, `aspectRatio`, `language`, `platforms`, `version`, `createdAt` y `caption`.
+El manifiesto `public/studio/productions.json` conecta las producciones preparadas con la aplicación de exhibición. El esquema inicial es `schemaVersion: 1`. Cada elemento incluye `id`, `title` y `status` (`planned`, `rendering` o `ready`). Para que aparezca como video listo debe tener `status: "ready"` y una URL `videoUrl` reproducible. Los campos opcionales incluyen `description`, `posterUrl`, `durationSeconds`, `aspectRatio`, `language`, `platforms`, `version`, `createdAt` y `caption`.
 
-La aplicación no inventa ni genera contenido por sí misma: refleja lo que se preparó y entregó desde la conversación. El manifiesto vacío inicial es intencional; se completará cuando exista la primera producción real renderizada y validada.
+Si la documentación y el comportamiento del código difieren, manda el código vigente: actualizar la guía en el mismo cambio.
