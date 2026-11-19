@@ -1,5 +1,23 @@
 {
   "schemaVersion": 1,
-  "updatedAt": null,
-  "productions": []
+  "updatedAt": "2026-11-19T20:00:00-03:00",
+  "productions": [
+    {
+      "id": "ingredora-15-seconds-teaser-001",
+      "title": "Un producto. 15 segundos.",
+      "description": "Un teaser cinematográfico para presentar el desafío de Ingredora.",
+      "status": "rendering",
+      "packageUrl": "studio/packages/launch-teaser.v1.json",
+      "durationSeconds": 8,
+      "aspectRatio": "9:16",
+      "language": "Español",
+      "platforms": [
+        "TikTok",
+        "Instagram Reels",
+        "YouTube Shorts"
+      ],
+      "version": "1.0",
+      "createdAt": "2026-11-19T20:00:00-03:00"
+    }
+  ]
 }
