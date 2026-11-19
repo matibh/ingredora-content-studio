@@ -104,10 +104,8 @@ function App() {
         const blob = await renderPackageToWebM(productionPackage, (progress) => {
           setRenderProgress((current) => ({ ...current, [candidate.id]: progress }));
         });
-        if (cancelled) return;
         if (!blob.size) throw new Error("El render terminó sin generar un archivo de video.");
         await saveRenderedVideo(candidate.id, blob);
-        if (cancelled) return;
         setLocalVideos((current) => ({ ...current, [candidate.id]: URL.createObjectURL(blob) }));
         setRenderProgress((current) => ({ ...current, [candidate.id]: { ...current[candidate.id], percent: 100 } }));
       } catch (error) {
