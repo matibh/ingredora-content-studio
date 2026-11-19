@@ -244,6 +244,11 @@ function createNutellaSet(world: THREE.Scene) {
 
 type VoiceWordTiming = { text: string; start: number; end: number; segment?: number };
 
+function roundedRect(ctx: CanvasRenderingContext2D, x: number, y: number, width: number, height: number, radius: number) {
+  ctx.beginPath();
+  ctx.roundRect(x, y, width, height, radius);
+}
+
 function drawPoolsideVoiceCaption(
   ctx: CanvasRenderingContext2D,
   time: number,
