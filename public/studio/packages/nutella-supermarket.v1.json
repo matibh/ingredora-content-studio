@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "engineVersion": "1.0.0",
+  "id": "ingredora-nutella-supermarket-spot-001",
+  "title": "Nutella — Detrás de la etiqueta",
+  "description": "Spot conceptual cinematográfico en un supermercado 3D: góndola, frasco giratorio, marca e ingredientes visibles.",
+  "createdAt": "2026-11-19T20:00:00-03:00",
+  "fps": 30,
+  "width": 720,
+  "height": 1280,
+  "visualPreset": "nutella-supermarket",
+  "scenes": [
+    {
+      "id": "supermarket-product-film",
+      "startFrame": 0,
+      "durationFrames": 360,
+      "background": "#d8d4c9",
+      "camera": { "position": [0.15, 0.48, 8.7], "target": [0, -0.15, 0], "fov": 32 },
+      "accentColor": "#d8f36a",
+      "headline": "NUTELLA.",
+      "subline": "DETRÁS DE LA ETIQUETA.",
+      "objects": []
+    }
+  ]
+}
