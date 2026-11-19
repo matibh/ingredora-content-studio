@@ -198,7 +198,7 @@ export async function renderPackageToWebM(
     const finish = (error?: Error) => {
       if (settled) return;
       settled = true;
-      cancelAnimationFrame(animationId);
+      window.clearTimeout(timerId);
       signal?.removeEventListener("abort", onAbort);
       if (recorder.state !== "inactive") recorder.stop();
       stream.getTracks().forEach((track) => track.stop());
@@ -222,10 +222,10 @@ export async function renderPackageToWebM(
         frame += 1;
         onProgress({ frame, totalFrames, percent: Math.min(100, Math.round((frame / totalFrames) * 100)) });
         if (frame >= totalFrames) {
-          finish();
+          timerId = window.setTimeout(() => finish(), 1000 / fps);
           return;
         }
-        animationId = requestAnimationFrame(tick);
+        timerId = window.setTimeout(tick, 1000 / fps);
       } catch (error) {
         finish(error instanceof Error ? error : new Error("Error inesperado durante el render."));
       }
