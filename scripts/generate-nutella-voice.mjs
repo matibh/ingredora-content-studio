@@ -38,7 +38,7 @@ if (!response.ok) {
   throw new Error(`Azure Speech devolvió HTTP ${response.status}: ${detail.slice(0, 500)}`);
 }
 const bytes = Buffer.from(await response.arrayBuffer());
-if (bytes.length < 2048 || bytes.subarray(0, 3).toString() !== "ID3") {
+if (bytes.length < 2048 || !(bytes.subarray(0, 3).toString() === "ID3" || (bytes[0] === 0xff && (bytes[1] & 0xe0) === 0xe0))) {
   throw new Error("Azure no devolvió un MP3 válido.");
 }
 const output = "public/studio/audio/nutella-v5-voice-es-AR.mp3";
