@@ -1,111 +1,19 @@
-# Ingredora Content Studio
 
-**Documentación maestra, visión, arquitectura y especificaciones de la fábrica audiovisual de Ingredora.**
 
-Ingredora Content Studio es el proyecto de una herramienta web para planificar, producir, renderizar, organizar y, en una fase posterior, distribuir contenido audiovisual de Ingredora.
+## Operación del estudio: producción desde ChatGPT
 
-La dirección elegida es una fábrica audiovisual basada en escenas 3D programáticas con Three.js, edición y composición en navegador, proyectos estructurados y almacenamiento controlado. ChatGPT, desde la conversación de trabajo, actúa como director creativo, guionista, diseñador audiovisual y programador de los materiales de cada producción. La aplicación ejecuta proyectos preparados y validados; no incorpora un agente generativo propio ni depende de una API de IA paga.
+Ingredora Content Studio es una **pantalla de reproducción y exhibición**, no una herramienta de carga o edición manual. El usuario no debe completar briefs, prompts, formularios, storyboards ni parámetros dentro de la web.
 
-> **Estado del proyecto: IMPLEMENTACIÓN INICIAL.** La documentación 00–15 se conserva como referencia funcional. Por decisión del usuario, la construcción de la aplicación comienza antes de la auditoría transversal; los hallazgos y decisiones pendientes se resolverán progresivamente sin bloquear la creación de la primera base funcional.
+- La dirección creativa, los guiones, storyboards, escenas, assets, metadatos y paquetes de producción se preparan en la conversación de ChatGPT.
+- Los archivos versionados del repositorio y el manifiesto `public/studio/productions.json` son el puente de entrega hacia la aplicación.
+- La página lee el manifiesto automáticamente al abrirse, al recuperar el foco y cada 60 segundos.
+- Los videos listos se muestran en el reproductor HTML5. La única acción de usuario prevista en la web es reproducir/pausar y controlar la visualización.
+- Los proyectos que todavía no tienen video pueden figurar como `planned` o `rendering`; nunca se muestran como terminados si no existe un archivo reproducible.
+- Los videos finales y posters se alojarán en almacenamiento aprobado para el proyecto. No se deben introducir claves privadas ni credenciales en el frontend público.
+- No hay publicación automática en redes sociales. Cualquier distribución externa queda fuera del reproductor y requiere aprobación explícita.
 
-## Principios no negociables
+### Manifiesto de producciones
 
-1. **Presupuesto permanente: USD 0.** No contratar planes, APIs, servicios, créditos, almacenamiento ni infraestructura de pago. No habilitar billing. Si una cuota gratuita se agota, detener o posponer la operación.
-2. **Uso desde navegador.** La experiencia objetivo es online, sin exigir instalaciones locales de software al usuario.
-3. **ChatGPT como único cerebro creativo.** Estrategia, investigación, ideas, guiones, storyboards, dirección, código y adaptación editorial se preparan desde la conversación. No añadir otro modelo generativo para esas tareas.
-4. **Sin dependencia de OpenAI API paga.** La aplicación no puede invocar automáticamente esta conversación. El intercambio se realizará mediante proyectos, manifiestos y archivos versionados que ChatGPT prepara y la aplicación consume.
-5. **Producción visual propia.** Three.js y código determinista construirán escenarios, objetos, packaging recreado, personajes y animaciones. Las referencias y texturas de productos reales deberán ser legítimas y verificadas.
-6. **Datos y secretos protegidos.** Las respuestas de juego, Daily activos, claves y datos privados no deben filtrarse a campañas, assets públicos ni frontend.
-7. **Aprobación humana.** Ninguna publicación externa debe ocurrir sin revisión y confirmación humana.
-8. **Trazabilidad.** Cada campaña, escena, asset, render y decisión importante debe tener versión, estado y procedencia.
+El esquema inicial es `schemaVersion: 1`. Cada elemento de `productions` incluye un `id`, `title` y `status` (`planned`, `rendering` o `ready`). Para que aparezca el reproductor debe tener `status: "ready"` y una URL `videoUrl` reproducible. Los campos opcionales incluyen `description`, `posterUrl`, `durationSeconds`, `aspectRatio`, `language`, `platforms`, `version`, `createdAt` y `caption`.
 
-## Documentos
-
-| Documento | Propósito | Estado |
-|---|---|---|
-| [00 — Visión y alcance](docs/00-vision-y-alcance.md) | Objetivos, principios, límites y definición del producto | Borrador inicial |
-| [01 — Estrategia de contenido](docs/01-estrategia-de-contenido.md) | Audiencia, idiomas, pilares, campañas y medición | Borrador inicial |
-| [02 — Arquitectura general](docs/02-arquitectura-general.md) | Componentes, flujos, render, almacenamiento, seguridad y límites gratuitos | Borrador inicial |
-| [03 — ChatGPT: producción y protocolo](docs/03-chatgpt-produccion-y-protocolo.md) | Paquetes de producción, roles, validación, feedback y versionado | Borrador inicial |
-| [04 — Identidad visual](docs/04-identidad-visual.md) | Sistema de marca, packaging, gráfica y dirección artística | Borrador inicial |
-| [05 — Product Library](docs/05-product-library.md) | Catálogo, fuentes, verificación, packaging y derechos | Borrador inicial |
-| [06 — 3D Product Studio](docs/06-3d-product-studio.md) | Envases paramétricos, materiales, texturas y modelos 3D | Borrador inicial |
-| [07 — Personajes y animaciones](docs/07-personajes-y-animaciones.md) | Personajes estilizados, rigs, expresiones e interacciones | Borrador inicial |
-| [08 — Cinematic Scene Engine](docs/08-cinematic-scene-engine.md) | Escenarios, cámara, iluminación, partículas y composición | Borrador inicial |
-| [09 — Audio y Voice Studio](docs/09-audio-y-voice-studio.md) | Música procedural, SFX, ambientes, voz, mezcla y sincronización | Borrador inicial |
-| [10 — Editor y Render Engine](docs/10-editor-y-render-engine.md) | Timeline, previsualización, render por escenas y exportación | Borrador inicial |
-| [11 — Supabase y almacenamiento](docs/11-supabase-y-almacenamiento.md) | Datos, Storage, cuotas, RLS y recuperación | Borrador inicial |
-| [12 — Quality Assurance y Content Quality Gate](docs/12-quality-assurance-y-content-quality-gate.md) | Validaciones, derechos, veracidad y aprobación | Borrador inicial |
-| [13 — Distribución y publicación social](docs/13-distribucion-y-publicacion-social.md) | Adaptaciones, metadatos, publicación manual e integraciones | Borrador inicial |
-| [14 — Analítica, métricas y experimentación](docs/14-analitica-metricas-y-experimentacion.md) | Embudo, atribución, KPIs, privacidad y experimentación | Borrador inicial |
-| [15 — Seguridad, presupuesto cero, roadmap y pruebas](docs/15-seguridad-presupuesto-cero-roadmap-y-pruebas.md) | Seguridad, licencias, costos, roadmap, pruebas y gates de aceptación | Borrador inicial |
-
-### Auditoría transversal
-
-- [Auditoría transversal](docs/auditoria-transversal.md): hallazgos de coherencia, viabilidad técnica, cuotas gratuitas, decisiones pendientes y plan de corrección. No es una aprobación de implementación.
-
-## Publicación web (GitHub Pages)
-
-El despliegue está preparado para GitHub Pages mediante GitHub Actions. La URL prevista del proyecto es `https://matibh.github.io/ingredora-content-studio/`, pero solo estará disponible después de hacer público el repositorio, habilitar Pages con origen **GitHub Actions** y completar correctamente el primer workflow. El repositorio público expone el código y la documentación; no almacenar secretos, tokens privados ni claves de servicio en el frontend.
-
-La aplicación es una SPA estática. Las funciones que requieran backend, autenticación o almacenamiento remoto deberán conectarse por separado y respetar el presupuesto de USD 0.
-
-## Estructura prevista
-
-```text
-.
-├── README.md
-├── CHANGELOG.md
-├── docs/
-├── schemas/
-└── .github/
-    └── workflows/
-```
-
-Los esquemas JSON se incorporarán cuando el modelo conceptual esté suficientemente definido. No se deben inventar contratos de datos antes de acordar los campos, estados, relaciones y reglas de validación.
-
-## Cómo se gobierna la documentación
-
-- Los documentos en `docs/` son la fuente de verdad funcional y técnica.
-- Las decisiones pendientes se identifican explícitamente; no se presentan como hechos cerrados.
-- Los cambios que afecten a varios módulos deben actualizar todos los documentos relacionados.
-- Los cambios importantes deben registrarse en `CHANGELOG.md`.
-- Las especificaciones deben incluir objetivo, alcance, comportamiento esperado, errores, seguridad, dependencias, restricciones de costo y criterios de aceptación.
-- No se agregan dependencias, servicios o modelos sin evaluar licencia, compatibilidad con navegador, cuota gratuita y riesgo de costo.
-- Los documentos no deben contener secretos, tokens, credenciales ni datos personales innecesarios.
-
-## Estado actual
-
-- Interfaz: dashboard responsive, navegación por módulos y workspace de campañas.
-- Campañas: brief editable y storyboard con escenas, duración, objetivo narrativo, acción visual, cámara, texto, locución, audio, transición y reordenamiento.
-- Persistencia: campañas, briefs y storyboards guardados en localStorage del navegador. No hay sincronización entre dispositivos ni backup en la nube.
-- Integraciones externas: ninguna conectada. No hay claves ni secretos en el frontend.
-- Validación de build: pendiente de ejecución en entorno de compilación; no se declara compilación verificada todavía.
-
-- Repositorio privado: confirmado.
-- Rama principal: `main`.
-- Aplicación: base React + TypeScript + Vite; dashboard, navegación y módulo de campañas con brief editable y persistencia local.
-- Arquitectura general: especificación inicial incorporada; hosting, codecs y límites operativos siguen sujetos a pruebas.
-- Protocolo ChatGPT-app: especificación inicial incorporada; schemas y mecanismo de importación quedan pendientes.
-- Identidad visual: sistema inicial de capas, dirección de arte 3D, composición y tokens; assets oficiales y decisiones de marca pendientes.
-- Product Library: modelo conceptual de productos, marcas, variantes, fuentes, assets, derechos, fidelidad 3D y versionado incorporado.
-- 3D Product Studio: familias de envases, geometría paramétrica, materiales, UVs, animaciones, revisión y rendimiento especificados.
-- Personajes y animaciones: sistema modular de personajes estilizados, rigs, expresiones, acciones, agarres de producto y timeline especificado.
-- Cinematic Scene Engine: entornos, dirección de cámara e iluminación, timeline, partículas, transiciones, overlays, composición narrativa y render determinista especificados.
-- Audio y Voice Studio: música procedural, SFX, ambientes, pistas de voz opcionales, mezcla, sincronización, metadatos y restricciones de derechos especificados; voz sintética aún no aprobada.
-- Editor y Render Engine: workspace de campañas, importación de paquetes, editor de escenas/timeline, preview, render determinista, cola, recuperación y almacenamiento de entregables especificados.
-- Supabase y almacenamiento: modelo lógico de datos, buckets privados, RLS, cuotas Free, egress, límites de archivos, retención, recuperación y controles para impedir cargos.
-- Quality Assurance y Content Quality Gate: gates desde brief hasta publicación, severidad de hallazgos, veracidad, precisión de producto, derechos, localización, calidad audiovisual, privacidad y aprobación humana.
-- Distribución y publicación social: Social Packages por canal, variantes, copy, UTM, flujo manual y evaluación de APIs bajo la regla USD 0.
-- Analítica, métricas y experimentación: embudo de contenido a partidas, eventos first-party mínimos, atribución UTM, KPIs, cohortes, experimentación y privacidad.
-- Seguridad, presupuesto cero, roadmap y pruebas: controles de costos, seguridad de paquetes y secretos, licencias, fases de implementación, estrategia de pruebas, Definition of Done y gates de salida.
-- GitHub Pages: no se utilizará como hosting de la aplicación en esta etapa.
-- Documentación 00–15: borrador inicial completo.
-- Auditoría transversal: hallazgos documentados; decisiones D-01 a D-08 pendientes de aprobación. No comenzar implementación hasta cerrar Fase 0.
-- GitHub Actions: se habilitará solo para validaciones ligeras y sin habilitar billing.
-- Proveedor de hosting web: pendiente de evaluación y verificación de condiciones gratuitas.
-- Supabase: arquitectura y proyecto de destino pendientes de definición.
-
-## Próximo paso
-
-Continuar el desarrollo de la aplicación por etapas. Próximo objetivo: validar la compilación y continuar con el flujo de producción (guion, storyboard y paquetes de producción). La persistencia actual es local al navegador; la sincronización remota se evaluará más adelante.
+La aplicación no inventa ni genera contenido por sí misma: refleja lo que se preparó y entregó desde la conversación. El manifiesto vacío inicial es intencional; se completará cuando exista la primera producción real renderizada y validada.
