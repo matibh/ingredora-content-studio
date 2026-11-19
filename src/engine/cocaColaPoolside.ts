@@ -303,6 +303,7 @@ export function createCocaColaPoolsideSet(world: THREE.Scene): PoolsideSet {
       cloud.add(puff);
     }
     cloud.userData.baseX = x;
+    cloud.userData.baseY = y;
     cloud.userData.phase = index * 1.7;
     cloudGroups.push(cloud);
     world.add(cloud);
@@ -693,7 +694,7 @@ export function createCocaColaPoolsideSet(world: THREE.Scene): PoolsideSet {
     oceanGeometry.computeVertexNormals();
     cloudGroups.forEach((cloud) => {
       cloud.position.x = (cloud.userData.baseX as number) + Math.sin(time * 0.12 + (cloud.userData.phase as number)) * 0.34;
-      cloud.position.y += Math.sin(time * 0.18 + (cloud.userData.phase as number)) * 0.0005;
+      cloud.position.y = (cloud.userData.baseY as number) + Math.sin(time * 0.18 + (cloud.userData.phase as number)) * 0.055;
     });
     foamBands.forEach((band, index) => {
       band.position.x = Math.sin(time * 0.22 + index) * (0.5 + index * 0.15);
