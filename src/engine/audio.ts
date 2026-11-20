@@ -25,8 +25,9 @@ export async function generateOriginalSoundtrack({
   const master = context.createGain();
   const compressor = context.createDynamicsCompressor();
   master.gain.setValueAtTime(0.0001, 0);
-  master.gain.linearRampToValueAtTime(0.72, Math.min(0.8, durationSeconds * 0.12));
-  master.gain.setValueAtTime(0.72, Math.max(0.8, durationSeconds - 0.55));
+  const masterLevel = theme === "detective-case" ? 0.94 : 0.72;
+  master.gain.linearRampToValueAtTime(masterLevel, Math.min(0.8, durationSeconds * 0.12));
+  master.gain.setValueAtTime(masterLevel, Math.max(0.8, durationSeconds - 0.55));
   master.gain.linearRampToValueAtTime(0.0001, durationSeconds);
   compressor.threshold.value = -18;
   compressor.knee.value = 18;
