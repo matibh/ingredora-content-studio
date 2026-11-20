@@ -148,7 +148,7 @@ function createGameShowSet(world: THREE.Scene): GameShowSet {
   const hostHair=new THREE.Mesh(new THREE.BoxGeometry(.62,.20,.62),hostHairMat); hostHair.position.set(0,2.37,-.035); host.add(hostHair);
   const hostHairBack=new THREE.Mesh(new THREE.BoxGeometry(.64,.76,.18),hostHairMat); hostHairBack.position.set(0,1.91,-.25); host.add(hostHairBack);
   for(const side of [-1,1]){const lock=new THREE.Mesh(new THREE.BoxGeometry(.14,.72,.22),hostHairMat);lock.position.set(side*.27,1.98,.015);host.add(lock);}
-  const hostEyes=[-.13,.13].map(x=>{const eye=new THREE.Mesh(new THREE.BoxGeometry(.07,.07,.035),new THREE.MeshBasicMaterial({color:"#171923"}));eye.position.set(x,2.08,.294);host.add(eye);return eye;});
+  [-.13,.13].forEach(x=>{const eye=new THREE.Mesh(new THREE.BoxGeometry(.07,.07,.035),new THREE.MeshBasicMaterial({color:"#171923"}));eye.position.set(x,2.08,.294);host.add(eye);});
   const hostMouth=new THREE.Mesh(new THREE.BoxGeometry(.10,.045,.03),new THREE.MeshBasicMaterial({color:"#8c3945"}));hostMouth.position.set(0,1.91,.30);host.add(hostMouth);
   const hostArm=new THREE.Mesh(new THREE.BoxGeometry(.16,.66,.17),mat("#d5a07e"));hostArm.position.set(.43,1.25,.05);hostArm.rotation.z=-.3;host.add(hostArm);
   const mic=new THREE.Mesh(new THREE.CylinderGeometry(.035,.035,.55,12),mat("#292c36",.25,.8)); mic.position.set(.48,1.7,.1); mic.rotation.z=-.25; host.add(mic);
