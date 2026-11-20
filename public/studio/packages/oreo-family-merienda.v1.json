@@ -3,7 +3,7 @@
   "engineVersion": "1.0.0",
   "id": "ingredora-oreo-family-merienda-006",
   "title": "Oreo Original — paquete recto y salida superior",
-  "description": "Nueva toma: paquete vertical, sin inclinación lateral y apoyado sobre la mesa. La Oreo comienza en la parte alta del interior, emerge por la abertura superior, supera el borde y luego viaja hacia el plato. Textos en zona superior segura.",
+  "description": "Producción con animación de apertura y salida superior de la Oreo, movimiento con arco y rebote suave al aterrizar, música original, efectos sincronizados y voz femenina argentina con subtítulos.",
   "createdAt": "2026-11-19T22:30:00-03:00",
   "fps": 60,
   "width": 720,
@@ -33,5 +33,8 @@
       "subline": "JUGÁ EN INGREDORA.COM",
       "objects": []
     }
-  ]
+  ],
+  "voiceoverUrl": "studio/audio/oreo-family-v1-voice-es-AR.mp3",
+  "wordTimingsUrl": "studio/audio/oreo-family-v1-word-timings.json",
+  "voiceoverOffsetSeconds": 0
 }
