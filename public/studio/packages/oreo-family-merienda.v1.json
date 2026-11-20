@@ -3,7 +3,7 @@
   "engineVersion": "1.0.0",
   "id": "ingredora-oreo-family-merienda-010",
   "title": "Oreo Original — contador visual sin voz",
-  "description": "30 segundos, 60 FPS. La presentadora dice «Tenés seis segundos» y hace silencio durante el contador visual 6, 5, 4, 3, 2, 1. La cuenta no se narra. La voz retoma después con «Tiempo». Subtítulos de una sola palabra para el resto del diálogo.",
+  "description": "30 segundos, 60 FPS. La presentadora dice «Tenés seis segundos» y hace silencio durante el contador visual 6, 5, 4, 3, 2, 1. Al terminar el 1, retoma con «Tiempo». Los números no se narran. Subtítulos de una sola palabra para el resto del diálogo.",
   "createdAt": "2026-11-20T20:25:00-03:00",
   "fps": 60,
   "width": 720,
@@ -35,6 +35,6 @@
     }
   ],
   "voiceoverUrl": "studio/audio/oreo-family-v1-voice-es-AR.mp3?v=20261120d",
-  "wordTimingsUrl": "studio/audio/oreo-family-v1-word-timings.json?v=20261120e",
+  "wordTimingsUrl": "studio/audio/oreo-family-v1-word-timings.json?v=20261120f",
   "voiceoverOffsetSeconds": 0
 }
