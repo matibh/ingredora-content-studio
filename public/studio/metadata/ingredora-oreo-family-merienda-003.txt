@@ -1,0 +1,199 @@
+INGREDORA CONTENT STUDIO
+PRODUCCIÓN 003 — OREO ORIGINAL
+ID: ingredora-oreo-family-merienda-003
+VERSIÓN: 1.0
+ESTADO: EN RENDER / PENDIENTE DE REVISIÓN VISUAL Y APROBACIÓN MANUAL
+FECHA: 19/11/2026
+
+============================================================
+1. FICHA DE PRODUCCIÓN
+============================================================
+
+Producto: Oreo Original — galletitas rellenas sabor vainilla.
+Mercado de referencia: Argentina.
+Presentación de referencia: paquete de 118 g.
+EAN de referencia: SKU Jumbo 11121309058 (verificar contra el paquete físico antes de publicar).
+Escena: mesa de madera de una casa familiar, luz cálida de tarde, paquete azul de Oreo abierto, una galletita sale del paquete y queda sobre la mesa, vaso transparente de chocolatada al lado.
+Formato: vertical 9:16, 720 x 1280, 60 FPS.
+Duración: 27 segundos.
+Motor: Three.js + render local en navegador.
+Audio: música original sintetizada y efectos originales de paquete, deslizamiento, cuenta regresiva y revelación. Esta versión no incluye locución hablada.
+No es contenido patrocinado ni aprobado por Oreo / Mondelēz.
+
+============================================================
+2. CONCEPTO Y GUION
+============================================================
+
+0:00–0:03 — GANCHO DE INGREDORA
+Texto en pantalla:
+«¿CUÁNTO SABÉS DE LO QUE COMÉS?»
+«¡JUGÁ EN INGREDORA!»
+Marca/URL persistente: INGREDORA.COM
+
+0:03–0:06 — PRESENTACIÓN
+La cámara revela la mesa familiar, el paquete azul y el vaso de chocolatada.
+Texto: «HOY: OREO ORIGINAL».
+
+0:06–0:09 — MOMENTO DE PRODUCTO
+Se abre el paquete. Una galletita Oreo sale físicamente del envase y se desliza hasta quedar en primer plano, junto al vaso.
+Texto: «MIRÁ BIEN ESTA GALLETITA».
+
+0:09–0:11 — PREGUNTA / FREEZE
+La cámara sostiene el plano de la galletita.
+Texto: «¿QUÉ INGREDIENTES TIENE?»
+
+0:11–0:17 — DESAFÍO
+Cuenta regresiva visual exacta de seis segundos: 6, 5, 4, 3, 2, 1.
+
+0:17–0:22 — REVELACIÓN
+Seis grupos de ingredientes aparecen simultáneamente en tarjetas legibles:
+1. Azúcar.
+2. Harina de trigo enriquecida.
+3. Aceite vegetal y cacao en polvo.
+4. Jarabe de maíz de alta fructosa y almidón.
+5. Sal y leudantes químicos (bicarbonato de sodio y bicarbonato de amonio).
+6. Emulsionante: lecitina de soja; aromatizante: vainillina.
+
+Aclaración pequeña: «La harina está enriquecida con hierro, ácido fólico, vitaminas B1 y B2, y niacina».
+Alérgenos: contiene derivados de trigo y soja; puede contener leche. Esta advertencia no se cuenta como ingrediente.
+
+0:22–0:27 — CIERRE
+«¿CUÁNTOS ACERTASTE?»
+«INGREDORA.COM»
+«¡ENTRÁ Y JUGÁ!»
+
+============================================================
+3. DATOS DEL PRODUCTO — INGREDIENTES
+============================================================
+
+Lista publicada para Oreo Original 118 g comercializada en Argentina:
+Azúcar, harina de trigo enriquecida (hierro, ácido fólico, vitamina B1, vitamina B2, niacina), aceite vegetal, cacao en polvo, jarabe de maíz de alta fructosa, almidón, sal, leudantes químicos (bicarbonato de sodio, bicarbonato de amonio), emulsionante (lecitina de soja), aromatizante idéntico al natural (vainillina).
+
+Declaración de alérgenos publicada:
+Contiene derivados de trigo y de soja. Puede contener leche.
+
+Importante:
+- La composición y el orden deben contrastarse con el envase físico exacto que se use en cámara.
+- El paquete 118 g se usa como referencia visual y comercial; si el envase real difiere, actualizar la ficha y la gráfica.
+- No sumar leche como ingrediente: la ficha comercial indica «puede contener leche».
+- No presentar el vaso de chocolatada como parte del producto Oreo.
+- No convertir los seis grupos de tarjetas en una afirmación de que el producto tiene solamente seis ingredientes: son seis grupos visuales que resumen la lista.
+
+============================================================
+4. COPY MAESTRO
+============================================================
+
+¿CUÁNTO SABÉS DE LO QUE COMÉS? 🍪
+Hoy le toca a Oreo Original: una galletita, una chocolatada y seis segundos para pensar.
+¿Te acordás de sus ingredientes?
+¿Cuántos acertaste? Entrá a Ingredora.com y jugá.
+
+============================================================
+5. ADAPTACIONES POR RED
+============================================================
+
+YOUTUBE SHORTS
+Título:
+¿Cuántos ingredientes de Oreo podés adivinar? 🍪 | Ingredora
+
+Descripción:
+¿CUÁNTO SABÉS DE LO QUE COMÉS?
+Hoy el desafío es con Oreo Original. Mirá bien la galletita: tenés seis segundos para pensar qué ingredientes tiene.
+Después contanos cuántos acertaste.
+Jugá gratis en https://ingredora.com
+#Ingredora #Oreo #DesafioDeIngredientes #Shorts
+
+Tags:
+Ingredora, Oreo, Oreo Original, ingredientes Oreo, ingredientes de alimentos, desafío de ingredientes, juego de ingredientes, adivinar ingredientes, galletitas, galletitas Oreo, chocolatada, merienda, alimentos, curiosidades de alimentos, YouTube Shorts
+
+INSTAGRAM REELS
+Caption:
+🍪 ¿Cuánto sabés de lo que comés?
+Hoy ponemos a prueba tu memoria con Oreo Original. Tenés 6 segundos para pensar sus ingredientes.
+¿Con cuántos acertaste?
+Entrá a https://ingredora.com y jugá.
+#Ingredora #Oreo #DesafioDeIngredientes #Merienda #ReelsArgentina #Alimentos
+
+Texto ALT:
+Video vertical de una merienda familiar sobre una mesa de madera. Un paquete azul de galletitas Oreo está abierto; una galletita sale del paquete y queda junto a un vaso de chocolatada. Aparecen la pregunta del desafío, una cuenta regresiva de seis segundos y tarjetas con grupos de ingredientes. Cierre con Ingredora.com.
+
+TIKTOK
+Caption:
+Una Oreo, una chocolatada y 6 segundos. 🍪 ¿Cuántos ingredientes te acordás? Jugá en Ingredora.com
+Hashtags:
+#Ingredora #Oreo #Adivina #Ingredientes #FoodTok #Merienda
+
+Comentario fijado:
+¿La acertaste? 👀 Entrá a Ingredora.com y probá otro desafío.
+
+FACEBOOK REELS
+Texto:
+¿Quién conoce mejor los ingredientes de sus galletitas favoritas? 🍪
+Mirá el video, pensá rápido y contanos cuántos ingredientes de Oreo Original recordaste.
+Jugá gratis en https://ingredora.com
+#Ingredora #Oreo #DesafioDeIngredientes
+
+X
+Post:
+Una Oreo, una chocolatada y 6 segundos para pensar. 🍪
+¿Cuántos ingredientes de Oreo Original podés recordar?
+Probalo en https://ingredora.com
+#Ingredora #Oreo
+
+============================================================
+6. HASHTAGS Y PALABRAS CLAVE
+============================================================
+
+Hashtags principales:
+#Ingredora #Oreo #DesafioDeIngredientes #Adivina #Merienda
+
+Palabras clave:
+Ingredora, Oreo Original, ingredientes Oreo, desafío de ingredientes, juego diario, adivinar ingredientes, merienda argentina, chocolatada.
+
+============================================================
+7. MINIATURA / PORTADA
+============================================================
+
+Texto principal:
+«¿QUÉ TIENE UNA OREO?»
+Texto secundario:
+«TENÉS 6 SEGUNDOS»
+Composición: galletita Oreo en primer plano, paquete azul reconocible al fondo y vaso de chocolatada a un costado. URL Ingredora.com en zona segura.
+No agregar sellos nutricionales ni afirmaciones no verificadas.
+
+============================================================
+8. FUENTES Y TRAZABILIDAD
+============================================================
+
+Ficha comercial de Oreo Original 118 g — Jumbo Argentina:
+https://www.jumbo.com.ar/galletitas-oreo-original-x-118g/p
+
+Ficha comercial de Oreo rellenas sabor original 118 g — Jumbo Argentina:
+https://www.jumbo.com.ar/galletitas-oreo-rellenas-con-crema-sabor-original-118-gr-2/p
+
+Tienda oficial de Mondelēz Argentina — Oreo Original 118 g:
+https://www.mitiendamondelez.com.ar/galletitas-oreo-original-118g-2029251/p
+
+Marca Oreo:
+https://www.oreo.com/
+
+La información de ingredientes incluida en este documento se basa en la ficha comercial de Jumbo Argentina para Oreo Original 118 g. El envase físico del lote filmado prevalece ante cualquier diferencia de receta, presentación o etiquetado.
+
+============================================================
+9. CHECKLIST PRE-PUBLICACIÓN
+============================================================
+
+[ ] Render completado en el navegador.
+[ ] Revisión visual de paquete, marca, galletita y vaso.
+[ ] Confirmar que la galletita sale del paquete de manera natural.
+[ ] Confirmar que el vaso de chocolatada se mantiene visible.
+[ ] Revisar legibilidad de las seis tarjetas de ingredientes.
+[ ] Confirmar que el contador dura exactamente seis segundos.
+[ ] Revisar música y efectos; esta versión no tiene voz hablada.
+[ ] Contrastar ingredientes y alérgenos con el paquete físico.
+[ ] Verificar URL y textos de cierre.
+[ ] Revisar recortes y safe areas para Shorts, Reels, TikTok y X.
+[ ] Aprobación manual del MP4 antes de subir a «Contenido a subir».
+[ ] Confirmar TXT correspondiente en «Contenido a subir».
+
+No publicar automáticamente. El estado de esta producción es EN RENDER / PENDIENTE DE REVISIÓN Y APROBACIÓN MANUAL.
