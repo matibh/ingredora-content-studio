@@ -439,21 +439,31 @@ export async function generateOriginalSoundtrack({
       }
     }
 
-    // Six distinct clock ticks during the silent observation window, rising toward the reveal.
-    for (let second = 17; second < 23; second += 1) {
-      addTone(second === 20 ? 1_620 : 1_180, second, 0.09, "sine", second === 20 ? 0.09 : 0.055, 5_600, 0);
-      addTone(110, second, 0.12, "triangle", 0.055, 300, 0);
+    // Quiet paper shuffles while the detective searches, then a low, unresolved sting
+    // when the ingredient list cannot be found. No countdown or ticking-clock effect.
+    for (const at of [7.45, 8.05, 11.95, 12.35]) {
+      const source = context.createBufferSource();
+      const filter = context.createBiquadFilter();
+      const gain = context.createGain();
+      source.buffer = tickBuffer;
+      filter.type = "bandpass"; filter.frequency.value = at < 10 ? 1_850 : 1_250; filter.Q.value = 0.42;
+      gain.gain.setValueAtTime(0.0001, at);
+      gain.gain.linearRampToValueAtTime(at < 10 ? 0.042 : 0.060, at + 0.018);
+      gain.gain.exponentialRampToValueAtTime(0.0001, Math.min(durationSeconds, at + 0.24));
+      source.connect(filter); filter.connect(gain); gain.connect(master); source.start(at);
     }
+    addTone(73.42, 12.30, 0.72, "sine", 0.15, 240, 0);
+    addTone(69.30, 12.42, 0.62, "triangle", 0.055, 520, 0.12);
 
-    // Case-resolution sting, then a short warm-but-confident brand finish.
-    [392.00, 466.16, 587.33, 698.46, 880.00].forEach((hz, index) =>
-      addTone(hz, 23.08 + index * 0.085, 0.44, "triangle", 0.075, 4_600, (index - 2) * 0.16),
+    // The viewer invitation gets a subtle warm lift; the final resolve sting lands after the CTA.
+    [349.23, 440.00, 523.25].forEach((hz, index) =>
+      addTone(hz, 19.88 + index * 0.10, 0.55, "triangle", 0.052, 3_900, (index - 1) * 0.22),
     );
     [261.63, 329.63, 392.00].forEach((hz, index) =>
-      addTone(hz, 26.35 + index * 0.12, 0.68, "sine", 0.045, 3_200, (index - 1) * 0.28),
+      addTone(hz, 27.15 + index * 0.12, 0.70, "sine", 0.052, 3_400, (index - 1) * 0.28),
     );
-    addTone(1_760, 27.45, 0.26, "sine", 0.028, 5_800, 0.28);
-    addTone(2_090, 27.68, 0.32, "sine", 0.024, 6_200, -0.28);
+    addTone(1_760, 29.05, 0.22, "sine", 0.028, 5_800, 0.28);
+    addTone(2_090, 29.20, 0.24, "sine", 0.024, 6_200, -0.28);
   }
 
   return context.startRendering();
