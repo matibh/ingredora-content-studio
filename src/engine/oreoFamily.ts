@@ -159,7 +159,7 @@ export function drawOreoFamilyOverlay(ctx:CanvasRenderingContext2D,time:number,w
     const items=["AZÚCAR Y HARINA DE TRIGO ENRIQUECIDA","ACEITE VEGETAL Y CACAO EN POLVO","JARABE DE MAÍZ DE ALTA FRUCTOSA","ALMIDÓN Y SAL","LEUDANTES: BICARBONATOS","LECITINA DE SOJA Y VAINILLINA"];
     const idx=Math.min(5,Math.floor((time-17)*1.2));
     panel(height*.70,height*.205,ease((time-17)/.25));
-    ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle=lime;ctx.font="800 "+Math.round(width*.026)+"px Arial";ctx.fillText("INGREDIENTES · "+(idx+1)+"/6,width/2,height*.735);
+    ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle=lime;ctx.font="800 "+Math.round(width*.026)+"px Arial";ctx.fillText("INGREDIENTES · "+(idx+1)+"/6",width/2,height*.735);
     ctx.fillStyle=white;ctx.font="900 "+Math.round(width*.043)+"px Arial";ctx.fillText(items[idx],width/2,height*.80,width*.80);
     ctx.fillStyle="rgba(255,255,255,.55)";round(width*.13,height*.875,width*.74,height*.006,height*.003);ctx.fill();ctx.fillStyle=lime;round(width*.13,height*.875,width*.74*((time-17)/5),height*.006,height*.003);ctx.fill();
     ctx.restore();return;
