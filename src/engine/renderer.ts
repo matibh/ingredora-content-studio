@@ -139,11 +139,18 @@ function createGameShowSet(world: THREE.Scene): GameShowSet {
   };
   createContestant(-2.25,"#263d69","#d9a17e","#28202a",0);
   createContestant(2.25,"#5d3548","#8d583f","#211c1b",1);
-  // Host centered between contestants, slightly behind the front edge.
-  const host=new THREE.Group(); host.position.set(0,-1.72,-3.1); world.add(host);
-  const hostBody=new THREE.Mesh(new THREE.BoxGeometry(.76,1.30,.44),mat("#e9e9e6",.45,.08)); hostBody.position.y=1.25; host.add(hostBody);
+  // Female presenter placed stage-left, away from the large foreground Cindor pack.
+  const host=new THREE.Group(); host.position.set(-4.25,-1.72,-2.45); world.add(host);
+  const hostBody=new THREE.Mesh(new THREE.BoxGeometry(.72,1.22,.42),mat("#8a3f79",.42,.12)); hostBody.position.y=1.25; host.add(hostBody);
+  const hostSkirt=new THREE.Mesh(new THREE.BoxGeometry(.82,.48,.48),mat("#24283d",.48,.08)); hostSkirt.position.set(0,.48,0); host.add(hostSkirt);
   const hostHead=new THREE.Mesh(new THREE.BoxGeometry(.56,.62,.56),mat("#d5a07e")); hostHead.position.set(0,2.05,0); host.add(hostHead);
-  const hostHair=new THREE.Mesh(new THREE.BoxGeometry(.60,.18,.60),mat("#28232a")); hostHair.position.set(0,2.38,-.015); host.add(hostHair);
+  const hostHairMat=mat("#30202a",.78,.02);
+  const hostHair=new THREE.Mesh(new THREE.BoxGeometry(.62,.20,.62),hostHairMat); hostHair.position.set(0,2.37,-.035); host.add(hostHair);
+  const hostHairBack=new THREE.Mesh(new THREE.BoxGeometry(.64,.76,.18),hostHairMat); hostHairBack.position.set(0,1.91,-.25); host.add(hostHairBack);
+  for(const side of [-1,1]){const lock=new THREE.Mesh(new THREE.BoxGeometry(.14,.72,.22),hostHairMat);lock.position.set(side*.27,1.98,.015);host.add(lock);}
+  const hostEyes=[-.13,.13].map(x=>{const eye=new THREE.Mesh(new THREE.BoxGeometry(.07,.07,.035),new THREE.MeshBasicMaterial({color:"#171923"}));eye.position.set(x,2.08,.294);host.add(eye);return eye;});
+  const hostMouth=new THREE.Mesh(new THREE.BoxGeometry(.10,.045,.03),new THREE.MeshBasicMaterial({color:"#8c3945"}));hostMouth.position.set(0,1.91,.30);host.add(hostMouth);
+  const hostArm=new THREE.Mesh(new THREE.BoxGeometry(.16,.66,.17),mat("#d5a07e"));hostArm.position.set(.43,1.25,.05);hostArm.rotation.z=-.3;host.add(hostArm);
   const mic=new THREE.Mesh(new THREE.CylinderGeometry(.035,.035,.55,12),mat("#292c36",.25,.8)); mic.position.set(.48,1.7,.1); mic.rotation.z=-.25; host.add(mic);
   const hostPodium=new THREE.Mesh(new THREE.BoxGeometry(1.15,1.15,.7),mat("#b18a3e",.24,.55)); hostPodium.position.set(0,.58,-.22); host.add(hostPodium);
   // Audience risers behind the main stage: rows of spectators with varied clothes/skin/hair.
@@ -202,10 +209,15 @@ function createGameShowSet(world: THREE.Scene): GameShowSet {
     update(time:number){
       spotlights.forEach((_,i)=>{ const target=spotTargets[i]; target.position.x=Math.sin(time*.55+i*1.2)*5.5; target.position.z=-2.4+Math.cos(time*.42+i)*1.8; });
       beams.forEach((beam,i)=>{ beam.rotation.z=Math.sin(time*.65+i)*.24; beam.rotation.x=Math.cos(time*.48+i)*.18; beam.material instanceof THREE.MeshBasicMaterial && (beam.material.opacity=.045+.025*(.5+.5*Math.sin(time*2+i))); });
-      people.forEach((person,i)=>{ person.rotation.y=(i===0?.78:-.78)+Math.sin(time*1.2+i)*.035; });
-      const puzzled=Math.max(0,Math.min(1,(time-8)/.45))*Math.max(0,Math.min(1,(14-time)/.45));
-      faceHeads.forEach((head,i)=>{head.rotation.y=Math.sin(time*2.4+i*2.1)*(.04+.16*puzzled);head.rotation.z=Math.sin(time*3+i)*.035*puzzled;head.position.y=2.12+Math.sin(time*3.2+i)*.025*puzzled;});
-      contestantArms.forEach((arms,i)=>arms.forEach((arm,j)=>{arm.rotation.z=(j===0?-.25:.25)*(i===0?1:-1)+Math.sin(time*4+i+j)*.32*puzzled;}));
+      // Keep the blocky hair/head silhouette rigid in close-ups; confusion is shown
+      // with restrained arm gestures only, never by independently wobbling the hairline.
+      people.forEach((person,i)=>{ person.rotation.y=i===0?.78:-.78; });
+      const puzzled=Math.max(0,Math.min(1,(time-8)/.55))*Math.max(0,Math.min(1,(14-time)/.55));
+      faceHeads.forEach((head)=>{head.rotation.set(0,0,0);head.position.y=2.12;});
+      contestantArms.forEach((arms,i)=>arms.forEach((arm,j)=>{
+        const rest=(j===0?-.25:.25)*(i===0?1:-1);
+        arm.rotation.z=rest+Math.sin(time*2.2+i+j*.7)*.09*puzzled;
+      }));
       carton.position.y=.05+Math.sin(time*1.7)*.035;
       carton.rotation.y=-.10+Math.sin(time*.55)*.035;
     }
@@ -1074,7 +1086,7 @@ export async function renderPackageToWebM(
       else if(time<9.5){const t=ease((time-8)/.3);x=blend(0,-2.1,t);y=blend(2.4,2.35,t);z=blend(12.8,7.5,t);tx=-2.2;ty=.95;tz=-.1;fov=blend(40,32,t);}
       else if(time<11){const t=ease((time-9.5)/.3);x=blend(-2.1,2.1,t);y=2.35;z=7.5;tx=2.2;ty=.95;tz=-.1;fov=32;}
       else if(time<14){const t=ease((time-11)/.5);x=blend(2.1,0,t);y=blend(2.35,2.7,t);z=blend(7.5,12.5,t);tx=0;ty=1.1;tz=-.4;fov=blend(32,42,t);}
-      else if(time<19){const t=ease((time-14)/.7);x=0;y=blend(2.7,2.35,t);z=blend(12.5,8.2,t);tx=0;ty=.85;tz=-2.8;fov=blend(42,34,t);}
+      else if(time<19){const t=ease((time-14)/.7);x=blend(-4.25,-4.25,t);y=blend(2.7,2.35,t);z=blend(12.5,7.8,t);tx=-4.25;ty=.95;tz=-2.45;fov=blend(42,34,t);}
       else {const t=ease((time-19)/1.2);x=0;y=blend(2.35,3.8,t);z=blend(8.2,20.5,t);tx=0;ty=1.4;tz=-3.3;fov=blend(34,52,t);}
       x+=Math.sin(time*.38)*.055;
       camera.position.set(x,y,z);camera.lookAt(tx,ty,tz);camera.fov=fov;camera.updateProjectionMatrix();
