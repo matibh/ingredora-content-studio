@@ -12,18 +12,18 @@ AudioSegment.converter = imageio_ffmpeg.get_ffmpeg_exe()
 VOICE = "es-AR-TomasNeural"
 OUTPUT = Path("public/studio/audio/operation-label-voice-es-AR.mp3")
 TIMINGS_OUTPUT = Path("public/studio/audio/operation-label-word-timings.json")
-DURATION_MS = 28_000
+DURATION_MS = 30_000
 
 # Performance: Argentine male detective, close-miked, low and conspiratorial at
 # the start, then emphatic and playful on the reveal and the Ingredora invitation.
 # Six seconds of absolute narration silence are reserved for the visual countdown.
 SEGMENTS = [
     {"start": 0.25, "text": "¡Alto! Tenemos un nuevo caso.", "rate": "+4%", "pitch": "-5Hz", "volume": "+16%"},
-    {"start": 3.15, "text": "El sospechoso: un producto del súper.", "rate": "+6%", "pitch": "-7Hz", "volume": "+15%"},
-    {"start": 6.35, "text": "La pista está en su etiqueta.", "rate": "+7%", "pitch": "-3Hz", "volume": "+16%"},
-    {"start": 9.25, "text": "Leé los ingredientes. Tenés seis segundos para memorizarlos.", "rate": "+8%", "pitch": "-2Hz", "volume": "+17%"},
-    {"start": 21.25, "text": "¡Tiempo! ¿Cuántos recordás?", "rate": "+10%", "pitch": "+2Hz", "volume": "+19%"},
-    {"start": 23.55, "text": "Resolvé más desafíos en Ingredora punto com.", "rate": "+8%", "pitch": "+1Hz", "volume": "+18%"},
+    {"start": 4.15, "text": "El sospechoso: un producto del súper.", "rate": "+6%", "pitch": "-7Hz", "volume": "+15%"},
+    {"start": 8.15, "text": "La pista está en su etiqueta.", "rate": "+7%", "pitch": "-3Hz", "volume": "+16%"},
+    {"start": 11.05, "text": "Leé los ingredientes. Tenés seis segundos para memorizarlos.", "rate": "+8%", "pitch": "-2Hz", "volume": "+17%"},
+    {"start": 23.25, "text": "¡Tiempo! ¿Cuántos recordás?", "rate": "+10%", "pitch": "+2Hz", "volume": "+19%"},
+    {"start": 25.60, "text": "Resolvé más casos en Ingredora punto com.", "rate": "+8%", "pitch": "+1Hz", "volume": "+18%"},
 ]
 
 async def synthesize(segment, index):
