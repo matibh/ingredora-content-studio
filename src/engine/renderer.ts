@@ -775,15 +775,16 @@ export async function renderPackageToWebM(
       const time = frame / fps;
       oreoSet.update(time);
       const ease = (value: number) => { const x = Math.max(0, Math.min(1, value)); return x * x * (3 - 2 * x); };
-      let cameraZ = 8.8;
-      let cameraY = 1.10;
-      let targetY = -0.28;
-      let fieldOfView = 36;
-      if (time >= 3 && time < 6.1) { cameraZ = 8.25; cameraY = 1.00; targetY = -0.34; }
-      else if (time >= 6.1 && time < 11) { const push = ease((time - 6.1) / .75); cameraZ = 8.25 - push * .72; cameraY = 1.0 - push * .12; targetY = -.34 - push * .10; fieldOfView = 36 - push * 1.5; }
-      else if (time >= 11 && time < 17) { cameraZ = 7.55; cameraY = .88; targetY = -.44; fieldOfView = 34.5; }
-      else if (time >= 17 && time < 22) { const pull = ease((time - 17) / .6); cameraZ = 7.55 + pull * .75; cameraY = .88 + pull * .12; targetY = -.44 + pull * .12; fieldOfView = 34.5 + pull * 1.5; }
-      else if (time >= 22) { const pull = ease((time - 22) / .7); cameraZ = 8.3 + pull * .5; cameraY = 1.0 + pull * .10; targetY = -.32; fieldOfView = 36 + pull * 1.5; }
+      // Wider, higher three-quarter tabletop angle: packet opening, flight path and plate stay visible together.
+      let cameraZ = 9.8;
+      let cameraY = 2.55;
+      let targetY = -0.58;
+      let fieldOfView = 41;
+      if (time >= 3 && time < 6.1) { cameraZ = 9.65; cameraY = 2.65; targetY = -0.62; fieldOfView = 41; }
+      else if (time >= 6.1 && time < 11) { const push = ease((time - 6.1) / .75); cameraZ = 9.65 - push * .25; cameraY = 2.65 + push * .05; targetY = -.62; fieldOfView = 41; }
+      else if (time >= 11 && time < 17) { cameraZ = 9.4; cameraY = 2.70; targetY = -.62; fieldOfView = 40; }
+      else if (time >= 17 && time < 22) { const pull = ease((time - 17) / .6); cameraZ = 9.4 + pull * .25; cameraY = 2.70 + pull * .05; targetY = -.62; fieldOfView = 40 + pull; }
+      else if (time >= 22) { const pull = ease((time - 22) / .7); cameraZ = 9.65 + pull * .35; cameraY = 2.75; targetY = -.58; fieldOfView = 41 + pull; }
       camera.position.set(.02, cameraY, cameraZ);
       camera.lookAt(.02, targetY, .05);
       camera.fov = fieldOfView;
