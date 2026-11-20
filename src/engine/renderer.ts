@@ -704,6 +704,113 @@ function drawOreoWordCaptions(ctx: CanvasRenderingContext2D, time: number, width
   ctx.restore();
 }
 
+type GameShowCaptionGroup = { words: VoiceWordTiming[]; start: number; end: number };
+
+function buildGameShowCaptionGroups(words: VoiceWordTiming[]): GameShowCaptionGroup[] {
+  const phrases = new Map<number, VoiceWordTiming[]>();
+  for (const word of words) {
+    const segment = word.segment ?? 0;
+    const phrase = phrases.get(segment) ?? [];
+    phrase.push(word);
+    phrases.set(segment, phrase);
+  }
+
+  const groups: GameShowCaptionGroup[] = [];
+  for (const phrase of phrases.values()) {
+    phrase.sort((a, b) => a.start - b.start);
+    if (!phrase.length) continue;
+
+    // Distribute each spoken phrase into balanced groups of 3–4 words
+    // (a 5-word phrase becomes 3 + 2, never a one-word flash).
+    const groupCount = Math.ceil(phrase.length / 4);
+    const baseSize = Math.floor(phrase.length / groupCount);
+    const extraWords = phrase.length % groupCount;
+    let cursor = 0;
+    for (let index = 0; index < groupCount; index += 1) {
+      const size = baseSize + (index < extraWords ? 1 : 0);
+      const chunk = phrase.slice(cursor, cursor + size);
+      cursor += size;
+      const nextGroupStart = cursor < phrase.length ? phrase[cursor].start : Number.POSITIVE_INFINITY;
+      groups.push({
+        words: chunk,
+        start: chunk[0].start,
+        end: Math.min(chunk[chunk.length - 1].end + 0.20, nextGroupStart),
+      });
+    }
+  }
+  return groups.sort((a, b) => a.start - b.start);
+}
+
+function drawGameShowWordCaptions(
+  ctx: CanvasRenderingContext2D,
+  time: number,
+  width: number,
+  height: number,
+  groups: GameShowCaptionGroup[],
+) {
+  const group = groups.find((item) => time >= item.start && time < item.end);
+  if (!group) return;
+
+  // Reveal only words whose real TTS word-boundary timestamp has started.
+  const visibleWords = group.words.filter((word) => word.start <= time);
+  if (!visibleWords.length) return;
+  const activeIndex = visibleWords.findIndex((word) => time >= word.start && time < word.end);
+  const scale = width / 720;
+  let fontSize = Math.min(34 * scale, width * 0.047);
+  const gap = 13 * scale;
+  const maxTextWidth = width * 0.90;
+  let widths: number[] = [];
+  let textWidth = 0;
+
+  const measure = () => {
+    ctx.font = "900 " + Math.round(fontSize) + "px Arial, Helvetica, sans-serif";
+    widths = visibleWords.map((word) => ctx.measureText(word.text).width);
+    textWidth = widths.reduce((sum, value) => sum + value, 0) + gap * Math.max(0, widths.length - 1);
+  };
+  measure();
+  while (textWidth > maxTextWidth && fontSize > 22 * scale) {
+    fontSize -= 1.5 * scale;
+    measure();
+  }
+
+  const padX = 22 * scale;
+  const panelW = Math.min(width * 0.94, textWidth + padX * 2);
+  const panelH = fontSize * 1.72;
+  const panelX = (width - panelW) / 2;
+  const panelY = height * 0.855;
+
+  ctx.save();
+  ctx.globalAlpha = 0.97;
+  ctx.shadowColor = "rgba(0,0,0,.48)";
+  ctx.shadowBlur = 18 * scale;
+  roundedRect(ctx, panelX, panelY, panelW, panelH, 10 * scale);
+  ctx.fillStyle = "rgba(4, 8, 20, .86)";
+  ctx.fill();
+  ctx.shadowBlur = 0;
+  ctx.strokeStyle = "rgba(255,255,255,.32)";
+  ctx.lineWidth = 1.4 * scale;
+  ctx.stroke();
+
+  let x = width / 2 - textWidth / 2;
+  const baseline = panelY + panelH / 2;
+  visibleWords.forEach((word, index) => {
+    ctx.font = "900 " + Math.round(fontSize) + "px Arial, Helvetica, sans-serif";
+    ctx.textAlign = "left";
+    ctx.textBaseline = "middle";
+    ctx.lineJoin = "round";
+    ctx.lineWidth = 3.2 * scale;
+    ctx.strokeStyle = "rgba(0,0,0,.98)";
+    ctx.strokeText(word.text, x, baseline);
+    ctx.fillStyle = index === activeIndex ? "#ffd45a" : "#ffffff";
+    ctx.shadowColor = index === activeIndex ? "rgba(255,194,55,.38)" : "transparent";
+    ctx.shadowBlur = index === activeIndex ? 7 * scale : 0;
+    ctx.fillText(word.text, x, baseline);
+    ctx.shadowBlur = 0;
+    x += widths[index] + gap;
+  });
+  ctx.restore();
+}
+
 function normalizeCaptionWord(value: string) { return value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]/g, ""); }
 function drawNutellaOverlay(ctx: CanvasRenderingContext2D, frame: number, fps: number, width: number, height: number, voiceWords: VoiceWordTiming[]) {
   const t = frame / fps;
@@ -1103,6 +1210,24 @@ export async function renderPackageToWebM(
   let nutellaVoiceWords: VoiceWordTiming[] = [];
   let poolsideVoiceWords: VoiceWordTiming[] = [];
   let oreoVoiceWords: VoiceWordTiming[] = [];
+  let gameShowCaptionGroups: GameShowCaptionGroup[] = [];
+  if (gameShowSet && pkg.wordTimingsUrl) {
+    const timingResponse = await fetch(import.meta.env.BASE_URL + pkg.wordTimingsUrl, { cache: "no-store" });
+    if (!timingResponse.ok) throw new Error("No se pudieron cargar los tiempos reales de la voz de la presentadora (" + timingResponse.status + ").");
+    const timingData = await timingResponse.json() as { words?: VoiceWordTiming[] };
+    if (!Array.isArray(timingData.words) || timingData.words.length < 20) {
+      throw new Error("El archivo de sincronización de la presentadora está vacío o incompleto.");
+    }
+    if (timingData.words.some((word) =>
+      typeof word.text !== "string" || !word.text.trim()
+      || !Number.isFinite(word.start) || !Number.isFinite(word.end)
+      || word.start < 0 || word.end <= word.start
+    )) {
+      throw new Error("El archivo de subtítulos de la presentadora contiene palabras o tiempos inválidos.");
+    }
+    gameShowCaptionGroups = buildGameShowCaptionGroups(timingData.words);
+    if (!gameShowCaptionGroups.length) throw new Error("No se pudieron construir los grupos de subtítulos de la presentadora.");
+  }
   if (poolsideSet && pkg.wordTimingsUrl) {
     const timingResponse = await fetch(import.meta.env.BASE_URL + pkg.wordTimingsUrl);
     if (!timingResponse.ok) throw new Error("No se pudieron cargar los tiempos palabra por palabra de la voz de Coca-Cola.");
@@ -1167,6 +1292,7 @@ export async function renderPackageToWebM(
       renderer.render(world,camera);
       ctx.drawImage(renderer.domElement,0,0,pkg.width,pkg.height);
       drawOverlay(ctx,sceneAtFrame(pkg,frame),pkg.width,pkg.height);
+      drawGameShowWordCaptions(ctx, time, pkg.width, pkg.height, gameShowCaptionGroups);
       return;
     }
     if (oreoSet) {
