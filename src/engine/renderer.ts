@@ -981,7 +981,7 @@ export async function renderPackageToWebM(
   output.setMetadataTags({ title: pkg.title, artist: "Ingredora Content Studio", date: new Date(pkg.createdAt) });
 
   const world = new THREE.Scene();
-  if (pkg.visualPreset !== "nutella-supermarket" && pkg.visualPreset !== "coca-cola-poolside" && pkg.visualPreset !== "oreo-family-table") {
+  if (!pkg.id.startsWith("ingredora-cindor-game-show-") && pkg.visualPreset !== "nutella-supermarket" && pkg.visualPreset !== "coca-cola-poolside" && pkg.visualPreset !== "oreo-family-table") {
     world.add(new THREE.HemisphereLight(0xffffff, 0x273b2c, 2.0));
     const key = new THREE.DirectionalLight(0xffffff, 3.0);
     key.position.set(-3, 5, 6);
@@ -996,6 +996,7 @@ export async function renderPackageToWebM(
   const nutellaSet = pkg.visualPreset === "nutella-supermarket" ? createNutellaSet(world) : null;
   const poolsideSet = pkg.visualPreset === "coca-cola-poolside" ? createCocaColaPoolsideSet(world) : null;
   const oreoSet = pkg.visualPreset === "oreo-family-table" ? createOreoFamilySet(world) : null;
+  const gameShowSet = pkg.id.startsWith("ingredora-cindor-game-show-") ? createGameShowSet(world) : null;
   let nutellaVoiceWords: VoiceWordTiming[] = [];
   let poolsideVoiceWords: VoiceWordTiming[] = [];
   let oreoVoiceWords: VoiceWordTiming[] = [];
@@ -1035,6 +1036,25 @@ export async function renderPackageToWebM(
   let lastSceneId = "";
 
   const drawFrame = (frame: number) => {
+    if (gameShowSet) {
+      const time=frame/fps;
+      gameShowSet.update(time);
+      const smooth=(a:number,b:number)=>{const v=Math.max(0,Math.min(1,(time-a)/(b-a)));return v*v*(3-2*v);};
+      const mix=(a:number,b:number,t:number)=>a+(b-a)*t;
+      let x=0,y=3.2,z=19.5,tx=0,ty=1.2,tz=-3.3,fov=48;
+      if(time<4){const t=smooth(0,4);z=mix(21,18.5,t);y=mix(3.8,3,t);ty=1.25;fov=50;}
+      else if(time<8){const t=smooth(4,5);x=mix(0,-.25,t);z=mix(18.5,15.5,t);y=mix(3,2.7,t);tx=-.25;ty=1.55;fov=45;}
+      else if(time<13){const t=smooth(8,9);x=mix(-.25,.15,t);z=mix(15.5,17.2,t);tx=.15;ty=1.45;fov=47;}
+      else if(time<16){const t=smooth(13,14);x=mix(.15,0,t);z=mix(17.2,16.2,t);y=2.8;ty=1.45;fov=45;}
+      else if(time<21){const t=smooth(16,17.5);z=mix(16.2,19,t);y=mix(2.8,3.5,t);ty=1.3;fov=49;}
+      else{const t=smooth(21,24);z=mix(19,21,t);y=mix(3.5,4,t);ty=1.1;fov=51;}
+      x+=Math.sin(time*.42)*.10;
+      camera.position.set(x,y,z);camera.lookAt(tx,ty,tz);camera.fov=fov;camera.updateProjectionMatrix();
+      renderer.render(world,camera);
+      ctx.drawImage(renderer.domElement,0,0,pkg.width,pkg.height);
+      drawOverlay(ctx,sceneAtFrame(pkg,frame),pkg.width,pkg.height);
+      return;
+    }
     if (oreoSet) {
       const time = frame / fps;
       oreoSet.update(time);
