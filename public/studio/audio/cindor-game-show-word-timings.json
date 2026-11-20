@@ -1,0 +1,234 @@
+{
+  "voice": "es-AR-ElenaNeural",
+  "style": "energetic Argentine TV game-show host",
+  "durationSeconds": 23.0,
+  "segments": [
+    {
+      "text": "¡Bienvenidos a... el Desafío Ingredora!",
+      "start": 0.2,
+      "end": 3.536,
+      "wordCount": 5,
+      "rate": "+2%",
+      "pitch": "+8Hz",
+      "volume": "+18%"
+    },
+    {
+      "text": "¡Atención! ¿Qué tiene Cindor?",
+      "start": 4.15,
+      "end": 7.582,
+      "wordCount": 4,
+      "rate": "+5%",
+      "pitch": "+7Hz",
+      "volume": "+18%"
+    },
+    {
+      "text": "¡Tienen seis segundos para responder! ¡Vamos!",
+      "start": 8.1,
+      "end": 12.18,
+      "wordCount": 6,
+      "rate": "+8%",
+      "pitch": "+10Hz",
+      "volume": "+20%"
+    },
+    {
+      "text": "¡Se terminó el tiempo! ¡No saben nada!",
+      "start": 14.1,
+      "end": 18.18,
+      "wordCount": 7,
+      "rate": "+3%",
+      "pitch": "+9Hz",
+      "volume": "+20%"
+    },
+    {
+      "text": "¡Ingresá en Ingredora punto com y jugá ya!",
+      "start": 19.05,
+      "end": 22.314,
+      "wordCount": 8,
+      "rate": "+8%",
+      "pitch": "+10Hz",
+      "volume": "+20%"
+    }
+  ],
+  "words": [
+    {
+      "text": "Bienvenidos",
+      "start": 0.299,
+      "end": 1.022,
+      "segment": 0
+    },
+    {
+      "text": "a",
+      "start": 1.022,
+      "end": 1.2304,
+      "segment": 0
+    },
+    {
+      "text": "el",
+      "start": 1.451,
+      "end": 1.5613,
+      "segment": 0
+    },
+    {
+      "text": "Desafío",
+      "start": 1.6103,
+      "end": 2.0392,
+      "segment": 0
+    },
+    {
+      "text": "Ingredora",
+      "start": 2.0515,
+      "end": 2.5907,
+      "segment": 0
+    },
+    {
+      "text": "Atención",
+      "start": 4.2488,
+      "end": 4.9274,
+      "segment": 1
+    },
+    {
+      "text": "Qué",
+      "start": 5.8048,
+      "end": 5.9,
+      "segment": 1
+    },
+    {
+      "text": "tiene",
+      "start": 5.9833,
+      "end": 6.1857,
+      "segment": 1
+    },
+    {
+      "text": "Cindor",
+      "start": 6.2214,
+      "end": 6.65,
+      "segment": 1
+    },
+    {
+      "text": "Tienen",
+      "start": 8.1963,
+      "end": 8.5088,
+      "segment": 2
+    },
+    {
+      "text": "seis",
+      "start": 8.532,
+      "end": 8.7518,
+      "segment": 2
+    },
+    {
+      "text": "segundos",
+      "start": 8.7518,
+      "end": 9.2032,
+      "segment": 2
+    },
+    {
+      "text": "para",
+      "start": 9.2611,
+      "end": 9.4116,
+      "segment": 2
+    },
+    {
+      "text": "responder",
+      "start": 9.4347,
+      "end": 9.9208,
+      "segment": 2
+    },
+    {
+      "text": "Vamos",
+      "start": 10.8208,
+      "end": 11.3185,
+      "segment": 2
+    },
+    {
+      "text": "Se",
+      "start": 14.1989,
+      "end": 14.3445,
+      "segment": 3
+    },
+    {
+      "text": "terminó",
+      "start": 14.4174,
+      "end": 14.8057,
+      "segment": 3
+    },
+    {
+      "text": "el",
+      "start": 14.8057,
+      "end": 14.9392,
+      "segment": 3
+    },
+    {
+      "text": "tiempo",
+      "start": 14.9756,
+      "end": 15.3882,
+      "segment": 3
+    },
+    {
+      "text": "No",
+      "start": 16.2973,
+      "end": 16.4672,
+      "segment": 3
+    },
+    {
+      "text": "saben",
+      "start": 16.4915,
+      "end": 16.8313,
+      "segment": 3
+    },
+    {
+      "text": "nada",
+      "start": 16.8313,
+      "end": 17.2439,
+      "segment": 3
+    },
+    {
+      "text": "Ingresá",
+      "start": 19.1463,
+      "end": 19.6092,
+      "segment": 4
+    },
+    {
+      "text": "en",
+      "start": 19.6555,
+      "end": 19.7018,
+      "segment": 4
+    },
+    {
+      "text": "Ingredora",
+      "start": 19.725,
+      "end": 20.1764,
+      "segment": 4
+    },
+    {
+      "text": "punto",
+      "start": 20.2574,
+      "end": 20.5236,
+      "segment": 4
+    },
+    {
+      "text": "com",
+      "start": 20.593,
+      "end": 20.7435,
+      "segment": 4
+    },
+    {
+      "text": "y",
+      "start": 20.7782,
+      "end": 20.813,
+      "segment": 4
+    },
+    {
+      "text": "jugá",
+      "start": 20.8477,
+      "end": 21.137,
+      "segment": 4
+    },
+    {
+      "text": "ya",
+      "start": 21.1602,
+      "end": 21.3685,
+      "segment": 4
+    }
+  ]
+}
