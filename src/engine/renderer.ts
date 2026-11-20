@@ -176,7 +176,7 @@ function createGameShowSet(world: THREE.Scene): GameShowSet {
   const rimLight=new THREE.DirectionalLight(0xff5478,1.9); rimLight.position.set(0,5,-8); world.add(rimLight);
   return {
     update(time:number){
-      spotlights.forEach((spot,i)=>{ const target=spotTargets[i]; target.position.x=Math.sin(time*.55+i*1.2)*5.5; target.position.z=-2.4+Math.cos(time*.42+i)*1.8; });
+      spotlights.forEach((_,i)=>{ const target=spotTargets[i]; target.position.x=Math.sin(time*.55+i*1.2)*5.5; target.position.z=-2.4+Math.cos(time*.42+i)*1.8; });
       beams.forEach((beam,i)=>{ beam.rotation.z=Math.sin(time*.65+i)*.24; beam.rotation.x=Math.cos(time*.48+i)*.18; beam.material instanceof THREE.MeshBasicMaterial && (beam.material.opacity=.045+.025*(.5+.5*Math.sin(time*2+i))); });
       people.forEach((person,i)=>{ person.rotation.y=Math.sin(time*1.2+i)*.035; });
       carton.position.y=-.05+Math.sin(time*1.7)*.045;
