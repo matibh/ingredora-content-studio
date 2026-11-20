@@ -12,6 +12,7 @@ import {
 import { generateOriginalSoundtrack } from "./audio";
 import type { ProductionPackage, ProductionScene, SceneObject } from "./types";
 import { createCocaColaPoolsideSet, drawCocaColaPoolsideOverlay } from "./cocaColaPoolside";
+import { createOreoFamilySet, drawOreoFamilyOverlay } from "./oreoFamily";
 
 export type RenderProgress = { frame: number; totalFrames: number; percent: number };
 
@@ -729,7 +730,7 @@ export async function renderPackageToWebM(
   output.setMetadataTags({ title: pkg.title, artist: "Ingredora Content Studio", date: new Date(pkg.createdAt) });
 
   const world = new THREE.Scene();
-  if (pkg.visualPreset !== "nutella-supermarket" && pkg.visualPreset !== "coca-cola-poolside") {
+  if (pkg.visualPreset !== "nutella-supermarket" && pkg.visualPreset !== "coca-cola-poolside" && pkg.visualPreset !== "oreo-family-table") {
     world.add(new THREE.HemisphereLight(0xffffff, 0x273b2c, 2.0));
     const key = new THREE.DirectionalLight(0xffffff, 3.0);
     key.position.set(-3, 5, 6);
@@ -743,6 +744,7 @@ export async function renderPackageToWebM(
   const camera = new THREE.PerspectiveCamera(34, pkg.width / pkg.height, 0.1, 100);
   const nutellaSet = pkg.visualPreset === "nutella-supermarket" ? createNutellaSet(world) : null;
   const poolsideSet = pkg.visualPreset === "coca-cola-poolside" ? createCocaColaPoolsideSet(world) : null;
+  const oreoSet = pkg.visualPreset === "oreo-family-table" ? createOreoFamilySet(world) : null;
   let nutellaVoiceWords: VoiceWordTiming[] = [];
   let poolsideVoiceWords: VoiceWordTiming[] = [];
   if (poolsideSet && pkg.wordTimingsUrl) {
@@ -769,6 +771,28 @@ export async function renderPackageToWebM(
   let lastSceneId = "";
 
   const drawFrame = (frame: number) => {
+    if (oreoSet) {
+      const time = frame / fps;
+      oreoSet.update(time);
+      const ease = (value: number) => { const x = Math.max(0, Math.min(1, value)); return x * x * (3 - 2 * x); };
+      let cameraZ = 8.8;
+      let cameraY = 1.10;
+      let targetY = -0.28;
+      let fieldOfView = 36;
+      if (time >= 3 && time < 6.1) { cameraZ = 8.25; cameraY = 1.00; targetY = -0.34; }
+      else if (time >= 6.1 && time < 11) { const push = ease((time - 6.1) / .75); cameraZ = 8.25 - push * .72; cameraY = 1.0 - push * .12; targetY = -.34 - push * .10; fieldOfView = 36 - push * 1.5; }
+      else if (time >= 11 && time < 17) { cameraZ = 7.55; cameraY = .88; targetY = -.44; fieldOfView = 34.5; }
+      else if (time >= 17 && time < 22) { const pull = ease((time - 17) / .6); cameraZ = 7.55 + pull * .75; cameraY = .88 + pull * .12; targetY = -.44 + pull * .12; fieldOfView = 34.5 + pull * 1.5; }
+      else if (time >= 22) { const pull = ease((time - 22) / .7); cameraZ = 8.3 + pull * .5; cameraY = 1.0 + pull * .10; targetY = -.32; fieldOfView = 36 + pull * 1.5; }
+      camera.position.set(.02, cameraY, cameraZ);
+      camera.lookAt(.02, targetY, .05);
+      camera.fov = fieldOfView;
+      camera.updateProjectionMatrix();
+      renderer.render(world, camera);
+      ctx.drawImage(renderer.domElement, 0, 0, pkg.width, pkg.height);
+      drawOreoFamilyOverlay(ctx, time, pkg.width, pkg.height);
+      return;
+    }
     if (poolsideSet) {
       const time = frame / fps;
       poolsideSet.update(time);
