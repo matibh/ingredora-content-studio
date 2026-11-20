@@ -118,9 +118,8 @@ export function createOreoFamilySet(world: THREE.Scene): OreoFamilySet {
 
 export function drawOreoFamilyOverlay(ctx:CanvasRenderingContext2D,time:number,width:number,height:number){
   const ease=(v:number)=>{const x=Math.max(0,Math.min(1,v));return 1-Math.pow(1-x,3);};
-  const smooth=(v:number)=>{const x=Math.max(0,Math.min(1,v));return x*x*(3-2*x);};
   const round=(x:number,y:number,w:number,h:number,r:number)=>{ctx.beginPath();ctx.roundRect(x,y,w,h,r);};
-  const white="#fffdf8",blue="#1678d0",lime="#d8f36a";
+  const white="#fffdf8",lime="#d8f36a";
   // Brand remains visible in a compact top-safe signature.
   const brandY=height*.038,brandW=width*.64,brandH=height*.055,brandX=(width-brandW)/2;
   ctx.save();ctx.globalAlpha=ease(time/.3);
