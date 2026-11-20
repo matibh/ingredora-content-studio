@@ -643,7 +643,7 @@ export async function renderPackageToWebM(
 
   // Original music is synthesized offline. Narration, when configured, is fetched as a
   // pre-generated asset so provider credentials never enter the public browser bundle.
-  const soundtrack = await generateOriginalSoundtrack({ durationSeconds, sampleRate: 48_000, theme: pkg.visualPreset === "coca-cola-poolside" ? "summer-poolside" : undefined });
+  const soundtrack = await generateOriginalSoundtrack({ durationSeconds, sampleRate: 48_000, theme: pkg.visualPreset === "coca-cola-poolside" ? "summer-poolside" : pkg.visualPreset === "oreo-family-table" ? "family-merienda" : undefined });
   let mixedSoundtrack = soundtrack;
   if (pkg.voiceoverUrl) {
     const voiceResponse = await fetch(import.meta.env.BASE_URL + pkg.voiceoverUrl);
