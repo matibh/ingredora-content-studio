@@ -176,6 +176,7 @@ export function drawOreoFamilyOverlay(ctx:CanvasRenderingContext2D,time:number,w
     ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle=white;
     ctx.font="800 "+Math.round(width*.029)+"px Arial,Helvetica,sans-serif";
     ctx.fillText(voiceCaption.toUpperCase(),width/2,captionY+captionH*.5,captionW*.91);
+    ctx.restore();
   }
 
   if(time<3.05){
