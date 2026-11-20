@@ -154,7 +154,7 @@ export function createOreoFamilySet(world: THREE.Scene): OreoFamilySet {
   return {cookie,flap,update};
 }
 
-export function drawOreoFamilyOverlay(ctx:CanvasRenderingContext2D,time:number,width:number,height:number){
+export function drawOreoFamilyOverlay(ctx:CanvasRenderingContext2D,time:number,width:number,height:number,voiceCaption=""){
   const ease=(v:number)=>{const x=Math.max(0,Math.min(1,v));return 1-Math.pow(1-x,3);};
   const white="#fffdf8",lime="#d8f36a",scale=width/720;
   const rounded=(x:number,y:number,w:number,h:number,r:number)=>{ctx.beginPath();ctx.roundRect(x,y,w,h,r);};
@@ -170,6 +170,13 @@ export function drawOreoFamilyOverlay(ctx:CanvasRenderingContext2D,time:number,w
   };
   const brandW=width*.56,brandH=height*.052,brandX=(width-brandW)/2,brandY=height*.035;
   ctx.save();ctx.globalAlpha=ease(time/.28);rounded(brandX,brandY,brandW,brandH,brandH*.5);ctx.fillStyle="rgba(5,23,38,.93)";ctx.fill();ctx.strokeStyle="rgba(216,243,106,.75)";ctx.lineWidth=2*scale;ctx.stroke();ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle=white;ctx.font="900 "+Math.round(width*.039)+"px Arial";ctx.fillText("INGREDORA.COM",width/2,brandY+brandH/2,brandW*.88);ctx.restore();
+  if(voiceCaption){
+    const captionW=width*.86,captionH=height*.052,captionX=(width-captionW)/2,captionY=height*.91;
+    panel(captionX,captionY,captionW,captionH,.96);
+    ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle=white;
+    ctx.font="800 "+Math.round(width*.029)+"px Arial,Helvetica,sans-serif";
+    ctx.fillText(voiceCaption.toUpperCase(),width/2,captionY+captionH*.5,captionW*.91);
+  }
 
   if(time<3.05){
     const x=width*.07,y=height*.135,w=width*.86,h=height*.19;panel(x,y,w,h,ease(time/.28));
