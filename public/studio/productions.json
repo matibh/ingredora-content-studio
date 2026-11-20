@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-20T20:00:00-03:00",
+  "updatedAt": "2026-11-20T20:35:00-03:00",
   "productions": [
     {
       "id": "ingredora-operation-label-detective-013",
-      "title": "Operación Etiqueta — El caso de los seis ingredientes",
-      "description": "Un detective noir descubre que la etiqueta es la pista. Seis ingredientes, seis segundos para memorizarlos y un cierre para jugar en Ingredora.",
+      "title": "Operación Etiqueta — El caso Guaymallén",
+      "description": "Un detective encuentra un alfajor Guaymallén, busca la lista de ingredientes y no la encuentra. Le pide a la audiencia que complete los ingredientes en Ingredora.com para cerrar el caso.",
       "status": "rendering",
       "packageUrl": "studio/packages/operation-label-detective.v1.json",
       "durationSeconds": 30,
@@ -17,9 +17,9 @@
         "YouTube Shorts",
         "Facebook Reels"
       ],
-      "version": "1.0",
-      "createdAt": "2026-11-20T20:00:00-03:00",
-      "caption": "¡NUEVO CASO! 🕵️ La etiqueta es la pista y tenés seis segundos para memorizar sus ingredientes. ¿Cuántos recordás? Resolvé más desafíos en Ingredora.com. #Ingredora #OperacionEtiqueta #DesafioDeIngredientes #Memoria"
+      "version": "2.0",
+      "createdAt": "2026-11-20T20:35:00-03:00",
+      "caption": "🕵️ CASO ABIERTO: un alfajor Guaymallén y una lista de ingredientes que desapareció. ¿Vos sabés cuáles tiene? Entrá a Ingredora.com, completá los ingredientes y ayudá al detective a cerrar el caso. #Ingredora #Guaymallen #OperacionEtiqueta #DesafioDeIngredientes"
     },
     {
       "id": "ingredora-cindor-game-show-001",
