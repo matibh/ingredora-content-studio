@@ -106,10 +106,10 @@ export function createOreoFamilySet(world: THREE.Scene): OreoFamilySet {
     flap.rotation.x=-open*1.05;
     flap.rotation.z=-open*.08;
     const emerge=ease((time-4.0)/2.35);
-    cookie.position.set(-.88+emerge*.98,-1.08+emerge*.015,.48+emerge*.58);
+    cookie.position.set(-.88+emerge*.98,-.62-emerge*.80,.48+emerge*.58);
     cookie.rotation.set(.08+emerge*.10,.2+emerge*.18, -.12+emerge*.12);
     const settle=ease((time-6.35)/.45);
-    cookie.position.y+=settle*.012;
+    cookie.position.y+=settle*.008;
     const pulse=time>9&&time<17?1+Math.sin(time*3)*.012:1;
     cookie.scale.setScalar(.83*pulse);
   };
@@ -156,12 +156,16 @@ export function drawOreoFamilyOverlay(ctx:CanvasRenderingContext2D,time:number,w
     ctx.restore();return;
   }
   if(time<22){
-    const items=["AZÚCAR Y HARINA DE TRIGO ENRIQUECIDA","ACEITE VEGETAL Y CACAO EN POLVO","JARABE DE MAÍZ DE ALTA FRUCTOSA","ALMIDÓN Y SAL","LEUDANTES: BICARBONATOS","LECITINA DE SOJA Y VAINILLINA"];
-    const idx=Math.min(5,Math.floor((time-17)*1.2));
-    panel(height*.70,height*.205,ease((time-17)/.25));
-    ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle=lime;ctx.font="800 "+Math.round(width*.026)+"px Arial";ctx.fillText("INGREDIENTES · "+(idx+1)+"/6",width/2,height*.735);
-    ctx.fillStyle=white;ctx.font="900 "+Math.round(width*.043)+"px Arial";ctx.fillText(items[idx],width/2,height*.80,width*.80);
-    ctx.fillStyle="rgba(255,255,255,.55)";round(width*.13,height*.875,width*.74,height*.006,height*.003);ctx.fill();ctx.fillStyle=lime;round(width*.13,height*.875,width*.74*((time-17)/5),height*.006,height*.003);ctx.fill();
+    const items=["AZÚCAR","HARINA DE TRIGO ENRIQUECIDA","ACEITE VEGETAL + CACAO","JARABE DE MAÍZ + ALMIDÓN","SAL + BICARBONATOS","LECITINA DE SOJA + VAINILLINA"];
+    panel(height*.675,height*.265,ease((time-17)/.25));
+    ctx.textAlign="left";ctx.textBaseline="middle";
+    items.forEach((item,i)=>{
+      const col=i%2,row=Math.floor(i/2),x=width*(col===0?.105:.535),y=height*(.718+row*.068);
+      ctx.fillStyle=lime;ctx.beginPath();ctx.arc(x,y,width*.009,0,Math.PI*2);ctx.fill();
+      ctx.fillStyle=white;ctx.font="800 "+Math.round(width*.027)+"px Arial";ctx.fillText(item,x+width*.025,y,width*.39);
+    });
+    ctx.textAlign="center";ctx.fillStyle="rgba(255,255,255,.68)";ctx.font="600 "+Math.round(width*.019)+"px Arial";
+    ctx.fillText("Harina enriquecida · bicarbonato de sodio y de amonio",width/2,height*.905,width*.82);
     ctx.restore();return;
   }
   // Final conversion panel, with clear action and URL.
