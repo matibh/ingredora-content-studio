@@ -13,6 +13,7 @@ import { generateOriginalSoundtrack } from "./audio";
 import type { ProductionPackage, ProductionScene, SceneObject } from "./types";
 import { createCocaColaPoolsideSet, drawCocaColaPoolsideOverlay } from "./cocaColaPoolside";
 import { createOreoFamilySet, drawOreoFamilyOverlay } from "./oreoFamily";
+import { createOperationLabelSet, drawOperationLabelOverlay, type OperationWord } from "./operationLabel";
 
 export type RenderProgress = { frame: number; totalFrames: number; percent: number };
 
@@ -1182,7 +1183,7 @@ export async function renderPackageToWebM(
   output.setMetadataTags({ title: pkg.title, artist: "Ingredora Content Studio", date: new Date(pkg.createdAt) });
 
   const world = new THREE.Scene();
-  if (!pkg.id.startsWith("ingredora-cindor-game-show-") && pkg.visualPreset !== "nutella-supermarket" && pkg.visualPreset !== "coca-cola-poolside" && pkg.visualPreset !== "oreo-family-table") {
+  if (!pkg.id.startsWith("ingredora-cindor-game-show-") && pkg.visualPreset !== "nutella-supermarket" && pkg.visualPreset !== "coca-cola-poolside" && pkg.visualPreset !== "oreo-family-table" && pkg.visualPreset !== "operation-label-detective") {
     world.add(new THREE.HemisphereLight(0xffffff, 0x273b2c, 2.0));
     const key = new THREE.DirectionalLight(0xffffff, 3.0);
     key.position.set(-3, 5, 6);
@@ -1198,10 +1199,30 @@ export async function renderPackageToWebM(
   const poolsideSet = pkg.visualPreset === "coca-cola-poolside" ? createCocaColaPoolsideSet(world) : null;
   const oreoSet = pkg.visualPreset === "oreo-family-table" ? createOreoFamilySet(world) : null;
   const gameShowSet = pkg.id.startsWith("ingredora-cindor-game-show-") ? createGameShowSet(world) : null;
+  const operationLabelSet = pkg.visualPreset === "operation-label-detective" ? createOperationLabelSet(world) : null;
   let nutellaVoiceWords: VoiceWordTiming[] = [];
   let poolsideVoiceWords: VoiceWordTiming[] = [];
   let oreoVoiceWords: VoiceWordTiming[] = [];
   let gameShowCaptionGroups: GameShowCaptionGroup[] = [];
+  let operationVoiceWords: OperationWord[] = [];
+  let operationVoiceSegments: Array<{ text?: string; start?: number; end?: number }> = [];
+  if (operationLabelSet && pkg.wordTimingsUrl) {
+    const timingResponse = await fetch(import.meta.env.BASE_URL + pkg.wordTimingsUrl, { cache: "no-store" });
+    if (!timingResponse.ok) throw new Error("No se pudo cargar la sincronización de voz de Operación Etiqueta (" + timingResponse.status + ").");
+    const timingData = await timingResponse.json() as { words?: OperationWord[]; segments?: Array<{ text?: string; start?: number; end?: number }> };
+    if (!Array.isArray(timingData.words) || timingData.words.length < 25 || !Array.isArray(timingData.segments)) {
+      throw new Error("El archivo de sincronización de Operación Etiqueta está vacío o incompleto.");
+    }
+    if (timingData.words.some((word) =>
+      typeof word.text !== "string" || !word.text.trim()
+      || !Number.isFinite(word.start) || !Number.isFinite(word.end)
+      || word.start < 0 || word.end <= word.start
+    )) {
+      throw new Error("El archivo de subtítulos de Operación Etiqueta contiene palabras o tiempos inválidos.");
+    }
+    operationVoiceWords = timingData.words;
+    operationVoiceSegments = timingData.segments;
+  }
   if (gameShowSet && pkg.wordTimingsUrl) {
     const timingResponse = await fetch(import.meta.env.BASE_URL + pkg.wordTimingsUrl, { cache: "no-store" });
     if (!timingResponse.ok) throw new Error("No se pudieron cargar los tiempos reales de la voz de la presentadora (" + timingResponse.status + ").");
@@ -1255,6 +1276,48 @@ export async function renderPackageToWebM(
   let lastSceneId = "";
 
   const drawFrame = (frame: number) => {
+    if (operationLabelSet) {
+      const time = frame / fps;
+      operationLabelSet.update(time);
+      const ease = (value: number) => { const x = Math.max(0, Math.min(1, value)); return x * x * (3 - 2 * x); };
+      const mix = (a: number, b: number, t: number) => a + (b - a) * t;
+      let cameraX = 0, cameraY = 2.25, cameraZ = 12.6;
+      let targetX = 0, targetY = 0.05, targetZ = -0.7, fieldOfView = 44;
+      if (time < 3.2) {
+        const p = ease(time / 3.2);
+        cameraX = mix(0.5, 0, p); cameraY = mix(2.5, 2.0, p); cameraZ = mix(13.2, 11.8, p);
+        targetY = mix(0.2, 0.0, p); fieldOfView = mix(46, 42, p);
+      } else if (time < 6.8) {
+        const p = ease((time - 3.2) / 0.85);
+        cameraX = mix(0, -1.15, p); cameraY = mix(2.0, 0.95, p); cameraZ = mix(11.8, 7.1, p);
+        targetX = -1.18; targetY = 0.68; targetZ = 0.25; fieldOfView = mix(42, 34, p);
+      } else if (time < 14.8) {
+        const p = ease((time - 6.8) / 0.9);
+        cameraX = mix(-1.15, 1.22, p); cameraY = mix(0.95, 0.5, p); cameraZ = mix(7.1, 6.35, p);
+        targetX = 1.22; targetY = -0.28; targetZ = 0.35; fieldOfView = mix(34, 32, p);
+      } else if (time < 21.0) {
+        cameraX = 1.22; cameraY = 0.50; cameraZ = 6.35;
+        targetX = 1.22; targetY = -0.28; targetZ = 0.35; fieldOfView = 32;
+      } else if (time < 23.2) {
+        const p = ease((time - 21.0) / 0.55);
+        cameraX = mix(1.22, -1.18, p); cameraY = mix(0.5, 0.7, p); cameraZ = mix(6.35, 6.65, p);
+        targetX = -1.18; targetY = 0.92; targetZ = 0.36; fieldOfView = mix(32, 34, p);
+      } else {
+        const p = ease((time - 23.2) / 1.1);
+        cameraX = mix(-1.18, 0.1, p); cameraY = mix(0.7, 2.3, p); cameraZ = mix(6.65, 12.4, p);
+        targetX = mix(-1.18, 0, p); targetY = mix(0.92, 0.0, p); targetZ = mix(0.36, -0.8, p);
+        fieldOfView = mix(34, 44, p);
+      }
+      cameraX += Math.sin(time * 0.52) * 0.022;
+      camera.position.set(cameraX, cameraY, cameraZ);
+      camera.lookAt(targetX, targetY, targetZ);
+      camera.fov = fieldOfView;
+      camera.updateProjectionMatrix();
+      renderer.render(world, camera);
+      ctx.drawImage(renderer.domElement, 0, 0, pkg.width, pkg.height);
+      drawOperationLabelOverlay(ctx, time, pkg.width, pkg.height, operationVoiceWords, operationVoiceSegments);
+      return;
+    }
     if (gameShowSet) {
       const time=frame/fps;
       gameShowSet.update(time);
