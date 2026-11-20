@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-20T00:25:00-03:00",
+  "updatedAt": "2026-11-19T21:55:00-03:00",
   "productions": [
     {
-      "id": "ingredora-oreo-family-merienda-003",
-      "title": "Oreo Original — La merienda familiar",
-      "description": "27 segundos a 60 FPS. Gancho inicial de Ingredora.com, mesa de una casa familiar, paquete Oreo azul abierto, una galletita sale del envase junto a un vaso de chocolatada. Desafío de seis segundos y revelación de ingredientes agrupados en seis tarjetas.",
+      "id": "ingredora-oreo-family-merienda-004",
+      "title": "Oreo Original — La merienda familiar (render corregido)",
+      "description": "27 segundos a 60 FPS. Nueva renderización desde cero con todos los textos arriba, sin tapar la galletita ni el plato.",
       "status": "rendering",
       "packageUrl": "studio/packages/oreo-family-merienda.v1.json",
       "durationSeconds": 27,
@@ -18,8 +18,8 @@
         "Facebook Reels",
         "X"
       ],
-      "version": "2.0",
-      "createdAt": "2026-11-19T21:00:00-03:00",
+      "version": "3.0",
+      "createdAt": "2026-11-19T21:55:00-03:00",
       "caption": "¿Cuánto sabés de lo que comés? 🍪 Hoy el desafío es con Oreo Original. Tenés seis segundos para pensar sus ingredientes. ¿Cuántos acertaste? Entrá a Ingredora.com y jugá. #Ingredora #Oreo #DesafioDeIngredientes"
     },
     {
