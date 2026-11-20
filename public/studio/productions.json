@@ -5,10 +5,10 @@
     {
       "id": "ingredora-oreo-family-merienda-006",
       "title": "Oreo Original — paquete recto y salida superior",
-      "description": "27 segundos a 60 FPS. Paquete vertical apoyado sobre la mesa; la Oreo emerge por la abertura superior, vuela hacia el plato y aterriza con rebote suave. Música original, efectos sincronizados, voz femenina argentina y subtítulos.",
+      "description": "30 segundos a 60 FPS. Animación de apertura, salida superior de la Oreo, vuelo con rebote al aterrizar, música original, efectos sincronizados, voz femenina argentina y subtítulos.",
       "status": "rendering",
       "packageUrl": "studio/packages/oreo-family-merienda.v1.json",
-      "durationSeconds": 27,
+      "durationSeconds": 30,
       "aspectRatio": "9:16",
       "language": "Español argentino",
       "platforms": [
@@ -18,7 +18,7 @@
         "Facebook Reels",
         "X"
       ],
-      "version": "6.0",
+      "version": "7.0",
       "createdAt": "2026-11-19T22:30:00-03:00",
       "caption": "¿Cuánto sabés de lo que comés? 🍪 Hoy el desafío es con Oreo Original. Tenés seis segundos para pensar sus ingredientes. ¿Cuántos acertaste? Entrá a Ingredora.com y jugá. #Ingredora #Oreo #DesafioDeIngredientes"
     },
