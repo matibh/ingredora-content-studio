@@ -38,7 +38,7 @@ export type ProductionPackage = {
   width: number;
   height: number;
   scenes: ProductionScene[];
-  visualPreset?: "nutella-supermarket" | "coca-cola-poolside";
+  visualPreset?: "nutella-supermarket" | "coca-cola-poolside" | "oreo-family-table";
   /** Public, pre-generated narration asset; never store provider credentials in the client. */
   voiceoverUrl?: string;
   /** Public JSON containing Edge TTS word-level boundaries for burned-in captions. */
