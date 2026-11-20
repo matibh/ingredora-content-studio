@@ -1,17 +1,17 @@
 {
   "schemaVersion": 1,
   "engineVersion": "1.0.0",
-  "id": "ingredora-oreo-family-merienda-007",
-  "title": "Oreo Original — voz clara y cámara cinematográfica",
-  "description": "Corte de 30 segundos a 60 FPS. Voz femenina argentina al frente y música más baja, efectos y subtítulos sincronizados. Cámara cinematográfica con plano general, acercamiento al paquete, seguimiento de la galletita hasta el plato, plano detalle y cierre abierto.",
-  "createdAt": "2026-11-20T19:10:00-03:00",
+  "id": "ingredora-oreo-family-merienda-008",
+  "title": "Oreo Original — subtítulos cinematográficos palabra por palabra",
+  "description": "Video vertical de 30 segundos a 60 FPS. Voz femenina argentina clara, cámara cinematográfica y subtítulos dinámicos quemados en imagen: revelado palabra por palabra con sincronización de voz, palabra activa destacada, frases cortas y panel de alto contraste en zona segura.",
+  "createdAt": "2026-11-20T19:35:00-03:00",
   "fps": 60,
   "width": 720,
   "height": 1280,
   "visualPreset": "oreo-family-table",
   "scenes": [
     {
-      "id": "family-table-oreo-cinematic-voice-007",
+      "id": "family-table-oreo-word-captions-008",
       "startFrame": 0,
       "durationFrames": 1800,
       "background": "#e8d8c0",
@@ -34,7 +34,7 @@
       "objects": []
     }
   ],
-  "voiceoverUrl": "studio/audio/oreo-family-v1-voice-es-AR.mp3?v=20261120b",
-  "wordTimingsUrl": "studio/audio/oreo-family-v1-word-timings.json?v=20261120b",
+  "voiceoverUrl": "studio/audio/oreo-family-v1-voice-es-AR.mp3?v=20261120c",
+  "wordTimingsUrl": "studio/audio/oreo-family-v1-word-timings.json?v=20261120c",
   "voiceoverOffsetSeconds": 0
 }
