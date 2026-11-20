@@ -1137,7 +1137,17 @@ export async function renderPackageToWebM(
       else if(time<11){const t=ease((time-9.5)/.3);x=blend(-2.1,2.1,t);y=2.35;z=7.5;tx=2.2;ty=.95;tz=-.1;fov=32;}
       else if(time<14){const t=ease((time-11)/.5);x=blend(2.1,0,t);y=blend(2.35,2.7,t);z=blend(7.5,12.5,t);tx=0;ty=1.1;tz=-.4;fov=blend(32,42,t);}
       else if(time<19){const t=ease((time-14)/.7);x=blend(-4.25,-4.25,t);y=blend(2.7,2.35,t);z=blend(12.5,7.8,t);tx=-4.25;ty=.95;tz=-2.45;fov=blend(42,34,t);}
-      else {const t=ease((time-19)/1.2);x=0;y=blend(2.35,3.8,t);z=blend(8.2,20.5,t);tx=0;ty=1.4;tz=-3.3;fov=blend(34,52,t);}
+      else {
+        // Extended CTA: a continuous cinematic pullback with a gentle lateral arc,
+        // keeping the presenter, Cindor carton and full game-show set alive on screen.
+        const t=ease((time-19)/4);
+        const arc=Math.sin(t*Math.PI);
+        x=blend(-1.55,0.25,t)+arc*0.72;
+        y=blend(2.55,3.75,t)+Math.sin(t*Math.PI*0.8)*0.16;
+        z=blend(8.6,19.8,t);
+        tx=blend(-0.85,0,t);ty=blend(1.0,1.35,t);tz=blend(-0.15,-3.3,t);
+        fov=blend(35,51,t);
+      }
       x+=Math.sin(time*.38)*.055;
       camera.position.set(x,y,z);camera.lookAt(tx,ty,tz);camera.fov=fov;camera.updateProjectionMatrix();
       renderer.render(world,camera);
