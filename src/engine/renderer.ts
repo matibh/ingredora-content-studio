@@ -379,24 +379,59 @@ function drawPoolsideVoiceCaption(
 }
 
 function drawOreoWordCaptions(ctx: CanvasRenderingContext2D, time: number, width: number, height: number, words: VoiceWordTiming[]) {
-  // Strict one-word mode: previous words vanish at their exact end timestamp.
-  const active = words.find((word) => time >= word.start && time < word.end);
+  // Readable phrase chunks: 3–4 words per caption, never spanning a natural pause.
+  const groups: Array<{ text: string; start: number; end: number }> = [];
+  let current: VoiceWordTiming[] = [];
+  const flush = () => {
+    if (!current.length) return;
+    groups.push({
+      text: current.map((word) => word.text).join(" "),
+      start: current[0].start,
+      end: current[current.length - 1].end,
+    });
+    current = [];
+  };
+  for (const word of words) {
+    const previous = current[current.length - 1];
+    if (previous && (word.start - previous.end > 0.58 || current.length >= 4)) flush();
+    current.push(word);
+  }
+  flush();
+  // Avoid a one-word tail: rebalance it into a three-word final group.
+  if (groups.length >= 2) {
+    const lastWords = groups[groups.length - 1].text.split(" ");
+    const priorWords = groups[groups.length - 2].text.split(" ");
+    if (lastWords.length === 1 && priorWords.length === 4) {
+      const all = [...priorWords, ...lastWords];
+      const moved = all.splice(3, 1)[0];
+      groups[groups.length - 2] = {
+        text: all.slice(0, 3).join(" "),
+        start: groups[groups.length - 2].start,
+        end: words.find((word) => word.text === all[2] && word.end <= groups[groups.length - 1].start)?.end ?? groups[groups.length - 2].end,
+      };
+      groups[groups.length - 1] = {
+        text: [moved, ...lastWords].join(" "),
+        start: words.find((word) => word.text === moved && word.start >= groups[groups.length - 2].start)?.start ?? groups[groups.length - 1].start,
+        end: groups[groups.length - 1].end,
+      };
+    }
+  }
+  const active = groups.find((group) => time >= group.start && time < group.end);
   if (!active) return;
 
   const scale = width / 720;
-  const fontSize = Math.min(width * 0.105, height * 0.075);
+  const fontSize = Math.min(width * 0.082, height * 0.062);
   ctx.save();
   ctx.font = "900 " + Math.round(fontSize) + "px Arial, Helvetica, sans-serif";
-  const measuredWidth = ctx.measureText(active.text).width;
-  const padX = 34 * scale, padY = 21 * scale;
-  const panelW = Math.min(width * 0.90, measuredWidth + padX * 2);
+  const padX = 30 * scale, padY = 19 * scale;
+  const panelW = Math.min(width * 0.92, ctx.measureText(active.text).width + padX * 2);
   const panelH = fontSize + padY * 2;
   const panelX = (width - panelW) / 2, panelY = height * 0.805;
   const duration = Math.max(0.001, active.end - active.start);
   const progress = Math.max(0, Math.min(1, (time - active.start) / duration));
-  const fadeWindow = Math.min(0.055, duration * 0.16);
+  const fadeWindow = Math.min(0.12, duration * 0.12);
   const alpha = Math.min(1, progress / fadeWindow, (1 - progress) / fadeWindow);
-  const pop = 0.96 + 0.04 * Math.min(1, progress / 0.075);
+  const pop = 0.97 + 0.03 * Math.min(1, progress / 0.12);
 
   ctx.globalAlpha = Math.max(0, alpha);
   ctx.translate(width / 2, panelY + panelH / 2);
