@@ -1,0 +1,273 @@
+{
+  "voice": "es-AR-TomasNeural",
+  "style": "Argentine male noir detective, suspenseful and playful",
+  "durationSeconds": 30.0,
+  "segments": [
+    {
+      "text": "¡Alto! Tenemos un nuevo caso.",
+      "start": 0.25,
+      "end": 3.73,
+      "wordCount": 5,
+      "rate": "+4%",
+      "pitch": "-5Hz",
+      "volume": "+16%"
+    },
+    {
+      "text": "El sospechoso: un producto del súper.",
+      "start": 4.15,
+      "end": 7.15,
+      "wordCount": 6,
+      "rate": "+6%",
+      "pitch": "-7Hz",
+      "volume": "+15%"
+    },
+    {
+      "text": "La pista está en su etiqueta.",
+      "start": 8.15,
+      "end": 10.526,
+      "wordCount": 6,
+      "rate": "+7%",
+      "pitch": "-3Hz",
+      "volume": "+16%"
+    },
+    {
+      "text": "Leé los ingredientes. Tenés seis segundos para memorizarlos.",
+      "start": 11.05,
+      "end": 15.97,
+      "wordCount": 8,
+      "rate": "+8%",
+      "pitch": "-2Hz",
+      "volume": "+17%"
+    },
+    {
+      "text": "¡Tiempo! ¿Cuántos recordás?",
+      "start": 23.25,
+      "end": 26.394,
+      "wordCount": 3,
+      "rate": "+10%",
+      "pitch": "+2Hz",
+      "volume": "+19%"
+    },
+    {
+      "text": "¡Resolvé más casos en Ingredora punto com!",
+      "start": 26.65,
+      "end": 29.794,
+      "wordCount": 7,
+      "rate": "+8%",
+      "pitch": "+1Hz",
+      "volume": "+18%"
+    }
+  ],
+  "words": [
+    {
+      "text": "Alto",
+      "start": 0.349,
+      "end": 0.6976,
+      "segment": 0
+    },
+    {
+      "text": "Tenemos",
+      "start": 1.6322,
+      "end": 2.0288,
+      "segment": 0
+    },
+    {
+      "text": "un",
+      "start": 2.0529,
+      "end": 2.113,
+      "segment": 0
+    },
+    {
+      "text": "nuevo",
+      "start": 2.125,
+      "end": 2.4015,
+      "segment": 0
+    },
+    {
+      "text": "caso",
+      "start": 2.4615,
+      "end": 2.786,
+      "segment": 0
+    },
+    {
+      "text": "El",
+      "start": 4.2472,
+      "end": 4.4005,
+      "segment": 1
+    },
+    {
+      "text": "sospechoso",
+      "start": 4.4123,
+      "end": 5.0726,
+      "segment": 1
+    },
+    {
+      "text": "un",
+      "start": 5.226,
+      "end": 5.3557,
+      "segment": 1
+    },
+    {
+      "text": "producto",
+      "start": 5.391,
+      "end": 5.7684,
+      "segment": 1
+    },
+    {
+      "text": "del",
+      "start": 5.8038,
+      "end": 5.9099,
+      "segment": 1
+    },
+    {
+      "text": "súper",
+      "start": 5.9217,
+      "end": 6.2519,
+      "segment": 1
+    },
+    {
+      "text": "La",
+      "start": 8.2467,
+      "end": 8.422,
+      "segment": 2
+    },
+    {
+      "text": "pista",
+      "start": 8.492,
+      "end": 8.7841,
+      "segment": 2
+    },
+    {
+      "text": "está",
+      "start": 8.7958,
+      "end": 9.0061,
+      "segment": 2
+    },
+    {
+      "text": "en",
+      "start": 9.0177,
+      "end": 9.0995,
+      "segment": 2
+    },
+    {
+      "text": "su",
+      "start": 9.0995,
+      "end": 9.2047,
+      "segment": 2
+    },
+    {
+      "text": "etiqueta",
+      "start": 9.2164,
+      "end": 9.6486,
+      "segment": 2
+    },
+    {
+      "text": "Leé",
+      "start": 11.1482,
+      "end": 11.4028,
+      "segment": 3
+    },
+    {
+      "text": "los",
+      "start": 11.4375,
+      "end": 11.588,
+      "segment": 3
+    },
+    {
+      "text": "ingredientes",
+      "start": 11.6111,
+      "end": 12.3866,
+      "segment": 3
+    },
+    {
+      "text": "Tenés",
+      "start": 13.2259,
+      "end": 13.4921,
+      "segment": 3
+    },
+    {
+      "text": "seis",
+      "start": 13.4921,
+      "end": 13.7236,
+      "segment": 3
+    },
+    {
+      "text": "segundos",
+      "start": 13.7236,
+      "end": 14.1403,
+      "segment": 3
+    },
+    {
+      "text": "para",
+      "start": 14.2097,
+      "end": 14.337,
+      "segment": 3
+    },
+    {
+      "text": "memorizarlos",
+      "start": 14.3718,
+      "end": 15.1125,
+      "segment": 3
+    },
+    {
+      "text": "Tiempo",
+      "start": 23.3455,
+      "end": 23.7545,
+      "segment": 4
+    },
+    {
+      "text": "Cuántos",
+      "start": 24.6023,
+      "end": 24.9091,
+      "segment": 4
+    },
+    {
+      "text": "recordás",
+      "start": 24.9318,
+      "end": 25.5227,
+      "segment": 4
+    },
+    {
+      "text": "Resolvé",
+      "start": 26.7463,
+      "end": 27.2324,
+      "segment": 5
+    },
+    {
+      "text": "más",
+      "start": 27.2671,
+      "end": 27.4292,
+      "segment": 5
+    },
+    {
+      "text": "casos",
+      "start": 27.4639,
+      "end": 27.7995,
+      "segment": 5
+    },
+    {
+      "text": "en",
+      "start": 27.8342,
+      "end": 27.9153,
+      "segment": 5
+    },
+    {
+      "text": "Ingredora",
+      "start": 27.9384,
+      "end": 28.3667,
+      "segment": 5
+    },
+    {
+      "text": "punto",
+      "start": 28.4477,
+      "end": 28.6676,
+      "segment": 5
+    },
+    {
+      "text": "com",
+      "start": 28.7255,
+      "end": 28.9454,
+      "segment": 5
+    }
+  ]
+}
