@@ -179,9 +179,9 @@ export async function generateOriginalSoundtrack({
     tearGain.gain.setValueAtTime(.0001,3.48);tearGain.gain.linearRampToValueAtTime(.11,3.55);tearGain.gain.exponentialRampToValueAtTime(.0001,3.92);
     tearSource.connect(tearFilter);tearFilter.connect(tearGain);tearGain.connect(master);tearSource.start(3.48);
     const whooshSource=context.createBufferSource(),whooshFilter=context.createBiquadFilter(),whooshGain=context.createGain();
-    whooshSource.buffer=rustleBuffer;whooshFilter.type="bandpass";whooshFilter.frequency.setValueAtTime(420,4.12);whooshFilter.frequency.exponentialRampToValueAtTime(5200,5.95);whooshFilter.Q.value=.42;
+    whooshSource.buffer=rustleBuffer;whooshSource.loop=true;whooshFilter.type="bandpass";whooshFilter.frequency.setValueAtTime(420,4.12);whooshFilter.frequency.exponentialRampToValueAtTime(5200,5.95);whooshFilter.Q.value=.42;
     whooshGain.gain.setValueAtTime(.0001,4.12);whooshGain.gain.linearRampToValueAtTime(.13,4.5);whooshGain.gain.exponentialRampToValueAtTime(.0001,6.12);
-    whooshSource.connect(whooshFilter);whooshFilter.connect(whooshGain);whooshGain.connect(master);whooshSource.start(4.12);
+    whooshSource.connect(whooshFilter);whooshFilter.connect(whooshGain);whooshGain.connect(master);whooshSource.start(4.12);whooshSource.stop(6.14);
     addTone(115,6.18,.24,"sine",.22,360,0);
     addTone(1_480,6.20,.12,"triangle",.055,5_200,.22);
     addTone(1_760,17.02,.22,"sine",.07,5_800,-.2);
