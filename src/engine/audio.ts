@@ -1,7 +1,7 @@
 export type SoundtrackOptions = {
   durationSeconds: number;
   sampleRate?: number;
-  theme?: "summer-poolside" | "family-merienda" | "game-show";
+  theme?: "summer-poolside" | "family-merienda" | "game-show" | "detective-case";
 };
 
 /**
@@ -36,7 +36,7 @@ export async function generateOriginalSoundtrack({
   master.connect(compressor);
   compressor.connect(context.destination);
 
-  const beat = theme === "game-show" ? 60 / 140 : 60 / 108;
+  const beat = theme === "game-show" ? 60 / 140 : theme === "detective-case" ? 60 / 112 : 60 / 108;
   const bar = beat * 4;
   const progression = [
     { bass: 65.41, chord: [261.63, 329.63, 392.0] },
@@ -80,7 +80,7 @@ export async function generateOriginalSoundtrack({
     oscillator.stop(end + 0.01);
   };
 
-  if (theme !== "game-show") {
+  if (theme !== "game-show" && theme !== "detective-case") {
   // Soft sustained chord layers: warm, unobtrusive and loop-like.
   for (let start = 0, index = 0; start < durationSeconds; start += bar, index += 1) {
     const chord = progression[index % progression.length];
@@ -127,7 +127,7 @@ export async function generateOriginalSoundtrack({
   const noiseBuffer = context.createBuffer(1, noiseLength, sampleRate);
   const noiseData = noiseBuffer.getChannelData(0);
   for (let i = 0; i < noiseLength; i += 1) noiseData[i] = (random() * 2 - 1) * (1 - i / noiseLength);
-  if (theme !== "game-show") {
+  if (theme !== "game-show" && theme !== "detective-case") {
   for (let start = beat; start < durationSeconds; start += beat) {
     const source = context.createBufferSource();
     const filter = context.createBiquadFilter();
@@ -369,6 +369,91 @@ export async function generateOriginalSoundtrack({
     [293.66, 369.99, 440.00].forEach((hz, i) =>
       addTone(hz, 25.05 + i * 0.09, 0.42, "square", 0.065, 3_600, (i - 1) * 0.25),
     );
+  }
+
+
+  if (theme === "detective-case") {
+    // An original noir-electro cue: muted pizzicato, tense minor seconds,
+    // ticking evidence-room percussion and a bright resolution sting.
+    const bpm = 112;
+    const q = 60 / bpm;
+    const barLength = q * 4;
+    const roots = [55.00, 58.27, 49.00, 65.41]; // A, Bb, G, C
+    const noirChords = [
+      [220.00, 261.63, 329.63],
+      [233.08, 277.18, 349.23],
+      [196.00, 233.08, 293.66],
+      [261.63, 311.13, 392.00],
+    ];
+
+    // Low, short pizzicato bass line with offbeat answers.
+    for (let barIndex = 0, at = 0; at < durationSeconds; barIndex += 1, at += barLength) {
+      const root = roots[barIndex % roots.length];
+      const pattern = [0, 0.75, 1.5, 2.0, 2.75, 3.5];
+      pattern.forEach((offset, index) => {
+        const t = at + offset * q;
+        addTone(root, t, q * (index % 2 ? 0.25 : 0.38), "triangle", 0.14, 420, index % 2 ? 0.14 : -0.14);
+        if (index === 2 || index === 5) addTone(root * 2, t + 0.025, 0.11, "square", 0.026, 1_050, index === 2 ? 0.25 : -0.25);
+      });
+
+      // Sparse, smoky jazz clusters on the second half of each measure.
+      const chord = noirChords[barIndex % noirChords.length];
+      [1.25, 3.0].forEach((offset, hit) => {
+        chord.forEach((hz, note) => addTone(
+          hz * (hit === 1 && note === 2 ? 2 : 1),
+          at + offset * q,
+          hit === 0 ? 0.32 : 0.22,
+          "sine",
+          hit === 0 ? 0.038 : 0.028,
+          1_900,
+          (note - 1) * 0.34,
+        ));
+      });
+    }
+
+    // A repeating four-note investigation motif, played with a dry plucked timbre.
+    const motif = [440.00, 466.16, 392.00, 349.23, 440.00, 523.25, 466.16, 392.00];
+    for (let index = 0, at = 0.65; at < durationSeconds; index += 1, at += q * 0.75) {
+      const note = motif[index % motif.length];
+      const accent = index % 4 === 0;
+      addTone(note, at, accent ? 0.24 : 0.14, "triangle", accent ? 0.072 : 0.045, 2_600, index % 2 ? 0.24 : -0.24);
+      if (index % 4 === 2) addTone(note * 1.5, at + 0.06, 0.12, "sine", 0.018, 3_800, index % 2 ? -0.3 : 0.3);
+    }
+
+    // Dry finger snaps and brushed metallic ticks: deliberately no applause or crowd.
+    const tickLength = Math.ceil(sampleRate * 0.075);
+    const tickBuffer = context.createBuffer(1, tickLength, sampleRate);
+    const tickData = tickBuffer.getChannelData(0);
+    for (let i = 0; i < tickLength; i++) tickData[i] = (random() * 2 - 1) * Math.exp(-i / (sampleRate * 0.012));
+    for (let beatIndex = 0, at = 0; at < durationSeconds; beatIndex += 1, at += q) {
+      if (beatIndex % 2 === 1) {
+        const source = context.createBufferSource();
+        const filter = context.createBiquadFilter();
+        const gain = context.createGain();
+        source.buffer = tickBuffer;
+        filter.type = "bandpass"; filter.frequency.value = 2_800; filter.Q.value = 0.8;
+        gain.gain.setValueAtTime(0.0001, at);
+        gain.gain.linearRampToValueAtTime(0.027, at + 0.003);
+        gain.gain.exponentialRampToValueAtTime(0.0001, Math.min(durationSeconds, at + 0.075));
+        source.connect(filter); filter.connect(gain); gain.connect(master); source.start(at);
+      }
+    }
+
+    // Six distinct clock ticks during the silent observation window, rising toward the reveal.
+    for (let second = 15; second < 21; second += 1) {
+      addTone(second === 20 ? 1_620 : 1_180, second, 0.09, "sine", second === 20 ? 0.09 : 0.055, 5_600, 0);
+      addTone(110, second, 0.12, "triangle", 0.055, 300, 0);
+    }
+
+    // Case-resolution sting, then a short warm-but-confident brand finish.
+    [392.00, 466.16, 587.33, 698.46, 880.00].forEach((hz, index) =>
+      addTone(hz, 21.08 + index * 0.085, 0.44, "triangle", 0.075, 4_600, (index - 2) * 0.16),
+    );
+    [261.63, 329.63, 392.00].forEach((hz, index) =>
+      addTone(hz, 24.15 + index * 0.12, 0.68, "sine", 0.045, 3_200, (index - 1) * 0.28),
+    );
+    addTone(1_760, 25.25, 0.26, "sine", 0.028, 5_800, 0.28);
+    addTone(2_090, 25.48, 0.32, "sine", 0.024, 6_200, -0.28);
   }
 
   return context.startRendering();
