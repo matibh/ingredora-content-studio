@@ -235,10 +235,11 @@ function drawOverlay(ctx: CanvasRenderingContext2D, scene: ProductionScene, widt
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
   if (scene.headline) {
-    const headlineSize = Math.round(width * 0.085);
+    const headlineSize = Math.round(width * 0.068);
     ctx.font = `800 ${headlineSize}px Arial, Helvetica, sans-serif`;
-    ctx.lineWidth = Math.max(2, width * 0.004);
-    ctx.strokeStyle = "rgba(8,20,14,.35)";
+    ctx.lineWidth = Math.max(1.5, width * 0.0028);
+    ctx.lineJoin = "round";
+    ctx.strokeStyle = "rgba(0,0,0,.96)";
     ctx.fillStyle = "#ffffff";
     const words = scene.headline.split(" ");
     const lines: string[] = [];
