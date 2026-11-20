@@ -29,10 +29,10 @@ ID: ingredora-cindor-game-show-001.
 
 CONCEPTO
 Un programa de concursos de televisión. Dos participantes están frente a sus
-atriles y pulsadores. El conductor presenta la pregunta:
-«¿Cuáles son los ingredientes de una Cindor Original?»
-Los concursantes tienen seis segundos para responder. Después aparece la
-revelación de ingredientes y el cierre invita a jugar en Ingredora.com.
+atriles y pulsadores. El conductor pregunta: «¿Qué ingredientes tiene Cindor?»
+Pasan seis segundos y ninguno responde: se miran, dudan y se quedan en blanco.
+El conductor se dirige a quienes miran el video y los desafía a continuar
+jugando en Ingredora.com. No se revela la lista de ingredientes.
 
 TONO
 Divertido, competitivo, nostálgico y ágil. Tiene que sentirse como un
@@ -40,40 +40,36 @@ microfragmento de un concurso televisivo, no como una publicidad tradicional.
 
 GUION / STORYBOARD
 00:00–00:04 — APERTURA
-Escenario de concurso, luces de colores y dos participantes en sus atriles.
-Texto: «¡ARRANCA EL CONCURSO!»
-Bajada: «DOS PARTICIPANTES · UNA PREGUNTA».
+Plano general del estudio, pantalla LED gigante con CINDOR y dos concursantes
+enfrentados detrás de sus atriles.
+Texto: «¡EL DESAFÍO CINDOR!»
+Bajada: «DOS CONCURSANTES · ¿QUIÉN SABE?».
 
-00:04–00:08 — PREGUNTA
-La cámara centra el escenario y la Cindor.
-Texto: «¿QUÉ INGREDIENTES TIENE?»
-Bajada: «CINDOR ORIGINAL · 200 ML».
+00:04–00:08 — LA PREGUNTA
+El conductor mira a los participantes y les pregunta:
+«¿QUÉ INGREDIENTES TIENE CINDOR?».
 
-00:08–00:13 — RESPUESTAS
-Los dos participantes se preparan para pulsar.
-Texto: «¡RESPONDAN YA!»
-Bajada: «LECHE, CACAO… ¿QUÉ MÁS?».
+00:08–00:14 — SEIS SEGUNDOS DE SILENCIO
+Primer plano del concursante rojo: duda y mira al otro.
+Corte al concursante azul: cara de desconcierto, no sabe qué decir.
+Plano de ambos: se miran, nadie pulsa ni responde.
+Cuenta regresiva de 6 a 1. No se pronuncia ni se muestra ningún ingrediente.
 
-00:13–00:19 — TIEMPO
-Cuenta regresiva visual de seis segundos.
-Texto: «TENÉS 6 SEGUNDOS».
-Bajada: «¡PENSÁ RÁPIDO!».
+00:14–00:19 — EL CONDUCTOR
+Primer plano del conductor reaccionando a que ninguno contestó:
+«¡NO SABEN NADA! ¿Y VOS, SABÉS?».
 
-00:19–00:26 — REVELACIÓN
-Se muestran los grupos de ingredientes:
-Leche · azúcar · cacao · almidón.
-Vitaminas · espesantes · aromas · estabilizantes.
-La lista completa y precisa está en la sección 2.
-
-00:26–00:30 — CIERRE
-Texto: «¿CUÁNTOS ACERTASTE?»
-CTA: «ENTRÁ A INGREDORA.COM Y JUGÁ».
+00:19–00:30 — DESAFÍO A LA AUDIENCIA
+El conductor se dirige a cámara e invita a quienes miran a continuar:
+«¡AHORA TE TOCA A VOS!».
+Pantalla final con el CTA grande: «ENTRÁ A INGREDORA.COM Y SEGUÍ JUGANDO».
+No se revela la respuesta en ningún momento.
 
 NOTA DE PRODUCCIÓN
-La versión del paquete actual plantea el diálogo mediante textos en pantalla
-y música instrumental generada en el render. No incluye todavía voces
-sintetizadas de conductor ni de concursantes. No describirla como una pieza
-con locución hasta que esa pista se incorpore y se compruebe en el render.
+La versión actual representa las frases del conductor como diálogo escrito
+en pantalla, con música y efectos instrumentales. No incluye todavía una
+pista de voz hablada: no afirmar que se escucha una locución hasta que se
+incorpore y se compruebe en el render.
 
 ------------------------------------------------------------
 2. REFERENCIA DE INGREDIENTES — CINDOR ORIGINAL 200 ML
@@ -134,8 +130,8 @@ DESCRIPCIÓN
 Dos participantes, una pregunta y apenas seis segundos:
 ¿cuáles son los ingredientes de una Cindor Original?
 
-Pensá rápido, anotá mentalmente tu respuesta y descubrí cuántos acertaste.
-No vale hacer trampa ni mirar antes de tiempo. 👀
+Los dos concursantes se quedaron en blanco… 😅 Ahora te toca a vos:
+¿sabés qué ingredientes tiene? No revelamos la respuesta en el video.
 
 🎮 Entrá a https://ingredora.com y jugá más desafíos de ingredientes.
 
@@ -151,8 +147,8 @@ CATEGORÍA
 Entretenimiento
 
 COMENTARIO FIJADO
-¡Se terminó el tiempo! ⏱️ ¿Cuántos ingredientes habías recordado?
-Dejá tu resultado y entrá a https://ingredora.com para jugar más desafíos.
+¡Se quedaron mudos! 😂 ¿Vos sabés la respuesta? Seguí jugando en
+https://ingredora.com.
 
 ------------------------------------------------------------
 4. INSTAGRAM REELS
@@ -164,9 +160,8 @@ CAPTION PRINCIPAL
 ¿Cuáles son los ingredientes de una Cindor Original? 🥛🍫
 Tenés apenas 6 segundos para responder. ¡Pensá rápido!
 
-¿Quién ganó en tu casa: participante 1 o participante 2?
-Contanos cuántos acertaste y después entrá a jugar en
-👉 https://ingredora.com
+Ninguno se animó a contestar. 😅 ¿Vos te acordás?
+Entrá a https://ingredora.com y seguí jugando.
 
 #Ingredora #Cindor #DesafioDeIngredientes #Concurso #Trivia
 
@@ -188,28 +183,26 @@ Elegir un fotograma con los dos atriles y la caja de Cindor visibles.
 
 TEXTO ALTERNATIVO
 Video vertical con estética de programa de concursos. Dos participantes
-aparecen frente a atriles con pulsadores en un escenario de luces. La pregunta
-es cuáles son los ingredientes de Cindor Original de 200 ml. Aparece una
-cuenta regresiva de seis segundos, seguida de una revelación de ingredientes
-y una invitación a jugar en Ingredora.com.
+estilo Minecraft están enfrentados en atriles frente a una pantalla gigante
+con CINDOR. El conductor pregunta qué ingredientes tiene; ambos se quedan
+sin respuesta durante seis segundos. El conductor invita a la audiencia a
+seguir jugando en Ingredora.com. No hay revelación de ingredientes.
 
 ------------------------------------------------------------
 5. TIKTOK
 ------------------------------------------------------------
 
 CAPTION PRINCIPAL
-🏆 Dos participantes, una Cindor y 6 segundos para responder.
-¿Sabés cuáles son sus ingredientes? 👀
-¿Cuántos acertaste?
-¡Entrá a jugar en Ingredora.com!
+🏆 Dos participantes, una Cindor y seis segundos de silencio.
+¡Ninguno supo responder! 😅 ¿Y vos?
+Seguí jugando en Ingredora.com.
 
 HASHTAGS
 #Ingredora #Cindor #DesafioDeIngredientes #Trivia #ParaTi
 
 CAPTION ALTERNATIVO
-¡A jugar! ⏱️ ¿Qué ingredientes tiene una Cindor?
-Tenés 6 segundos. Después contame cuántos acertaste.
-Jugá en Ingredora.com.
+¡Nadie supo qué contestar! 😅 ¿Vos sí?
+Entrá a Ingredora.com y seguí jugando.
 
 COMENTARIO FIJADO
 ¿Ganó el participante 1 o el 2? ¿O les ganaste a los dos? 😂
@@ -233,8 +226,8 @@ COPY
 Dos participantes se enfrentan a una pregunta muy simple… ¿o no tanto?
 ¿Cuáles son los ingredientes de una Cindor Original?
 
-Tenés seis segundos para responder. Después contanos cuántos acertaste.
-Y si te quedaste con ganas de jugar, entrá a https://ingredora.com.
+Los concursantes tuvieron seis segundos y no dijeron nada.
+Ahora te toca a vos: entrá a https://ingredora.com.
 
 #Ingredora #Cindor #DesafioDeIngredientes #Concurso
 
@@ -253,8 +246,7 @@ de seis segundos y una pantalla final que invita a jugar en Ingredora.com.
 
 POST PRINCIPAL
 🏆 Dos participantes. Una Cindor. Seis segundos.
-¿Sabés cuáles son sus ingredientes?
-¿Cuántos acertaste? 👀
+¿Sabés cuáles son sus ingredientes? ¡Los concursantes no! 👀
 Jugá en https://ingredora.com
 #Ingredora #Cindor
 
