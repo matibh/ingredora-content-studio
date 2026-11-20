@@ -1339,5 +1339,7 @@
         }
       ]
     }
-  ]
+  ],
+  "voiceoverUrl": "studio/audio/cindor-game-show-voice-es-AR.mp3",
+  "wordTimingsUrl": "studio/audio/cindor-game-show-word-timings.json"
 }
