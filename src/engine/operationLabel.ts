@@ -320,8 +320,8 @@ export function drawOperationLabelOverlay(
   ctx.restore();
 
   // Six silent seconds: the visual timer ticks from 6 to 1 over the label close-up.
-  if (time >= 15 && time < 21) {
-    const remaining = Math.min(6, Math.max(1, Math.ceil(21 - time)));
+  if (time >= 17 && time < 23) {
+    const remaining = Math.min(6, Math.max(1, Math.ceil(23 - time)));
     const scale = width / 720;
     const x = width * 0.80, y = height * 0.175, r = 54 * scale;
     ctx.save();
@@ -330,15 +330,15 @@ export function drawOperationLabelOverlay(
     ctx.fillStyle = "rgba(8,23,24,.78)"; ctx.fill();
     ctx.shadowBlur = 0;
     ctx.lineWidth = 7 * scale; ctx.strokeStyle = "rgba(215,173,97,.95)";
-    ctx.beginPath(); ctx.arc(x, y, r - 5 * scale, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * ((time - 15) / 6)); ctx.stroke();
+    ctx.beginPath(); ctx.arc(x, y, r - 5 * scale, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * ((time - 17) / 6)); ctx.stroke();
     ctx.font = `900 ${Math.round(66 * scale)}px Arial Black, Arial, sans-serif`;
     ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.fillStyle = "#fff0ce";
     ctx.fillText(String(remaining), x, y + 2 * scale);
     ctx.restore();
   }
 
-  if (time >= 23.2) {
-    const progress = Math.min(1, (time - 23.2) / 0.5);
+  if (time >= 25.2) {
+    const progress = Math.min(1, (time - 25.2) / 0.5);
     const scale = width / 720;
     const panelW = width * 0.66, panelH = height * 0.052;
     const x = (width - panelW) / 2, y = height * 0.14 - height * 0.035 * (1 - progress);
