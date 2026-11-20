@@ -348,7 +348,7 @@ export function drawOperationLabelOverlay(
       const maxWidth = width * 0.86;
       const lines: string[] = [];
       let line = "";
-      for (const word of caption.split(/\\s+/)) {
+      for (const word of caption.split(/\s+/)) {
         const candidate = line ? line + " " + word : word;
         if (ctx.measureText(candidate).width > maxWidth && line) { lines.push(line); line = word; }
         else line = candidate;
@@ -367,7 +367,7 @@ export function drawOperationLabelOverlay(
 
   // A restrained case-file marker is part of the scenery, not a second subtitle.
   ctx.save();
-  const badgeW = width * 0.36, badgeH = height * 0.044, badgeX = width * 0.055, badgeY = height * 0.045;
+  const badgeW = width * 0.61, badgeH = height * 0.044, badgeX = width * 0.055, badgeY = height * 0.045;
   rounded(ctx, badgeX, badgeY, badgeW, badgeH, badgeH * 0.22);
   ctx.fillStyle = "rgba(7,25,27,.86)"; ctx.fill();
   ctx.strokeStyle = "rgba(218,178,111,.76)"; ctx.lineWidth = Math.max(1.5, width * 0.002); ctx.stroke();
