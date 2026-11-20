@@ -777,14 +777,14 @@ export async function renderPackageToWebM(
       const ease = (value: number) => { const x = Math.max(0, Math.min(1, value)); return x * x * (3 - 2 * x); };
       // Wider, higher three-quarter tabletop angle: packet opening, flight path and plate stay visible together.
       let cameraZ = 9.8;
-      let cameraY = 2.55;
+      let cameraY = 4.05;
       let targetY = -0.58;
       let fieldOfView = 41;
-      if (time >= 3 && time < 6.1) { cameraZ = 9.65; cameraY = 2.65; targetY = -0.62; fieldOfView = 41; }
-      else if (time >= 6.1 && time < 11) { const push = ease((time - 6.1) / .75); cameraZ = 9.65 - push * .25; cameraY = 2.65 + push * .05; targetY = -.62; fieldOfView = 41; }
-      else if (time >= 11 && time < 17) { cameraZ = 9.4; cameraY = 2.70; targetY = -.62; fieldOfView = 40; }
-      else if (time >= 17 && time < 22) { const pull = ease((time - 17) / .6); cameraZ = 9.4 + pull * .25; cameraY = 2.70 + pull * .05; targetY = -.62; fieldOfView = 40 + pull; }
-      else if (time >= 22) { const pull = ease((time - 22) / .7); cameraZ = 9.65 + pull * .35; cameraY = 2.75; targetY = -.58; fieldOfView = 41 + pull; }
+      if (time >= 3 && time < 6.1) { cameraZ = 9.65; cameraY = 4.15; targetY = -0.62; fieldOfView = 41; }
+      else if (time >= 6.1 && time < 11) { const push = ease((time - 6.1) / .75); cameraZ = 9.65 - push * .25; cameraY = 4.15 + push * .05; targetY = -.62; fieldOfView = 41; }
+      else if (time >= 11 && time < 17) { cameraZ = 9.4; cameraY = 4.20; targetY = -.62; fieldOfView = 40; }
+      else if (time >= 17 && time < 22) { const pull = ease((time - 17) / .6); cameraZ = 9.4 + pull * .25; cameraY = 4.20 + pull * .05; targetY = -.62; fieldOfView = 40 + pull; }
+      else if (time >= 22) { const pull = ease((time - 22) / .7); cameraZ = 9.65 + pull * .35; cameraY = 4.25; targetY = -.58; fieldOfView = 41 + pull; }
       camera.position.set(.02, cameraY, cameraZ);
       camera.lookAt(.02, targetY, .05);
       camera.fov = fieldOfView;
