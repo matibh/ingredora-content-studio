@@ -729,7 +729,14 @@ export async function renderPackageToWebM(
     voiceSource.buffer = voice;
     const voiceGain = offline.createGain();
     // The narration is the foreground: normalize it firmly above the soundtrack.
-    voiceGain.gain.value = Math.min(3.2, Math.max(2.0, 0.92 / voicePeak));
+    const narrationGain = Math.min(3.2, Math.max(2.0, 0.92 / voicePeak));
+    voiceGain.gain.setValueAtTime(narrationGain, 0);
+    // The presenter says "Tenés seis segundos", then the visual countdown runs
+    // silently. Resume narration only after the on-screen 1 has finished.
+    if (pkg.visualPreset === "oreo-family-table") {
+      voiceGain.gain.setValueAtTime(0, 11.78);
+      voiceGain.gain.setValueAtTime(narrationGain, 15.85);
+    }
     const voiceCompressor = offline.createDynamicsCompressor();
     voiceCompressor.threshold.value = -8;
     voiceCompressor.knee.value = 8;
