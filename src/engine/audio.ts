@@ -269,6 +269,25 @@ export async function generateOriginalSoundtrack({
       addTone(587.33, bar + beat * 3, 0.22, "triangle", 0.055, 3_800, 0.2);
     }
 
+    // Live TV game-show fanfare: bright brass-like stabs and a fast snare build.
+    [392, 493.88, 587.33, 783.99].forEach((frequency, index) => {
+      const at = 0.16 + index * 0.055;
+      addTone(frequency, at, 0.62, "sawtooth", 0.105, 3600, (index - 1.5) * 0.22);
+      addTone(frequency * 0.5, at, 0.52, "square", 0.035, 1800, (1.5 - index) * 0.18);
+    });
+    for (let i = 0; i < 16; i += 1) {
+      const at = 2.35 + i * 0.075;
+      if (at < durationSeconds) {
+        addTone(1850 + random() * 500, at, 0.045, "square", 0.025 + i * 0.0015, 5800, -0.5 + random());
+        addTone(130, at, 0.055, "triangle", 0.045 + i * 0.002, 700, 0);
+      }
+    }
+    for (let at = 3.55; at < durationSeconds; at += bar * 2) {
+      [392, 493.88, 587.33].forEach((frequency, index) =>
+        addTone(frequency, at, 0.28, "sawtooth", 0.075, 3000, (index - 1) * 0.28),
+      );
+    }
+
     // A lively four-on-the-floor beat, backbeat accents and bright hi-hat ticks.
     for (let start = 0, beatIndex = 0; start < durationSeconds; start += beat, beatIndex += 1) {
       addTone(beatIndex % 4 === 0 ? 62 : 74, start, 0.19, "sine", 0.22, 190, 0);
@@ -285,42 +304,50 @@ export async function generateOriginalSoundtrack({
       addTone(110, second, 0.12, "sine", 0.10, 360, 0);
     }
 
-    // Crowd applause made procedurally: many irregular, layered hand-clap transients.
-    // No external recordings or copyrighted samples are used.
-    const applauseLength = Math.ceil(sampleRate * 0.105);
+    // Studio audience applause: dense, layered claps with a short room reflection.
+    const applauseLength = Math.ceil(sampleRate * 0.16);
     const applauseBuffer = context.createBuffer(1, applauseLength, sampleRate);
     const applauseData = applauseBuffer.getChannelData(0);
     for (let i = 0; i < applauseLength; i += 1) {
-      const fade = Math.pow(1 - i / applauseLength, 2.6);
-      applauseData[i] = (random() * 2 - 1) * fade;
+      const t = i / sampleRate;
+      applauseData[i] = (random() * 2 - 1) * Math.exp(-t * 27) * (0.72 + 0.28 * Math.sin(t * 190));
     }
     const addApplause = (from: number, to: number, intensity: number) => {
-      let clapIndex = 0;
-      for (let start = from; start < Math.min(to, durationSeconds - 0.12); start += 0.052 + random() * 0.078) {
-        const source = context.createBufferSource();
-        const filter = context.createBiquadFilter();
-        const gain = context.createGain();
-        const panner = context.createStereoPanner();
-        source.buffer = applauseBuffer;
-        filter.type = "bandpass";
-        filter.frequency.value = 1_050 + random() * 2_300;
-        filter.Q.value = 0.55 + random() * 0.7;
-        const peak = intensity * (0.45 + random() * 0.75);
-        gain.gain.setValueAtTime(0.0001, start);
-        gain.gain.linearRampToValueAtTime(peak, start + 0.004);
-        gain.gain.exponentialRampToValueAtTime(0.0001, start + 0.105);
-        panner.pan.value = -0.85 + random() * 1.7;
-        source.connect(filter);
-        filter.connect(gain);
-        gain.connect(panner);
-        panner.connect(master);
-        source.start(start);
-        clapIndex += 1;
+      for (let start = from; start < Math.min(to, durationSeconds - 0.2); start += 0.038 + random() * 0.052) {
+        for (let layer = 0; layer < 3; layer += 1) {
+          const hitAt = start + layer * (0.006 + random() * 0.009);
+          const source = context.createBufferSource();
+          const filter = context.createBiquadFilter();
+          const gain = context.createGain();
+          const pan = context.createStereoPanner();
+          source.buffer = applauseBuffer;
+          filter.type = "bandpass";
+          filter.frequency.value = 680 + random() * 2700;
+          filter.Q.value = 0.35 + random() * 0.45;
+          const peak = intensity * (0.55 + random() * 0.8) / (layer === 0 ? 1 : 1.35);
+          gain.gain.setValueAtTime(0.0001, hitAt);
+          gain.gain.linearRampToValueAtTime(peak, hitAt + 0.003);
+          gain.gain.exponentialRampToValueAtTime(0.0001, hitAt + 0.16);
+          pan.pan.value = -0.95 + random() * 1.9;
+          source.connect(filter); filter.connect(gain); gain.connect(pan); pan.connect(master);
+          source.start(hitAt);
+          const echo = context.createBufferSource();
+          const echoGain = context.createGain();
+          const echoPan = context.createStereoPanner();
+          echo.buffer = applauseBuffer;
+          echoGain.gain.setValueAtTime(0.0001, hitAt + 0.045);
+          echoGain.gain.linearRampToValueAtTime(peak * 0.24, hitAt + 0.05);
+          echoGain.gain.exponentialRampToValueAtTime(0.0001, hitAt + 0.19);
+          echoPan.pan.value = -pan.pan.value * 0.7;
+          echo.connect(filter); filter.connect(echoGain); echoGain.connect(echoPan); echoPan.connect(master);
+          echo.start(hitAt + 0.045);
+        }
+        addTone(220, start, 0.075, "triangle", intensity * 0.22, 520, -0.2 + random() * 0.4);
       }
     };
-    // Opening applause welcomes the show; the ending applause celebrates the CTA.
-    addApplause(0.18, Math.min(2.65, durationSeconds * 0.18), 0.12);
-    addApplause(Math.max(0, durationSeconds - 2.8), durationSeconds - 0.12, 0.15);
+    // Noticeable opening welcome and four-second finale applause under the CTA.
+    addApplause(0.12, Math.min(3.05, durationSeconds * 0.20), 0.34);
+    addApplause(Math.max(0, durationSeconds - 4.0), durationSeconds - 0.2, 0.42);
 
     // Reveal sting and final CTA sparkle.
     [523.25, 659.25, 783.99, 1_046.5].forEach((frequency, index) => {
