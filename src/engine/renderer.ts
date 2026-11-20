@@ -377,6 +377,99 @@ function drawPoolsideVoiceCaption(
   ctx.fill();
   ctx.restore();
 }
+
+function drawOreoWordCaptions(ctx: CanvasRenderingContext2D, time: number, width: number, height: number, words: VoiceWordTiming[]) {
+  if (!words.length) return;
+  const activeIndex = words.findIndex((word, index) => {
+    const next = words[index + 1];
+    const end = next && next.start - word.end < 0.24 ? next.start : word.end + 0.28;
+    return time >= word.start && time < end;
+  });
+  if (activeIndex < 0) return;
+
+  // Build a short phrase around the active word. Pauses and long phrases create
+  // a new caption card so the viewer never has to scan a wall of text.
+  let first = activeIndex;
+  let last = activeIndex;
+  while (first > 0 && words[first].start - words[first - 1].end < 0.48 &&
+         words[last].end - words[first - 1].start < 3.15 && last - first < 6) first--;
+  while (last < words.length - 1 && words[last + 1].start - words[last].end < 0.48 &&
+         words[last + 1].end - words[first].start < 3.15 && last - first < 6) last++;
+  const phrase = words.slice(first, last + 1);
+  const scale = width / 720;
+  const fontSize = 29 * scale;
+  const gap = 11 * scale;
+  const maxLineWidth = width * 0.82;
+  ctx.save();
+  ctx.font = "900 " + Math.round(fontSize) + "px Arial, Helvetica, sans-serif";
+  const rows: VoiceWordTiming[][] = [];
+  let row: VoiceWordTiming[] = [];
+  let rowWidth = 0;
+  for (const word of phrase) {
+    const wordWidth = ctx.measureText(word.text).width;
+    const nextWidth = row.length ? rowWidth + gap + wordWidth : wordWidth;
+    if (row.length && nextWidth > maxLineWidth) {
+      rows.push(row); row = [word]; rowWidth = wordWidth;
+    } else { row.push(word); rowWidth = nextWidth; }
+  }
+  if (row.length) rows.push(row);
+  const lineHeight = fontSize * 1.38;
+  const panelW = width * 0.92;
+  const panelH = Math.max(height * 0.092, rows.length * lineHeight + 42 * scale);
+  const panelX = (width - panelW) / 2;
+  const panelY = height * 0.79;
+  const panelBottom = Math.min(height * 0.965, panelY + panelH);
+  const fadeIn = Math.max(0, Math.min(1, (time - phrase[0].start) / 0.10));
+  const finalWord = phrase[phrase.length - 1];
+  const fadeOut = Math.max(0, Math.min(1, (finalWord.end + 0.34 - time) / 0.12));
+  ctx.globalAlpha = Math.min(fadeIn, fadeOut);
+  ctx.shadowColor = "rgba(0,0,0,.32)";
+  ctx.shadowBlur = 22 * scale;
+  roundedRect(ctx, panelX, panelY, panelW, panelBottom - panelY, 19 * scale);
+  const gradient = ctx.createLinearGradient(panelX, panelY, panelX, panelBottom);
+  gradient.addColorStop(0, "rgba(7,20,31,.96)");
+  gradient.addColorStop(1, "rgba(5,15,24,.97)");
+  ctx.fillStyle = gradient; ctx.fill();
+  ctx.shadowBlur = 0;
+  ctx.strokeStyle = "rgba(255,255,255,.36)";
+  ctx.lineWidth = 1.5 * scale; ctx.stroke();
+
+  const lineY0 = panelY + (panelBottom - panelY) * 0.50 - ((rows.length - 1) * lineHeight) / 2;
+  for (let rowIndex = 0; rowIndex < rows.length; rowIndex++) {
+    const wordsInRow = rows[rowIndex];
+    const widths = wordsInRow.map(word => ctx.measureText(word.text).width);
+    const totalWidth = widths.reduce((sum, value) => sum + value, 0) + gap * (wordsInRow.length - 1);
+    let x = width / 2 - totalWidth / 2;
+    const y = lineY0 + rowIndex * lineHeight;
+    wordsInRow.forEach((word, index) => {
+      const spoken = time >= word.start;
+      const current = time >= word.start && time <= word.end;
+      const wordWidth = widths[index];
+      if (spoken) {
+        if (current) {
+          roundedRect(ctx, x - 6 * scale, y - fontSize * .67, wordWidth + 12 * scale, fontSize * 1.34, 8 * scale);
+          ctx.fillStyle = "#1678d0"; ctx.fill();
+        }
+        ctx.textAlign = "left"; ctx.textBaseline = "middle";
+        ctx.font = "900 " + Math.round(fontSize) + "px Arial, Helvetica, sans-serif";
+        ctx.fillStyle = current ? "#ffffff" : "rgba(255,255,255,.88)";
+        ctx.shadowColor = current ? "rgba(22,120,208,.7)" : "transparent";
+        ctx.shadowBlur = current ? 10 * scale : 0;
+        ctx.fillText(word.text, x, y);
+        ctx.shadowBlur = 0;
+      }
+      x += wordWidth + gap;
+    });
+  }
+  const progress = Math.max(0, Math.min(1, (time - phrase[0].start) / Math.max(.05, finalWord.end - phrase[0].start)));
+  const railX = panelX + panelW * .07, railY = panelBottom - 10 * scale, railW = panelW * .86;
+  roundedRect(ctx, railX, railY, railW, 3.5 * scale, 2 * scale);
+  ctx.fillStyle = "rgba(255,255,255,.22)"; ctx.fill();
+  roundedRect(ctx, railX, railY, railW * progress, 3.5 * scale, 2 * scale);
+  ctx.fillStyle = "#d8f36a"; ctx.fill();
+  ctx.restore();
+}
+
 function normalizeCaptionWord(value: string) { return value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]/g, ""); }
 function drawNutellaOverlay(ctx: CanvasRenderingContext2D, frame: number, fps: number, width: number, height: number, voiceWords: VoiceWordTiming[]) {
   const t = frame / fps;
@@ -861,8 +954,8 @@ export async function renderPackageToWebM(
       camera.updateProjectionMatrix();
       renderer.render(world, camera);
       ctx.drawImage(renderer.domElement, 0, 0, pkg.width, pkg.height);
-      const caption = oreoVoiceWords.filter((word) => word.start <= time + 0.55 && word.end >= time - 0.45).map((word) => word.text).join(" ");
-      drawOreoFamilyOverlay(ctx, time, pkg.width, pkg.height, caption);
+      drawOreoFamilyOverlay(ctx, time, pkg.width, pkg.height, "");
+      drawOreoWordCaptions(ctx, time, pkg.width, pkg.height, oreoVoiceWords);
       return;
     }
     if (poolsideSet) {
