@@ -173,6 +173,21 @@ export async function generateOriginalSoundtrack({
       gain.gain.setValueAtTime(.0001,start);gain.gain.linearRampToValueAtTime(.085,start+.02);gain.gain.exponentialRampToValueAtTime(.0001,start+.38);
       osc.connect(gain);gain.connect(master);osc.start(start);osc.stop(start+.4);
     });
+    // More tactile, clearly timed actions: foil tear, cookie whoosh, plate landing and CTA sparkle.
+    const tearSource=context.createBufferSource(),tearFilter=context.createBiquadFilter(),tearGain=context.createGain();
+    tearSource.buffer=rustleBuffer;tearFilter.type="bandpass";tearFilter.frequency.setValueAtTime(1500,3.48);tearFilter.frequency.linearRampToValueAtTime(3400,3.78);tearFilter.Q.value=.7;
+    tearGain.gain.setValueAtTime(.0001,3.48);tearGain.gain.linearRampToValueAtTime(.11,3.55);tearGain.gain.exponentialRampToValueAtTime(.0001,3.92);
+    tearSource.connect(tearFilter);tearFilter.connect(tearGain);tearGain.connect(master);tearSource.start(3.48);
+    const whooshSource=context.createBufferSource(),whooshFilter=context.createBiquadFilter(),whooshGain=context.createGain();
+    whooshSource.buffer=rustleBuffer;whooshFilter.type="bandpass";whooshFilter.frequency.setValueAtTime(420,4.12);whooshFilter.frequency.exponentialRampToValueAtTime(5200,5.95);whooshFilter.Q.value=.42;
+    whooshGain.gain.setValueAtTime(.0001,4.12);whooshGain.gain.linearRampToValueAtTime(.13,4.5);whooshGain.gain.exponentialRampToValueAtTime(.0001,6.12);
+    whooshSource.connect(whooshFilter);whooshFilter.connect(whooshGain);whooshGain.connect(master);whooshSource.start(4.12);
+    addTone(115,6.18,.24,"sine",.22,360,0);
+    addTone(1_480,6.20,.12,"triangle",.055,5_200,.22);
+    addTone(1_760,17.02,.22,"sine",.07,5_800,-.2);
+    addTone(2_090,17.18,.28,"sine",.06,6_200,.2);
+    addTone(880,22.05,.35,"triangle",.065,5_000,-.18);
+    addTone(1_320,22.22,.42,"sine",.055,6_000,.18);
   }
 
   if (theme === "summer-poolside") {
