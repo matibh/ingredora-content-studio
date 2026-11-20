@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-20T19:10:00-03:00",
+  "updatedAt": "2026-11-20T19:35:00-03:00",
   "productions": [
     {
-      "id": "ingredora-oreo-family-merienda-007",
-      "title": "Oreo Original — voz clara y cámara cinematográfica",
-      "description": "30 segundos a 60 FPS. Voz femenina argentina claramente al frente, música más baja, efectos y subtítulos sincronizados. Cámara con plano general, acercamiento al paquete, seguimiento de la Oreo hasta el plato, detalle del aterrizaje y cierre abierto.",
+      "id": "ingredora-oreo-family-merienda-008",
+      "title": "Oreo Original — subtítulos cinematográficos palabra por palabra",
+      "description": "30 segundos a 60 FPS. Voz femenina argentina, cámara cinematográfica y subtítulos dinámicos palabra por palabra, sincronizados con la locución, con palabra activa destacada y lectura clara en zona segura.",
       "status": "rendering",
       "packageUrl": "studio/packages/oreo-family-merienda.v1.json",
       "durationSeconds": 30,
@@ -18,8 +18,8 @@
         "Facebook Reels",
         "X"
       ],
-      "version": "8.0",
-      "createdAt": "2026-11-20T19:10:00-03:00",
+      "version": "8.1",
+      "createdAt": "2026-11-20T19:35:00-03:00",
       "caption": "¿Cuánto sabés de lo que comés? 🍪 Mirá cómo sale la Oreo del paquete y poné a prueba cuánto recordás de sus ingredientes. Entrá a Ingredora.com y jugá. #Ingredora #Oreo #DesafioDeIngredientes"
     },
     {
