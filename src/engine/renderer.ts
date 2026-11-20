@@ -1295,15 +1295,15 @@ export async function renderPackageToWebM(
         const p = ease((time - 6.8) / 0.9);
         cameraX = mix(-1.15, 1.22, p); cameraY = mix(0.95, 0.5, p); cameraZ = mix(7.1, 6.35, p);
         targetX = 1.22; targetY = -0.28; targetZ = 0.35; fieldOfView = mix(34, 32, p);
-      } else if (time < 21.0) {
+      } else if (time < 23.0) {
         cameraX = 1.22; cameraY = 0.50; cameraZ = 6.35;
         targetX = 1.22; targetY = -0.28; targetZ = 0.35; fieldOfView = 32;
-      } else if (time < 23.2) {
-        const p = ease((time - 21.0) / 0.55);
+      } else if (time < 25.2) {
+        const p = ease((time - 23.0) / 0.55);
         cameraX = mix(1.22, -1.18, p); cameraY = mix(0.5, 0.7, p); cameraZ = mix(6.35, 6.65, p);
         targetX = -1.18; targetY = 0.92; targetZ = 0.36; fieldOfView = mix(32, 34, p);
       } else {
-        const p = ease((time - 23.2) / 1.1);
+        const p = ease((time - 25.2) / 1.1);
         cameraX = mix(-1.18, 0.1, p); cameraY = mix(0.7, 2.3, p); cameraZ = mix(6.65, 12.4, p);
         targetX = mix(-1.18, 0, p); targetY = mix(0.92, 0.0, p); targetZ = mix(0.36, -0.8, p);
         fieldOfView = mix(34, 44, p);
