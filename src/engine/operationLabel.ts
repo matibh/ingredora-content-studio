@@ -234,6 +234,10 @@ export function createOperationLabelSet(world: THREE.Scene): OperationLabelSet {
   const leftArm = new THREE.Group(); leftArm.position.set(-0.46, 1.35, 0.02); detective.add(leftArm);
   const sleeveL = new THREE.Mesh(new THREE.BoxGeometry(0.23, 0.72, 0.30), coat); sleeveL.position.set(-0.04, -0.20, 0); sleeveL.rotation.z = 0.16; leftArm.add(sleeveL);
   const handL = new THREE.Mesh(new THREE.BoxGeometry(0.19, 0.18, 0.20), skin); handL.position.set(-0.08, -0.55, 0.10); leftArm.add(handL);
+  const pointingFinger = new THREE.Mesh(new THREE.BoxGeometry(0.10, 0.34, 0.12), skin);
+  pointingFinger.position.set(-0.08, -0.76, 0.16); pointingFinger.rotation.x = -0.48; leftArm.add(pointingFinger);
+  const thumb = new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.12, 0.16), skin);
+  thumb.position.set(0.08, -0.60, 0.19); thumb.rotation.z = -0.48; leftArm.add(thumb);
   const rightArm = new THREE.Group(); rightArm.position.set(0.46, 1.35, 0.02); detective.add(rightArm);
   const sleeveR = new THREE.Mesh(new THREE.BoxGeometry(0.23, 0.64, 0.30), coat); sleeveR.position.set(0.03, -0.18, 0); rightArm.add(sleeveR);
   const handR = new THREE.Mesh(new THREE.BoxGeometry(0.19, 0.18, 0.20), skin); handR.position.set(0.10, -0.49, 0.08); rightArm.add(handR);
