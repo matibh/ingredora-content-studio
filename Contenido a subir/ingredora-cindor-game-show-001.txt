@@ -1,0 +1,347 @@
+INGREDORA — PAQUETE DE PUBLICACIÓN EN REDES
+PRODUCCIÓN 012 — CINDOR ORIGINAL: EL CONCURSO DE LOS INGREDIENTES
+============================================================
+
+ARCHIVO DE VIDEO: ingredora-cindor-game-show-001.webm
+ARCHIVO DE METADATOS: ingredora-cindor-game-show-001.txt
+ID: ingredora-cindor-game-show-001
+VERSIÓN: 1.0
+FECHA: 20/11/2026
+ESTADO: PAQUETE CREATIVO PREPARADO — RENDER EN NAVEGADOR PENDIENTE
+SITIO / CTA: https://ingredora.com
+
+IMPORTANTE
+El video se renderiza desde el navegador en Ingredora Content Studio. Este TXT
+prepara los copies y la guía de publicación; no significa que el MP4/WebM ya
+esté renderizado ni publicado. La publicación en redes es manual.
+
+------------------------------------------------------------
+1. FICHA TÉCNICA Y CONCEPTO
+------------------------------------------------------------
+
+Producto: Cindor Original, presentación de 200 ml.
+Idioma: Español argentino (voseo rioplatense).
+Duración objetivo: 30 segundos.
+Formato: Vertical 9:16.
+Resolución: 720 × 1280.
+FPS: 60.
+ID: ingredora-cindor-game-show-001.
+
+CONCEPTO
+Un programa de concursos de televisión. Dos participantes están frente a sus
+atriles y pulsadores. El conductor presenta la pregunta:
+«¿Cuáles son los ingredientes de una Cindor Original?»
+Los concursantes tienen seis segundos para responder. Después aparece la
+revelación de ingredientes y el cierre invita a jugar en Ingredora.com.
+
+TONO
+Divertido, competitivo, nostálgico y ágil. Tiene que sentirse como un
+microfragmento de un concurso televisivo, no como una publicidad tradicional.
+
+GUION / STORYBOARD
+00:00–00:04 — APERTURA
+Escenario de concurso, luces de colores y dos participantes en sus atriles.
+Texto: «¡ARRANCA EL CONCURSO!»
+Bajada: «DOS PARTICIPANTES · UNA PREGUNTA».
+
+00:04–00:08 — PREGUNTA
+La cámara centra el escenario y la Cindor.
+Texto: «¿QUÉ INGREDIENTES TIENE?»
+Bajada: «CINDOR ORIGINAL · 200 ML».
+
+00:08–00:13 — RESPUESTAS
+Los dos participantes se preparan para pulsar.
+Texto: «¡RESPONDAN YA!»
+Bajada: «LECHE, CACAO… ¿QUÉ MÁS?».
+
+00:13–00:19 — TIEMPO
+Cuenta regresiva visual de seis segundos.
+Texto: «TENÉS 6 SEGUNDOS».
+Bajada: «¡PENSÁ RÁPIDO!».
+
+00:19–00:26 — REVELACIÓN
+Se muestran los grupos de ingredientes:
+Leche · azúcar · cacao · almidón.
+Vitaminas · espesantes · aromas · estabilizantes.
+La lista completa y precisa está en la sección 2.
+
+00:26–00:30 — CIERRE
+Texto: «¿CUÁNTOS ACERTASTE?»
+CTA: «ENTRÁ A INGREDORA.COM Y JUGÁ».
+
+NOTA DE PRODUCCIÓN
+La versión del paquete actual plantea el diálogo mediante textos en pantalla
+y música instrumental generada en el render. No incluye todavía voces
+sintetizadas de conductor ni de concursantes. No describirla como una pieza
+con locución hasta que esa pista se incorpore y se compruebe en el render.
+
+------------------------------------------------------------
+2. REFERENCIA DE INGREDIENTES — CINDOR ORIGINAL 200 ML
+------------------------------------------------------------
+
+Lista de ingredientes publicada para la presentación de 200 ml:
+- Leche parcialmente descremada pasteurizada.
+- Azúcar.
+- Cacao.
+- Almidón.
+- Vitamina B3.
+- Vitamina A.
+- Vitamina D.
+- Ácido fólico (vitamina B9).
+- Espesante: celulosa microcristalina.
+- Espesante: carragenina.
+- Espesante: carboximetilcelulosa.
+- Aromas.
+- Estabilizante: tripolifosfato de sodio.
+- Estabilizante: citrato de sodio.
+
+Para una revelación legible en video se agrupan así:
+1) Leche parcialmente descremada.
+2) Azúcar, cacao y almidón.
+3) Vitaminas B3, A, D y ácido fólico.
+4) Espesantes: celulosa microcristalina, carragenina y carboximetilcelulosa.
+5) Aromas.
+6) Estabilizantes: tripolifosfato de sodio y citrato de sodio.
+
+Fuentes de consulta:
+- Sitio oficial de Cindor — Original 200 ml:
+  https://cindor.com.ar/original-200ml/
+- Ficha comercial de Cindor 200 ml con lista de ingredientes:
+  https://www.vea.com.ar/leche-chocolatada-200-ml-cindor/p
+
+IMPORTANTE SOBRE EXACTITUD
+Las formulaciones pueden cambiar según presentación y actualización del
+producto. Esta producción se refiere específicamente a Cindor Original de
+200 ml. Antes de publicar, contrastar la lista con el envase físico de la
+unidad utilizada. No mezclarla con Cindor 50% más cacao ni con otras
+variedades o tamaños.
+
+------------------------------------------------------------
+3. YOUTUBE SHORTS
+------------------------------------------------------------
+
+TÍTULO PRINCIPAL
+¿Sabés qué tiene una Cindor? 🏆 | El concurso de los ingredientes
+
+TÍTULOS ALTERNATIVOS
+A) Dos participantes, una Cindor: ¿quién sabe más?
+B) ¿Cuáles son los ingredientes de Cindor? Tenés 6 segundos
+C) El desafío Cindor: ¿cuántos ingredientes recordás?
+
+DESCRIPCIÓN
+🏆 ¡Llegó el momento de jugar!
+
+Dos participantes, una pregunta y apenas seis segundos:
+¿cuáles son los ingredientes de una Cindor Original?
+
+Pensá rápido, anotá mentalmente tu respuesta y descubrí cuántos acertaste.
+No vale hacer trampa ni mirar antes de tiempo. 👀
+
+🎮 Entrá a https://ingredora.com y jugá más desafíos de ingredientes.
+
+#Shorts #Ingredora #Cindor #DesafioDeIngredientes #Concurso
+
+ETIQUETAS / TAGS
+Ingredora, Cindor, Cindor Original, ingredientes Cindor, ingredientes de
+Cindor, leche chocolatada, desafío de ingredientes, concurso, trivia,
+adivinar ingredientes, desafío de 6 segundos, juego de memoria,
+cuánto sabés, productos argentinos, Argentina, YouTube Shorts, Shorts
+
+CATEGORÍA
+Entretenimiento
+
+COMENTARIO FIJADO
+¡Se terminó el tiempo! ⏱️ ¿Cuántos ingredientes habías recordado?
+Dejá tu resultado y entrá a https://ingredora.com para jugar más desafíos.
+
+------------------------------------------------------------
+4. INSTAGRAM REELS
+------------------------------------------------------------
+
+CAPTION PRINCIPAL
+🏆 ¡Tenemos pregunta para los participantes!
+
+¿Cuáles son los ingredientes de una Cindor Original? 🥛🍫
+Tenés apenas 6 segundos para responder. ¡Pensá rápido!
+
+¿Quién ganó en tu casa: participante 1 o participante 2?
+Contanos cuántos acertaste y después entrá a jugar en
+👉 https://ingredora.com
+
+#Ingredora #Cindor #DesafioDeIngredientes #Concurso #Trivia
+
+CAPTION ALTERNATIVO
+Dos participantes. Una Cindor. Seis segundos. ⏱️
+¿Te acordás de sus ingredientes?
+¡Jugá vos también en Ingredora.com!
+
+#Ingredora #Cindor #DesafioDeIngredientes
+
+COMENTARIO FIJADO
+¡No vale mirar la respuesta antes de tiempo! 👀
+¿Cuántos acertaste? Te esperamos en Ingredora.com.
+
+PORTADA
+«¿QUÉ TIENE LA CINDOR?»
+Alternativa: «TENÉS 6 SEGUNDOS».
+Elegir un fotograma con los dos atriles y la caja de Cindor visibles.
+
+TEXTO ALTERNATIVO
+Video vertical con estética de programa de concursos. Dos participantes
+aparecen frente a atriles con pulsadores en un escenario de luces. La pregunta
+es cuáles son los ingredientes de Cindor Original de 200 ml. Aparece una
+cuenta regresiva de seis segundos, seguida de una revelación de ingredientes
+y una invitación a jugar en Ingredora.com.
+
+------------------------------------------------------------
+5. TIKTOK
+------------------------------------------------------------
+
+CAPTION PRINCIPAL
+🏆 Dos participantes, una Cindor y 6 segundos para responder.
+¿Sabés cuáles son sus ingredientes? 👀
+¿Cuántos acertaste?
+¡Entrá a jugar en Ingredora.com!
+
+HASHTAGS
+#Ingredora #Cindor #DesafioDeIngredientes #Trivia #ParaTi
+
+CAPTION ALTERNATIVO
+¡A jugar! ⏱️ ¿Qué ingredientes tiene una Cindor?
+Tenés 6 segundos. Después contame cuántos acertaste.
+Jugá en Ingredora.com.
+
+COMENTARIO FIJADO
+¿Ganó el participante 1 o el 2? ¿O les ganaste a los dos? 😂
+Dejá tu puntaje y jugá otro desafío en Ingredora.com.
+
+PORTADA
+«¿SABÉS QUÉ TIENE?»
+Descripción accesible: concurso visual de Ingredora con dos participantes,
+pregunta sobre Cindor Original, cuenta regresiva y revelación de ingredientes.
+
+------------------------------------------------------------
+6. FACEBOOK REELS
+------------------------------------------------------------
+
+TÍTULO
+El concurso de la Cindor: ¿te acordás de sus ingredientes?
+
+COPY
+¡Se abre el juego! 🏆
+
+Dos participantes se enfrentan a una pregunta muy simple… ¿o no tanto?
+¿Cuáles son los ingredientes de una Cindor Original?
+
+Tenés seis segundos para responder. Después contanos cuántos acertaste.
+Y si te quedaste con ganas de jugar, entrá a https://ingredora.com.
+
+#Ingredora #Cindor #DesafioDeIngredientes #Concurso
+
+COMENTARIO FIJADO
+¡Queremos saber tu puntaje! ¿Cuántos ingredientes recordaste?
+Más desafíos en Ingredora.com.
+
+TEXTO ALTERNATIVO
+Escenario de concurso con dos participantes en atriles. Se presenta una
+pregunta sobre los ingredientes de Cindor Original, una cuenta regresiva
+de seis segundos y una pantalla final que invita a jugar en Ingredora.com.
+
+------------------------------------------------------------
+7. X
+------------------------------------------------------------
+
+POST PRINCIPAL
+🏆 Dos participantes. Una Cindor. Seis segundos.
+¿Sabés cuáles son sus ingredientes?
+¿Cuántos acertaste? 👀
+Jugá en https://ingredora.com
+#Ingredora #Cindor
+
+ALTERNATIVA
+¿Te acordás de qué tiene una Cindor? 🥛🍫
+Tenés 6 segundos para responder.
+¡Jugá en Ingredora.com!
+#Ingredora
+
+RESPUESTA OPCIONAL
+¡Se terminó el tiempo! ¿Cuántos acertaste? ⏱️
+Probá otro desafío en https://ingredora.com.
+
+TEXTO ALT
+Video vertical con estética de concurso televisivo. Dos participantes en
+atriles responden una pregunta sobre los ingredientes de Cindor Original.
+Hay una cuenta regresiva y una revelación final.
+
+------------------------------------------------------------
+8. COPY UNIVERSAL Y VARIANTES
+------------------------------------------------------------
+
+A — PRINCIPAL
+Dos participantes. Una Cindor. Seis segundos para responder. 🏆
+¿Cuáles son sus ingredientes? ¿Cuántos acertaste?
+Entrá a https://ingredora.com y jugá.
+
+B — CURIOSIDAD
+Tomamos Cindor desde chicos… pero ¿te acordás de todos sus ingredientes?
+Tenés seis segundos para este desafío. ¡Jugá en Ingredora.com!
+
+C — COMPETENCIA
+¿Le ganás a los dos participantes? 👀
+Mirá la pregunta, pensá rápido y contanos tu puntaje.
+Más desafíos en Ingredora.com.
+
+D — CORTO
+¿Qué tiene la Cindor? ⏱️
+Seis segundos para responder.
+Jugá en Ingredora.com.
+
+------------------------------------------------------------
+9. CHECKLIST ANTES DE PUBLICAR
+------------------------------------------------------------
+
+[ ] Abrir Ingredora Content Studio y seleccionar la Producción 012.
+[ ] Esperar el render en el navegador; no asumir que el paquete JSON es el MP4.
+[ ] Reproducir el video completo.
+[ ] Confirmar que se entiendan claramente los dos participantes y la pregunta.
+[ ] Revisar la cuenta regresiva de seis segundos.
+[ ] Verificar la lista completa de ingredientes contra el envase de 200 ml.
+[ ] Revisar textos: dentro de los márgenes, sin cortes ni superposiciones.
+[ ] Confirmar que el CTA «INGREDORA.COM» se lea al final.
+[ ] Confirmar duración, formato vertical y reproducción con audio.
+[ ] Exportar/descargar el video final y nombrarlo:
+    ingredora-cindor-game-show-001.mp4
+[ ] Adjuntar este TXT al material de publicación.
+[ ] Adaptar el caption a cada red.
+[ ] Elegir portada y completar texto alternativo.
+[ ] Publicar manualmente y guardar los enlaces.
+
+------------------------------------------------------------
+10. MARCAS Y TRANSPARENCIA
+------------------------------------------------------------
+
+Esta pieza es contenido editorial independiente de entretenimiento de
+Ingredora. No está patrocinada, autorizada ni afiliada a Mastellone
+Hermanos, La Serenísima ni Cindor. Cindor y sus signos distintivos
+pertenecen a sus respectivos titulares.
+
+No presentar la pieza como publicidad oficial ni etiquetar cuentas de marca
+como si hubieran participado en la producción.
+
+------------------------------------------------------------
+11. ESTADO DE ENTREGA
+------------------------------------------------------------
+
+Incluye copies y metadatos para:
+- YouTube Shorts.
+- Instagram Reels.
+- TikTok.
+- Facebook Reels.
+- X.
+- Variantes universales, portada, accesibilidad y checklist.
+
+El render audiovisual se realiza en el navegador del Content Studio. El TXT
+acompaña a la producción y la publicación en redes queda pendiente de una
+acción humana.
+
+FIN DEL DOCUMENTO
