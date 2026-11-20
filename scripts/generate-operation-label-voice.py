@@ -23,7 +23,7 @@ SEGMENTS = [
     {"start": 8.10, "text": "Busqué la lista de ingredientes por todos lados...", "rate": "+6%", "pitch": "-5Hz", "volume": "+17%"},
     {"start": 12.85, "text": "¡Pero no aparece por ninguna parte!", "rate": "+8%", "pitch": "-2Hz", "volume": "+18%"},
     {"start": 16.45, "text": "¿Vos sabés cuáles tiene? Necesito que me ayudes.", "rate": "+7%", "pitch": "+1Hz", "volume": "+18%"},
-    {"start": 21.25, "text": "Entrá a Ingredora punto com, completá los ingredientes y ayudame a cerrar el caso.", "rate": "+12%", "pitch": "+2Hz", "volume": "+19%"}, "rate": "+8%", "pitch": "+2Hz", "volume": "+19%"},
+    {"start": 21.25, "text": "Entrá a Ingredora punto com, completá los ingredientes y ayudame a cerrar el caso.", "rate": "+12%", "pitch": "+2Hz", "volume": "+19%"},
 ]
 
 async def synthesize(segment, index):
