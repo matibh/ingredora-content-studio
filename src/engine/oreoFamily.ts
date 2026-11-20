@@ -88,7 +88,7 @@ export function createOreoFamilySet(world: THREE.Scene): OreoFamilySet {
   const plateRim=new THREE.Mesh(new THREE.TorusGeometry(.68,.055,16,96),new THREE.MeshStandardMaterial({color:"#e4ded1",roughness:.3}));plateRim.rotation.x=Math.PI/2;plateRim.position.y=.055;plate.add(plateRim);
   const plateWell=new THREE.Mesh(new THREE.CircleGeometry(.61,96),new THREE.MeshStandardMaterial({color:"#f8f5ed",roughness:.36}));plateWell.rotation.x=-Math.PI/2;plateWell.position.y=.039;plate.add(plateWell);
   // Flexible-looking pillow pack: rounded body, gussets, sealed crimp and a visibly open mouth.
-  const packet=new THREE.Group();packet.position.set(-1.28,-.66,.32);packet.rotation.z=-.10;packet.rotation.x=-.06;world.add(packet);
+  const packet=new THREE.Group();packet.position.set(-1.28,-.695,.32);packet.rotation.set(0,0,0);world.add(packet);
   const filmMat=new THREE.MeshStandardMaterial({map:makePackFront(),roughness:.39,metalness:.10});
   // Open-top flexible pouch: front/back film sheets and side gussets, with no lid across the opening.
   const edgeMat=new THREE.MeshStandardMaterial({color:"#07509d",roughness:.42,metalness:.16});
@@ -130,8 +130,8 @@ export function createOreoFamilySet(world: THREE.Scene): OreoFamilySet {
     // forward toward the plate; never travel through the printed front panel.
     const rise=smooth(elapsed/.95);
     const travel=smooth((elapsed-.90)/1.38);
-    const start=new THREE.Vector3(-1.28,-.38,.39);
-    const mouth=new THREE.Vector3(-1.28,.48,.43);
+    const start=new THREE.Vector3(-1.28,-.05,.39);
+    const mouth=new THREE.Vector3(-1.28,.34,.43);
     const landing=new THREE.Vector3(.55,-1.285,.80);
     const exitX=THREE.MathUtils.lerp(start.x,mouth.x,rise);
     const exitY=THREE.MathUtils.lerp(start.y,mouth.y,rise);
