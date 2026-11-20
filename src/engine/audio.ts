@@ -440,20 +440,20 @@ export async function generateOriginalSoundtrack({
     }
 
     // Six distinct clock ticks during the silent observation window, rising toward the reveal.
-    for (let second = 15; second < 21; second += 1) {
+    for (let second = 17; second < 23; second += 1) {
       addTone(second === 20 ? 1_620 : 1_180, second, 0.09, "sine", second === 20 ? 0.09 : 0.055, 5_600, 0);
       addTone(110, second, 0.12, "triangle", 0.055, 300, 0);
     }
 
     // Case-resolution sting, then a short warm-but-confident brand finish.
     [392.00, 466.16, 587.33, 698.46, 880.00].forEach((hz, index) =>
-      addTone(hz, 21.08 + index * 0.085, 0.44, "triangle", 0.075, 4_600, (index - 2) * 0.16),
+      addTone(hz, 23.08 + index * 0.085, 0.44, "triangle", 0.075, 4_600, (index - 2) * 0.16),
     );
     [261.63, 329.63, 392.00].forEach((hz, index) =>
-      addTone(hz, 24.15 + index * 0.12, 0.68, "sine", 0.045, 3_200, (index - 1) * 0.28),
+      addTone(hz, 26.35 + index * 0.12, 0.68, "sine", 0.045, 3_200, (index - 1) * 0.28),
     );
-    addTone(1_760, 25.25, 0.26, "sine", 0.028, 5_800, 0.28);
-    addTone(2_090, 25.48, 0.32, "sine", 0.024, 6_200, -0.28);
+    addTone(1_760, 27.45, 0.26, "sine", 0.028, 5_800, 0.28);
+    addTone(2_090, 27.68, 0.32, "sine", 0.024, 6_200, -0.28);
   }
 
   return context.startRendering();
