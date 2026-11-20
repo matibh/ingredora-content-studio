@@ -1,272 +1,332 @@
 {
   "voice": "es-AR-TomasNeural",
-  "style": "Argentine male noir detective, suspenseful and playful",
+  "style": "Argentine male noir detective: suspenseful investigation, direct audience appeal, energetic website CTA",
   "durationSeconds": 30.0,
   "segments": [
     {
-      "text": "¡Alto! Tenemos un nuevo caso.",
+      "text": "¡Atención! Caso abierto.",
       "start": 0.25,
-      "end": 3.73,
-      "wordCount": 5,
-      "rate": "+4%",
-      "pitch": "-5Hz",
+      "end": 3.322,
+      "wordCount": 3,
+      "rate": "+6%",
+      "pitch": "-6Hz",
       "volume": "+16%"
     },
     {
-      "text": "El sospechoso: un producto del súper.",
-      "start": 4.15,
-      "end": 7.15,
-      "wordCount": 6,
-      "rate": "+6%",
-      "pitch": "-7Hz",
-      "volume": "+15%"
-    },
-    {
-      "text": "La pista está en su etiqueta.",
-      "start": 8.15,
-      "end": 10.526,
+      "text": "Tenemos un sospechoso: un alfajor Guaymallén.",
+      "start": 3.55,
+      "end": 6.934,
       "wordCount": 6,
       "rate": "+7%",
-      "pitch": "-3Hz",
+      "pitch": "-7Hz",
       "volume": "+16%"
     },
     {
-      "text": "Leé los ingredientes. Tenés seis segundos para memorizarlos.",
-      "start": 11.05,
-      "end": 15.97,
+      "text": "Busqué la lista de ingredientes por todos lados...",
+      "start": 8.1,
+      "end": 11.412,
       "wordCount": 8,
-      "rate": "+8%",
-      "pitch": "-2Hz",
+      "rate": "+6%",
+      "pitch": "-5Hz",
       "volume": "+17%"
     },
     {
-      "text": "¡Tiempo! ¿Cuántos recordás?",
-      "start": 23.25,
-      "end": 26.394,
-      "wordCount": 3,
-      "rate": "+10%",
-      "pitch": "+2Hz",
-      "volume": "+19%"
+      "text": "¡Pero no aparece por ninguna parte!",
+      "start": 12.85,
+      "end": 15.49,
+      "wordCount": 6,
+      "rate": "+8%",
+      "pitch": "-2Hz",
+      "volume": "+18%"
     },
     {
-      "text": "¡Resolvé más casos en Ingredora punto com!",
-      "start": 26.65,
-      "end": 29.794,
-      "wordCount": 7,
-      "rate": "+8%",
+      "text": "¿Vos sabés cuáles tiene? Necesito que me ayudes.",
+      "start": 16.45,
+      "end": 20.722,
+      "wordCount": 8,
+      "rate": "+7%",
       "pitch": "+1Hz",
       "volume": "+18%"
+    },
+    {
+      "text": "Entrá a Ingredora punto com, completá los ingredientes y ayudame a cerrar el caso.",
+      "start": 21.25,
+      "end": 26.338,
+      "wordCount": 14,
+      "rate": "+12%",
+      "pitch": "+2Hz",
+      "volume": "+19%"
     }
   ],
   "words": [
     {
-      "text": "Alto",
-      "start": 0.349,
-      "end": 0.6976,
+      "text": "Atención",
+      "start": 0.3486,
+      "end": 0.8792,
+      "segment": 0
+    },
+    {
+      "text": "Caso",
+      "start": 1.7358,
+      "end": 1.9952,
+      "segment": 0
+    },
+    {
+      "text": "abierto",
+      "start": 1.9953,
+      "end": 2.4316,
       "segment": 0
     },
     {
       "text": "Tenemos",
-      "start": 1.6322,
-      "end": 2.0288,
-      "segment": 0
+      "start": 3.6467,
+      "end": 4.0439,
+      "segment": 1
     },
     {
       "text": "un",
-      "start": 2.0529,
-      "end": 2.113,
-      "segment": 0
-    },
-    {
-      "text": "nuevo",
-      "start": 2.125,
-      "end": 2.4015,
-      "segment": 0
-    },
-    {
-      "text": "caso",
-      "start": 2.4615,
-      "end": 2.786,
-      "segment": 0
-    },
-    {
-      "text": "El",
-      "start": 4.2472,
-      "end": 4.4005,
+      "start": 4.0673,
+      "end": 4.1491,
       "segment": 1
     },
     {
       "text": "sospechoso",
-      "start": 4.4123,
-      "end": 5.0726,
+      "start": 4.1608,
+      "end": 4.7916,
       "segment": 1
     },
     {
       "text": "un",
-      "start": 5.226,
-      "end": 5.3557,
+      "start": 4.9785,
+      "end": 5.0836,
       "segment": 1
     },
     {
-      "text": "producto",
-      "start": 5.391,
-      "end": 5.7684,
+      "text": "alfajor",
+      "start": 5.0953,
+      "end": 5.5042,
       "segment": 1
     },
     {
-      "text": "del",
-      "start": 5.8038,
-      "end": 5.9099,
+      "text": "Guaymallén",
+      "start": 5.5276,
+      "end": 6.0533,
       "segment": 1
     },
     {
-      "text": "súper",
-      "start": 5.9217,
-      "end": 6.2519,
-      "segment": 1
-    },
-    {
-      "text": "La",
-      "start": 8.2467,
-      "end": 8.422,
+      "text": "Busqué",
+      "start": 8.1972,
+      "end": 8.5274,
       "segment": 2
     },
     {
-      "text": "pista",
-      "start": 8.492,
-      "end": 8.7841,
+      "text": "la",
+      "start": 8.551,
+      "end": 8.6335,
       "segment": 2
     },
     {
-      "text": "está",
-      "start": 8.7958,
-      "end": 9.0061,
+      "text": "lista",
+      "start": 8.6571,
+      "end": 8.9283,
       "segment": 2
     },
     {
-      "text": "en",
-      "start": 9.0177,
-      "end": 9.0995,
+      "text": "de",
+      "start": 8.9637,
+      "end": 9.0108,
       "segment": 2
-    },
-    {
-      "text": "su",
-      "start": 9.0995,
-      "end": 9.2047,
-      "segment": 2
-    },
-    {
-      "text": "etiqueta",
-      "start": 9.2164,
-      "end": 9.6486,
-      "segment": 2
-    },
-    {
-      "text": "Leé",
-      "start": 11.1482,
-      "end": 11.4028,
-      "segment": 3
-    },
-    {
-      "text": "los",
-      "start": 11.4375,
-      "end": 11.588,
-      "segment": 3
     },
     {
       "text": "ingredientes",
-      "start": 11.6111,
-      "end": 12.3866,
+      "start": 9.0108,
+      "end": 9.6005,
+      "segment": 2
+    },
+    {
+      "text": "por",
+      "start": 9.6594,
+      "end": 9.7537,
+      "segment": 2
+    },
+    {
+      "text": "todos",
+      "start": 9.8363,
+      "end": 10.0486,
+      "segment": 2
+    },
+    {
+      "text": "lados",
+      "start": 10.0722,
+      "end": 10.5439,
+      "segment": 2
+    },
+    {
+      "text": "Pero",
+      "start": 12.9463,
+      "end": 13.1662,
       "segment": 3
     },
     {
-      "text": "Tenés",
-      "start": 13.2259,
-      "end": 13.4921,
+      "text": "no",
+      "start": 13.2009,
+      "end": 13.3051,
       "segment": 3
     },
     {
-      "text": "seis",
-      "start": 13.4921,
-      "end": 13.7236,
+      "text": "aparece",
+      "start": 13.3167,
+      "end": 13.7102,
       "segment": 3
     },
     {
-      "text": "segundos",
-      "start": 13.7236,
-      "end": 14.1403,
+      "text": "por",
+      "start": 13.7796,
+      "end": 13.8838,
       "segment": 3
     },
     {
-      "text": "para",
-      "start": 14.2097,
-      "end": 14.337,
+      "text": "ninguna",
+      "start": 13.907,
+      "end": 14.2195,
       "segment": 3
     },
     {
-      "text": "memorizarlos",
-      "start": 14.3718,
-      "end": 15.1125,
+      "text": "parte",
+      "start": 14.2889,
+      "end": 14.6014,
       "segment": 3
     },
     {
-      "text": "Tiempo",
-      "start": 23.3455,
-      "end": 23.7545,
+      "text": "Vos",
+      "start": 16.5467,
+      "end": 16.757,
       "segment": 4
     },
     {
-      "text": "Cuántos",
-      "start": 24.6023,
-      "end": 24.9091,
+      "text": "sabés",
+      "start": 16.757,
+      "end": 17.0724,
       "segment": 4
     },
     {
-      "text": "recordás",
-      "start": 24.9318,
-      "end": 25.5227,
+      "text": "cuáles",
+      "start": 17.1308,
+      "end": 17.3762,
       "segment": 4
     },
     {
-      "text": "Resolvé",
-      "start": 26.7463,
-      "end": 27.2324,
+      "text": "tiene",
+      "start": 17.4462,
+      "end": 17.7383,
+      "segment": 4
+    },
+    {
+      "text": "Necesito",
+      "start": 18.6003,
+      "end": 19.1027,
+      "segment": 4
+    },
+    {
+      "text": "que",
+      "start": 19.1611,
+      "end": 19.2195,
+      "segment": 4
+    },
+    {
+      "text": "me",
+      "start": 19.2545,
+      "end": 19.3246,
+      "segment": 4
+    },
+    {
+      "text": "ayudes",
+      "start": 19.3247,
+      "end": 19.862,
+      "segment": 4
+    },
+    {
+      "text": "Entrá",
+      "start": 21.3446,
+      "end": 21.6906,
       "segment": 5
     },
     {
-      "text": "más",
-      "start": 27.2671,
-      "end": 27.4292,
-      "segment": 5
-    },
-    {
-      "text": "casos",
-      "start": 27.4639,
-      "end": 27.7995,
-      "segment": 5
-    },
-    {
-      "text": "en",
-      "start": 27.8342,
-      "end": 27.9153,
+      "text": "a",
+      "start": 21.7688,
+      "end": 21.8357,
       "segment": 5
     },
     {
       "text": "Ingredora",
-      "start": 27.9384,
-      "end": 28.3667,
+      "start": 21.858,
+      "end": 22.2487,
       "segment": 5
     },
     {
       "text": "punto",
-      "start": 28.4477,
-      "end": 28.6676,
+      "start": 22.3268,
+      "end": 22.55,
       "segment": 5
     },
     {
       "text": "com",
-      "start": 28.7255,
-      "end": 28.9454,
+      "start": 22.617,
+      "end": 22.8178,
+      "segment": 5
+    },
+    {
+      "text": "completá",
+      "start": 23.0299,
+      "end": 23.4094,
+      "segment": 5
+    },
+    {
+      "text": "los",
+      "start": 23.4317,
+      "end": 23.5656,
+      "segment": 5
+    },
+    {
+      "text": "ingredientes",
+      "start": 23.588,
+      "end": 24.1572,
+      "segment": 5
+    },
+    {
+      "text": "y",
+      "start": 24.2018,
+      "end": 24.2576,
+      "segment": 5
+    },
+    {
+      "text": "ayudame",
+      "start": 24.2688,
+      "end": 24.7263,
+      "segment": 5
+    },
+    {
+      "text": "a",
+      "start": 24.7263,
+      "end": 24.7598,
+      "segment": 5
+    },
+    {
+      "text": "cerrar",
+      "start": 24.7821,
+      "end": 25.0611,
+      "segment": 5
+    },
+    {
+      "text": "el",
+      "start": 25.0612,
+      "end": 25.1728,
+      "segment": 5
+    },
+    {
+      "text": "caso",
+      "start": 25.1951,
+      "end": 25.4964,
       "segment": 5
     }
   ]
