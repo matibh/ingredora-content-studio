@@ -677,15 +677,22 @@ export async function renderPackageToWebM(
     const musicSource = offline.createBufferSource();
     musicSource.buffer = soundtrack;
     const musicGain = offline.createGain();
-    musicGain.gain.value = 0.11;
+    // Keep the backing track deliberately quiet while the presenter is speaking.
+    musicGain.gain.value = 0.045;
     musicSource.connect(musicGain).connect(offline.destination);
     musicSource.start(0);
     const voiceSource = offline.createBufferSource();
     voiceSource.buffer = voice;
     const voiceGain = offline.createGain();
-    // Normalize quiet source files and keep the spoken track clearly above the music.
-    voiceGain.gain.value = Math.min(4, Math.max(1.8, 0.82 / voicePeak));
-    voiceSource.connect(voiceGain).connect(offline.destination);
+    // The narration is the foreground: normalize it firmly above the soundtrack.
+    voiceGain.gain.value = Math.min(3.2, Math.max(2.0, 0.92 / voicePeak));
+    const voiceCompressor = offline.createDynamicsCompressor();
+    voiceCompressor.threshold.value = -8;
+    voiceCompressor.knee.value = 8;
+    voiceCompressor.ratio.value = 4;
+    voiceCompressor.attack.value = 0.004;
+    voiceCompressor.release.value = 0.18;
+    voiceSource.connect(voiceGain).connect(voiceCompressor).connect(offline.destination);
     voiceSource.start(pkg.voiceoverOffsetSeconds || 0);
     mixedSoundtrack = await offline.startRendering();
     let mixedPeak = 0;
@@ -788,18 +795,68 @@ export async function renderPackageToWebM(
       const time = frame / fps;
       oreoSet.update(time);
       const ease = (value: number) => { const x = Math.max(0, Math.min(1, value)); return x * x * (3 - 2 * x); };
-      // Wider, higher three-quarter tabletop angle: packet opening, flight path and plate stay visible together.
-      let cameraZ = 9.8;
-      let cameraY = 4.05;
-      let targetY = -0.58;
-      let fieldOfView = 41;
-      if (time >= 3 && time < 6.1) { cameraZ = 9.65; cameraY = 4.15; targetY = -0.62; fieldOfView = 41; }
-      else if (time >= 6.1 && time < 11) { const push = ease((time - 6.1) / .75); cameraZ = 9.65 - push * .25; cameraY = 4.15 + push * .05; targetY = -.62; fieldOfView = 41; }
-      else if (time >= 11 && time < 17) { cameraZ = 9.4; cameraY = 4.20; targetY = -.62; fieldOfView = 40; }
-      else if (time >= 17 && time < 22) { const pull = ease((time - 17) / .6); cameraZ = 9.4 + pull * .25; cameraY = 4.20 + pull * .05; targetY = -.62; fieldOfView = 40 + pull; }
-      else if (time >= 22) { const pull = ease((time - 22) / .7); cameraZ = 9.65 + pull * .35; cameraY = 4.25; targetY = -.58; fieldOfView = 41 + pull; }
-      camera.position.set(.02, cameraY, cameraZ);
-      camera.lookAt(.02, targetY, .05);
+      // Cinematic shot language: establish the table, push into the package,
+      // track the cookie's flight, land on the plate, then reveal the full setup.
+      const smooth = (a: number, b: number) => ease((time - a) / (b - a));
+      const mix = (a: number, b: number, t: number) => a + (b - a) * t;
+      let cameraX = 0.02, cameraY = 4.05, cameraZ = 9.8;
+      let targetX = 0.02, targetY = -0.58, targetZ = 0.05, fieldOfView = 41;
+      if (time < 3.0) {
+        const push = smooth(0, 3);
+        cameraZ = mix(10.4, 9.1, push);
+        cameraY = mix(4.35, 3.85, push);
+        targetY = mix(-0.72, -0.48, push);
+        fieldOfView = mix(43, 39, push);
+      } else if (time < 6.2) {
+        const close = smooth(3, 4.0);
+        const follow = smooth(4.15, 6.2);
+        cameraX = mix(-0.35, -0.15, follow);
+        cameraY = mix(3.8, 3.35, close);
+        cameraZ = mix(9.1, 7.25, close);
+        targetX = mix(-0.45, -0.15, follow);
+        targetY = mix(-0.35, -0.55, follow);
+        targetZ = mix(0.0, 0.18, follow);
+        fieldOfView = mix(39, 34, close);
+      } else if (time < 11) {
+        const track = smooth(6.2, 8.8);
+        const settle = smooth(9.2, 11);
+        cameraX = mix(-0.15, 0.55, track);
+        cameraY = mix(3.35, 3.0, track);
+        cameraZ = mix(7.25, 7.7, track);
+        targetX = mix(-0.15, 0.55, track);
+        targetY = mix(-0.55, -0.92, track);
+        targetZ = mix(0.18, 0.55, track);
+        cameraZ = mix(cameraZ, 8.0, settle);
+        fieldOfView = mix(34, 37, settle);
+      } else if (time < 17) {
+        const drift = smooth(11, 17);
+        cameraX = mix(0.55, 0.18, drift);
+        cameraY = mix(3.0, 3.75, drift);
+        cameraZ = mix(8.0, 9.15, drift);
+        targetX = mix(0.55, 0.05, drift);
+        targetY = mix(-0.92, -0.52, drift);
+        targetZ = mix(0.55, 0.05, drift);
+        fieldOfView = mix(37, 41, drift);
+      } else if (time < 22) {
+        const reveal = smooth(17, 18.2);
+        cameraX = mix(0.18, 0.0, reveal);
+        cameraY = mix(3.75, 4.0, reveal);
+        cameraZ = mix(9.15, 9.7, reveal);
+        targetY = mix(-0.52, -0.58, reveal);
+        fieldOfView = mix(41, 43, reveal);
+      } else {
+        const pullback = smooth(22, 24.2);
+        const finish = smooth(24.2, 30);
+        cameraX = mix(0.0, -0.12, finish);
+        cameraY = mix(4.0, 4.45, pullback);
+        cameraZ = mix(9.7, 11.0, pullback);
+        targetY = mix(-0.58, -0.42, pullback);
+        fieldOfView = mix(43, 46, pullback);
+      }
+      // A restrained lateral dolly adds life without shaking the product or losing the plate.
+      cameraX += Math.sin(time * 0.72) * 0.035;
+      camera.position.set(cameraX, cameraY, cameraZ);
+      camera.lookAt(targetX, targetY, targetZ);
       camera.fov = fieldOfView;
       camera.updateProjectionMatrix();
       renderer.render(world, camera);
