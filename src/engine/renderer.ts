@@ -751,62 +751,44 @@ function drawGameShowWordCaptions(
   const group = groups.find((item) => time >= item.start && time < item.end);
   if (!group) return;
 
-  // Reveal only words whose real TTS word-boundary timestamp has started.
+  // Reveal the exact TTS words as their real word-boundary timestamps arrive.
   const visibleWords = group.words.filter((word) => word.start <= time);
   if (!visibleWords.length) return;
-  const activeIndex = visibleWords.findIndex((word) => time >= word.start && time < word.end);
-  const scale = width / 720;
-  let fontSize = Math.min(34 * scale, width * 0.047);
-  const gap = 13 * scale;
-  const maxTextWidth = width * 0.90;
-  let widths: number[] = [];
-  let textWidth = 0;
 
-  const measure = () => {
-    ctx.font = "900 " + Math.round(fontSize) + "px Arial, Helvetica, sans-serif";
-    widths = visibleWords.map((word) => ctx.measureText(word.text).width);
-    textWidth = widths.reduce((sum, value) => sum + value, 0) + gap * Math.max(0, widths.length - 1);
-  };
-  measure();
-  while (textWidth > maxTextWidth && fontSize > 22 * scale) {
-    fontSize -= 1.5 * scale;
-    measure();
-  }
-
-  const padX = 22 * scale;
-  const panelW = Math.min(width * 0.94, textWidth + padX * 2);
-  const panelH = fontSize * 1.72;
-  const panelX = (width - panelW) / 2;
-  const panelY = height * 0.855;
-
+  // Match the former upper scene subtitle: same typeface, size, outline,
+  // centered alignment and vertical anchor. Only the real spoken transcript remains.
+  const caption = visibleWords.map((word) => word.text).join(" ");
+  const fontSize = Math.round(width * 0.052);
   ctx.save();
-  ctx.globalAlpha = 0.97;
-  ctx.shadowColor = "rgba(0,0,0,.48)";
-  ctx.shadowBlur = 18 * scale;
-  roundedRect(ctx, panelX, panelY, panelW, panelH, 10 * scale);
-  ctx.fillStyle = "rgba(4, 8, 20, .86)";
-  ctx.fill();
-  ctx.shadowBlur = 0;
-  ctx.strokeStyle = "rgba(255,255,255,.32)";
-  ctx.lineWidth = 1.4 * scale;
-  ctx.stroke();
+  ctx.font = `800 ${fontSize}px Arial, Helvetica, sans-serif`;
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.lineWidth = Math.max(2, width * 0.004);
+  ctx.lineJoin = "round";
+  ctx.strokeStyle = "rgba(0,0,0,.96)";
+  ctx.fillStyle = "#ffffff";
 
-  let x = width / 2 - textWidth / 2;
-  const baseline = panelY + panelH / 2;
-  visibleWords.forEach((word, index) => {
-    ctx.font = "900 " + Math.round(fontSize) + "px Arial, Helvetica, sans-serif";
-    ctx.textAlign = "left";
-    ctx.textBaseline = "middle";
-    ctx.lineJoin = "round";
-    ctx.lineWidth = 3.2 * scale;
-    ctx.strokeStyle = "rgba(0,0,0,.98)";
-    ctx.strokeText(word.text, x, baseline);
-    ctx.fillStyle = index === activeIndex ? "#ffd45a" : "#ffffff";
-    ctx.shadowColor = index === activeIndex ? "rgba(255,194,55,.38)" : "transparent";
-    ctx.shadowBlur = index === activeIndex ? 7 * scale : 0;
-    ctx.fillText(word.text, x, baseline);
-    ctx.shadowBlur = 0;
-    x += widths[index] + gap;
+  // Keep the same centered layout logic as drawOverlay, including safe wrapping.
+  const words = caption.split(" ");
+  const lines: string[] = [];
+  let line = "";
+  for (const word of words) {
+    const candidate = line ? line + " " + word : word;
+    if (ctx.measureText(candidate).width > width * 0.84 && line) {
+      lines.push(line);
+      line = word;
+    } else {
+      line = candidate;
+    }
+  }
+  if (line) lines.push(line);
+
+  const lineHeight = fontSize * 1.08;
+  const startY = height * 0.76 - ((lines.length - 1) * lineHeight) / 2;
+  lines.forEach((text, index) => {
+    const y = startY + index * lineHeight;
+    ctx.strokeText(text, width / 2, y, width * 0.9);
+    ctx.fillText(text, width / 2, y, width * 0.9);
   });
   ctx.restore();
 }
@@ -1291,7 +1273,9 @@ export async function renderPackageToWebM(
       camera.position.set(x,y,z);camera.lookAt(tx,ty,tz);camera.fov=fov;camera.updateProjectionMatrix();
       renderer.render(world,camera);
       ctx.drawImage(renderer.domElement,0,0,pkg.width,pkg.height);
-      drawOverlay(ctx,sceneAtFrame(pkg,frame),pkg.width,pkg.height);
+      const gameShowScene = sceneAtFrame(pkg, frame);
+      // The static scene headline duplicated the real transcript above it; omit it.
+      drawOverlay(ctx, { ...gameShowScene, headline: undefined }, pkg.width, pkg.height);
       drawGameShowWordCaptions(ctx, time, pkg.width, pkg.height, gameShowCaptionGroups);
       return;
     }
