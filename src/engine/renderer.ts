@@ -973,7 +973,11 @@ export async function renderPackageToWebM(
   const soundtrack = await generateOriginalSoundtrack({ durationSeconds, sampleRate: 48_000, theme: pkg.id.startsWith("ingredora-cindor-game-show-") ? "game-show" : pkg.visualPreset === "coca-cola-poolside" ? "summer-poolside" : pkg.visualPreset === "oreo-family-table" ? "family-merienda" : undefined });
   let mixedSoundtrack = soundtrack;
   if (pkg.voiceoverUrl) {
-    const voiceResponse = await fetch(import.meta.env.BASE_URL + pkg.voiceoverUrl);
+    const voiceUrl = import.meta.env.BASE_URL + pkg.voiceoverUrl
+      + (pkg.voiceoverUrl.includes("?") ? "&" : "?")
+      + "v=" + encodeURIComponent(pkg.createdAt || pkg.id);
+    // Bypass a cached 404 from Pages while the generated voice asset is being published.
+    const voiceResponse = await fetch(voiceUrl, { cache: "no-store" });
     if (!voiceResponse.ok) throw new Error("No se pudo cargar la narración (" + voiceResponse.status + ").");
     const voiceBytes = await voiceResponse.arrayBuffer();
     const decodeContext = new AudioContext({ sampleRate: 48_000 });
