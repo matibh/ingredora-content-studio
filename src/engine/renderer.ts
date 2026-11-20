@@ -184,7 +184,7 @@ function createGameShowSet(world: THREE.Scene): GameShowSet {
   }
   // Neck, refined low-poly face, ears and a small nose bridge.
   const neck=new THREE.Mesh(new THREE.CylinderGeometry(.13,.15,.24,8),hostSkin);neck.position.set(0,1.98,0);host.add(neck);
-  const face=lowSphere("presenter-face",hostSkin,[0,2.28,.015],[.43,.53,.39],10,8);
+  lowSphere("presenter-face",hostSkin,[0,2.28,.015],[.43,.53,.39],10,8);
   lowSphere("left-ear",hostSkin,[-.425,2.29,.005],[.105,.15,.09],7,5);
   lowSphere("right-ear",hostSkin,[.425,2.29,.005],[.105,.15,.09],7,5);
   lowSphere("nose",hostSkin,[0,2.25,.405],[.085,.12,.09],6,5);
