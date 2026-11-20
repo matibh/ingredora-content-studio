@@ -90,15 +90,17 @@ export function createOreoFamilySet(world: THREE.Scene): OreoFamilySet {
   // Flexible-looking pillow pack: rounded body, gussets, sealed crimp and a visibly open mouth.
   const packet=new THREE.Group();packet.position.set(-1.28,-.73,.32);packet.rotation.z=-.10;packet.rotation.x=-.06;world.add(packet);
   const filmMat=new THREE.MeshStandardMaterial({map:makePackFront(),roughness:.39,metalness:.10});
-  const packBody=new THREE.Mesh(new THREE.BoxGeometry(1.18,1.46,.19,8,12,2),filmMat);packBody.castShadow=true;packBody.receiveShadow=true;packet.add(packBody);
+  // Open-top flexible pouch: front/back film sheets and side gussets, with no lid across the opening.
   const edgeMat=new THREE.MeshStandardMaterial({color:"#07509d",roughness:.42,metalness:.16});
-  for(const sideX of [-.59,.59]){const gusset=new THREE.Mesh(new THREE.BoxGeometry(.075,1.38,.25),edgeMat);gusset.position.set(sideX,0,-.005);packet.add(gusset);}
-  const bottomSeal=new THREE.Mesh(new THREE.BoxGeometry(1.22,.10,.22),edgeMat);bottomSeal.position.y=-.86;packet.add(bottomSeal);
-  const backFoil=new THREE.Mesh(new THREE.BoxGeometry(1.12,.16,.24),new THREE.MeshStandardMaterial({color:"#a9c5d4",roughness:.28,metalness:.42}));backFoil.position.set(0,.82,-.015);packet.add(backFoil);
-  const inner=new THREE.Mesh(new THREE.BoxGeometry(.98,.16,.20),new THREE.MeshStandardMaterial({color:"#172b39",roughness:.55,side:THREE.DoubleSide}));inner.position.set(0,.78,.015);packet.add(inner);
-  const flap=new THREE.Group();flap.position.set(0,.78,.10);packet.add(flap);
-  const flapMesh=new THREE.Mesh(new THREE.BoxGeometry(1.16,.30,.055),filmMat);flapMesh.position.set(0,.17,0);flap.add(flapMesh);
-  const crimp=new THREE.Mesh(new THREE.BoxGeometry(1.20,.12,.24),edgeMat);crimp.position.set(0,.93,0);packet.add(crimp);
+  const frontFilm=new THREE.Mesh(new THREE.PlaneGeometry(1.18,1.46,8,12),filmMat);frontFilm.position.set(0,0,.105);frontFilm.castShadow=true;packet.add(frontFilm);
+  const backFilm=new THREE.Mesh(new THREE.PlaneGeometry(1.18,1.46,8,12),new THREE.MeshStandardMaterial({color:"#07509d",roughness:.48,metalness:.12,side:THREE.DoubleSide}));backFilm.position.set(0,0,-.095);packet.add(backFilm);
+  for(const sideX of [-.57,.57]){const gusset=new THREE.Mesh(new THREE.BoxGeometry(.10,1.36,.22),edgeMat);gusset.position.set(sideX,-.015,0);packet.add(gusset);}
+  const bottomSeal=new THREE.Mesh(new THREE.BoxGeometry(1.20,.10,.22),edgeMat);bottomSeal.position.set(0,-.72,0);packet.add(bottomSeal);
+  const inner=new THREE.Mesh(new THREE.PlaneGeometry(.92,.24),new THREE.MeshStandardMaterial({color:"#172b39",roughness:.55,side:THREE.DoubleSide}));inner.rotation.x=-.20;inner.position.set(0,.68,-.035);packet.add(inner);
+  const flap=new THREE.Group();flap.position.set(0,.70,.105);packet.add(flap);
+  const flapMesh=new THREE.Mesh(new THREE.PlaneGeometry(1.12,.32),filmMat);flapMesh.position.set(0,.13,0);flap.add(flapMesh);
+  flapMesh.rotation.x=-.12;
+  for(const sideX of [-.47,.47]){const crimp=new THREE.Mesh(new THREE.BoxGeometry(.22,.08,.20),edgeMat);crimp.position.set(sideX,.76,0);packet.add(crimp);}
   const cookie=makeCookie();cookie.scale.setScalar(.58);world.add(cookie);
   // Glass of chocolate milk: translucent rim, cocoa-colored drink, soft highlights.
   const glass=new THREE.Group();glass.position.set(1.85,-1.42,.48);world.add(glass);
@@ -122,25 +124,27 @@ export function createOreoFamilySet(world: THREE.Scene): OreoFamilySet {
     flap.rotation.x=-open*1.28;flap.rotation.z=-open*.12;
     // Cookie begins fully inside the package, rises through the open mouth,
     // clears the lip, travels in a gravity-driven arc, then lands and settles on the plate.
-    const t=clamp((time-4.15)/2.25);
-    const start=new THREE.Vector3(-1.28,-.34,.27);
-    const mouth=new THREE.Vector3(-1.27,.10,.58);
-    const landing=new THREE.Vector3(.55,-1.32,.80);
-    const lift=smooth(t);
-    const x=THREE.MathUtils.lerp(mouth.x,landing.x,lift);
-    const z=THREE.MathUtils.lerp(mouth.z,landing.z,lift);
-    const arc=Math.sin(Math.PI*lift)*.66;
-    const y=THREE.MathUtils.lerp(mouth.y,landing.y,lift)+arc;
-    const inside=1-smooth((time-4.02)/.25);
-    cookie.visible=time>=4.0;
-    cookie.position.set(THREE.MathUtils.lerp(x,start.x,inside),THREE.MathUtils.lerp(y,start.y,inside),THREE.MathUtils.lerp(z,start.z,inside));
-    const flight=smooth((time-4.15)/2.25);
-    const spin=(1-flight)*.42;
-    cookie.rotation.set(.12+flight*.03, .18+flight*.30, -.10+Math.sin(flight*Math.PI)*.12+spin);
-    const land=smooth((time-6.18)/.42);
-    const bounce=time>6.18?Math.sin((time-6.18)*17)*Math.exp(-(time-6.18)*5)*.055:0;
-    cookie.position.y=THREE.MathUtils.lerp(cookie.position.y, -1.32+Math.max(0,bounce),land);
-    cookie.rotation.z+=time>6.18?Math.sin((time-6.18)*12)*Math.exp(-(time-6.18)*4)*.08:0;
+    const elapsed=time-4.15;
+    const rise=smooth(elapsed/.78);
+    const travel=smooth((elapsed-.72)/1.38);
+    const start=new THREE.Vector3(-1.28,-.70,.30);
+    const mouth=new THREE.Vector3(-1.28,.18,.40);
+    const landing=new THREE.Vector3(.55,-1.285,.80);
+    const exitX=THREE.MathUtils.lerp(start.x,mouth.x,rise);
+    const exitY=THREE.MathUtils.lerp(start.y,mouth.y,rise);
+    const exitZ=THREE.MathUtils.lerp(start.z,mouth.z,rise);
+    const flightArc=Math.sin(Math.PI*travel)*.78;
+    const x=THREE.MathUtils.lerp(mouth.x,landing.x,travel);
+    const y=THREE.MathUtils.lerp(mouth.y,landing.y,travel)+flightArc;
+    const z=THREE.MathUtils.lerp(mouth.z,landing.z,travel);
+    cookie.visible=time>=4.15;
+    cookie.position.set(THREE.MathUtils.lerp(exitX,x,travel),THREE.MathUtils.lerp(exitY,y,travel),THREE.MathUtils.lerp(exitZ,z,travel));
+    const spin=THREE.MathUtils.clamp(elapsed/2.0,0,1);
+    cookie.rotation.set(.08+spin*.18, .10+spin*.55, -.06+Math.sin(spin*Math.PI)*.20);
+    const impact=THREE.MathUtils.clamp((elapsed-2.05)/.32,0,1);
+    const bounce=elapsed>2.05?Math.sin((elapsed-2.05)*19)*Math.exp(-(elapsed-2.05)*5.8)*.045:0;
+    cookie.position.y=THREE.MathUtils.lerp(cookie.position.y,-1.285+Math.max(0,bounce),impact);
+    cookie.rotation.z+=elapsed>2.05?Math.sin((elapsed-2.05)*13)*Math.exp(-(elapsed-2.05)*4.8)*.07:0;
     const scale=.58;
     cookie.scale.setScalar(scale);
   };
@@ -165,7 +169,7 @@ export function drawOreoFamilyOverlay(ctx:CanvasRenderingContext2D,time:number,w
   ctx.save();ctx.globalAlpha=ease(time/.28);rounded(brandX,brandY,brandW,brandH,brandH*.5);ctx.fillStyle="rgba(5,23,38,.93)";ctx.fill();ctx.strokeStyle="rgba(216,243,106,.75)";ctx.lineWidth=2*scale;ctx.stroke();ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle=white;ctx.font="900 "+Math.round(width*.039)+"px Arial";ctx.fillText("INGREDORA.COM",width/2,brandY+brandH/2,brandW*.88);ctx.restore();
 
   if(time<3.05){
-    const x=width*.07,y=height*.565,w=width*.86,h=height*.225;panel(x,y,w,h,ease(time/.28));
+    const x=width*.07,y=height*.135,w=width*.86,h=height*.19;panel(x,y,w,h,ease(time/.28));
     ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle=white;
     const fs=fit("¿CUÁNTO SABÉS DE LO QUE COMÉS?",w*.88,width*.058,width*.043);ctx.font="900 "+Math.round(fs)+"px Arial";
     ctx.fillText("¿CUÁNTO SABÉS DE",width/2,y+h*.32,w*.88);
@@ -173,21 +177,18 @@ export function drawOreoFamilyOverlay(ctx:CanvasRenderingContext2D,time:number,w
     ctx.fillStyle=lime;ctx.font="900 "+Math.round(width*.046)+"px Arial";ctx.fillText("PONÉ A PRUEBA LO QUE SABÉS",width/2,y+h*.81,w*.88);
     ctx.restore();return;
   }
-  if(time<6.1){
-    const x=width*.08,y=height*.70,w=width*.84,h=height*.12;panel(x,y,w,h,ease((time-3.05)/.25));
-    ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle=white;ctx.font="900 "+Math.round(width*.052)+"px Arial";ctx.fillText("HOY: OREO ORIGINAL",width/2,y+h*.5,w*.88);ctx.restore();return;
-  }
+  if(time<6.1){ctx.restore();return;}
   if(time<11){
-    const x=width*.07,y=height*.70,w=width*.86,h=height*.13;panel(x,y,w,h,ease((time-6.1)/.2));
+    const x=width*.08,y=height*.135,w=width*.84,h=height*.085;panel(x,y,w,h,ease((time-6.1)/.2));
     ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle=white;const line=time<9?"MIRÁ BIEN ESTA GALLETITA":"¿QUÉ INGREDIENTES TIENE?";ctx.font="900 "+Math.round(width*.047)+"px Arial";ctx.fillText(line,width/2,y+h*.5,w*.88);ctx.restore();return;
   }
   if(time<17){
-    const x=width*.18,y=height*.665,w=width*.64,h=height*.19;panel(x,y,w,h,ease((time-11)/.18));
+    const x=width*.18,y=height*.135,w=width*.64,h=height*.17;panel(x,y,w,h,ease((time-11)/.18));
     const remain=Math.max(1,6-Math.floor(time-11));ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle=lime;ctx.font="900 "+Math.round(width*.13)+"px Arial";ctx.fillText(String(remain),width/2,y+h*.49);
     ctx.fillStyle=white;ctx.font="800 "+Math.round(width*.033)+"px Arial";ctx.fillText("SEGUNDOS PARA RESPONDER",width/2,y+h*.83,w*.9);ctx.restore();return;
   }
   if(time<22){
-    const x=width*.045,y=height*.665,w=width*.91,h=height*.265;panel(x,y,w,h,ease((time-17)/.2));
+    const x=width*.045,y=height*.135,w=width*.91,h=height*.265;panel(x,y,w,h,ease((time-17)/.2));
     ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle=lime;ctx.font="900 "+Math.round(width*.033)+"px Arial";ctx.fillText("¿QUÉ TIENE OREO ORIGINAL?",width/2,y+h*.105,w*.9);
     const items=["AZÚCAR","HARINA DE TRIGO ENRIQUECIDA","ACEITE VEGETAL Y CACAO","JARABE DE MAÍZ Y ALMIDÓN","SAL Y BICARBONATOS","LECITINA DE SOJA Y VAINILLINA"];
     const cellW=w*.46,cellH=h*.205,gap=w*.025,startY=y+h*.25;
