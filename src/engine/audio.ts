@@ -36,7 +36,7 @@ export async function generateOriginalSoundtrack({
   master.connect(compressor);
   compressor.connect(context.destination);
 
-  const beat = theme === "game-show" ? 60 / 126 : 60 / 108;
+  const beat = theme === "game-show" ? 60 / 140 : 60 / 108;
   const bar = beat * 4;
   const progression = [
     { bass: 65.41, chord: [261.63, 329.63, 392.0] },
@@ -80,6 +80,7 @@ export async function generateOriginalSoundtrack({
     oscillator.stop(end + 0.01);
   };
 
+  if (theme !== "game-show") {
   // Soft sustained chord layers: warm, unobtrusive and loop-like.
   for (let start = 0, index = 0; start < durationSeconds; start += bar, index += 1) {
     const chord = progression[index % progression.length];
@@ -114,6 +115,8 @@ export async function generateOriginalSoundtrack({
     }
   }
 
+  }
+
   // Quiet, filtered noise ticks add movement without using any external samples.
   let seed = 0x1a2b3c4d;
   const random = () => {
@@ -124,6 +127,7 @@ export async function generateOriginalSoundtrack({
   const noiseBuffer = context.createBuffer(1, noiseLength, sampleRate);
   const noiseData = noiseBuffer.getChannelData(0);
   for (let i = 0; i < noiseLength; i += 1) noiseData[i] = (random() * 2 - 1) * (1 - i / noiseLength);
+  if (theme !== "game-show") {
   for (let start = beat; start < durationSeconds; start += beat) {
     const source = context.createBufferSource();
     const filter = context.createBiquadFilter();
@@ -141,6 +145,7 @@ export async function generateOriginalSoundtrack({
     gain.connect(panner);
     panner.connect(master);
     source.start(start);
+  }
   }
 
 
@@ -260,102 +265,110 @@ export async function generateOriginalSoundtrack({
   }
 
   if (theme === "game-show") {
-    // Brighter, faster TV quiz-show arrangement: punchy bass, brass stabs and a driving beat.
-    for (let bar = 0; bar < durationSeconds; bar += beat * 4) {
-      addTone(98, bar, 1.45, "triangle", 0.15, 460, 0);
-      addTone(196, bar + 0.015, 0.72, "sawtooth", 0.045, 1_500, -0.12);
-      addTone(293.66, bar + 0.025, 0.34, "sawtooth", 0.075, 2_800, 0.18);
-      addTone(392, bar + beat * 2, 0.30, "sawtooth", 0.065, 3_200, -0.18);
-      addTone(587.33, bar + beat * 3, 0.22, "triangle", 0.055, 3_800, 0.2);
-    }
+    // A completely new high-energy live quiz-show composition: funky brass, syncopated bass,
+    // punchy drums and a memorable call-and-response synth riff. No applause or crowd effects.
+    const bpm = 140;
+    const q = 60 / bpm;
+    const barLength = q * 4;
+    const roots = [73.42, 65.41, 87.31, 82.41]; // D, C, F, E
+    const chordSets = [
+      [293.66, 349.23, 440.00], // Dm
+      [261.63, 329.63, 392.00], // C
+      [349.23, 440.00, 523.25], // F
+      [329.63, 392.00, 493.88], // Em
+    ];
 
-    // Live TV game-show fanfare: bright brass-like stabs and a fast snare build.
-    [392, 493.88, 587.33, 783.99].forEach((frequency, index) => {
-      const at = 0.16 + index * 0.055;
-      addTone(frequency, at, 0.62, "sawtooth", 0.105, 3600, (index - 1.5) * 0.22);
-      addTone(frequency * 0.5, at, 0.52, "square", 0.035, 1800, (1.5 - index) * 0.18);
+    // A bold opening hit, then an ascending broadcast-style brass fanfare.
+    [146.83, 220.00, 293.66, 349.23, 440.00, 587.33].forEach((hz, i) => {
+      addTone(hz, 0.08 + i * 0.065, 0.48, "sawtooth", 0.105, 2_600 + i * 280, (i - 2.5) * 0.15);
+      addTone(hz * 2, 0.08 + i * 0.065, 0.30, "square", 0.025, 3_600, (2.5 - i) * 0.12);
     });
-    for (let i = 0; i < 16; i += 1) {
-      const at = 2.35 + i * 0.075;
-      if (at < durationSeconds) {
-        addTone(1850 + random() * 500, at, 0.045, "square", 0.025 + i * 0.0015, 5800, -0.5 + random());
-        addTone(130, at, 0.055, "triangle", 0.045 + i * 0.002, 700, 0);
+
+    // Funky bass line: syncopated, octave-jumping and deliberately unlike the previous tune.
+    for (let barIndex = 0, at = 0; at < durationSeconds; barIndex += 1, at += barLength) {
+      const root = roots[barIndex % roots.length];
+      const pattern = [
+        [0, 1], [0.75, 2], [1.5, 1], [2.0, 1.5], [2.75, 2], [3.5, 1],
+      ];
+      for (const [beatOffset, length] of pattern) {
+        const t = at + beatOffset * q;
+        addTone(root, t, q * 0.30, "square", 0.16, 620, -0.08);
+        addTone(root * 2, t + 0.012, q * 0.24, "sawtooth", 0.055, 1_250, 0.08);
       }
-    }
-    for (let at = 3.55; at < durationSeconds; at += bar * 2) {
-      [392, 493.88, 587.33].forEach((frequency, index) =>
-        addTone(frequency, at, 0.28, "sawtooth", 0.075, 3000, (index - 1) * 0.28),
-      );
+
+      // Short brass chord punches on offbeats, with alternating stereo placement.
+      const chord = chordSets[barIndex % chordSets.length];
+      [0.5, 1.75, 2.5, 3.25].forEach((offset, hit) => {
+        chord.forEach((hz, note) =>
+          addTone(hz * (hit === 2 ? 2 : 1), at + offset * q, 0.19, "sawtooth",
+            hit === 2 ? 0.052 : 0.072, 2_900, (note - 1) * 0.32 + (hit % 2 ? 0.12 : -0.12)),
+        );
+      });
     }
 
-    // A lively four-on-the-floor beat, backbeat accents and bright hi-hat ticks.
-    for (let start = 0, beatIndex = 0; start < durationSeconds; start += beat, beatIndex += 1) {
-      addTone(beatIndex % 4 === 0 ? 62 : 74, start, 0.19, "sine", 0.22, 190, 0);
+    // Driving four-on-the-floor kick, crisp snare on 2/4 and busy closed hats.
+    const drumNoiseLength = Math.ceil(sampleRate * 0.12);
+    const drumNoise = context.createBuffer(1, drumNoiseLength, sampleRate);
+    const drumData = drumNoise.getChannelData(0);
+    for (let i = 0; i < drumNoiseLength; i += 1) {
+      drumData[i] = (random() * 2 - 1) * Math.exp(-(i / sampleRate) * 34);
+    }
+    for (let beatIndex = 0, at = 0; at < durationSeconds; beatIndex += 1, at += q) {
+      addTone(beatIndex % 4 === 0 ? 58 : 68, at, 0.22, "sine", 0.24, 170, 0);
       if (beatIndex % 4 === 1 || beatIndex % 4 === 3) {
-        addTone(185, start, 0.095, "triangle", 0.10, 1_100, 0);
-        addTone(1_650, start, 0.055, "square", 0.025, 5_800, 0.12);
+        const snare = context.createBufferSource();
+        const snareFilter = context.createBiquadFilter();
+        const snareGain = context.createGain();
+        snare.buffer = drumNoise;
+        snareFilter.type = "highpass";
+        snareFilter.frequency.value = 1_100;
+        snareGain.gain.setValueAtTime(0.0001, at);
+        snareGain.gain.linearRampToValueAtTime(0.115, at + 0.004);
+        snareGain.gain.exponentialRampToValueAtTime(0.0001, Math.min(durationSeconds, at + 0.12));
+        snare.connect(snareFilter); snareFilter.connect(snareGain); snareGain.connect(master);
+        snare.start(at);
       }
-      addTone(7_200, start + beat / 2, 0.035, "square", 0.018, 9_000, beatIndex % 2 ? 0.35 : -0.35);
+      for (const sub of [0, 0.5]) {
+        const hat = context.createBufferSource();
+        const hatFilter = context.createBiquadFilter();
+        const hatGain = context.createGain();
+        hat.buffer = drumNoise;
+        hatFilter.type = "highpass";
+        hatFilter.frequency.value = 6_200;
+        const hitAt = at + sub * q;
+        hatGain.gain.setValueAtTime(0.0001, hitAt);
+        hatGain.gain.linearRampToValueAtTime(sub === 0 ? 0.027 : 0.018, hitAt + 0.002);
+        hatGain.gain.exponentialRampToValueAtTime(0.0001, Math.min(durationSeconds, hitAt + 0.045));
+        hat.connect(hatFilter); hatFilter.connect(hatGain); hatGain.connect(master);
+        hat.start(hitAt);
+      }
     }
 
-    // Six distinct clock ticks during the contestant countdown.
+    // Signature call-and-response melody: a short brass hook answered by a bright synth.
+    const hook = [587.33, 698.46, 783.99, 698.46, 587.33, 523.25, 440.00, 523.25,
+      587.33, 783.99, 880.00, 783.99, 698.46, 587.33, 523.25, 440.00];
+    for (let i = 0, at = 2.8; at < durationSeconds; i += 1, at += q * 0.5) {
+      const hz = hook[i % hook.length];
+      const accent = i % 8 === 0;
+      addTone(hz, at, accent ? 0.24 : 0.15, accent ? "sawtooth" : "square",
+        accent ? 0.095 : 0.052, accent ? 3_400 : 4_200, i % 2 ? 0.28 : -0.28);
+      if (i % 4 === 2) addTone(hz * 0.5, at + 0.025, 0.18, "triangle", 0.045, 1_800, 0);
+    }
+
+    // Six countdown ticks remain clear above the new instrumental.
     for (let second = 10; second < 16; second += 1) {
-      addTone(second === 15 ? 1_320 : 880, second, 0.085, "square", second === 15 ? 0.075 : 0.045, 4_500, 0);
-      addTone(110, second, 0.12, "sine", 0.10, 360, 0);
+      addTone(second === 15 ? 1_480 : 1_050, second, 0.075, "square",
+        second === 15 ? 0.075 : 0.048, 5_000, 0);
+      addTone(82.41, second, 0.10, "sine", 0.085, 260, 0);
     }
 
-    // Studio audience applause: dense, layered claps with a short room reflection.
-    const applauseLength = Math.ceil(sampleRate * 0.16);
-    const applauseBuffer = context.createBuffer(1, applauseLength, sampleRate);
-    const applauseData = applauseBuffer.getChannelData(0);
-    for (let i = 0; i < applauseLength; i += 1) {
-      const t = i / sampleRate;
-      applauseData[i] = (random() * 2 - 1) * Math.exp(-t * 27) * (0.72 + 0.28 * Math.sin(t * 190));
-    }
-    const addApplause = (from: number, to: number, intensity: number) => {
-      for (let start = from; start < Math.min(to, durationSeconds - 0.2); start += 0.038 + random() * 0.052) {
-        for (let layer = 0; layer < 3; layer += 1) {
-          const hitAt = start + layer * (0.006 + random() * 0.009);
-          const source = context.createBufferSource();
-          const filter = context.createBiquadFilter();
-          const gain = context.createGain();
-          const pan = context.createStereoPanner();
-          source.buffer = applauseBuffer;
-          filter.type = "bandpass";
-          filter.frequency.value = 680 + random() * 2700;
-          filter.Q.value = 0.35 + random() * 0.45;
-          const peak = intensity * (0.55 + random() * 0.8) / (layer === 0 ? 1 : 1.35);
-          gain.gain.setValueAtTime(0.0001, hitAt);
-          gain.gain.linearRampToValueAtTime(peak, hitAt + 0.003);
-          gain.gain.exponentialRampToValueAtTime(0.0001, hitAt + 0.16);
-          pan.pan.value = -0.95 + random() * 1.9;
-          source.connect(filter); filter.connect(gain); gain.connect(pan); pan.connect(master);
-          source.start(hitAt);
-          const echo = context.createBufferSource();
-          const echoGain = context.createGain();
-          const echoPan = context.createStereoPanner();
-          echo.buffer = applauseBuffer;
-          echoGain.gain.setValueAtTime(0.0001, hitAt + 0.045);
-          echoGain.gain.linearRampToValueAtTime(peak * 0.24, hitAt + 0.05);
-          echoGain.gain.exponentialRampToValueAtTime(0.0001, hitAt + 0.19);
-          echoPan.pan.value = -pan.pan.value * 0.7;
-          echo.connect(filter); filter.connect(echoGain); echoGain.connect(echoPan); echoPan.connect(master);
-          echo.start(hitAt + 0.045);
-        }
-        addTone(220, start, 0.075, "triangle", intensity * 0.22, 520, -0.2 + random() * 0.4);
-      }
-    };
-    // Noticeable opening welcome and four-second finale applause under the CTA.
-    addApplause(0.12, Math.min(3.05, durationSeconds * 0.20), 0.34);
-    addApplause(Math.max(0, durationSeconds - 4.0), durationSeconds - 0.2, 0.42);
-
-    // Reveal sting and final CTA sparkle.
-    [523.25, 659.25, 783.99, 1_046.5].forEach((frequency, index) => {
-      addTone(frequency, 16.05 + index * 0.09, 0.58, "triangle", 0.09, 5_200, (index - 1.5) * 0.18);
-    });
-    addTone(65.41, 16.02, 0.55, "sine", 0.22, 180, 0);
-    addTone(880, 25.15, 0.42, "triangle", 0.085, 5_000, -0.18);
-    addTone(1_320, 25.32, 0.50, "sine", 0.075, 6_000, 0.18);
+    // A new rising reveal sting and a short branded CTA finish. No clapping.
+    [587.33, 698.46, 880.00, 1_046.5].forEach((hz, i) =>
+      addTone(hz, 16.05 + i * 0.075, 0.48, "sawtooth", 0.085, 4_400, (i - 1.5) * 0.2),
+    );
+    [293.66, 369.99, 440.00].forEach((hz, i) =>
+      addTone(hz, 25.05 + i * 0.09, 0.42, "square", 0.065, 3_600, (i - 1) * 0.25),
+    );
   }
 
   return context.startRendering();
