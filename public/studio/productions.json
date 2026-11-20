@@ -1,7 +1,27 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-20T19:00:00-03:00",
+  "updatedAt": "2026-11-20T19:45:00-03:00",
   "productions": [
+    {
+      "id": "ingredora-cindor-game-show-001",
+      "title": "Cindor Original — El concurso de los ingredientes",
+      "description": "Programa de concursos con dos participantes, atriles y pulsadores. Pregunta sobre los ingredientes de Cindor Original 200 ml, seis segundos para responder y revelación final. Cierre: «¿Cuántos acertaste? Entrá a Ingredora.com y jugá».",
+      "status": "rendering",
+      "packageUrl": "studio/packages/cindor-game-show.v1.json",
+      "durationSeconds": 30,
+      "aspectRatio": "9:16",
+      "language": "Español argentino",
+      "platforms": [
+        "TikTok",
+        "Instagram Reels",
+        "YouTube Shorts",
+        "Facebook Reels",
+        "X"
+      ],
+      "version": "1.0",
+      "createdAt": "2026-11-20T19:45:00-03:00",
+      "caption": "Dos participantes. Una Cindor. ¿Quién sabe qué ingredientes tiene? 🏆 Tenés 6 segundos para jugar desde casa. Después contanos cuántos acertaste. ¡Entrá a Ingredora.com y probá más desafíos! #Ingredora #Cindor #DesafioDeIngredientes #Concurso"
+    },
     {
       "id": "ingredora-oreo-family-merienda-011",
       "title": "Oreo Original — subtítulos agrupados (render nuevo)",
