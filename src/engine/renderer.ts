@@ -71,6 +71,17 @@ function createGameShowSet(world: THREE.Scene): GameShowSet {
   }
   addBox("scoreboard-frame","#dcae51",[0,3.2,-6.72],[8.5,3.45,.38],mat("#d7a642",.25,.65));
   addBox("scoreboard-screen","#121b39",[0,3.2,-6.49],[8.12,3.08,.12],new THREE.MeshBasicMaterial({color:"#121b39"}));
+  const cindorScreenTexture=makeCanvasTexture((ctx,w,h)=>{
+    const g=ctx.createLinearGradient(0,0,w,h);g.addColorStop(0,"#b51f31");g.addColorStop(.48,"#e33b43");g.addColorStop(1,"#74152a");ctx.fillStyle=g;ctx.fillRect(0,0,w,h);
+    for(let i=0;i<90;i++){ctx.fillStyle="rgba(255,210,120,"+(.025+(i%4)*.012)+")";ctx.beginPath();ctx.arc((i*173)%w,(i*97)%h,8+(i%6)*8,0,Math.PI*2);ctx.fill();}
+    ctx.fillStyle="rgba(25,8,18,.22)";ctx.fillRect(0,h*.76,w,h*.24);
+    ctx.textAlign="center";ctx.textBaseline="middle";ctx.shadowColor="#3a0710";ctx.shadowBlur=24;
+    ctx.fillStyle="#fff3dc";ctx.font="900 210px Arial Black,Arial";ctx.fillText("CINDOR",w*.5,h*.38,w*.88);
+    ctx.shadowBlur=0;ctx.fillStyle="#ffe3aa";ctx.font="800 54px Arial";ctx.fillText("EL DESAFÍO DE LOS INGREDIENTES",w*.5,h*.72,w*.92);
+    ctx.fillStyle="#fff";ctx.font="700 38px Arial";ctx.fillText("ORIGINAL · 200 ml",w*.5,h*.88,w*.8);
+  },1536,600);
+  const cindorScreen=new THREE.Mesh(new THREE.PlaneGeometry(7.98,2.94),new THREE.MeshBasicMaterial({map:cindorScreenTexture,emissive:"#ffffff",emissiveIntensity:.35}));
+  cindorScreen.position.set(0,3.2,-6.405);world.add(cindorScreen);
   // Decorative LED arcs on both sides.
   for(const side of [-1,1]){
     for(let n=0;n<4;n++){
@@ -102,7 +113,7 @@ function createGameShowSet(world: THREE.Scene): GameShowSet {
   const podiums: THREE.Group[]=[];
   const people: THREE.Group[]=[];
   const createContestant=(x:number, jersey:string, skin:string, hair:string, index:number)=>{
-    const group=new THREE.Group(); group.position.set(x,-1.75,-.25); world.add(group); people.push(group);
+    const group=new THREE.Group(); group.position.set(x,-1.75,-.25); group.rotation.y=index===0?0.78:-0.78; world.add(group); people.push(group);
     const body=new THREE.Mesh(new THREE.BoxGeometry(.72,1.22,.42),mat(jersey,.68,.02)); body.position.y=1.22; body.castShadow=true; group.add(body);
     const neck=new THREE.Mesh(new THREE.BoxGeometry(.22,.20,.22),mat(skin)); neck.position.y=1.83; group.add(neck);
     const head=new THREE.Mesh(new THREE.BoxGeometry(.58,.58,.58),mat(skin)); head.position.y=2.12; head.scale.set(1,1,1); head.castShadow=true; group.add(head);
@@ -112,7 +123,7 @@ function createGameShowSet(world: THREE.Scene): GameShowSet {
       const arm=new THREE.Mesh(new THREE.BoxGeometry(.18,.72,.18),mat(skin)); arm.position.set(side*.43,1.24,.03); arm.rotation.z=side*(index===0?-.25:.25); group.add(arm);
       const hand=new THREE.Mesh(new THREE.BoxGeometry(.20,.20,.20),mat(skin)); hand.position.set(side*.48,.91,.05); group.add(hand);
     }
-    const podium=new THREE.Group(); podium.position.set(x,-1.74,.85); world.add(podium); podiums.push(podium);
+    const podium=new THREE.Group(); podium.position.set(x,-1.74,.85); podium.rotation.y=index===0?0.42:-0.42; world.add(podium); podiums.push(podium);
     const color=index===0?"#bd283d":"#1765b4";
     const shell=new THREE.Mesh(new THREE.BoxGeometry(1.5,1.62,.9),mat(color,.25,.35)); shell.position.y=.82; shell.castShadow=true; podium.add(shell);
     const face=new THREE.Mesh(new THREE.BoxGeometry(1.28,.95,.035),mat(index===0?"#f14b5d":"#3698ec",.3,.2)); face.position.set(0,.88,.47); podium.add(face);
@@ -121,10 +132,10 @@ function createGameShowSet(world: THREE.Scene): GameShowSet {
     const button=new THREE.Mesh(new THREE.SphereGeometry(.22,24,16),new THREE.MeshStandardMaterial({color:"#ffe56a",emissive:"#ffb51e",emissiveIntensity:1.4,roughness:.2})); button.scale.y=.55; button.position.set(0,1.91,.14); podium.add(button);
     return group;
   };
-  createContestant(-3.15,"#263d69","#d9a17e","#28202a",0);
-  createContestant(3.15,"#5d3548","#8d583f","#211c1b",1);
+  createContestant(-2.25,"#263d69","#d9a17e","#28202a",0);
+  createContestant(2.25,"#5d3548","#8d583f","#211c1b",1);
   // Host centered between contestants, slightly behind the front edge.
-  const host=new THREE.Group(); host.position.set(0,-1.72,-2.0); world.add(host);
+  const host=new THREE.Group(); host.position.set(0,-1.72,-3.1); world.add(host);
   const hostBody=new THREE.Mesh(new THREE.BoxGeometry(.76,1.30,.44),mat("#e9e9e6",.45,.08)); hostBody.position.y=1.25; host.add(hostBody);
   const hostHead=new THREE.Mesh(new THREE.BoxGeometry(.56,.62,.56),mat("#d5a07e")); hostHead.position.set(0,2.05,0); host.add(hostHead);
   const hostHair=new THREE.Mesh(new THREE.BoxGeometry(.60,.18,.60),mat("#28232a")); hostHair.position.set(0,2.38,-.015); host.add(hostHair);
@@ -1044,13 +1055,30 @@ export async function renderPackageToWebM(
       const smooth=(a:number,b:number)=>{const v=Math.max(0,Math.min(1,(time-a)/(b-a)));return v*v*(3-2*v);};
       const mix=(a:number,b:number,t:number)=>a+(b-a)*t;
       let x=0,y=3.2,z=19.5,tx=0,ty=1.2,tz=-3.3,fov=48;
-      if(time<4){const t=smooth(0,4);z=mix(21,18.5,t);y=mix(3.8,3,t);ty=1.25;fov=50;}
-      else if(time<8){const t=smooth(4,5);x=mix(0,-.25,t);z=mix(18.5,15.5,t);y=mix(3,2.7,t);tx=-.25;ty=1.55;fov=45;}
-      else if(time<13){const t=smooth(8,9);x=mix(-.25,.15,t);z=mix(15.5,17.2,t);tx=.15;ty=1.45;fov=47;}
-      else if(time<16){const t=smooth(13,14);x=mix(.15,0,t);z=mix(17.2,16.2,t);y=2.8;ty=1.45;fov=45;}
-      else if(time<21){const t=smooth(16,17.5);z=mix(16.2,19,t);y=mix(2.8,3.5,t);ty=1.3;fov=49;}
-      else{const t=smooth(21,24);z=mix(19,21,t);y=mix(3.5,4,t);ty=1.1;fov=51;}
-      x+=Math.sin(time*.42)*.10;
+      const ease=(v:number)=>{const q=Math.max(0,Math.min(1,v));return q*q*(3-2*q);};
+      const blend=(a:number,b:number,t:number)=>a+(b-a)*t;
+      // Deliberate broadcast grammar: master, branded screen, two-shot, singles,
+      // countdown insert, reveal, then a clean end-card master.
+      if(time<3.5){
+        const t=ease(time/3.5);x=0;y=blend(4.0,3.4,t);z=blend(23,19,t);tx=0;ty=1.25;tz=-3.4;fov=blend(54,49,t);
+      }else if(time<6.4){
+        const t=ease((time-3.5)/1.0);x=0;y=blend(3.1,3.25,t);z=blend(17,11.8,t);tx=0;ty=3.15;tz=-6.35;fov=blend(47,34,t);
+      }else if(time<10.2){
+        const t=ease((time-6.4)/.8);x=blend(0,-.25,t);y=blend(2.4,1.9,t);z=blend(13.8,11.5,t);tx=0;ty=.85;tz=-.2;fov=blend(43,39,t);
+      }else if(time<13.0){
+        const t=ease((time-10.2)/.45);x=blend(-.25,-2.0,t);y=blend(1.9,2.25,t);z=blend(11.5,8.2,t);tx=-2.2;ty=.8;tz=-.05;fov=blend(39,34,t);
+      }else if(time<16.0){
+        const t=ease((time-13)/.45);x=blend(-2,2,t);y=blend(2.25,2.2,t);z=blend(8.2,8.4,t);tx=2.2;ty=.85;tz=-.05;fov=34;
+      }else if(time<20.0){
+        const t=ease((time-16)/.7);x=blend(2,0,t);y=blend(2.2,3.0,t);z=blend(8.4,15.5,t);tx=0;ty=1.2;tz=-2.8;fov=blend(34,46,t);
+      }else if(time<24.0){
+        const t=ease((time-20)/.5);x=0;y=blend(3.0,2.5,t);z=blend(15.5,10.8,t);tx=0;ty=3.1;tz=-6.35;fov=blend(46,32,t);
+      }else if(time<27.0){
+        const t=ease((time-24)/.8);x=blend(0,-.5,t);y=blend(2.5,2.0,t);z=blend(10.8,12.5,t);tx=0;ty=1.0;tz=-.8;fov=blend(32,40,t);
+      }else{
+        const t=ease((time-27)/2.5);x=blend(-.5,0,t);y=blend(2.0,3.8,t);z=blend(12.5,20.5,t);tx=0;ty=1.2;tz=-3.2;fov=blend(40,51,t);
+      }
+      x+=Math.sin(time*.38)*.055;
       camera.position.set(x,y,z);camera.lookAt(tx,ty,tz);camera.fov=fov;camera.updateProjectionMatrix();
       renderer.render(world,camera);
       ctx.drawImage(renderer.domElement,0,0,pkg.width,pkg.height);
