@@ -18,12 +18,12 @@ DURATION_MS = 30_000
 # the start, then emphatic and playful on the reveal and the Ingredora invitation.
 # Six seconds of absolute narration silence are reserved for the visual countdown.
 SEGMENTS = [
-    {"start": 0.25, "text": "¡Alto! Tenemos un nuevo caso.", "rate": "+4%", "pitch": "-5Hz", "volume": "+16%"},
-    {"start": 4.15, "text": "El sospechoso: un producto del súper.", "rate": "+6%", "pitch": "-7Hz", "volume": "+15%"},
-    {"start": 8.15, "text": "La pista está en su etiqueta.", "rate": "+7%", "pitch": "-3Hz", "volume": "+16%"},
-    {"start": 11.05, "text": "Leé los ingredientes. Tenés seis segundos para memorizarlos.", "rate": "+8%", "pitch": "-2Hz", "volume": "+17%"},
-    {"start": 23.25, "text": "¡Tiempo! ¿Cuántos recordás?", "rate": "+10%", "pitch": "+2Hz", "volume": "+19%"},
-    {"start": 26.65, "text": "¡Resolvé más casos en Ingredora punto com!", "rate": "+8%", "pitch": "+1Hz", "volume": "+18%"},
+    {"start": 0.25, "text": "¡Atención! Caso abierto.", "rate": "+6%", "pitch": "-6Hz", "volume": "+16%"},
+    {"start": 3.00, "text": "Tenemos un sospechoso: un alfajor Guaymallén.", "rate": "+7%", "pitch": "-7Hz", "volume": "+16%"},
+    {"start": 7.70, "text": "Busqué la lista de ingredientes por todos lados...", "rate": "+6%", "pitch": "-5Hz", "volume": "+17%"},
+    {"start": 12.30, "text": "¡Pero no aparece por ninguna parte!", "rate": "+8%", "pitch": "-2Hz", "volume": "+18%"},
+    {"start": 15.70, "text": "¿Vos sabés cuáles tiene? Necesito que me ayudes.", "rate": "+7%", "pitch": "+1Hz", "volume": "+18%"},
+    {"start": 20.40, "text": "Entrá a Ingredora punto com, completá sus ingredientes y ayudame a cerrar el caso.", "rate": "+8%", "pitch": "+2Hz", "volume": "+19%"},
 ]
 
 async def synthesize(segment, index):
@@ -88,7 +88,7 @@ async def main():
     master.export(OUTPUT, format="mp3", bitrate="192k")
     TIMINGS_OUTPUT.write_text(json.dumps({
         "voice": VOICE,
-        "style": "Argentine male noir detective, suspenseful and playful",
+        "style": "Argentine male noir detective: suspenseful investigation, direct audience appeal, energetic website CTA",
         "durationSeconds": DURATION_MS / 1000,
         "segments": manifest,
         "words": all_words,
