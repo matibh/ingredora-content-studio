@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "engineVersion": "1.0.0",
+  "id": "ingredora-oreo-family-merienda-003",
+  "title": "Oreo Original — La merienda familiar",
+  "description": "Spot vertical de 27 segundos. Gancho inmediato de Ingredora.com, cocina familiar cálida, paquete Oreo Original abierto, una galletita sale del envase y queda junto a un vaso de chocolatada. Desafío de seis segundos y revelación agrupada de ingredientes.",
+  "createdAt": "2026-11-19T21:00:00-03:00",
+  "fps": 60,
+  "width": 720,
+  "height": 1280,
+  "visualPreset": "oreo-family-table",
+  "scenes": [
+    {
+      "id": "family-table-oreo-emerges-from-pack",
+      "startFrame": 0,
+      "durationFrames": 1620,
+      "background": "#e8d8c0",
+      "camera": {
+        "position": [
+          0.02,
+          1.1,
+          8.8
+        ],
+        "target": [
+          0.02,
+          -0.28,
+          0.05
+        ],
+        "fov": 36
+      },
+      "accentColor": "#1678d0",
+      "headline": "¿CUÁNTO SABÉS DE LO QUE COMÉS?",
+      "subline": "JUGÁ EN INGREDORA.COM",
+      "objects": []
+    }
+  ]
+}
