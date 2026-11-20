@@ -139,20 +139,100 @@ function createGameShowSet(world: THREE.Scene): GameShowSet {
   };
   createContestant(-2.25,"#263d69","#d9a17e","#28202a",0);
   createContestant(2.25,"#5d3548","#8d583f","#211c1b",1);
-  // Female presenter placed stage-left, away from the large foreground Cindor pack.
+  // Premium low-poly female presenter: tailored outfit, sculpted hair, facial features and articulated pose.
   const host=new THREE.Group(); host.position.set(-4.25,-1.72,-2.45); world.add(host);
-  const hostBody=new THREE.Mesh(new THREE.BoxGeometry(.72,1.22,.42),mat("#8a3f79",.42,.12)); hostBody.position.y=1.25; host.add(hostBody);
-  const hostSkirt=new THREE.Mesh(new THREE.BoxGeometry(.82,.48,.48),mat("#24283d",.48,.08)); hostSkirt.position.set(0,.48,0); host.add(hostSkirt);
-  const hostHead=new THREE.Mesh(new THREE.BoxGeometry(.56,.62,.56),mat("#d5a07e")); hostHead.position.set(0,2.05,0); host.add(hostHead);
-  const hostHairMat=mat("#30202a",.78,.02);
-  const hostHair=new THREE.Mesh(new THREE.BoxGeometry(.62,.20,.62),hostHairMat); hostHair.position.set(0,2.37,-.035); host.add(hostHair);
-  const hostHairBack=new THREE.Mesh(new THREE.BoxGeometry(.64,.76,.18),hostHairMat); hostHairBack.position.set(0,1.91,-.25); host.add(hostHairBack);
-  for(const side of [-1,1]){const lock=new THREE.Mesh(new THREE.BoxGeometry(.14,.72,.22),hostHairMat);lock.position.set(side*.27,1.98,.015);host.add(lock);}
-  [-.13,.13].forEach(x=>{const eye=new THREE.Mesh(new THREE.BoxGeometry(.07,.07,.035),new THREE.MeshBasicMaterial({color:"#171923"}));eye.position.set(x,2.08,.294);host.add(eye);});
-  const hostMouth=new THREE.Mesh(new THREE.BoxGeometry(.10,.045,.03),new THREE.MeshBasicMaterial({color:"#8c3945"}));hostMouth.position.set(0,1.91,.30);host.add(hostMouth);
-  const hostArm=new THREE.Mesh(new THREE.BoxGeometry(.16,.66,.17),mat("#d5a07e"));hostArm.position.set(.43,1.25,.05);hostArm.rotation.z=-.3;host.add(hostArm);
-  const mic=new THREE.Mesh(new THREE.CylinderGeometry(.035,.035,.55,12),mat("#292c36",.25,.8)); mic.position.set(.48,1.7,.1); mic.rotation.z=-.25; host.add(mic);
-  const hostPodium=new THREE.Mesh(new THREE.BoxGeometry(1.15,1.15,.7),mat("#b18a3e",.24,.55)); hostPodium.position.set(0,.58,-.22); host.add(hostPodium);
+  const hostSkin=mat("#d8a17f",.82,.01), hostHairMat=mat("#241923",.9,.01);
+  const jacketMat=mat("#9b3f83",.52,.08), jacketDark=mat("#642957",.55,.08);
+  const skirtMat=mat("#252b43",.62,.04), shoeMat=mat("#171a26",.38,.18);
+  const goldMat=mat("#d8ad62",.28,.72);
+  const lowSphere=(name:string,material:THREE.Material,pos:[number,number,number],scale:[number,number,number],w=10,h=7)=>{
+    const mesh=new THREE.Mesh(new THREE.SphereGeometry(.5,w,h),material);
+    mesh.name=name;mesh.position.set(...pos);mesh.scale.set(...scale);mesh.castShadow=true;mesh.receiveShadow=true;host.add(mesh);return mesh;
+  };
+  const lowBox=(name:string,material:THREE.Material,pos:[number,number,number],scale:[number,number,number])=>{
+    const mesh=new THREE.Mesh(new THREE.BoxGeometry(...scale),material);mesh.name=name;mesh.position.set(...pos);mesh.castShadow=true;mesh.receiveShadow=true;host.add(mesh);return mesh;
+  };
+  // Legs and elegant ankle boots, visible below the skirt.
+  for(const side of [-1,1]){
+    const leg=new THREE.Mesh(new THREE.CylinderGeometry(.105,.12,.63,7),hostSkin);
+    leg.position.set(side*.17,.31,.015);leg.castShadow=true;host.add(leg);
+    const boot=new THREE.Mesh(new THREE.CylinderGeometry(.12,.15,.22,7),shoeMat);
+    boot.position.set(side*.17,-.105,.055);boot.castShadow=true;host.add(boot);
+    const heel=new THREE.Mesh(new THREE.BoxGeometry(.11,.08,.22),shoeMat);
+    heel.position.set(side*.17,-.22,-.005);host.add(heel);
+  }
+  // Tailored A-line skirt with a clean low-poly silhouette.
+  const skirt=new THREE.Mesh(new THREE.CylinderGeometry(.53,.66,.62,8,1,false),skirtMat);
+  skirt.position.set(0,.72,0);skirt.castShadow=true;host.add(skirt);
+  const waist=new THREE.Mesh(new THREE.CylinderGeometry(.34,.38,.15,10),jacketDark);
+  waist.position.set(0,1.03,0);host.add(waist);
+  // Fitted blazer torso and shoulders.
+  const torso=new THREE.Mesh(new THREE.CylinderGeometry(.34,.43,.88,8,1,false),jacketMat);
+  torso.position.set(0,1.43,0);torso.castShadow=true;host.add(torso);
+  const shoulders=new THREE.Mesh(new THREE.BoxGeometry(.88,.24,.42),jacketMat);
+  shoulders.position.set(0,1.76,0);shoulders.castShadow=true;host.add(shoulders);
+  const blouse=new THREE.Mesh(new THREE.BoxGeometry(.23,.65,.035),mat("#f5e9df",.8,.0));
+  blouse.position.set(0,1.48,.218);host.add(blouse);
+  // Angular lapels and gold buttons give the jacket a finished presenter look.
+  const lapelShape=new THREE.Shape();lapelShape.moveTo(0,.27);lapelShape.lineTo(.16,.02);lapelShape.lineTo(.045,-.26);lapelShape.lineTo(-.035,-.02);lapelShape.closePath();
+  const lapelGeo=new THREE.ShapeGeometry(lapelShape);
+  for(const side of [-1,1]){
+    const lapel=new THREE.Mesh(lapelGeo,new THREE.MeshStandardMaterial({color:"#6e2d60",roughness:.58,side:THREE.DoubleSide}));
+    lapel.position.set(side*.11,1.68,.244);lapel.rotation.y=side*.10;host.add(lapel);
+    const button=new THREE.Mesh(new THREE.SphereGeometry(.035,8,6),goldMat);
+    button.position.set(side*.055,1.40,.245);host.add(button);
+  }
+  // Neck, refined low-poly face, ears and a small nose bridge.
+  const neck=new THREE.Mesh(new THREE.CylinderGeometry(.13,.15,.24,8),hostSkin);neck.position.set(0,1.98,0);host.add(neck);
+  const face=lowSphere("presenter-face",hostSkin,[0,2.28,.015],[.43,.53,.39],10,8);
+  lowSphere("left-ear",hostSkin,[-.425,2.29,.005],[.105,.15,.09],7,5);
+  lowSphere("right-ear",hostSkin,[.425,2.29,.005],[.105,.15,.09],7,5);
+  lowSphere("nose",hostSkin,[0,2.25,.405],[.085,.12,.09],6,5);
+  // Hair volume, long rear silhouette, side locks and a swept fringe.
+  lowSphere("hair-crown",hostHairMat,[0,2.58,-.045],[.48,.31,.43],9,6);
+  lowBox("long-hair-back",hostHairMat,[0,2.06,-.235],[.78,1.03,.22]);
+  for(const side of [-1,1]){
+    const lock=lowSphere("long-side-lock",hostHairMat,[side*.365,2.19,.015],[.15,.62,.19],7,6);
+    lock.rotation.z=side*-.08;
+    const fringe=lowSphere("swept-fringe",hostHairMat,[side*.16,2.51,.285],[.29,.16,.16],8,5);
+    fringe.rotation.z=side*-.28;
+  }
+  // Eyes, brows, eyelids and a warm confident smile.
+  for(const side of [-1,1]){
+    lowSphere("eye-white",mat("#fffaf4",.55,0),[side*.16,2.31,.344],[.085,.065,.035],8,6);
+    lowSphere("iris",mat("#594333",.45,0),[side*.16,2.305,.377],[.033,.044,.018],8,6);
+    lowSphere("pupil",new THREE.MeshBasicMaterial({color:"#17141b"}),[side*.16,2.305,.392],[.017,.028,.012],6,5);
+    const brow=new THREE.Mesh(new THREE.BoxGeometry(.15,.035,.035),hostHairMat);
+    brow.position.set(side*.16,2.405,.36);brow.rotation.z=side*-.10;host.add(brow);
+    const earring=new THREE.Mesh(new THREE.SphereGeometry(.045,8,6),goldMat);
+    earring.position.set(side*.445,2.16,.04);host.add(earring);
+  }
+  const smile=new THREE.Mesh(new THREE.TorusGeometry(.085,.018,5,12,Math.PI),mat("#873d4c",.65,0));
+  smile.position.set(0,2.13,.36);smile.rotation.z=Math.PI;host.add(smile);
+  // Bent arm with a handheld studio microphone; the other arm gestures naturally.
+  const upperArm=new THREE.Mesh(new THREE.CylinderGeometry(.105,.12,.42,7),jacketMat);
+  upperArm.position.set(.48,1.55,.01);upperArm.rotation.z=-.28;host.add(upperArm);
+  const forearm=new THREE.Mesh(new THREE.CylinderGeometry(.075,.09,.38,7),hostSkin);
+  forearm.position.set(.59,1.78,.17);forearm.rotation.z=-.48;host.add(forearm);
+  lowSphere("mic-hand",hostSkin,[.68,1.94,.19],[.12,.12,.12],7,5);
+  const micBody=new THREE.Mesh(new THREE.CylinderGeometry(.035,.045,.34,10),mat("#252936",.22,.8));
+  micBody.position.set(.68,2.12,.2);micBody.rotation.z=-.12;host.add(micBody);
+  const micHead=new THREE.Mesh(new THREE.SphereGeometry(.065,10,7),mat("#aeb6c5",.22,.78));
+  micHead.position.set(.68,2.30,.2);host.add(micHead);
+  const micRing=new THREE.Mesh(new THREE.TorusGeometry(.047,.012,6,12),goldMat);
+  micRing.position.set(.68,2.25,.2);host.add(micRing);
+  const gestureArm=new THREE.Mesh(new THREE.CylinderGeometry(.10,.12,.43,7),jacketMat);
+  gestureArm.position.set(-.48,1.52,.02);gestureArm.rotation.z=.42;host.add(gestureArm);
+  const gestureForearm=new THREE.Mesh(new THREE.CylinderGeometry(.075,.09,.35,7),hostSkin);
+  gestureForearm.position.set(-.64,1.73,.12);gestureForearm.rotation.z=.62;host.add(gestureForearm);
+  lowSphere("gesture-hand",hostSkin,[-.76,1.88,.15],[.12,.11,.12],7,5);
+  // Compact premium presenter lectern, kept low so it never hides her face or outfit.
+  const hostPodium=new THREE.Mesh(new THREE.BoxGeometry(1.05,.92,.62),mat("#26304b",.25,.58));
+  hostPodium.position.set(0,.35,-.25);hostPodium.castShadow=true;host.add(hostPodium);
+  const podiumTop=new THREE.Mesh(new THREE.BoxGeometry(1.12,.075,.68),goldMat);
+  podiumTop.position.set(0,.83,-.25);host.add(podiumTop);
+  const podiumFront=new THREE.Mesh(new THREE.BoxGeometry(.74,.26,.025),mat("#8e3c78",.34,.24));
+  podiumFront.position.set(0,.43,.068);host.add(podiumFront);
   // Audience risers behind the main stage: rows of spectators with varied clothes/skin/hair.
   const skinTones=["#e1b08c","#9a6247","#f0c8a4","#704a39","#c88e68"];
   const shirts=["#d74758","#315f9c","#e3b33f","#5c9b77","#8a65b7","#d9e0e7","#c96c3d"];
@@ -235,9 +315,9 @@ function drawOverlay(ctx: CanvasRenderingContext2D, scene: ProductionScene, widt
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
   if (scene.headline) {
-    const headlineSize = Math.round(width * 0.068);
+    const headlineSize = Math.round(width * 0.052);
     ctx.font = `800 ${headlineSize}px Arial, Helvetica, sans-serif`;
-    ctx.lineWidth = Math.max(1.5, width * 0.0028);
+    ctx.lineWidth = Math.max(2, width * 0.004);
     ctx.lineJoin = "round";
     ctx.strokeStyle = "rgba(0,0,0,.96)";
     ctx.fillStyle = "#ffffff";
