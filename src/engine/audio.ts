@@ -290,7 +290,7 @@ export async function generateOriginalSoundtrack({
       const pattern = [
         [0, 1], [0.75, 2], [1.5, 1], [2.0, 1.5], [2.75, 2], [3.5, 1],
       ];
-      for (const [beatOffset, length] of pattern) {
+      for (const [beatOffset] of pattern) {
         const t = at + beatOffset * q;
         addTone(root, t, q * 0.30, "square", 0.16, 620, -0.08);
         addTone(root * 2, t + 0.012, q * 0.24, "sawtooth", 0.055, 1_250, 0.08);
