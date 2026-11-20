@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-20T20:25:00-03:00",
+  "updatedAt": "2026-11-20T20:42:00-03:00",
   "productions": [
     {
       "id": "ingredora-oreo-family-merienda-010",
-      "title": "Oreo Original — contador visual sin voz",
-      "description": "La chica dice «Tenés seis segundos» y luego calla. En pantalla aparece 6, 5, 4, 3, 2, 1 sin narración. Después retoma la voz con «Tiempo». Subtítulos de una palabra por vez.",
+      "title": "Oreo Original — subtítulos en grupos de 3–4 palabras",
+      "description": "La chica dice «Tenés seis segundos» y luego calla. En pantalla aparece 6, 5, 4, 3, 2, 1 sin narración. Después retoma con «Tiempo». Subtítulos agrupados en frases de 3 o 4 palabras, sincronizadas con la voz.",
       "status": "rendering",
       "packageUrl": "studio/packages/oreo-family-merienda.v1.json",
       "durationSeconds": 30,
@@ -18,8 +18,8 @@
         "Facebook Reels",
         "X"
       ],
-      "version": "8.3",
-      "createdAt": "2026-11-20T20:25:00-03:00",
+      "version": "8.4",
+      "createdAt": "2026-11-20T20:42:00-03:00",
       "caption": "¿Cuánto sabés de lo que comés? 🍪 Tenés seis segundos para recordar los ingredientes. La cuenta es visual, sin voz. Entrá a Ingredora.com y jugá. #Ingredora #Oreo #DesafioDeIngredientes"
     },
     {
