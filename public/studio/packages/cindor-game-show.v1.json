@@ -1,0 +1,1657 @@
+{
+  "schemaVersion": 1,
+  "engineVersion": "1.0.0",
+  "id": "ingredora-cindor-game-show-001",
+  "title": "Cindor Original — El concurso de los ingredientes",
+  "description": "Concurso de televisión con dos participantes, atriles, pulsadores, pregunta, cuenta de seis segundos y revelación de ingredientes de Cindor Original 200 ml. Pieza editorial independiente de Ingredora.",
+  "createdAt": "2026-11-20T19:45:00-03:00",
+  "fps": 60,
+  "width": 720,
+  "height": 1280,
+  "scenes": [
+    {
+      "id": "game-show-intro",
+      "startFrame": 0,
+      "durationFrames": 240,
+      "background": "#100f29",
+      "camera": {
+        "position": [
+          0,
+          1.1,
+          10.5
+        ],
+        "target": [
+          0,
+          0.1,
+          -1.2
+        ],
+        "fov": 39
+      },
+      "accentColor": "#ffd45a",
+      "headline": "¡ARRANCA EL CONCURSO!",
+      "subline": "DOS PARTICIPANTES · UNA PREGUNTA",
+      "objects": [
+        {
+          "id": "stage-floor",
+          "shape": "box",
+          "color": "#11152d",
+          "position": [
+            0,
+            -2.05,
+            -1
+          ],
+          "scale": [
+            8,
+            0.25,
+            9
+          ]
+        },
+        {
+          "id": "back-wall",
+          "shape": "box",
+          "color": "#171b3d",
+          "position": [
+            0,
+            1.5,
+            -4.2
+          ],
+          "scale": [
+            8,
+            7,
+            0.25
+          ]
+        },
+        {
+          "id": "screen-frame",
+          "shape": "box",
+          "color": "#f2b544",
+          "position": [
+            0,
+            2.1,
+            -3.95
+          ],
+          "scale": [
+            4.8,
+            2.35,
+            0.22
+          ]
+        },
+        {
+          "id": "screen",
+          "shape": "box",
+          "color": "#29234d",
+          "position": [
+            0,
+            2.1,
+            -3.8
+          ],
+          "scale": [
+            4.45,
+            2,
+            0.08
+          ]
+        },
+        {
+          "id": "podium-left",
+          "shape": "box",
+          "color": "#d73543",
+          "position": [
+            -1.45,
+            -0.78,
+            -0.1
+          ],
+          "scale": [
+            1.05,
+            1.75,
+            0.85
+          ]
+        },
+        {
+          "id": "podium-right",
+          "shape": "box",
+          "color": "#277bd4",
+          "position": [
+            1.45,
+            -0.78,
+            -0.1
+          ],
+          "scale": [
+            1.05,
+            1.75,
+            0.85
+          ]
+        },
+        {
+          "id": "contestant-left-body",
+          "shape": "cylinder",
+          "color": "#e8b18b",
+          "position": [
+            -1.45,
+            0.35,
+            -0.05
+          ],
+          "scale": [
+            0.42,
+            0.62,
+            0.42
+          ]
+        },
+        {
+          "id": "contestant-left-head",
+          "shape": "sphere",
+          "color": "#e8b18b",
+          "position": [
+            -1.45,
+            1.02,
+            -0.05
+          ],
+          "scale": [
+            0.43,
+            0.43,
+            0.43
+          ]
+        },
+        {
+          "id": "contestant-right-body",
+          "shape": "cylinder",
+          "color": "#d49a72",
+          "position": [
+            1.45,
+            0.35,
+            -0.05
+          ],
+          "scale": [
+            0.42,
+            0.62,
+            0.42
+          ]
+        },
+        {
+          "id": "contestant-right-head",
+          "shape": "sphere",
+          "color": "#d49a72",
+          "position": [
+            1.45,
+            1.02,
+            -0.05
+          ],
+          "scale": [
+            0.43,
+            0.43,
+            0.43
+          ]
+        },
+        {
+          "id": "buzzer-left",
+          "shape": "sphere",
+          "color": "#ffdf55",
+          "position": [
+            -1.45,
+            0.19,
+            0.38
+          ],
+          "scale": [
+            0.2,
+            0.11,
+            0.2
+          ],
+          "animation": {
+            "type": "pulse",
+            "speed": 5,
+            "amount": 0.09
+          }
+        },
+        {
+          "id": "buzzer-right",
+          "shape": "sphere",
+          "color": "#ffdf55",
+          "position": [
+            1.45,
+            0.19,
+            0.38
+          ],
+          "scale": [
+            0.2,
+            0.11,
+            0.2
+          ],
+          "animation": {
+            "type": "pulse",
+            "speed": 5,
+            "amount": 0.09
+          }
+        },
+        {
+          "id": "stage-light-left",
+          "shape": "cone",
+          "color": "#ffcf55",
+          "position": [
+            -3,
+            3.5,
+            -1.6
+          ],
+          "scale": [
+            0.85,
+            1.9,
+            0.85
+          ],
+          "rotation": [
+            0,
+            0,
+            0.42
+          ]
+        },
+        {
+          "id": "stage-light-right",
+          "shape": "cone",
+          "color": "#65c9ff",
+          "position": [
+            3,
+            3.5,
+            -1.6
+          ],
+          "scale": [
+            0.85,
+            1.9,
+            0.85
+          ],
+          "rotation": [
+            0,
+            0,
+            -0.42
+          ]
+        },
+        {
+          "id": "product-carton",
+          "shape": "box",
+          "color": "#c92635",
+          "position": [
+            0,
+            -0.35,
+            1.05
+          ],
+          "scale": [
+            0.75,
+            1.2,
+            0.55
+          ],
+          "animation": {
+            "type": "float-rotate",
+            "speed": 1.2,
+            "amount": 0.035
+          }
+        }
+      ]
+    },
+    {
+      "id": "game-show-question",
+      "startFrame": 240,
+      "durationFrames": 240,
+      "background": "#100f29",
+      "camera": {
+        "position": [
+          0,
+          1,
+          9.7
+        ],
+        "target": [
+          0,
+          0.2,
+          -1
+        ],
+        "fov": 37
+      },
+      "accentColor": "#ffd45a",
+      "headline": "¿QUÉ INGREDIENTES TIENE?",
+      "subline": "CINDOR ORIGINAL · 200 ML",
+      "objects": [
+        {
+          "id": "stage-floor",
+          "shape": "box",
+          "color": "#11152d",
+          "position": [
+            0,
+            -2.05,
+            -1
+          ],
+          "scale": [
+            8,
+            0.25,
+            9
+          ]
+        },
+        {
+          "id": "back-wall",
+          "shape": "box",
+          "color": "#171b3d",
+          "position": [
+            0,
+            1.5,
+            -4.2
+          ],
+          "scale": [
+            8,
+            7,
+            0.25
+          ]
+        },
+        {
+          "id": "screen-frame",
+          "shape": "box",
+          "color": "#f2b544",
+          "position": [
+            0,
+            2.1,
+            -3.95
+          ],
+          "scale": [
+            4.8,
+            2.35,
+            0.22
+          ]
+        },
+        {
+          "id": "screen",
+          "shape": "box",
+          "color": "#29234d",
+          "position": [
+            0,
+            2.1,
+            -3.8
+          ],
+          "scale": [
+            4.45,
+            2,
+            0.08
+          ]
+        },
+        {
+          "id": "podium-left",
+          "shape": "box",
+          "color": "#d73543",
+          "position": [
+            -1.45,
+            -0.78,
+            -0.1
+          ],
+          "scale": [
+            1.05,
+            1.75,
+            0.85
+          ]
+        },
+        {
+          "id": "podium-right",
+          "shape": "box",
+          "color": "#277bd4",
+          "position": [
+            1.45,
+            -0.78,
+            -0.1
+          ],
+          "scale": [
+            1.05,
+            1.75,
+            0.85
+          ]
+        },
+        {
+          "id": "contestant-left-body",
+          "shape": "cylinder",
+          "color": "#e8b18b",
+          "position": [
+            -1.45,
+            0.35,
+            -0.05
+          ],
+          "scale": [
+            0.42,
+            0.62,
+            0.42
+          ]
+        },
+        {
+          "id": "contestant-left-head",
+          "shape": "sphere",
+          "color": "#e8b18b",
+          "position": [
+            -1.45,
+            1.02,
+            -0.05
+          ],
+          "scale": [
+            0.43,
+            0.43,
+            0.43
+          ]
+        },
+        {
+          "id": "contestant-right-body",
+          "shape": "cylinder",
+          "color": "#d49a72",
+          "position": [
+            1.45,
+            0.35,
+            -0.05
+          ],
+          "scale": [
+            0.42,
+            0.62,
+            0.42
+          ]
+        },
+        {
+          "id": "contestant-right-head",
+          "shape": "sphere",
+          "color": "#d49a72",
+          "position": [
+            1.45,
+            1.02,
+            -0.05
+          ],
+          "scale": [
+            0.43,
+            0.43,
+            0.43
+          ]
+        },
+        {
+          "id": "buzzer-left",
+          "shape": "sphere",
+          "color": "#ffdf55",
+          "position": [
+            -1.45,
+            0.19,
+            0.38
+          ],
+          "scale": [
+            0.2,
+            0.11,
+            0.2
+          ],
+          "animation": {
+            "type": "pulse",
+            "speed": 5,
+            "amount": 0.09
+          }
+        },
+        {
+          "id": "buzzer-right",
+          "shape": "sphere",
+          "color": "#ffdf55",
+          "position": [
+            1.45,
+            0.19,
+            0.38
+          ],
+          "scale": [
+            0.2,
+            0.11,
+            0.2
+          ],
+          "animation": {
+            "type": "pulse",
+            "speed": 5,
+            "amount": 0.09
+          }
+        },
+        {
+          "id": "stage-light-left",
+          "shape": "cone",
+          "color": "#ffcf55",
+          "position": [
+            -3,
+            3.5,
+            -1.6
+          ],
+          "scale": [
+            0.85,
+            1.9,
+            0.85
+          ],
+          "rotation": [
+            0,
+            0,
+            0.42
+          ]
+        },
+        {
+          "id": "stage-light-right",
+          "shape": "cone",
+          "color": "#65c9ff",
+          "position": [
+            3,
+            3.5,
+            -1.6
+          ],
+          "scale": [
+            0.85,
+            1.9,
+            0.85
+          ],
+          "rotation": [
+            0,
+            0,
+            -0.42
+          ]
+        },
+        {
+          "id": "product-carton",
+          "shape": "box",
+          "color": "#c92635",
+          "position": [
+            0,
+            -0.35,
+            1.05
+          ],
+          "scale": [
+            0.75,
+            1.2,
+            0.55
+          ],
+          "animation": {
+            "type": "float-rotate",
+            "speed": 1.2,
+            "amount": 0.035
+          }
+        }
+      ]
+    },
+    {
+      "id": "game-show-answers",
+      "startFrame": 480,
+      "durationFrames": 300,
+      "background": "#100f29",
+      "camera": {
+        "position": [
+          0,
+          1,
+          9.2
+        ],
+        "target": [
+          0,
+          0.2,
+          -0.7
+        ],
+        "fov": 36
+      },
+      "accentColor": "#ffd45a",
+      "headline": "¡RESPONDAN YA!",
+      "subline": "LECHE, CACAO… ¿QUÉ MÁS?",
+      "objects": [
+        {
+          "id": "stage-floor",
+          "shape": "box",
+          "color": "#11152d",
+          "position": [
+            0,
+            -2.05,
+            -1
+          ],
+          "scale": [
+            8,
+            0.25,
+            9
+          ]
+        },
+        {
+          "id": "back-wall",
+          "shape": "box",
+          "color": "#171b3d",
+          "position": [
+            0,
+            1.5,
+            -4.2
+          ],
+          "scale": [
+            8,
+            7,
+            0.25
+          ]
+        },
+        {
+          "id": "screen-frame",
+          "shape": "box",
+          "color": "#f2b544",
+          "position": [
+            0,
+            2.1,
+            -3.95
+          ],
+          "scale": [
+            4.8,
+            2.35,
+            0.22
+          ]
+        },
+        {
+          "id": "screen",
+          "shape": "box",
+          "color": "#29234d",
+          "position": [
+            0,
+            2.1,
+            -3.8
+          ],
+          "scale": [
+            4.45,
+            2,
+            0.08
+          ]
+        },
+        {
+          "id": "podium-left",
+          "shape": "box",
+          "color": "#d73543",
+          "position": [
+            -1.45,
+            -0.78,
+            -0.1
+          ],
+          "scale": [
+            1.05,
+            1.75,
+            0.85
+          ]
+        },
+        {
+          "id": "podium-right",
+          "shape": "box",
+          "color": "#277bd4",
+          "position": [
+            1.45,
+            -0.78,
+            -0.1
+          ],
+          "scale": [
+            1.05,
+            1.75,
+            0.85
+          ]
+        },
+        {
+          "id": "contestant-left-body",
+          "shape": "cylinder",
+          "color": "#e8b18b",
+          "position": [
+            -1.45,
+            0.35,
+            -0.05
+          ],
+          "scale": [
+            0.42,
+            0.62,
+            0.42
+          ]
+        },
+        {
+          "id": "contestant-left-head",
+          "shape": "sphere",
+          "color": "#e8b18b",
+          "position": [
+            -1.45,
+            1.02,
+            -0.05
+          ],
+          "scale": [
+            0.43,
+            0.43,
+            0.43
+          ]
+        },
+        {
+          "id": "contestant-right-body",
+          "shape": "cylinder",
+          "color": "#d49a72",
+          "position": [
+            1.45,
+            0.35,
+            -0.05
+          ],
+          "scale": [
+            0.42,
+            0.62,
+            0.42
+          ]
+        },
+        {
+          "id": "contestant-right-head",
+          "shape": "sphere",
+          "color": "#d49a72",
+          "position": [
+            1.45,
+            1.02,
+            -0.05
+          ],
+          "scale": [
+            0.43,
+            0.43,
+            0.43
+          ]
+        },
+        {
+          "id": "buzzer-left",
+          "shape": "sphere",
+          "color": "#ffdf55",
+          "position": [
+            -1.45,
+            0.19,
+            0.38
+          ],
+          "scale": [
+            0.2,
+            0.11,
+            0.2
+          ],
+          "animation": {
+            "type": "pulse",
+            "speed": 5,
+            "amount": 0.09
+          }
+        },
+        {
+          "id": "buzzer-right",
+          "shape": "sphere",
+          "color": "#ffdf55",
+          "position": [
+            1.45,
+            0.19,
+            0.38
+          ],
+          "scale": [
+            0.2,
+            0.11,
+            0.2
+          ],
+          "animation": {
+            "type": "pulse",
+            "speed": 5,
+            "amount": 0.09
+          }
+        },
+        {
+          "id": "stage-light-left",
+          "shape": "cone",
+          "color": "#ffcf55",
+          "position": [
+            -3,
+            3.5,
+            -1.6
+          ],
+          "scale": [
+            0.85,
+            1.9,
+            0.85
+          ],
+          "rotation": [
+            0,
+            0,
+            0.42
+          ]
+        },
+        {
+          "id": "stage-light-right",
+          "shape": "cone",
+          "color": "#65c9ff",
+          "position": [
+            3,
+            3.5,
+            -1.6
+          ],
+          "scale": [
+            0.85,
+            1.9,
+            0.85
+          ],
+          "rotation": [
+            0,
+            0,
+            -0.42
+          ]
+        },
+        {
+          "id": "product-carton",
+          "shape": "box",
+          "color": "#c92635",
+          "position": [
+            0,
+            -0.35,
+            1.05
+          ],
+          "scale": [
+            0.75,
+            1.2,
+            0.55
+          ],
+          "animation": {
+            "type": "float-rotate",
+            "speed": 1.2,
+            "amount": 0.035
+          }
+        }
+      ]
+    },
+    {
+      "id": "game-show-countdown",
+      "startFrame": 780,
+      "durationFrames": 360,
+      "background": "#100f29",
+      "camera": {
+        "position": [
+          0,
+          1,
+          9.2
+        ],
+        "target": [
+          0,
+          0.2,
+          -0.7
+        ],
+        "fov": 36
+      },
+      "accentColor": "#ffd45a",
+      "headline": "TENÉS 6 SEGUNDOS",
+      "subline": "¡PENSÁ RÁPIDO!",
+      "objects": [
+        {
+          "id": "stage-floor",
+          "shape": "box",
+          "color": "#11152d",
+          "position": [
+            0,
+            -2.05,
+            -1
+          ],
+          "scale": [
+            8,
+            0.25,
+            9
+          ]
+        },
+        {
+          "id": "back-wall",
+          "shape": "box",
+          "color": "#171b3d",
+          "position": [
+            0,
+            1.5,
+            -4.2
+          ],
+          "scale": [
+            8,
+            7,
+            0.25
+          ]
+        },
+        {
+          "id": "screen-frame",
+          "shape": "box",
+          "color": "#f2b544",
+          "position": [
+            0,
+            2.1,
+            -3.95
+          ],
+          "scale": [
+            4.8,
+            2.35,
+            0.22
+          ]
+        },
+        {
+          "id": "screen",
+          "shape": "box",
+          "color": "#29234d",
+          "position": [
+            0,
+            2.1,
+            -3.8
+          ],
+          "scale": [
+            4.45,
+            2,
+            0.08
+          ]
+        },
+        {
+          "id": "podium-left",
+          "shape": "box",
+          "color": "#d73543",
+          "position": [
+            -1.45,
+            -0.78,
+            -0.1
+          ],
+          "scale": [
+            1.05,
+            1.75,
+            0.85
+          ]
+        },
+        {
+          "id": "podium-right",
+          "shape": "box",
+          "color": "#277bd4",
+          "position": [
+            1.45,
+            -0.78,
+            -0.1
+          ],
+          "scale": [
+            1.05,
+            1.75,
+            0.85
+          ]
+        },
+        {
+          "id": "contestant-left-body",
+          "shape": "cylinder",
+          "color": "#e8b18b",
+          "position": [
+            -1.45,
+            0.35,
+            -0.05
+          ],
+          "scale": [
+            0.42,
+            0.62,
+            0.42
+          ]
+        },
+        {
+          "id": "contestant-left-head",
+          "shape": "sphere",
+          "color": "#e8b18b",
+          "position": [
+            -1.45,
+            1.02,
+            -0.05
+          ],
+          "scale": [
+            0.43,
+            0.43,
+            0.43
+          ]
+        },
+        {
+          "id": "contestant-right-body",
+          "shape": "cylinder",
+          "color": "#d49a72",
+          "position": [
+            1.45,
+            0.35,
+            -0.05
+          ],
+          "scale": [
+            0.42,
+            0.62,
+            0.42
+          ]
+        },
+        {
+          "id": "contestant-right-head",
+          "shape": "sphere",
+          "color": "#d49a72",
+          "position": [
+            1.45,
+            1.02,
+            -0.05
+          ],
+          "scale": [
+            0.43,
+            0.43,
+            0.43
+          ]
+        },
+        {
+          "id": "buzzer-left",
+          "shape": "sphere",
+          "color": "#ffdf55",
+          "position": [
+            -1.45,
+            0.19,
+            0.38
+          ],
+          "scale": [
+            0.2,
+            0.11,
+            0.2
+          ],
+          "animation": {
+            "type": "pulse",
+            "speed": 5,
+            "amount": 0.09
+          }
+        },
+        {
+          "id": "buzzer-right",
+          "shape": "sphere",
+          "color": "#ffdf55",
+          "position": [
+            1.45,
+            0.19,
+            0.38
+          ],
+          "scale": [
+            0.2,
+            0.11,
+            0.2
+          ],
+          "animation": {
+            "type": "pulse",
+            "speed": 5,
+            "amount": 0.09
+          }
+        },
+        {
+          "id": "stage-light-left",
+          "shape": "cone",
+          "color": "#ffcf55",
+          "position": [
+            -3,
+            3.5,
+            -1.6
+          ],
+          "scale": [
+            0.85,
+            1.9,
+            0.85
+          ],
+          "rotation": [
+            0,
+            0,
+            0.42
+          ]
+        },
+        {
+          "id": "stage-light-right",
+          "shape": "cone",
+          "color": "#65c9ff",
+          "position": [
+            3,
+            3.5,
+            -1.6
+          ],
+          "scale": [
+            0.85,
+            1.9,
+            0.85
+          ],
+          "rotation": [
+            0,
+            0,
+            -0.42
+          ]
+        },
+        {
+          "id": "product-carton",
+          "shape": "box",
+          "color": "#c92635",
+          "position": [
+            0,
+            -0.35,
+            1.05
+          ],
+          "scale": [
+            0.75,
+            1.2,
+            0.55
+          ],
+          "animation": {
+            "type": "float-rotate",
+            "speed": 1.2,
+            "amount": 0.035
+          }
+        }
+      ]
+    },
+    {
+      "id": "game-show-reveal",
+      "startFrame": 1140,
+      "durationFrames": 420,
+      "background": "#100f29",
+      "camera": {
+        "position": [
+          0,
+          1,
+          9.2
+        ],
+        "target": [
+          0,
+          0.2,
+          -0.7
+        ],
+        "fov": 36
+      },
+      "accentColor": "#ffd45a",
+      "headline": "LECHE · AZÚCAR · CACAO · ALMIDÓN",
+      "subline": "VITAMINAS · ESPESANTES · AROMAS · ESTABILIZANTES",
+      "objects": [
+        {
+          "id": "stage-floor",
+          "shape": "box",
+          "color": "#11152d",
+          "position": [
+            0,
+            -2.05,
+            -1
+          ],
+          "scale": [
+            8,
+            0.25,
+            9
+          ]
+        },
+        {
+          "id": "back-wall",
+          "shape": "box",
+          "color": "#171b3d",
+          "position": [
+            0,
+            1.5,
+            -4.2
+          ],
+          "scale": [
+            8,
+            7,
+            0.25
+          ]
+        },
+        {
+          "id": "screen-frame",
+          "shape": "box",
+          "color": "#f2b544",
+          "position": [
+            0,
+            2.1,
+            -3.95
+          ],
+          "scale": [
+            4.8,
+            2.35,
+            0.22
+          ]
+        },
+        {
+          "id": "screen",
+          "shape": "box",
+          "color": "#29234d",
+          "position": [
+            0,
+            2.1,
+            -3.8
+          ],
+          "scale": [
+            4.45,
+            2,
+            0.08
+          ]
+        },
+        {
+          "id": "podium-left",
+          "shape": "box",
+          "color": "#d73543",
+          "position": [
+            -1.45,
+            -0.78,
+            -0.1
+          ],
+          "scale": [
+            1.05,
+            1.75,
+            0.85
+          ]
+        },
+        {
+          "id": "podium-right",
+          "shape": "box",
+          "color": "#277bd4",
+          "position": [
+            1.45,
+            -0.78,
+            -0.1
+          ],
+          "scale": [
+            1.05,
+            1.75,
+            0.85
+          ]
+        },
+        {
+          "id": "contestant-left-body",
+          "shape": "cylinder",
+          "color": "#e8b18b",
+          "position": [
+            -1.45,
+            0.35,
+            -0.05
+          ],
+          "scale": [
+            0.42,
+            0.62,
+            0.42
+          ]
+        },
+        {
+          "id": "contestant-left-head",
+          "shape": "sphere",
+          "color": "#e8b18b",
+          "position": [
+            -1.45,
+            1.02,
+            -0.05
+          ],
+          "scale": [
+            0.43,
+            0.43,
+            0.43
+          ]
+        },
+        {
+          "id": "contestant-right-body",
+          "shape": "cylinder",
+          "color": "#d49a72",
+          "position": [
+            1.45,
+            0.35,
+            -0.05
+          ],
+          "scale": [
+            0.42,
+            0.62,
+            0.42
+          ]
+        },
+        {
+          "id": "contestant-right-head",
+          "shape": "sphere",
+          "color": "#d49a72",
+          "position": [
+            1.45,
+            1.02,
+            -0.05
+          ],
+          "scale": [
+            0.43,
+            0.43,
+            0.43
+          ]
+        },
+        {
+          "id": "buzzer-left",
+          "shape": "sphere",
+          "color": "#ffdf55",
+          "position": [
+            -1.45,
+            0.19,
+            0.38
+          ],
+          "scale": [
+            0.2,
+            0.11,
+            0.2
+          ],
+          "animation": {
+            "type": "pulse",
+            "speed": 5,
+            "amount": 0.09
+          }
+        },
+        {
+          "id": "buzzer-right",
+          "shape": "sphere",
+          "color": "#ffdf55",
+          "position": [
+            1.45,
+            0.19,
+            0.38
+          ],
+          "scale": [
+            0.2,
+            0.11,
+            0.2
+          ],
+          "animation": {
+            "type": "pulse",
+            "speed": 5,
+            "amount": 0.09
+          }
+        },
+        {
+          "id": "stage-light-left",
+          "shape": "cone",
+          "color": "#ffcf55",
+          "position": [
+            -3,
+            3.5,
+            -1.6
+          ],
+          "scale": [
+            0.85,
+            1.9,
+            0.85
+          ],
+          "rotation": [
+            0,
+            0,
+            0.42
+          ]
+        },
+        {
+          "id": "stage-light-right",
+          "shape": "cone",
+          "color": "#65c9ff",
+          "position": [
+            3,
+            3.5,
+            -1.6
+          ],
+          "scale": [
+            0.85,
+            1.9,
+            0.85
+          ],
+          "rotation": [
+            0,
+            0,
+            -0.42
+          ]
+        },
+        {
+          "id": "product-carton",
+          "shape": "box",
+          "color": "#c92635",
+          "position": [
+            0,
+            -0.35,
+            1.05
+          ],
+          "scale": [
+            0.75,
+            1.2,
+            0.55
+          ],
+          "animation": {
+            "type": "float-rotate",
+            "speed": 1.2,
+            "amount": 0.035
+          }
+        }
+      ]
+    },
+    {
+      "id": "game-show-cta",
+      "startFrame": 1560,
+      "durationFrames": 240,
+      "background": "#100f29",
+      "camera": {
+        "position": [
+          0,
+          1,
+          10.2
+        ],
+        "target": [
+          0,
+          0.2,
+          -0.8
+        ],
+        "fov": 39
+      },
+      "accentColor": "#ffd45a",
+      "headline": "¿CUÁNTOS ACERTASTE?",
+      "subline": "ENTRÁ A INGREDORA.COM Y JUGÁ",
+      "objects": [
+        {
+          "id": "stage-floor",
+          "shape": "box",
+          "color": "#11152d",
+          "position": [
+            0,
+            -2.05,
+            -1
+          ],
+          "scale": [
+            8,
+            0.25,
+            9
+          ]
+        },
+        {
+          "id": "back-wall",
+          "shape": "box",
+          "color": "#171b3d",
+          "position": [
+            0,
+            1.5,
+            -4.2
+          ],
+          "scale": [
+            8,
+            7,
+            0.25
+          ]
+        },
+        {
+          "id": "screen-frame",
+          "shape": "box",
+          "color": "#f2b544",
+          "position": [
+            0,
+            2.1,
+            -3.95
+          ],
+          "scale": [
+            4.8,
+            2.35,
+            0.22
+          ]
+        },
+        {
+          "id": "screen",
+          "shape": "box",
+          "color": "#29234d",
+          "position": [
+            0,
+            2.1,
+            -3.8
+          ],
+          "scale": [
+            4.45,
+            2,
+            0.08
+          ]
+        },
+        {
+          "id": "podium-left",
+          "shape": "box",
+          "color": "#d73543",
+          "position": [
+            -1.45,
+            -0.78,
+            -0.1
+          ],
+          "scale": [
+            1.05,
+            1.75,
+            0.85
+          ]
+        },
+        {
+          "id": "podium-right",
+          "shape": "box",
+          "color": "#277bd4",
+          "position": [
+            1.45,
+            -0.78,
+            -0.1
+          ],
+          "scale": [
+            1.05,
+            1.75,
+            0.85
+          ]
+        },
+        {
+          "id": "contestant-left-body",
+          "shape": "cylinder",
+          "color": "#e8b18b",
+          "position": [
+            -1.45,
+            0.35,
+            -0.05
+          ],
+          "scale": [
+            0.42,
+            0.62,
+            0.42
+          ]
+        },
+        {
+          "id": "contestant-left-head",
+          "shape": "sphere",
+          "color": "#e8b18b",
+          "position": [
+            -1.45,
+            1.02,
+            -0.05
+          ],
+          "scale": [
+            0.43,
+            0.43,
+            0.43
+          ]
+        },
+        {
+          "id": "contestant-right-body",
+          "shape": "cylinder",
+          "color": "#d49a72",
+          "position": [
+            1.45,
+            0.35,
+            -0.05
+          ],
+          "scale": [
+            0.42,
+            0.62,
+            0.42
+          ]
+        },
+        {
+          "id": "contestant-right-head",
+          "shape": "sphere",
+          "color": "#d49a72",
+          "position": [
+            1.45,
+            1.02,
+            -0.05
+          ],
+          "scale": [
+            0.43,
+            0.43,
+            0.43
+          ]
+        },
+        {
+          "id": "buzzer-left",
+          "shape": "sphere",
+          "color": "#ffdf55",
+          "position": [
+            -1.45,
+            0.19,
+            0.38
+          ],
+          "scale": [
+            0.2,
+            0.11,
+            0.2
+          ],
+          "animation": {
+            "type": "pulse",
+            "speed": 5,
+            "amount": 0.09
+          }
+        },
+        {
+          "id": "buzzer-right",
+          "shape": "sphere",
+          "color": "#ffdf55",
+          "position": [
+            1.45,
+            0.19,
+            0.38
+          ],
+          "scale": [
+            0.2,
+            0.11,
+            0.2
+          ],
+          "animation": {
+            "type": "pulse",
+            "speed": 5,
+            "amount": 0.09
+          }
+        },
+        {
+          "id": "stage-light-left",
+          "shape": "cone",
+          "color": "#ffcf55",
+          "position": [
+            -3,
+            3.5,
+            -1.6
+          ],
+          "scale": [
+            0.85,
+            1.9,
+            0.85
+          ],
+          "rotation": [
+            0,
+            0,
+            0.42
+          ]
+        },
+        {
+          "id": "stage-light-right",
+          "shape": "cone",
+          "color": "#65c9ff",
+          "position": [
+            3,
+            3.5,
+            -1.6
+          ],
+          "scale": [
+            0.85,
+            1.9,
+            0.85
+          ],
+          "rotation": [
+            0,
+            0,
+            -0.42
+          ]
+        },
+        {
+          "id": "product-carton",
+          "shape": "box",
+          "color": "#c92635",
+          "position": [
+            0,
+            -0.35,
+            1.05
+          ],
+          "scale": [
+            0.75,
+            1.2,
+            0.55
+          ],
+          "animation": {
+            "type": "float-rotate",
+            "speed": 1.2,
+            "amount": 0.035
+          }
+        }
+      ]
+    }
+  ]
+}
