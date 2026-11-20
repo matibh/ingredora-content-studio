@@ -17,15 +17,15 @@
       "camera": {
         "position": [
           0,
-          1,
-          9.7
+          1.15,
+          13.2
         ],
         "target": [
           0,
           0.2,
           -0.9
         ],
-        "fov": 37
+        "fov": 39
       },
       "accentColor": "#ffd45a",
       "headline": "¡ARRANCA EL CONCURSO!",
@@ -291,15 +291,15 @@
       "camera": {
         "position": [
           0,
-          1,
-          9.7
+          1.15,
+          13.2
         ],
         "target": [
           0,
           0.2,
           -0.9
         ],
-        "fov": 37
+        "fov": 39
       },
       "accentColor": "#ffd45a",
       "headline": "¿QUÉ INGREDIENTES TIENE?",
@@ -565,15 +565,15 @@
       "camera": {
         "position": [
           0,
-          1,
-          9.7
+          1.15,
+          13.2
         ],
         "target": [
           0,
           0.2,
           -0.9
         ],
-        "fov": 37
+        "fov": 39
       },
       "accentColor": "#ffd45a",
       "headline": "¡LECHE Y CACAO!",
@@ -839,15 +839,15 @@
       "camera": {
         "position": [
           0,
-          1,
-          9.7
+          1.15,
+          13.2
         ],
         "target": [
           0,
           0.2,
           -0.9
         ],
-        "fov": 37
+        "fov": 39
       },
       "accentColor": "#ffd45a",
       "headline": "6",
@@ -1113,15 +1113,15 @@
       "camera": {
         "position": [
           0,
-          1,
-          9.7
+          1.15,
+          13.2
         ],
         "target": [
           0,
           0.2,
           -0.9
         ],
-        "fov": 37
+        "fov": 39
       },
       "accentColor": "#ffd45a",
       "headline": "5",
@@ -1387,15 +1387,15 @@
       "camera": {
         "position": [
           0,
-          1,
-          9.7
+          1.15,
+          13.2
         ],
         "target": [
           0,
           0.2,
           -0.9
         ],
-        "fov": 37
+        "fov": 39
       },
       "accentColor": "#ffd45a",
       "headline": "4",
@@ -1661,15 +1661,15 @@
       "camera": {
         "position": [
           0,
-          1,
-          9.7
+          1.15,
+          13.2
         ],
         "target": [
           0,
           0.2,
           -0.9
         ],
-        "fov": 37
+        "fov": 39
       },
       "accentColor": "#ffd45a",
       "headline": "3",
@@ -1935,15 +1935,15 @@
       "camera": {
         "position": [
           0,
-          1,
-          9.7
+          1.15,
+          13.2
         ],
         "target": [
           0,
           0.2,
           -0.9
         ],
-        "fov": 37
+        "fov": 39
       },
       "accentColor": "#ffd45a",
       "headline": "2",
@@ -2209,15 +2209,15 @@
       "camera": {
         "position": [
           0,
-          1,
-          9.7
+          1.15,
+          13.2
         ],
         "target": [
           0,
           0.2,
           -0.9
         ],
-        "fov": 37
+        "fov": 39
       },
       "accentColor": "#ffd45a",
       "headline": "1",
@@ -2483,15 +2483,15 @@
       "camera": {
         "position": [
           0,
-          1,
-          9.7
+          1.15,
+          13.2
         ],
         "target": [
           0,
           0.2,
           -0.9
         ],
-        "fov": 37
+        "fov": 39
       },
       "accentColor": "#ffd45a",
       "headline": "LECHE · AZÚCAR · CACAO",
@@ -2757,15 +2757,15 @@
       "camera": {
         "position": [
           0,
-          1,
-          9.7
+          1.15,
+          13.2
         ],
         "target": [
           0,
           0.2,
           -0.9
         ],
-        "fov": 37
+        "fov": 39
       },
       "accentColor": "#ffd45a",
       "headline": "ESPESANTES · AROMAS",
@@ -3031,15 +3031,15 @@
       "camera": {
         "position": [
           0,
-          1,
-          9.7
+          1.15,
+          13.2
         ],
         "target": [
           0,
           0.2,
           -0.9
         ],
-        "fov": 37
+        "fov": 39
       },
       "accentColor": "#ffd45a",
       "headline": "¿CUÁNTOS ACERTASTE?",
