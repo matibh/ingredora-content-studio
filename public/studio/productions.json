@@ -1,7 +1,27 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-19T19:00:00-03:00",
+  "updatedAt": "2026-11-19T21:15:00-03:00",
   "productions": [
+    {
+      "id": "ingredora-oreo-family-merienda-003",
+      "title": "Oreo Original — La merienda familiar",
+      "description": "27 segundos a 60 FPS. Gancho inicial de Ingredora.com, mesa de una casa familiar, paquete Oreo azul abierto, una galletita sale del envase junto a un vaso de chocolatada. Desafío de seis segundos y revelación de ingredientes agrupados en seis tarjetas.",
+      "status": "rendering",
+      "packageUrl": "studio/packages/oreo-family-merienda.v1.json",
+      "durationSeconds": 27,
+      "aspectRatio": "9:16",
+      "language": "Español argentino",
+      "platforms": [
+        "TikTok",
+        "Instagram Reels",
+        "YouTube Shorts",
+        "Facebook Reels",
+        "X"
+      ],
+      "version": "1.0",
+      "createdAt": "2026-11-19T21:00:00-03:00",
+      "caption": "¿Cuánto sabés de lo que comés? 🍪 Hoy el desafío es con Oreo Original. Tenés seis segundos para pensar sus ingredientes. ¿Cuántos acertaste? Entrá a Ingredora.com y jugá. #Ingredora #Oreo #DesafioDeIngredientes"
+    },
     {
       "id": "ingredora-coca-cola-poolside-002",
       "title": "Coca-Cola — Un día de playa, una Coca bien fría",
