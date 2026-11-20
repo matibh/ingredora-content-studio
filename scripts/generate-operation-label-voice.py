@@ -23,7 +23,7 @@ SEGMENTS = [
     {"start": 8.15, "text": "La pista está en su etiqueta.", "rate": "+7%", "pitch": "-3Hz", "volume": "+16%"},
     {"start": 11.05, "text": "Leé los ingredientes. Tenés seis segundos para memorizarlos.", "rate": "+8%", "pitch": "-2Hz", "volume": "+17%"},
     {"start": 23.25, "text": "¡Tiempo! ¿Cuántos recordás?", "rate": "+10%", "pitch": "+2Hz", "volume": "+19%"},
-    {"start": 25.60, "text": "Resolvé más casos en Ingredora punto com.", "rate": "+8%", "pitch": "+1Hz", "volume": "+18%"},
+    {"start": 26.65, "text": "¡Resolvé más casos en Ingredora punto com!", "rate": "+8%", "pitch": "+1Hz", "volume": "+18%"},
 ]
 
 async def synthesize(segment, index):
