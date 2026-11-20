@@ -1,7 +1,26 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-20T19:45:00-03:00",
+  "updatedAt": "2026-11-20T20:00:00-03:00",
   "productions": [
+    {
+      "id": "ingredora-operation-label-detective-013",
+      "title": "Operación Etiqueta — El caso de los seis ingredientes",
+      "description": "Un detective noir descubre que la etiqueta es la pista. Seis ingredientes, seis segundos para memorizarlos y un cierre para jugar en Ingredora.",
+      "status": "rendering",
+      "packageUrl": "studio/packages/operation-label-detective.v1.json",
+      "durationSeconds": 30,
+      "aspectRatio": "9:16",
+      "language": "Español argentino",
+      "platforms": [
+        "TikTok",
+        "Instagram Reels",
+        "YouTube Shorts",
+        "Facebook Reels"
+      ],
+      "version": "1.0",
+      "createdAt": "2026-11-20T20:00:00-03:00",
+      "caption": "¡NUEVO CASO! 🕵️ La etiqueta es la pista y tenés seis segundos para memorizar sus ingredientes. ¿Cuántos recordás? Resolvé más desafíos en Ingredora.com. #Ingredora #OperacionEtiqueta #DesafioDeIngredientes #Memoria"
+    },
     {
       "id": "ingredora-cindor-game-show-001",
       "title": "Cindor Original — El concurso de los ingredientes",
