@@ -36,7 +36,7 @@ export async function generateOriginalSoundtrack({
   master.connect(compressor);
   compressor.connect(context.destination);
 
-  const beat = 60 / 108;
+  const beat = theme === "game-show" ? 60 / 126 : 60 / 108;
   const bar = beat * 4;
   const progression = [
     { bass: 65.41, chord: [261.63, 329.63, 392.0] },
@@ -260,25 +260,75 @@ export async function generateOriginalSoundtrack({
   }
 
   if (theme === "game-show") {
-    // Original TV quiz-show sting: brass-like synth hits, ticking tension and a bright reveal.
-    for (let bar = 0; bar < durationSeconds; bar += 2.0) {
-      addTone(98, bar, 1.65, "triangle", 0.10, 420, 0);
-      addTone(196, bar + 0.02, 1.25, "sawtooth", 0.025, 1_200, -0.12);
-      addTone(293.66, bar + 0.08, 0.42, "triangle", 0.045, 2_400, 0.18);
-      addTone(392, bar + 0.48, 0.36, "triangle", 0.04, 2_800, -0.18);
+    // Brighter, faster TV quiz-show arrangement: punchy bass, brass stabs and a driving beat.
+    for (let bar = 0; bar < durationSeconds; bar += beat * 4) {
+      addTone(98, bar, 1.45, "triangle", 0.15, 460, 0);
+      addTone(196, bar + 0.015, 0.72, "sawtooth", 0.045, 1_500, -0.12);
+      addTone(293.66, bar + 0.025, 0.34, "sawtooth", 0.075, 2_800, 0.18);
+      addTone(392, bar + beat * 2, 0.30, "sawtooth", 0.065, 3_200, -0.18);
+      addTone(587.33, bar + beat * 3, 0.22, "triangle", 0.055, 3_800, 0.2);
     }
+
+    // A lively four-on-the-floor beat, backbeat accents and bright hi-hat ticks.
+    for (let start = 0, beatIndex = 0; start < durationSeconds; start += beat, beatIndex += 1) {
+      addTone(beatIndex % 4 === 0 ? 62 : 74, start, 0.19, "sine", 0.22, 190, 0);
+      if (beatIndex % 4 === 1 || beatIndex % 4 === 3) {
+        addTone(185, start, 0.095, "triangle", 0.10, 1_100, 0);
+        addTone(1_650, start, 0.055, "square", 0.025, 5_800, 0.12);
+      }
+      addTone(7_200, start + beat / 2, 0.035, "square", 0.018, 9_000, beatIndex % 2 ? 0.35 : -0.35);
+    }
+
     // Six distinct clock ticks during the contestant countdown.
     for (let second = 10; second < 16; second += 1) {
       addTone(second === 15 ? 1_320 : 880, second, 0.085, "square", second === 15 ? 0.075 : 0.045, 4_500, 0);
       addTone(110, second, 0.12, "sine", 0.10, 360, 0);
     }
+
+    // Crowd applause made procedurally: many irregular, layered hand-clap transients.
+    // No external recordings or copyrighted samples are used.
+    const applauseLength = Math.ceil(sampleRate * 0.105);
+    const applauseBuffer = context.createBuffer(1, applauseLength, sampleRate);
+    const applauseData = applauseBuffer.getChannelData(0);
+    for (let i = 0; i < applauseLength; i += 1) {
+      const fade = Math.pow(1 - i / applauseLength, 2.6);
+      applauseData[i] = (random() * 2 - 1) * fade;
+    }
+    const addApplause = (from: number, to: number, intensity: number) => {
+      let clapIndex = 0;
+      for (let start = from; start < Math.min(to, durationSeconds - 0.12); start += 0.052 + random() * 0.078) {
+        const source = context.createBufferSource();
+        const filter = context.createBiquadFilter();
+        const gain = context.createGain();
+        const panner = context.createStereoPanner();
+        source.buffer = applauseBuffer;
+        filter.type = "bandpass";
+        filter.frequency.value = 1_050 + random() * 2_300;
+        filter.Q.value = 0.55 + random() * 0.7;
+        const peak = intensity * (0.45 + random() * 0.75);
+        gain.gain.setValueAtTime(0.0001, start);
+        gain.gain.linearRampToValueAtTime(peak, start + 0.004);
+        gain.gain.exponentialRampToValueAtTime(0.0001, start + 0.105);
+        panner.pan.value = -0.85 + random() * 1.7;
+        source.connect(filter);
+        filter.connect(gain);
+        gain.connect(panner);
+        panner.connect(master);
+        source.start(start);
+        clapIndex += 1;
+      }
+    };
+    // Opening applause welcomes the show; the ending applause celebrates the CTA.
+    addApplause(0.18, Math.min(2.65, durationSeconds * 0.18), 0.12);
+    addApplause(Math.max(0, durationSeconds - 2.8), durationSeconds - 0.12, 0.15);
+
     // Reveal sting and final CTA sparkle.
     [523.25, 659.25, 783.99, 1_046.5].forEach((frequency, index) => {
-      addTone(frequency, 16.05 + index * 0.09, 0.58, "triangle", 0.075, 5_200, (index - 1.5) * 0.18);
+      addTone(frequency, 16.05 + index * 0.09, 0.58, "triangle", 0.09, 5_200, (index - 1.5) * 0.18);
     });
     addTone(65.41, 16.02, 0.55, "sine", 0.22, 180, 0);
-    addTone(880, 25.15, 0.42, "triangle", 0.07, 5_000, -0.18);
-    addTone(1_320, 25.32, 0.50, "sine", 0.06, 6_000, 0.18);
+    addTone(880, 25.15, 0.42, "triangle", 0.085, 5_000, -0.18);
+    addTone(1_320, 25.32, 0.50, "sine", 0.075, 6_000, 0.18);
   }
 
   return context.startRendering();
