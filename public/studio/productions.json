@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-20T19:55:00-03:00",
+  "updatedAt": "2026-11-20T20:25:00-03:00",
   "productions": [
     {
-      "id": "ingredora-oreo-family-merienda-009",
-      "title": "Oreo Original — subtítulos de una palabra exacta",
-      "description": "30 segundos a 60 FPS. Solo aparece la palabra que se está pronunciando, exactamente durante su intervalo de voz; desaparece antes de la siguiente. Sin frases acumuladas ni palabras anteriores retenidas.",
+      "id": "ingredora-oreo-family-merienda-010",
+      "title": "Oreo Original — contador visual sin voz",
+      "description": "La chica dice «Tenés seis segundos» y luego calla. En pantalla aparece 6, 5, 4, 3, 2, 1 sin narración. Después retoma la voz con «Tiempo». Subtítulos de una palabra por vez.",
       "status": "rendering",
       "packageUrl": "studio/packages/oreo-family-merienda.v1.json",
       "durationSeconds": 30,
@@ -18,9 +18,9 @@
         "Facebook Reels",
         "X"
       ],
-      "version": "8.2",
-      "createdAt": "2026-11-20T19:55:00-03:00",
-      "caption": "¿Cuánto sabés de lo que comés? 🍪 Mirá cómo sale la Oreo del paquete y poné a prueba cuánto recordás de sus ingredientes. Entrá a Ingredora.com y jugá. #Ingredora #Oreo #DesafioDeIngredientes"
+      "version": "8.3",
+      "createdAt": "2026-11-20T20:25:00-03:00",
+      "caption": "¿Cuánto sabés de lo que comés? 🍪 Tenés seis segundos para recordar los ingredientes. La cuenta es visual, sin voz. Entrá a Ingredora.com y jugá. #Ingredora #Oreo #DesafioDeIngredientes"
     },
     {
       "id": "ingredora-coca-cola-poolside-002",
