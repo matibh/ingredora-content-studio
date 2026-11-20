@@ -725,18 +725,27 @@ export async function renderPackageToWebM(
     musicGain.gain.value = 0.045;
     musicSource.connect(musicGain).connect(offline.destination);
     musicSource.start(0);
+    let voiceForMix = voice;
+    if (pkg.visualPreset === "oreo-family-table") {
+      // Remove the spoken countdown from the actual narration and move the
+      // following line 0.65s later, so "Tiempo" starts after the visual 1 ends.
+      const cutStart = Math.round(11.78 * voice.sampleRate);
+      const cutEnd = Math.round(15.85 * voice.sampleRate);
+      const shiftSamples = Math.round(0.65 * voice.sampleRate);
+      const edited = offline.createBuffer(voice.numberOfChannels, voice.length + shiftSamples, voice.sampleRate);
+      for (let channel = 0; channel < voice.numberOfChannels; channel += 1) {
+        const sourceSamples = voice.getChannelData(channel);
+        const targetSamples = edited.getChannelData(channel);
+        targetSamples.set(sourceSamples.subarray(0, cutStart), 0);
+        targetSamples.set(sourceSamples.subarray(cutEnd), cutEnd + shiftSamples);
+      }
+      voiceForMix = edited;
+    }
     const voiceSource = offline.createBufferSource();
-    voiceSource.buffer = voice;
+    voiceSource.buffer = voiceForMix;
     const voiceGain = offline.createGain();
     // The narration is the foreground: normalize it firmly above the soundtrack.
-    const narrationGain = Math.min(3.2, Math.max(2.0, 0.92 / voicePeak));
-    voiceGain.gain.setValueAtTime(narrationGain, 0);
-    // The presenter says "Tenés seis segundos", then the visual countdown runs
-    // silently. Resume narration only after the on-screen 1 has finished.
-    if (pkg.visualPreset === "oreo-family-table") {
-      voiceGain.gain.setValueAtTime(0, 11.78);
-      voiceGain.gain.setValueAtTime(narrationGain, 15.85);
-    }
+    voiceGain.gain.value = Math.min(3.2, Math.max(2.0, 0.92 / voicePeak));
     const voiceCompressor = offline.createDynamicsCompressor();
     voiceCompressor.threshold.value = -8;
     voiceCompressor.knee.value = 8;
