@@ -14,7 +14,6 @@
       "startFrame": 0,
       "durationFrames": 240,
       "headline": "¡EL DESAFÍO CINDOR!",
-      "subline": "DOS CONCURSANTES · ¿QUIÉN SABE?",
       "accentColor": "#ffd45a",
       "background": "#100f29",
       "camera": {
@@ -148,7 +147,6 @@
       "startFrame": 240,
       "durationFrames": 240,
       "headline": "«¿QUÉ INGREDIENTES TIENE CINDOR?»",
-      "subline": "¡LOS ESTAMOS ESCUCHANDO!",
       "accentColor": "#ffd45a",
       "background": "#100f29",
       "camera": {
@@ -282,7 +280,6 @@
       "startFrame": 480,
       "durationFrames": 60,
       "headline": "6",
-      "subline": "6 SEGUNDOS PARA RESPONDER",
       "accentColor": "#ffd45a",
       "background": "#100f29",
       "camera": {
@@ -416,7 +413,6 @@
       "startFrame": 540,
       "durationFrames": 60,
       "headline": "5",
-      "subline": "SE MIRAN ENTRE ELLOS…",
       "accentColor": "#ffd45a",
       "background": "#100f29",
       "camera": {
@@ -550,7 +546,6 @@
       "startFrame": 600,
       "durationFrames": 60,
       "headline": "4",
-      "subline": "¿ALGUNA IDEA?",
       "accentColor": "#ffd45a",
       "background": "#100f29",
       "camera": {
@@ -684,7 +679,6 @@
       "startFrame": 660,
       "durationFrames": 60,
       "headline": "3",
-      "subline": "¡SIGUEN SIN SABER!",
       "accentColor": "#ffd45a",
       "background": "#100f29",
       "camera": {
@@ -818,7 +812,6 @@
       "startFrame": 720,
       "durationFrames": 60,
       "headline": "2",
-      "subline": "EL TIEMPO SE TERMINA",
       "accentColor": "#ffd45a",
       "background": "#100f29",
       "camera": {
@@ -952,7 +945,6 @@
       "startFrame": 780,
       "durationFrames": 60,
       "headline": "1",
-      "subline": "¡TIEMPO!",
       "accentColor": "#ff6b73",
       "background": "#100f29",
       "camera": {
@@ -1086,7 +1078,6 @@
       "startFrame": 840,
       "durationFrames": 300,
       "headline": "«¡NO SABEN NADA!»",
-      "subline": "¿Y VOS? ¿SABÉS QUÉ TIENE?",
       "accentColor": "#ffd45a",
       "background": "#100f29",
       "camera": {
@@ -1218,9 +1209,8 @@
     {
       "id": "game-show-cta",
       "startFrame": 1140,
-      "durationFrames": 660,
-      "headline": "¡AHORA TE TOCA A VOS!",
-      "subline": "ENTRÁ A INGREDORA.COM Y SEGUÍ JUGANDO",
+      "durationFrames": 120,
+      "headline": "¡INGRESA EN INGREDORA.COM Y JUEGA YA!",
       "accentColor": "#ffd45a",
       "background": "#100f29",
       "camera": {
