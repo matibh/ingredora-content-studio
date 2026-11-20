@@ -73,6 +73,9 @@ async def main():
         manifest.append({"text": segment["text"], "start": segment["start"],
                          "end": round(end_ms / 1000, 4), "wordCount": len(words),
                          "rate": segment["rate"], "pitch": segment["pitch"], "volume": segment["volume"]})
+    # Fail the workflow instead of publishing a silent/near-silent presenter track.
+    if master.rms < 900 or len(master) < 5_000:
+        raise RuntimeError(f"La voz generada no tiene energía suficiente (RMS={master.rms}, duración={len(master)} ms).")
     master.export(OUTPUT, format="mp3", bitrate="192k")
     TIMINGS_OUTPUT.write_text(json.dumps({
         "voice": VOICE, "style": "energetic Argentine TV game-show host",
