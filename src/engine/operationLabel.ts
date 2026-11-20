@@ -113,83 +113,70 @@ export function createOperationLabelSet(world: THREE.Scene): OperationLabelSet {
   // The suspect: an individually wrapped Guaymallén alfajor. The mystery is that
   // the ingredients list cannot be found; no ingredient names are shown anywhere.
   const product = new THREE.Group(); product.name = "guaymallen-alfajor"; product.position.set(1.22, -0.36, 0.25); product.rotation.y = -0.10; world.add(product);
-  const foil = material("#e7b91c", 0.26, 0.62);
-  // Rounded pillow-pack silhouette: a soft, inflated wrapper instead of a hard rectangular box.
-  const packShape = new THREE.Shape();
-  const packW = 1.43, packH = 0.61, packR = 0.24;
-  packShape.moveTo(-packW + packR, -packH);
-  packShape.lineTo(packW - packR, -packH);
-  packShape.quadraticCurveTo(packW, -packH, packW, -packH + packR);
-  packShape.lineTo(packW, packH - packR);
-  packShape.quadraticCurveTo(packW, packH, packW - packR, packH);
-  packShape.lineTo(-packW + packR, packH);
-  packShape.quadraticCurveTo(-packW, packH, -packW, packH - packR);
-  packShape.lineTo(-packW, -packH + packR);
-  packShape.quadraticCurveTo(-packW, -packH, -packW + packR, -packH);
-  const wrapperGeometry = new THREE.ExtrudeGeometry(packShape, {
-    depth: 0.46, bevelEnabled: true, bevelSegments: 5, steps: 1,
-    bevelSize: 0.075, bevelThickness: 0.055, curveSegments: 10,
+  // Real Guaymallén 38 g dulce de leche wrapper, photographed and licensed CC BY-SA 4.0.
+  // Preserve the real folds, print, logo, proportions and current front-of-pack warnings.
+  const productPhotoMaterial = new THREE.MeshBasicMaterial({
+    color: "#d5a52a", transparent: true, opacity: 1, depthWrite: false, side: THREE.DoubleSide,
   });
-  const wrapper = new THREE.Mesh(wrapperGeometry, [foil, foil]);
-  wrapper.position.z = -0.23;
-  wrapper.castShadow = true; wrapper.receiveShadow = true; product.add(wrapper);
-
-  const wrapperTexture = makeTexture((ctx, w, h) => {
-    const gold = ctx.createLinearGradient(0, 0, 0, h);
-    gold.addColorStop(0, "#fff08a"); gold.addColorStop(.22, "#f5d34b");
-    gold.addColorStop(.54, "#e7b91d"); gold.addColorStop(1, "#c58a13");
-    ctx.fillStyle = gold; ctx.fillRect(0, 0, w, h);
-
-    // Fine cream rays on the golden foil, kept to the two side panels.
-    ctx.save();
-    ctx.strokeStyle = "rgba(255,250,208,.78)"; ctx.lineWidth = 5;
-    for (let i = -8; i <= 8; i++) {
-      const y = h * .5 + i * 72;
-      ctx.beginPath(); ctx.moveTo(w * .5, h * .5); ctx.lineTo(i < 0 ? 0 : w, y); ctx.stroke();
-      ctx.beginPath(); ctx.moveTo(w * .5, h * .5); ctx.lineTo(i < 0 ? w : 0, y); ctx.stroke();
+  const productPhoto = new THREE.Mesh(new THREE.PlaneGeometry(3.28, 2.16), productPhotoMaterial);
+  productPhoto.position.set(0, 0, 0.30); product.add(productPhoto);
+  const wrapperPhoto = new Image();
+  wrapperPhoto.crossOrigin = "anonymous";
+  wrapperPhoto.onload = () => {
+    const source = document.createElement("canvas");
+    source.width = wrapperPhoto.naturalWidth; source.height = wrapperPhoto.naturalHeight;
+    const sourceContext = source.getContext("2d", { willReadFrequently: true });
+    if (!sourceContext) return;
+    sourceContext.drawImage(wrapperPhoto, 0, 0);
+    const pixels = sourceContext.getImageData(0, 0, source.width, source.height);
+    const data = pixels.data, w = source.width, h = source.height;
+    const visited = new Uint8Array(w * h), stack = new Int32Array(w * h);
+    let top = 0;
+    const isBackground = (index: number) => {
+      const offset = index * 4, red = data[offset], green = data[offset + 1], blue = data[offset + 2];
+      const max = Math.max(red, green, blue), min = Math.min(red, green, blue);
+      const luminance = red * 0.299 + green * 0.587 + blue * 0.114;
+      return luminance > 72 && (max - min) / Math.max(1, max) < 0.27;
+    };
+    const seed = (index: number) => {
+      if (visited[index] || !isBackground(index)) return;
+      visited[index] = 1; stack[top++] = index;
+    };
+    for (let x = 0; x < w; x++) { seed(x); seed((h - 1) * w + x); }
+    for (let y = 0; y < h; y++) { seed(y * w); seed(y * w + w - 1); }
+    while (top > 0) {
+      const index = stack[--top];
+      data[index * 4 + 3] = 0;
+      const x = index % w, y = Math.floor(index / w);
+      if (x > 0) seed(index - 1);
+      if (x < w - 1) seed(index + 1);
+      if (y > 0) seed(index - w);
+      if (y < h - 1) seed(index + w);
     }
-    ctx.restore();
-
-    // Curved-looking dark chocolate label, with more breathing room around the brand.
-    rounded(ctx, w * .285, h * .075, w * .43, h * .85, 28);
-    ctx.fillStyle = "#59321e"; ctx.fill();
-    ctx.textAlign = "center"; ctx.textBaseline = "middle";
-    ctx.fillStyle = "#fff0cf"; ctx.font = "900 37px Georgia, serif";
-    ctx.fillText("ALFAJOR", w * .5, h * .205);
-    ctx.font = "900 70px Georgia, serif";
-    ctx.lineWidth = 13; ctx.strokeStyle = "#fff7e7";
-    ctx.strokeText("GUAYMALLÉN", w * .5, h * .465, w * .405);
-    ctx.fillStyle = "#d82428"; ctx.fillText("GUAYMALLÉN", w * .5, h * .465, w * .405);
-    ctx.fillStyle = "#fff0cf"; ctx.font = "800 29px Arial";
-    ctx.fillText("DULCE DE LECHE", w * .5, h * .675);
-    ctx.font = "700 22px Arial"; ctx.fillText("BAÑO DE REPOSTERÍA", w * .5, h * .80);
-    ctx.font = "800 25px Arial"; ctx.fillText("38 g", w * .5, h * .885);
-  }, 1280, 560);
-
-  const wrapperFront = new THREE.Mesh(
-    new THREE.PlaneGeometry(2.72, 1.14),
-    new THREE.MeshBasicMaterial({ map: wrapperTexture })
-  );
-  wrapperFront.position.set(0, 0, 0.298); product.add(wrapperFront);
-
-  // Narrow accordion crimps at both ends: small folded foil ridges, not bulky blocks.
-  const foldMats = [
-    material("#fff1a4", 0.22, 0.72),
-    material("#b98715", 0.28, 0.68),
-    material("#f7d85c", 0.24, 0.72),
-  ];
-  for (const side of [-1, 1]) {
-    for (let fold = 0; fold < 5; fold++) {
-      const ridge = new THREE.Mesh(
-        new THREE.BoxGeometry(0.022, 1.02, 0.018),
-        foldMats[fold % foldMats.length],
-      );
-      ridge.position.set(side * (1.285 + fold * 0.028), 0, 0.301);
-      ridge.rotation.z = side * (fold - 2) * 0.018;
-      product.add(ridge);
+    let minX = w, minY = h, maxX = 0, maxY = 0;
+    for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+      if (data[(y * w + x) * 4 + 3] > 16) {
+        minX = Math.min(minX, x); minY = Math.min(minY, y);
+        maxX = Math.max(maxX, x); maxY = Math.max(maxY, y);
+      }
     }
-  }
-
+    if (maxX <= minX || maxY <= minY) return;
+    sourceContext.putImageData(pixels, 0, 0);
+    const crop = document.createElement("canvas");
+    crop.width = maxX - minX + 1; crop.height = maxY - minY + 1;
+    const cropContext = crop.getContext("2d");
+    if (!cropContext) return;
+    cropContext.drawImage(source, minX, minY, crop.width, crop.height, 0, 0, crop.width, crop.height);
+    const texture = new THREE.CanvasTexture(crop);
+    texture.colorSpace = THREE.SRGBColorSpace; texture.anisotropy = 8;
+    productPhoto.geometry.dispose();
+    productPhoto.geometry = new THREE.PlaneGeometry(3.28, 3.28 * crop.height / crop.width);
+    productPhotoMaterial.map = texture;
+    productPhotoMaterial.color.set("#ffffff");
+    productPhotoMaterial.needsUpdate = true;
+  };
+  wrapperPhoto.onerror = () => console.warn("No se pudo cargar la fotografía real del alfajor Guaymallén.");
+  wrapperPhoto.src = "https://upload.wikimedia.org/wikipedia/commons/e/e3/Alfajor_Guaymallen_de_Dulce_de_Leche_-_Envoltorio_-_2025_%281%29.jpg";
   // A torn-open-looking file sleeve rests next to the wrapped alfajor; it is empty.
   const emptySleeve = new THREE.Mesh(new THREE.BoxGeometry(1.12, .075, 1.55), material("#d4c5a4", .92));
   emptySleeve.position.set(-3.20, -1.43, 1.15); emptySleeve.rotation.y = .24; emptySleeve.rotation.z = -.07; world.add(emptySleeve);
@@ -237,6 +224,11 @@ export function createOperationLabelSet(world: THREE.Scene): OperationLabelSet {
     block("sideburn", hair, [side * 0.34, 2.00, 0.01], [0.10, 0.35, 0.30]);
   }
   // A visible, separate mouth and lower jaw so the detective can speak on camera.
+  const moustache = material("#30231c", 0.94);
+  const moustacheLeft = addSphere("detective-moustache-left", "#30231c", [-0.105, 1.925, 0.405], [0.145, 0.060, 0.055], moustache);
+  moustacheLeft.rotation.z = -0.16;
+  const moustacheRight = addSphere("detective-moustache-right", "#30231c", [0.105, 1.925, 0.405], [0.145, 0.060, 0.055], moustache);
+  moustacheRight.rotation.z = 0.16;
   const mouth = block("detective-mouth", material("#241714", 0.98), [0, 1.815, 0.37], [0.205, 0.065, 0.026]);
   const lowerJaw = block("detective-lower-jaw", skin, [0, 1.735, 0.35], [0.30, 0.105, 0.055]);
   // Fedora brim and crown.
@@ -245,21 +237,14 @@ export function createOperationLabelSet(world: THREE.Scene): OperationLabelSet {
   const hatBand = new THREE.Mesh(new THREE.CylinderGeometry(0.47, 0.49, 0.075, 10), material("#a65a3e", 0.72)); hatBand.position.set(0, 2.49, -0.015); detective.add(hatBand);
   const leftArm = new THREE.Group(); leftArm.position.set(-0.46, 1.35, 0.02); detective.add(leftArm);
   const sleeveL = new THREE.Mesh(new THREE.BoxGeometry(0.23, 0.72, 0.30), coat); sleeveL.position.set(-0.04, -0.20, 0); sleeveL.rotation.z = 0.16; leftArm.add(sleeveL);
-  const handL = new THREE.Mesh(new THREE.BoxGeometry(0.19, 0.18, 0.20), skin); handL.position.set(-0.08, -0.55, 0.10); leftArm.add(handL);
-  const pointingFinger = new THREE.Mesh(new THREE.BoxGeometry(0.10, 0.34, 0.12), skin);
-  pointingFinger.position.set(-0.08, -0.76, 0.16); pointingFinger.rotation.x = -0.48; leftArm.add(pointingFinger);
-  const thumb = new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.12, 0.16), skin);
-  thumb.position.set(0.08, -0.60, 0.19); thumb.rotation.z = -0.48; leftArm.add(thumb);
+  const handMat = material("#d6a77f", 0.92);
+  const handL = new THREE.Mesh(new THREE.SphereGeometry(0.13, 16, 12), handMat);
+  handL.position.set(-0.08, -0.56, 0.11); handL.scale.set(1.0, 0.82, 0.92); leftArm.add(handL);
   const rightArm = new THREE.Group(); rightArm.position.set(0.46, 1.35, 0.02); detective.add(rightArm);
   const sleeveR = new THREE.Mesh(new THREE.BoxGeometry(0.23, 0.64, 0.30), coat); sleeveR.position.set(0.03, -0.18, 0); rightArm.add(sleeveR);
-  const handR = new THREE.Mesh(new THREE.BoxGeometry(0.19, 0.18, 0.20), skin); handR.position.set(0.10, -0.49, 0.08); rightArm.add(handR);
-  // Magnifier: a glass disc with a brass rim, mounted in the detective's right hand.
-  const magnifier = new THREE.Group(); magnifier.position.set(0.90, 1.78, 0.46); magnifier.rotation.z = -0.38; detective.add(magnifier);
-  const lens = new THREE.Mesh(new THREE.CircleGeometry(0.39, 48), new THREE.MeshPhysicalMaterial({ color: "#b9dfcf", transparent: true, opacity: 0.23, roughness: 0.1, metalness: 0.1, transmission: 0.45, thickness: 0.08 }));
-  lens.position.z = 0.015; magnifier.add(lens);
-  const rim = new THREE.Mesh(new THREE.TorusGeometry(0.42, 0.075, 12, 48), material("#d7ad61", 0.22, 0.78)); rim.position.z = 0.04; magnifier.add(rim);
-  const handle = new THREE.Mesh(new THREE.CylinderGeometry(0.055, 0.075, 0.78, 10), material("#71513a", 0.42, 0.35));
-  handle.position.set(0.30, -0.52, 0.01); handle.rotation.z = -0.55; magnifier.add(handle);
+  // A simple rounded mitten rests naturally beside the coat.
+  const handR = new THREE.Mesh(new THREE.SphereGeometry(0.135, 16, 12), handMat);
+  handR.position.set(0.08, -0.49, 0.09); handR.scale.set(1.02, 0.82, 0.92); rightArm.add(handR);
 
   // Cinematic lights: one warm pool from the desk lamp and a cool moonlit rim.
   world.add(new THREE.HemisphereLight(0xc4d9d5, 0x0b1818, 1.1));
@@ -293,7 +278,6 @@ export function createOperationLabelSet(world: THREE.Scene): OperationLabelSet {
     detective.position.y = -1.58 + Math.sin(time * 1.65) * 0.025;
     detective.rotation.y = Math.sin(time * 0.62) * 0.045;
     detective.rotation.z = Math.sin(time * 0.9) * 0.012;
-    magnifier.rotation.z = -0.38 + Math.sin(time * 1.35) * 0.045;
     rightArm.rotation.z = -0.05 + Math.sin(time * 1.1) * 0.025;
     leftArm.rotation.z = Math.sin(time * 0.85) * 0.035;
     product.rotation.y = Math.sin(time * 0.72) * 0.022;
@@ -304,7 +288,6 @@ export function createOperationLabelSet(world: THREE.Scene): OperationLabelSet {
       detective.rotation.y = Math.sin(time * 1.8) * 0.018;
       leftArm.rotation.z = -0.48 + Math.sin(time * 3.2) * 0.045;
       rightArm.rotation.z = 0.18;
-      magnifier.rotation.z = -0.10 + Math.sin(time * 2.3) * 0.025;
     }
   };
   return { update };
