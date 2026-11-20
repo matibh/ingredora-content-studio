@@ -202,7 +202,9 @@ export function drawOreoFamilyOverlay(ctx:CanvasRenderingContext2D,time:number,w
     });
     ctx.restore();return;
   }
-  const x=width*.07,y=height*.57,w=width*.86,h=height*.25;panel(x,y,w,h,ease((time-22)/.25));
+  // Keep the closing CTA in the same upper safe area as every other text panel.
+  // The plate, cookie and serving action remain completely unobstructed below.
+  const x=width*.07,y=height*.135,w=width*.86,h=height*.25;panel(x,y,w,h,ease((time-22)/.25));
   ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle=white;ctx.font="800 "+Math.round(width*.035)+"px Arial";ctx.fillText("¿CUÁNTOS ACERTASTE?",width/2,y+h*.24,w*.88);
   ctx.fillStyle=lime;ctx.font="900 "+Math.round(width*.075)+"px Arial";ctx.fillText("INGREDORA.COM",width/2,y+h*.55,w*.9);
   ctx.fillStyle=white;ctx.font="800 "+Math.round(width*.039)+"px Arial";ctx.fillText("¡ENTRÁ Y JUGÁ!",width/2,y+h*.82,w*.88);ctx.restore();
