@@ -80,7 +80,7 @@ function createGameShowSet(world: THREE.Scene): GameShowSet {
     ctx.shadowBlur=0;ctx.fillStyle="#ffe3aa";ctx.font="800 54px Arial";ctx.fillText("EL DESAFÍO DE LOS INGREDIENTES",w*.5,h*.72,w*.92);
     ctx.fillStyle="#fff";ctx.font="700 38px Arial";ctx.fillText("ORIGINAL · 200 ml",w*.5,h*.88,w*.8);
   },1536,600);
-  const cindorScreen=new THREE.Mesh(new THREE.PlaneGeometry(7.98,2.94),new THREE.MeshBasicMaterial({map:cindorScreenTexture,emissive:"#ffffff",emissiveIntensity:.35}));
+  const cindorScreen=new THREE.Mesh(new THREE.PlaneGeometry(7.98,2.94),new THREE.MeshBasicMaterial({map:cindorScreenTexture}));
   cindorScreen.position.set(0,3.2,-6.405);world.add(cindorScreen);
   // Decorative LED arcs on both sides.
   for(const side of [-1,1]){
@@ -1052,8 +1052,6 @@ export async function renderPackageToWebM(
     if (gameShowSet) {
       const time=frame/fps;
       gameShowSet.update(time);
-      const smooth=(a:number,b:number)=>{const v=Math.max(0,Math.min(1,(time-a)/(b-a)));return v*v*(3-2*v);};
-      const mix=(a:number,b:number,t:number)=>a+(b-a)*t;
       let x=0,y=3.2,z=19.5,tx=0,ty=1.2,tz=-3.3,fov=48;
       const ease=(v:number)=>{const q=Math.max(0,Math.min(1,v));return q*q*(3-2*q);};
       const blend=(a:number,b:number,t:number)=>a+(b-a)*t;
