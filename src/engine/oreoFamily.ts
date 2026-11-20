@@ -90,9 +90,9 @@ export function createOreoFamilySet(world: THREE.Scene): OreoFamilySet {
   // Flexible-looking pillow pack: rounded body, gussets, sealed crimp and a visibly open mouth.
   const packet=new THREE.Group();packet.position.set(-1.28,-.73,.32);packet.rotation.z=-.10;packet.rotation.x=-.06;world.add(packet);
   const filmMat=new THREE.MeshStandardMaterial({map:makePackFront(),roughness:.39,metalness:.10});
-  const packBody=new THREE.Mesh(new THREE.BoxGeometry(1.18,1.72,.19,8,12,2),filmMat);packBody.castShadow=true;packBody.receiveShadow=true;packet.add(packBody);
+  const packBody=new THREE.Mesh(new THREE.BoxGeometry(1.18,1.46,.19,8,12,2),filmMat);packBody.castShadow=true;packBody.receiveShadow=true;packet.add(packBody);
   const edgeMat=new THREE.MeshStandardMaterial({color:"#07509d",roughness:.42,metalness:.16});
-  for(const sideX of [-.59,.59]){const gusset=new THREE.Mesh(new THREE.BoxGeometry(.075,1.62,.25),edgeMat);gusset.position.set(sideX,0,-.005);packet.add(gusset);}
+  for(const sideX of [-.59,.59]){const gusset=new THREE.Mesh(new THREE.BoxGeometry(.075,1.38,.25),edgeMat);gusset.position.set(sideX,0,-.005);packet.add(gusset);}
   const bottomSeal=new THREE.Mesh(new THREE.BoxGeometry(1.22,.10,.22),edgeMat);bottomSeal.position.y=-.86;packet.add(bottomSeal);
   const backFoil=new THREE.Mesh(new THREE.BoxGeometry(1.12,.16,.24),new THREE.MeshStandardMaterial({color:"#a9c5d4",roughness:.28,metalness:.42}));backFoil.position.set(0,.82,-.015);packet.add(backFoil);
   const inner=new THREE.Mesh(new THREE.BoxGeometry(.98,.16,.20),new THREE.MeshStandardMaterial({color:"#172b39",roughness:.55,side:THREE.DoubleSide}));inner.position.set(0,.78,.015);packet.add(inner);
@@ -123,8 +123,8 @@ export function createOreoFamilySet(world: THREE.Scene): OreoFamilySet {
     // Cookie begins fully inside the package, rises through the open mouth,
     // clears the lip, travels in a gravity-driven arc, then lands and settles on the plate.
     const t=clamp((time-4.15)/2.25);
-    const start=new THREE.Vector3(-1.28,-.34,.54);
-    const mouth=new THREE.Vector3(-1.27,-.05,.62);
+    const start=new THREE.Vector3(-1.28,-.34,.27);
+    const mouth=new THREE.Vector3(-1.27,.10,.58);
     const landing=new THREE.Vector3(.55,-1.32,.80);
     const lift=smooth(t);
     const x=THREE.MathUtils.lerp(mouth.x,landing.x,lift);
