@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "engineVersion": "1.0.0",
+  "id": "ingredora-operation-label-detective-013",
+  "title": "Operación Etiqueta — El caso de los seis ingredientes",
+  "description": "Cortometraje vertical de misterio 3D: un detective investiga una etiqueta ficticia con seis ingredientes. Locución masculina argentina, seis segundos de cuenta regresiva silenciosa y cierre invitando a resolver desafíos en Ingredora.",
+  "createdAt": "2026-11-20T20:00:00-03:00",
+  "fps": 30,
+  "width": 720,
+  "height": 1280,
+  "visualPreset": "operation-label-detective",
+  "voiceoverUrl": "studio/audio/operation-label-voice-es-AR.mp3?v=20261120a",
+  "wordTimingsUrl": "studio/audio/operation-label-word-timings.json?v=20261120a",
+  "voiceoverOffsetSeconds": 0,
+  "scenes": [
+    {
+      "id": "operation-label-case-047",
+      "startFrame": 0,
+      "durationFrames": 900,
+      "background": "#07171b",
+      "camera": {
+        "position": [
+          0,
+          2.25,
+          12.6
+        ],
+        "target": [
+          0,
+          0.05,
+          -0.7
+        ],
+        "fov": 44
+      },
+      "accentColor": "#d7ad61",
+      "objects": []
+    }
+  ]
+}
