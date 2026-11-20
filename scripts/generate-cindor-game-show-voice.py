@@ -18,7 +18,7 @@ DURATION_MS = 23_000
 # deliberate pauses, and emphatic exclamations. Separate phrases preserve the edit.
 SEGMENTS = [
     {"start": 0.20, "text": "¡Bienvenidos a... el Desafío Ingredora!", "rate": "+2%", "pitch": "+8Hz", "volume": "+18%"},
-    {"start": 4.15, "text": "¡Hoy tenemos una pregunta que parece fácil! ¿Qué ingredientes tiene Cindor?", "rate": "+5%", "pitch": "+7Hz", "volume": "+18%"},
+    {"start": 4.15, "text": "¡Atención! ¿Qué ingredientes tiene Cindor?", "rate": "+5%", "pitch": "+7Hz", "volume": "+18%"},
     {"start": 8.10, "text": "¡Tienen seis segundos para responder! ¡Vamos!", "rate": "+8%", "pitch": "+10Hz", "volume": "+20%"},
     {"start": 14.10, "text": "¡Se terminó el tiempo! ¡No saben nada!", "rate": "+3%", "pitch": "+9Hz", "volume": "+20%"},
     {"start": 19.05, "text": "¡Ingresá en Ingredora punto com y jugá ya!", "rate": "+8%", "pitch": "+10Hz", "volume": "+20%"},
