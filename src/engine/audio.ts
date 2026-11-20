@@ -1,7 +1,7 @@
 export type SoundtrackOptions = {
   durationSeconds: number;
   sampleRate?: number;
-  theme?: "summer-poolside";
+  theme?: "summer-poolside" | "family-merienda";
 };
 
 /**
@@ -143,6 +143,37 @@ export async function generateOriginalSoundtrack({
     source.start(start);
   }
 
+
+  if (theme === "family-merienda") {
+    // Soft packet rustle, cookie slide, six-second countdown and a warm reveal chime.
+    const rustleLength=Math.ceil(sampleRate*.18);
+    const rustleBuffer=context.createBuffer(1,rustleLength,sampleRate);
+    const rustleData=rustleBuffer.getChannelData(0);
+    for(let i=0;i<rustleLength;i++) rustleData[i]=(random()*2-1)*Math.pow(1-i/rustleLength,1.8);
+    for(const start of [3.55,3.82,4.08]){
+      const source=context.createBufferSource(),filter=context.createBiquadFilter(),gain=context.createGain();
+      source.buffer=rustleBuffer;filter.type="bandpass";filter.frequency.value=2200;filter.Q.value=.55;
+      gain.gain.setValueAtTime(.0001,start);gain.gain.linearRampToValueAtTime(.055,start+.012);gain.gain.exponentialRampToValueAtTime(.0001,start+.19);
+      source.connect(filter);filter.connect(gain);gain.connect(master);source.start(start);
+    }
+    const slide=context.createOscillator(),slideGain=context.createGain(),slideFilter=context.createBiquadFilter();
+    slide.type="sine";slide.frequency.setValueAtTime(420,4.05);slide.frequency.exponentialRampToValueAtTime(180,6.35);
+    slideFilter.type="lowpass";slideFilter.frequency.value=900;
+    slideGain.gain.setValueAtTime(.0001,4.02);slideGain.gain.linearRampToValueAtTime(.07,4.25);slideGain.gain.exponentialRampToValueAtTime(.0001,6.42);
+    slide.connect(slideFilter);slideFilter.connect(slideGain);slideGain.connect(master);slide.start(4.02);slide.stop(6.45);
+    for(let second=11;second<17;second++){
+      const osc=context.createOscillator(),gain=context.createGain();
+      osc.type="sine";osc.frequency.setValueAtTime(second===16?880:660,second);
+      gain.gain.setValueAtTime(.0001,second);gain.gain.linearRampToValueAtTime(.10,second+.012);gain.gain.exponentialRampToValueAtTime(.0001,second+.16);
+      osc.connect(gain);gain.connect(master);osc.start(second);osc.stop(second+.18);
+    }
+    [17.05,18.0,19.0,20.0,21.0].forEach((start,index)=>{
+      const osc=context.createOscillator(),gain=context.createGain();
+      osc.type="sine";osc.frequency.setValueAtTime([523.25,659.25,783.99,987.77,1046.5][index],start);
+      gain.gain.setValueAtTime(.0001,start);gain.gain.linearRampToValueAtTime(.085,start+.02);gain.gain.exponentialRampToValueAtTime(.0001,start+.38);
+      osc.connect(gain);gain.connect(master);osc.start(start);osc.stop(start+.4);
+    });
+  }
 
   if (theme === "summer-poolside") {
     // Original procedural summer SFX: fizz/pour texture, ice clinks, freeze hit,
