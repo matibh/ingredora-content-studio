@@ -379,43 +379,45 @@ function drawPoolsideVoiceCaption(
 }
 
 function drawOreoWordCaptions(ctx: CanvasRenderingContext2D, time: number, width: number, height: number, words: VoiceWordTiming[]) {
-  // Readable phrase chunks: 3–4 words per caption, never spanning a natural pause.
-  const groups: Array<{ text: string; start: number; end: number }> = [];
+  // Group the spoken words into readable 3–4 word captions. A long pause
+  // always starts a new group, preserving the silent countdown gap.
+  const chunks: VoiceWordTiming[][] = [];
   let current: VoiceWordTiming[] = [];
-  const flush = () => {
-    if (!current.length) return;
-    groups.push({
-      text: current.map((word) => word.text).join(" "),
-      start: current[0].start,
-      end: current[current.length - 1].end,
-    });
-    current = [];
-  };
+  const flush = () => { if (current.length) chunks.push(current); current = []; };
   for (const word of words) {
     const previous = current[current.length - 1];
     if (previous && (word.start - previous.end > 0.58 || current.length >= 4)) flush();
     current.push(word);
   }
   flush();
-  // Avoid a one-word tail: rebalance it into a three-word final group.
-  if (groups.length >= 2) {
-    const lastWords = groups[groups.length - 1].text.split(" ");
-    const priorWords = groups[groups.length - 2].text.split(" ");
-    if (lastWords.length === 1 && priorWords.length === 4) {
-      const all = [...priorWords, ...lastWords];
-      const moved = all.splice(3, 1)[0];
-      groups[groups.length - 2] = {
-        text: all.slice(0, 3).join(" "),
-        start: groups[groups.length - 2].start,
-        end: words.find((word) => word.text === all[2] && word.end <= groups[groups.length - 1].start)?.end ?? groups[groups.length - 2].end,
-      };
-      groups[groups.length - 1] = {
-        text: [moved, ...lastWords].join(" "),
-        start: words.find((word) => word.text === moved && word.start >= groups[groups.length - 2].start)?.start ?? groups[groups.length - 1].start,
-        end: groups[groups.length - 1].end,
-      };
+
+  // Avoid single-word flashes: borrow two words from the adjacent phrase,
+  // but never bridge a long pause such as the six-second countdown.
+  for (let i = 0; i < chunks.length; i += 1) {
+    if (chunks[i].length !== 1) continue;
+    const next = chunks[i + 1];
+    if (next && next.length >= 3 && next[1].start - chunks[i][0].end < 1.25) {
+      chunks[i].push(next.shift()!, next.shift()!);
+    } else if (i > 0 && chunks[i - 1].length >= 3 && chunks[i][0].start - chunks[i - 1][chunks[i - 1].length - 1].end < 1.25) {
+      chunks[i].unshift(chunks[i - 1].pop()!, chunks[i - 1].pop()!);
     }
   }
+  // Join adjacent short fragments when their speech is continuous and the
+  // combined caption still fits within four words.
+  for (let i = 0; i < chunks.length - 1; i += 1) {
+    const gap = chunks[i + 1][0].start - chunks[i][chunks[i].length - 1].end;
+    if (chunks[i].length + chunks[i + 1].length <= 4 && gap < 0.58) {
+      chunks[i].push(...chunks[i + 1]);
+      chunks.splice(i + 1, 1);
+      i -= 1;
+    }
+  }
+
+  const groups = chunks.map((chunk) => ({
+    text: chunk.map((word) => word.text).join(" "),
+    start: chunk[0].start,
+    end: chunk[chunk.length - 1].end,
+  }));
   const active = groups.find((group) => time >= group.start && time < group.end);
   if (!active) return;
 
