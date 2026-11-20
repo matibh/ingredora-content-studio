@@ -1,7 +1,7 @@
 export type SoundtrackOptions = {
   durationSeconds: number;
   sampleRate?: number;
-  theme?: "summer-poolside" | "family-merienda";
+  theme?: "summer-poolside" | "family-merienda" | "game-show";
 };
 
 /**
@@ -257,6 +257,28 @@ export async function generateOriginalSoundtrack({
     addTone(523.25, 16.02, 0.48, "sine", 0.07, 4_800, -0.18);
     addTone(659.25, 16.10, 0.52, "sine", 0.06, 5_200, 0.12);
     addTone(783.99, 16.18, 0.62, "triangle", 0.055, 5_600, 0.28);
+  }
+
+  if (theme === "game-show") {
+    // Original TV quiz-show sting: brass-like synth hits, ticking tension and a bright reveal.
+    for (let bar = 0; bar < durationSeconds; bar += 2.0) {
+      addTone(98, bar, 1.65, "triangle", 0.10, 420, 0);
+      addTone(196, bar + 0.02, 1.25, "sawtooth", 0.025, 1_200, -0.12);
+      addTone(293.66, bar + 0.08, 0.42, "triangle", 0.045, 2_400, 0.18);
+      addTone(392, bar + 0.48, 0.36, "triangle", 0.04, 2_800, -0.18);
+    }
+    // Six distinct clock ticks during the contestant countdown.
+    for (let second = 10; second < 16; second += 1) {
+      addTone(second === 15 ? 1_320 : 880, second, 0.085, "square", second === 15 ? 0.075 : 0.045, 4_500, 0);
+      addTone(110, second, 0.12, "sine", 0.10, 360, 0);
+    }
+    // Reveal sting and final CTA sparkle.
+    [523.25, 659.25, 783.99, 1_046.5].forEach((frequency, index) => {
+      addTone(frequency, 16.05 + index * 0.09, 0.58, "triangle", 0.075, 5_200, (index - 1.5) * 0.18);
+    });
+    addTone(65.41, 16.02, 0.55, "sine", 0.22, 180, 0);
+    addTone(880, 25.15, 0.42, "triangle", 0.07, 5_000, -0.18);
+    addTone(1_320, 25.32, 0.50, "sine", 0.06, 6_000, 0.18);
   }
 
   return context.startRendering();
