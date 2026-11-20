@@ -3,7 +3,7 @@
   "engineVersion": "1.0.0",
   "id": "ingredora-cindor-game-show-001",
   "title": "Cindor Original — El concurso de los ingredientes",
-  "description": "Concurso de televisión con dos participantes, atriles, pulsadores, pregunta sobre Cindor Original 200 ml, cuenta regresiva visual de seis a uno, revelación de ingredientes y cierre a Ingredora.com. Música instrumental original y textos en pantalla.",
+  "description": "Concurso televisivo: el conductor pregunta a dos participantes qué ingredientes tiene Cindor; ninguno sabe responder durante seis segundos. El conductor invita a la audiencia a seguir jugando en Ingredora.com. Sin revelar respuestas.",
   "createdAt": "2026-11-20T19:45:00-03:00",
   "fps": 60,
   "width": 720,
@@ -13,6 +13,9 @@
       "id": "game-show-intro",
       "startFrame": 0,
       "durationFrames": 240,
+      "headline": "¡EL DESAFÍO CINDOR!",
+      "subline": "DOS CONCURSANTES · ¿QUIÉN SABE?",
+      "accentColor": "#ffd45a",
       "background": "#100f29",
       "camera": {
         "position": [
@@ -27,9 +30,6 @@
         ],
         "fov": 39
       },
-      "accentColor": "#ffd45a",
-      "headline": "¡ARRANCA EL CONCURSO!",
-      "subline": "DOS PARTICIPANTES · UNA PREGUNTA",
       "objects": [
         {
           "id": "stage-floor",
@@ -119,146 +119,6 @@
             1.05,
             1.75,
             0.85
-          ]
-        },
-        {
-          "id": "contestant-left-body",
-          "shape": "cylinder",
-          "color": "#e8b18b",
-          "position": [
-            -1.45,
-            0.35,
-            -0.05
-          ],
-          "scale": [
-            0.42,
-            0.62,
-            0.42
-          ]
-        },
-        {
-          "id": "contestant-left-head",
-          "shape": "sphere",
-          "color": "#e8b18b",
-          "position": [
-            -1.45,
-            1.02,
-            -0.05
-          ],
-          "scale": [
-            0.43,
-            0.43,
-            0.43
-          ]
-        },
-        {
-          "id": "contestant-right-body",
-          "shape": "cylinder",
-          "color": "#d49a72",
-          "position": [
-            1.45,
-            0.35,
-            -0.05
-          ],
-          "scale": [
-            0.42,
-            0.62,
-            0.42
-          ]
-        },
-        {
-          "id": "contestant-right-head",
-          "shape": "sphere",
-          "color": "#d49a72",
-          "position": [
-            1.45,
-            1.02,
-            -0.05
-          ],
-          "scale": [
-            0.43,
-            0.43,
-            0.43
-          ]
-        },
-        {
-          "id": "buzzer-left",
-          "shape": "sphere",
-          "color": "#ffdf55",
-          "position": [
-            -1.45,
-            0.19,
-            0.38
-          ],
-          "scale": [
-            0.2,
-            0.11,
-            0.2
-          ],
-          "animation": {
-            "type": "pulse",
-            "speed": 5,
-            "amount": 0.09
-          }
-        },
-        {
-          "id": "buzzer-right",
-          "shape": "sphere",
-          "color": "#ffdf55",
-          "position": [
-            1.45,
-            0.19,
-            0.38
-          ],
-          "scale": [
-            0.2,
-            0.11,
-            0.2
-          ],
-          "animation": {
-            "type": "pulse",
-            "speed": 5,
-            "amount": 0.09
-          }
-        },
-        {
-          "id": "stage-light-left",
-          "shape": "cone",
-          "color": "#ffcf55",
-          "position": [
-            -3,
-            3.5,
-            -1.6
-          ],
-          "scale": [
-            0.85,
-            1.9,
-            0.85
-          ],
-          "rotation": [
-            0,
-            0,
-            0.42
-          ]
-        },
-        {
-          "id": "stage-light-right",
-          "shape": "cone",
-          "color": "#65c9ff",
-          "position": [
-            3,
-            3.5,
-            -1.6
-          ],
-          "scale": [
-            0.85,
-            1.9,
-            0.85
-          ],
-          "rotation": [
-            0,
-            0,
-            -0.42
           ]
         },
         {
@@ -287,6 +147,9 @@
       "id": "game-show-question",
       "startFrame": 240,
       "durationFrames": 240,
+      "headline": "CONDUCTOR: «¿QUÉ INGREDIENTES TIENE CINDOR?»",
+      "subline": "¡LOS ESTAMOS ESCUCHANDO!",
+      "accentColor": "#ffd45a",
       "background": "#100f29",
       "camera": {
         "position": [
@@ -301,9 +164,6 @@
         ],
         "fov": 39
       },
-      "accentColor": "#ffd45a",
-      "headline": "¿QUÉ INGREDIENTES TIENE?",
-      "subline": "CINDOR ORIGINAL · 200 ML",
       "objects": [
         {
           "id": "stage-floor",
@@ -393,420 +253,6 @@
             1.05,
             1.75,
             0.85
-          ]
-        },
-        {
-          "id": "contestant-left-body",
-          "shape": "cylinder",
-          "color": "#e8b18b",
-          "position": [
-            -1.45,
-            0.35,
-            -0.05
-          ],
-          "scale": [
-            0.42,
-            0.62,
-            0.42
-          ]
-        },
-        {
-          "id": "contestant-left-head",
-          "shape": "sphere",
-          "color": "#e8b18b",
-          "position": [
-            -1.45,
-            1.02,
-            -0.05
-          ],
-          "scale": [
-            0.43,
-            0.43,
-            0.43
-          ]
-        },
-        {
-          "id": "contestant-right-body",
-          "shape": "cylinder",
-          "color": "#d49a72",
-          "position": [
-            1.45,
-            0.35,
-            -0.05
-          ],
-          "scale": [
-            0.42,
-            0.62,
-            0.42
-          ]
-        },
-        {
-          "id": "contestant-right-head",
-          "shape": "sphere",
-          "color": "#d49a72",
-          "position": [
-            1.45,
-            1.02,
-            -0.05
-          ],
-          "scale": [
-            0.43,
-            0.43,
-            0.43
-          ]
-        },
-        {
-          "id": "buzzer-left",
-          "shape": "sphere",
-          "color": "#ffdf55",
-          "position": [
-            -1.45,
-            0.19,
-            0.38
-          ],
-          "scale": [
-            0.2,
-            0.11,
-            0.2
-          ],
-          "animation": {
-            "type": "pulse",
-            "speed": 5,
-            "amount": 0.09
-          }
-        },
-        {
-          "id": "buzzer-right",
-          "shape": "sphere",
-          "color": "#ffdf55",
-          "position": [
-            1.45,
-            0.19,
-            0.38
-          ],
-          "scale": [
-            0.2,
-            0.11,
-            0.2
-          ],
-          "animation": {
-            "type": "pulse",
-            "speed": 5,
-            "amount": 0.09
-          }
-        },
-        {
-          "id": "stage-light-left",
-          "shape": "cone",
-          "color": "#ffcf55",
-          "position": [
-            -3,
-            3.5,
-            -1.6
-          ],
-          "scale": [
-            0.85,
-            1.9,
-            0.85
-          ],
-          "rotation": [
-            0,
-            0,
-            0.42
-          ]
-        },
-        {
-          "id": "stage-light-right",
-          "shape": "cone",
-          "color": "#65c9ff",
-          "position": [
-            3,
-            3.5,
-            -1.6
-          ],
-          "scale": [
-            0.85,
-            1.9,
-            0.85
-          ],
-          "rotation": [
-            0,
-            0,
-            -0.42
-          ]
-        },
-        {
-          "id": "product-carton",
-          "shape": "box",
-          "color": "#c92635",
-          "position": [
-            0,
-            -0.35,
-            1.05
-          ],
-          "scale": [
-            0.75,
-            1.2,
-            0.55
-          ],
-          "animation": {
-            "type": "float-rotate",
-            "speed": 1.2,
-            "amount": 0.035
-          }
-        }
-      ]
-    },
-    {
-      "id": "game-show-answers",
-      "startFrame": 480,
-      "durationFrames": 120,
-      "background": "#100f29",
-      "camera": {
-        "position": [
-          0,
-          1.15,
-          13.2
-        ],
-        "target": [
-          0,
-          0.2,
-          -0.9
-        ],
-        "fov": 39
-      },
-      "accentColor": "#ffd45a",
-      "headline": "¡LECHE Y CACAO!",
-      "subline": "¿Y QUÉ MÁS? ¡PENSÁ!",
-      "objects": [
-        {
-          "id": "stage-floor",
-          "shape": "box",
-          "color": "#11152d",
-          "position": [
-            0,
-            -2.05,
-            -1
-          ],
-          "scale": [
-            8,
-            0.25,
-            9
-          ]
-        },
-        {
-          "id": "back-wall",
-          "shape": "box",
-          "color": "#171b3d",
-          "position": [
-            0,
-            1.5,
-            -4.2
-          ],
-          "scale": [
-            8,
-            7,
-            0.25
-          ]
-        },
-        {
-          "id": "screen-frame",
-          "shape": "box",
-          "color": "#f2b544",
-          "position": [
-            0,
-            2.1,
-            -3.95
-          ],
-          "scale": [
-            4.8,
-            2.35,
-            0.22
-          ]
-        },
-        {
-          "id": "screen",
-          "shape": "box",
-          "color": "#29234d",
-          "position": [
-            0,
-            2.1,
-            -3.8
-          ],
-          "scale": [
-            4.45,
-            2,
-            0.08
-          ]
-        },
-        {
-          "id": "podium-left",
-          "shape": "box",
-          "color": "#d73543",
-          "position": [
-            -1.45,
-            -0.78,
-            -0.1
-          ],
-          "scale": [
-            1.05,
-            1.75,
-            0.85
-          ]
-        },
-        {
-          "id": "podium-right",
-          "shape": "box",
-          "color": "#277bd4",
-          "position": [
-            1.45,
-            -0.78,
-            -0.1
-          ],
-          "scale": [
-            1.05,
-            1.75,
-            0.85
-          ]
-        },
-        {
-          "id": "contestant-left-body",
-          "shape": "cylinder",
-          "color": "#e8b18b",
-          "position": [
-            -1.45,
-            0.35,
-            -0.05
-          ],
-          "scale": [
-            0.42,
-            0.62,
-            0.42
-          ]
-        },
-        {
-          "id": "contestant-left-head",
-          "shape": "sphere",
-          "color": "#e8b18b",
-          "position": [
-            -1.45,
-            1.02,
-            -0.05
-          ],
-          "scale": [
-            0.43,
-            0.43,
-            0.43
-          ]
-        },
-        {
-          "id": "contestant-right-body",
-          "shape": "cylinder",
-          "color": "#d49a72",
-          "position": [
-            1.45,
-            0.35,
-            -0.05
-          ],
-          "scale": [
-            0.42,
-            0.62,
-            0.42
-          ]
-        },
-        {
-          "id": "contestant-right-head",
-          "shape": "sphere",
-          "color": "#d49a72",
-          "position": [
-            1.45,
-            1.02,
-            -0.05
-          ],
-          "scale": [
-            0.43,
-            0.43,
-            0.43
-          ]
-        },
-        {
-          "id": "buzzer-left",
-          "shape": "sphere",
-          "color": "#ffdf55",
-          "position": [
-            -1.45,
-            0.19,
-            0.38
-          ],
-          "scale": [
-            0.2,
-            0.11,
-            0.2
-          ],
-          "animation": {
-            "type": "pulse",
-            "speed": 5,
-            "amount": 0.09
-          }
-        },
-        {
-          "id": "buzzer-right",
-          "shape": "sphere",
-          "color": "#ffdf55",
-          "position": [
-            1.45,
-            0.19,
-            0.38
-          ],
-          "scale": [
-            0.2,
-            0.11,
-            0.2
-          ],
-          "animation": {
-            "type": "pulse",
-            "speed": 5,
-            "amount": 0.09
-          }
-        },
-        {
-          "id": "stage-light-left",
-          "shape": "cone",
-          "color": "#ffcf55",
-          "position": [
-            -3,
-            3.5,
-            -1.6
-          ],
-          "scale": [
-            0.85,
-            1.9,
-            0.85
-          ],
-          "rotation": [
-            0,
-            0,
-            0.42
-          ]
-        },
-        {
-          "id": "stage-light-right",
-          "shape": "cone",
-          "color": "#65c9ff",
-          "position": [
-            3,
-            3.5,
-            -1.6
-          ],
-          "scale": [
-            0.85,
-            1.9,
-            0.85
-          ],
-          "rotation": [
-            0,
-            0,
-            -0.42
           ]
         },
         {
@@ -833,8 +279,11 @@
     },
     {
       "id": "game-show-countdown-6",
-      "startFrame": 600,
+      "startFrame": 480,
       "durationFrames": 60,
+      "headline": "6",
+      "subline": "6 SEGUNDOS PARA RESPONDER",
+      "accentColor": "#ffd45a",
       "background": "#100f29",
       "camera": {
         "position": [
@@ -849,9 +298,6 @@
         ],
         "fov": 39
       },
-      "accentColor": "#ffd45a",
-      "headline": "6",
-      "subline": "SEGUNDOS PARA RESPONDER",
       "objects": [
         {
           "id": "stage-floor",
@@ -941,146 +387,6 @@
             1.05,
             1.75,
             0.85
-          ]
-        },
-        {
-          "id": "contestant-left-body",
-          "shape": "cylinder",
-          "color": "#e8b18b",
-          "position": [
-            -1.45,
-            0.35,
-            -0.05
-          ],
-          "scale": [
-            0.42,
-            0.62,
-            0.42
-          ]
-        },
-        {
-          "id": "contestant-left-head",
-          "shape": "sphere",
-          "color": "#e8b18b",
-          "position": [
-            -1.45,
-            1.02,
-            -0.05
-          ],
-          "scale": [
-            0.43,
-            0.43,
-            0.43
-          ]
-        },
-        {
-          "id": "contestant-right-body",
-          "shape": "cylinder",
-          "color": "#d49a72",
-          "position": [
-            1.45,
-            0.35,
-            -0.05
-          ],
-          "scale": [
-            0.42,
-            0.62,
-            0.42
-          ]
-        },
-        {
-          "id": "contestant-right-head",
-          "shape": "sphere",
-          "color": "#d49a72",
-          "position": [
-            1.45,
-            1.02,
-            -0.05
-          ],
-          "scale": [
-            0.43,
-            0.43,
-            0.43
-          ]
-        },
-        {
-          "id": "buzzer-left",
-          "shape": "sphere",
-          "color": "#ffdf55",
-          "position": [
-            -1.45,
-            0.19,
-            0.38
-          ],
-          "scale": [
-            0.2,
-            0.11,
-            0.2
-          ],
-          "animation": {
-            "type": "pulse",
-            "speed": 5,
-            "amount": 0.09
-          }
-        },
-        {
-          "id": "buzzer-right",
-          "shape": "sphere",
-          "color": "#ffdf55",
-          "position": [
-            1.45,
-            0.19,
-            0.38
-          ],
-          "scale": [
-            0.2,
-            0.11,
-            0.2
-          ],
-          "animation": {
-            "type": "pulse",
-            "speed": 5,
-            "amount": 0.09
-          }
-        },
-        {
-          "id": "stage-light-left",
-          "shape": "cone",
-          "color": "#ffcf55",
-          "position": [
-            -3,
-            3.5,
-            -1.6
-          ],
-          "scale": [
-            0.85,
-            1.9,
-            0.85
-          ],
-          "rotation": [
-            0,
-            0,
-            0.42
-          ]
-        },
-        {
-          "id": "stage-light-right",
-          "shape": "cone",
-          "color": "#65c9ff",
-          "position": [
-            3,
-            3.5,
-            -1.6
-          ],
-          "scale": [
-            0.85,
-            1.9,
-            0.85
-          ],
-          "rotation": [
-            0,
-            0,
-            -0.42
           ]
         },
         {
@@ -1107,8 +413,11 @@
     },
     {
       "id": "game-show-countdown-5",
-      "startFrame": 660,
+      "startFrame": 540,
       "durationFrames": 60,
+      "headline": "5",
+      "subline": "SE MIRAN ENTRE ELLOS…",
+      "accentColor": "#ffd45a",
       "background": "#100f29",
       "camera": {
         "position": [
@@ -1123,9 +432,6 @@
         ],
         "fov": 39
       },
-      "accentColor": "#ffd45a",
-      "headline": "5",
-      "subline": "¿TE ACORDÁS?",
       "objects": [
         {
           "id": "stage-floor",
@@ -1215,146 +521,6 @@
             1.05,
             1.75,
             0.85
-          ]
-        },
-        {
-          "id": "contestant-left-body",
-          "shape": "cylinder",
-          "color": "#e8b18b",
-          "position": [
-            -1.45,
-            0.35,
-            -0.05
-          ],
-          "scale": [
-            0.42,
-            0.62,
-            0.42
-          ]
-        },
-        {
-          "id": "contestant-left-head",
-          "shape": "sphere",
-          "color": "#e8b18b",
-          "position": [
-            -1.45,
-            1.02,
-            -0.05
-          ],
-          "scale": [
-            0.43,
-            0.43,
-            0.43
-          ]
-        },
-        {
-          "id": "contestant-right-body",
-          "shape": "cylinder",
-          "color": "#d49a72",
-          "position": [
-            1.45,
-            0.35,
-            -0.05
-          ],
-          "scale": [
-            0.42,
-            0.62,
-            0.42
-          ]
-        },
-        {
-          "id": "contestant-right-head",
-          "shape": "sphere",
-          "color": "#d49a72",
-          "position": [
-            1.45,
-            1.02,
-            -0.05
-          ],
-          "scale": [
-            0.43,
-            0.43,
-            0.43
-          ]
-        },
-        {
-          "id": "buzzer-left",
-          "shape": "sphere",
-          "color": "#ffdf55",
-          "position": [
-            -1.45,
-            0.19,
-            0.38
-          ],
-          "scale": [
-            0.2,
-            0.11,
-            0.2
-          ],
-          "animation": {
-            "type": "pulse",
-            "speed": 5,
-            "amount": 0.09
-          }
-        },
-        {
-          "id": "buzzer-right",
-          "shape": "sphere",
-          "color": "#ffdf55",
-          "position": [
-            1.45,
-            0.19,
-            0.38
-          ],
-          "scale": [
-            0.2,
-            0.11,
-            0.2
-          ],
-          "animation": {
-            "type": "pulse",
-            "speed": 5,
-            "amount": 0.09
-          }
-        },
-        {
-          "id": "stage-light-left",
-          "shape": "cone",
-          "color": "#ffcf55",
-          "position": [
-            -3,
-            3.5,
-            -1.6
-          ],
-          "scale": [
-            0.85,
-            1.9,
-            0.85
-          ],
-          "rotation": [
-            0,
-            0,
-            0.42
-          ]
-        },
-        {
-          "id": "stage-light-right",
-          "shape": "cone",
-          "color": "#65c9ff",
-          "position": [
-            3,
-            3.5,
-            -1.6
-          ],
-          "scale": [
-            0.85,
-            1.9,
-            0.85
-          ],
-          "rotation": [
-            0,
-            0,
-            -0.42
           ]
         },
         {
@@ -1381,8 +547,11 @@
     },
     {
       "id": "game-show-countdown-4",
-      "startFrame": 720,
+      "startFrame": 600,
       "durationFrames": 60,
+      "headline": "4",
+      "subline": "¿ALGUNA IDEA?",
+      "accentColor": "#ffd45a",
       "background": "#100f29",
       "camera": {
         "position": [
@@ -1397,9 +566,6 @@
         ],
         "fov": 39
       },
-      "accentColor": "#ffd45a",
-      "headline": "4",
-      "subline": "¡NO TE DUERMAS!",
       "objects": [
         {
           "id": "stage-floor",
@@ -1489,146 +655,6 @@
             1.05,
             1.75,
             0.85
-          ]
-        },
-        {
-          "id": "contestant-left-body",
-          "shape": "cylinder",
-          "color": "#e8b18b",
-          "position": [
-            -1.45,
-            0.35,
-            -0.05
-          ],
-          "scale": [
-            0.42,
-            0.62,
-            0.42
-          ]
-        },
-        {
-          "id": "contestant-left-head",
-          "shape": "sphere",
-          "color": "#e8b18b",
-          "position": [
-            -1.45,
-            1.02,
-            -0.05
-          ],
-          "scale": [
-            0.43,
-            0.43,
-            0.43
-          ]
-        },
-        {
-          "id": "contestant-right-body",
-          "shape": "cylinder",
-          "color": "#d49a72",
-          "position": [
-            1.45,
-            0.35,
-            -0.05
-          ],
-          "scale": [
-            0.42,
-            0.62,
-            0.42
-          ]
-        },
-        {
-          "id": "contestant-right-head",
-          "shape": "sphere",
-          "color": "#d49a72",
-          "position": [
-            1.45,
-            1.02,
-            -0.05
-          ],
-          "scale": [
-            0.43,
-            0.43,
-            0.43
-          ]
-        },
-        {
-          "id": "buzzer-left",
-          "shape": "sphere",
-          "color": "#ffdf55",
-          "position": [
-            -1.45,
-            0.19,
-            0.38
-          ],
-          "scale": [
-            0.2,
-            0.11,
-            0.2
-          ],
-          "animation": {
-            "type": "pulse",
-            "speed": 5,
-            "amount": 0.09
-          }
-        },
-        {
-          "id": "buzzer-right",
-          "shape": "sphere",
-          "color": "#ffdf55",
-          "position": [
-            1.45,
-            0.19,
-            0.38
-          ],
-          "scale": [
-            0.2,
-            0.11,
-            0.2
-          ],
-          "animation": {
-            "type": "pulse",
-            "speed": 5,
-            "amount": 0.09
-          }
-        },
-        {
-          "id": "stage-light-left",
-          "shape": "cone",
-          "color": "#ffcf55",
-          "position": [
-            -3,
-            3.5,
-            -1.6
-          ],
-          "scale": [
-            0.85,
-            1.9,
-            0.85
-          ],
-          "rotation": [
-            0,
-            0,
-            0.42
-          ]
-        },
-        {
-          "id": "stage-light-right",
-          "shape": "cone",
-          "color": "#65c9ff",
-          "position": [
-            3,
-            3.5,
-            -1.6
-          ],
-          "scale": [
-            0.85,
-            1.9,
-            0.85
-          ],
-          "rotation": [
-            0,
-            0,
-            -0.42
           ]
         },
         {
@@ -1655,8 +681,11 @@
     },
     {
       "id": "game-show-countdown-3",
-      "startFrame": 780,
+      "startFrame": 660,
       "durationFrames": 60,
+      "headline": "3",
+      "subline": "¡SIGUEN SIN SABER!",
+      "accentColor": "#ffd45a",
       "background": "#100f29",
       "camera": {
         "position": [
@@ -1671,9 +700,6 @@
         ],
         "fov": 39
       },
-      "accentColor": "#ffd45a",
-      "headline": "3",
-      "subline": "¡VAMOS!",
       "objects": [
         {
           "id": "stage-floor",
@@ -1763,146 +789,6 @@
             1.05,
             1.75,
             0.85
-          ]
-        },
-        {
-          "id": "contestant-left-body",
-          "shape": "cylinder",
-          "color": "#e8b18b",
-          "position": [
-            -1.45,
-            0.35,
-            -0.05
-          ],
-          "scale": [
-            0.42,
-            0.62,
-            0.42
-          ]
-        },
-        {
-          "id": "contestant-left-head",
-          "shape": "sphere",
-          "color": "#e8b18b",
-          "position": [
-            -1.45,
-            1.02,
-            -0.05
-          ],
-          "scale": [
-            0.43,
-            0.43,
-            0.43
-          ]
-        },
-        {
-          "id": "contestant-right-body",
-          "shape": "cylinder",
-          "color": "#d49a72",
-          "position": [
-            1.45,
-            0.35,
-            -0.05
-          ],
-          "scale": [
-            0.42,
-            0.62,
-            0.42
-          ]
-        },
-        {
-          "id": "contestant-right-head",
-          "shape": "sphere",
-          "color": "#d49a72",
-          "position": [
-            1.45,
-            1.02,
-            -0.05
-          ],
-          "scale": [
-            0.43,
-            0.43,
-            0.43
-          ]
-        },
-        {
-          "id": "buzzer-left",
-          "shape": "sphere",
-          "color": "#ffdf55",
-          "position": [
-            -1.45,
-            0.19,
-            0.38
-          ],
-          "scale": [
-            0.2,
-            0.11,
-            0.2
-          ],
-          "animation": {
-            "type": "pulse",
-            "speed": 5,
-            "amount": 0.09
-          }
-        },
-        {
-          "id": "buzzer-right",
-          "shape": "sphere",
-          "color": "#ffdf55",
-          "position": [
-            1.45,
-            0.19,
-            0.38
-          ],
-          "scale": [
-            0.2,
-            0.11,
-            0.2
-          ],
-          "animation": {
-            "type": "pulse",
-            "speed": 5,
-            "amount": 0.09
-          }
-        },
-        {
-          "id": "stage-light-left",
-          "shape": "cone",
-          "color": "#ffcf55",
-          "position": [
-            -3,
-            3.5,
-            -1.6
-          ],
-          "scale": [
-            0.85,
-            1.9,
-            0.85
-          ],
-          "rotation": [
-            0,
-            0,
-            0.42
-          ]
-        },
-        {
-          "id": "stage-light-right",
-          "shape": "cone",
-          "color": "#65c9ff",
-          "position": [
-            3,
-            3.5,
-            -1.6
-          ],
-          "scale": [
-            0.85,
-            1.9,
-            0.85
-          ],
-          "rotation": [
-            0,
-            0,
-            -0.42
           ]
         },
         {
@@ -1929,8 +815,11 @@
     },
     {
       "id": "game-show-countdown-2",
-      "startFrame": 840,
+      "startFrame": 720,
       "durationFrames": 60,
+      "headline": "2",
+      "subline": "EL TIEMPO SE TERMINA",
+      "accentColor": "#ffd45a",
       "background": "#100f29",
       "camera": {
         "position": [
@@ -1945,9 +834,6 @@
         ],
         "fov": 39
       },
-      "accentColor": "#ffd45a",
-      "headline": "2",
-      "subline": "CASI TERMINA",
       "objects": [
         {
           "id": "stage-floor",
@@ -2037,146 +923,6 @@
             1.05,
             1.75,
             0.85
-          ]
-        },
-        {
-          "id": "contestant-left-body",
-          "shape": "cylinder",
-          "color": "#e8b18b",
-          "position": [
-            -1.45,
-            0.35,
-            -0.05
-          ],
-          "scale": [
-            0.42,
-            0.62,
-            0.42
-          ]
-        },
-        {
-          "id": "contestant-left-head",
-          "shape": "sphere",
-          "color": "#e8b18b",
-          "position": [
-            -1.45,
-            1.02,
-            -0.05
-          ],
-          "scale": [
-            0.43,
-            0.43,
-            0.43
-          ]
-        },
-        {
-          "id": "contestant-right-body",
-          "shape": "cylinder",
-          "color": "#d49a72",
-          "position": [
-            1.45,
-            0.35,
-            -0.05
-          ],
-          "scale": [
-            0.42,
-            0.62,
-            0.42
-          ]
-        },
-        {
-          "id": "contestant-right-head",
-          "shape": "sphere",
-          "color": "#d49a72",
-          "position": [
-            1.45,
-            1.02,
-            -0.05
-          ],
-          "scale": [
-            0.43,
-            0.43,
-            0.43
-          ]
-        },
-        {
-          "id": "buzzer-left",
-          "shape": "sphere",
-          "color": "#ffdf55",
-          "position": [
-            -1.45,
-            0.19,
-            0.38
-          ],
-          "scale": [
-            0.2,
-            0.11,
-            0.2
-          ],
-          "animation": {
-            "type": "pulse",
-            "speed": 5,
-            "amount": 0.09
-          }
-        },
-        {
-          "id": "buzzer-right",
-          "shape": "sphere",
-          "color": "#ffdf55",
-          "position": [
-            1.45,
-            0.19,
-            0.38
-          ],
-          "scale": [
-            0.2,
-            0.11,
-            0.2
-          ],
-          "animation": {
-            "type": "pulse",
-            "speed": 5,
-            "amount": 0.09
-          }
-        },
-        {
-          "id": "stage-light-left",
-          "shape": "cone",
-          "color": "#ffcf55",
-          "position": [
-            -3,
-            3.5,
-            -1.6
-          ],
-          "scale": [
-            0.85,
-            1.9,
-            0.85
-          ],
-          "rotation": [
-            0,
-            0,
-            0.42
-          ]
-        },
-        {
-          "id": "stage-light-right",
-          "shape": "cone",
-          "color": "#65c9ff",
-          "position": [
-            3,
-            3.5,
-            -1.6
-          ],
-          "scale": [
-            0.85,
-            1.9,
-            0.85
-          ],
-          "rotation": [
-            0,
-            0,
-            -0.42
           ]
         },
         {
@@ -2203,25 +949,25 @@
     },
     {
       "id": "game-show-countdown-1",
-      "startFrame": 900,
+      "startFrame": 780,
       "durationFrames": 60,
-      "background": "#100f29",
-      "camera": {
-        "position": [
-          0,
-          1.15,
-          13.2
-        ],
-        "target": [
-          0,
-          0.2,
-          -0.9
-        ],
-        "fov": 39
-      },
-      "accentColor": "#ffd45a",
       "headline": "1",
-      "subline": "¡ÚLTIMA OPORTUNIDAD!",
+      "subline": "¡TIEMPO!",
+      "accentColor": "#ff6b73",
+      "background": "#100f29",
+      "camera": {
+        "position": [
+          0,
+          1.15,
+          13.2
+        ],
+        "target": [
+          0,
+          0.2,
+          -0.9
+        ],
+        "fov": 39
+      },
       "objects": [
         {
           "id": "stage-floor",
@@ -2314,146 +1060,6 @@
           ]
         },
         {
-          "id": "contestant-left-body",
-          "shape": "cylinder",
-          "color": "#e8b18b",
-          "position": [
-            -1.45,
-            0.35,
-            -0.05
-          ],
-          "scale": [
-            0.42,
-            0.62,
-            0.42
-          ]
-        },
-        {
-          "id": "contestant-left-head",
-          "shape": "sphere",
-          "color": "#e8b18b",
-          "position": [
-            -1.45,
-            1.02,
-            -0.05
-          ],
-          "scale": [
-            0.43,
-            0.43,
-            0.43
-          ]
-        },
-        {
-          "id": "contestant-right-body",
-          "shape": "cylinder",
-          "color": "#d49a72",
-          "position": [
-            1.45,
-            0.35,
-            -0.05
-          ],
-          "scale": [
-            0.42,
-            0.62,
-            0.42
-          ]
-        },
-        {
-          "id": "contestant-right-head",
-          "shape": "sphere",
-          "color": "#d49a72",
-          "position": [
-            1.45,
-            1.02,
-            -0.05
-          ],
-          "scale": [
-            0.43,
-            0.43,
-            0.43
-          ]
-        },
-        {
-          "id": "buzzer-left",
-          "shape": "sphere",
-          "color": "#ffdf55",
-          "position": [
-            -1.45,
-            0.19,
-            0.38
-          ],
-          "scale": [
-            0.2,
-            0.11,
-            0.2
-          ],
-          "animation": {
-            "type": "pulse",
-            "speed": 5,
-            "amount": 0.09
-          }
-        },
-        {
-          "id": "buzzer-right",
-          "shape": "sphere",
-          "color": "#ffdf55",
-          "position": [
-            1.45,
-            0.19,
-            0.38
-          ],
-          "scale": [
-            0.2,
-            0.11,
-            0.2
-          ],
-          "animation": {
-            "type": "pulse",
-            "speed": 5,
-            "amount": 0.09
-          }
-        },
-        {
-          "id": "stage-light-left",
-          "shape": "cone",
-          "color": "#ffcf55",
-          "position": [
-            -3,
-            3.5,
-            -1.6
-          ],
-          "scale": [
-            0.85,
-            1.9,
-            0.85
-          ],
-          "rotation": [
-            0,
-            0,
-            0.42
-          ]
-        },
-        {
-          "id": "stage-light-right",
-          "shape": "cone",
-          "color": "#65c9ff",
-          "position": [
-            3,
-            3.5,
-            -1.6
-          ],
-          "scale": [
-            0.85,
-            1.9,
-            0.85
-          ],
-          "rotation": [
-            0,
-            0,
-            -0.42
-          ]
-        },
-        {
           "id": "product-carton",
           "shape": "box",
           "color": "#c92635",
@@ -2476,9 +1082,12 @@
       ]
     },
     {
-      "id": "game-show-reveal-a",
-      "startFrame": 960,
+      "id": "game-show-host-reaction",
+      "startFrame": 840,
       "durationFrames": 300,
+      "headline": "CONDUCTOR: «¡NO SABEN NADA!»",
+      "subline": "¿Y VOS? ¿SABÉS QUÉ TIENE?",
+      "accentColor": "#ffd45a",
       "background": "#100f29",
       "camera": {
         "position": [
@@ -2493,9 +1102,6 @@
         ],
         "fov": 39
       },
-      "accentColor": "#ffd45a",
-      "headline": "LECHE · AZÚCAR · CACAO",
-      "subline": "ALMIDÓN · VITAMINAS",
       "objects": [
         {
           "id": "stage-floor",
@@ -2585,420 +1191,6 @@
             1.05,
             1.75,
             0.85
-          ]
-        },
-        {
-          "id": "contestant-left-body",
-          "shape": "cylinder",
-          "color": "#e8b18b",
-          "position": [
-            -1.45,
-            0.35,
-            -0.05
-          ],
-          "scale": [
-            0.42,
-            0.62,
-            0.42
-          ]
-        },
-        {
-          "id": "contestant-left-head",
-          "shape": "sphere",
-          "color": "#e8b18b",
-          "position": [
-            -1.45,
-            1.02,
-            -0.05
-          ],
-          "scale": [
-            0.43,
-            0.43,
-            0.43
-          ]
-        },
-        {
-          "id": "contestant-right-body",
-          "shape": "cylinder",
-          "color": "#d49a72",
-          "position": [
-            1.45,
-            0.35,
-            -0.05
-          ],
-          "scale": [
-            0.42,
-            0.62,
-            0.42
-          ]
-        },
-        {
-          "id": "contestant-right-head",
-          "shape": "sphere",
-          "color": "#d49a72",
-          "position": [
-            1.45,
-            1.02,
-            -0.05
-          ],
-          "scale": [
-            0.43,
-            0.43,
-            0.43
-          ]
-        },
-        {
-          "id": "buzzer-left",
-          "shape": "sphere",
-          "color": "#ffdf55",
-          "position": [
-            -1.45,
-            0.19,
-            0.38
-          ],
-          "scale": [
-            0.2,
-            0.11,
-            0.2
-          ],
-          "animation": {
-            "type": "pulse",
-            "speed": 5,
-            "amount": 0.09
-          }
-        },
-        {
-          "id": "buzzer-right",
-          "shape": "sphere",
-          "color": "#ffdf55",
-          "position": [
-            1.45,
-            0.19,
-            0.38
-          ],
-          "scale": [
-            0.2,
-            0.11,
-            0.2
-          ],
-          "animation": {
-            "type": "pulse",
-            "speed": 5,
-            "amount": 0.09
-          }
-        },
-        {
-          "id": "stage-light-left",
-          "shape": "cone",
-          "color": "#ffcf55",
-          "position": [
-            -3,
-            3.5,
-            -1.6
-          ],
-          "scale": [
-            0.85,
-            1.9,
-            0.85
-          ],
-          "rotation": [
-            0,
-            0,
-            0.42
-          ]
-        },
-        {
-          "id": "stage-light-right",
-          "shape": "cone",
-          "color": "#65c9ff",
-          "position": [
-            3,
-            3.5,
-            -1.6
-          ],
-          "scale": [
-            0.85,
-            1.9,
-            0.85
-          ],
-          "rotation": [
-            0,
-            0,
-            -0.42
-          ]
-        },
-        {
-          "id": "product-carton",
-          "shape": "box",
-          "color": "#c92635",
-          "position": [
-            0,
-            -0.35,
-            1.05
-          ],
-          "scale": [
-            0.75,
-            1.2,
-            0.55
-          ],
-          "animation": {
-            "type": "float-rotate",
-            "speed": 1.2,
-            "amount": 0.035
-          }
-        }
-      ]
-    },
-    {
-      "id": "game-show-reveal-b",
-      "startFrame": 1260,
-      "durationFrames": 240,
-      "background": "#100f29",
-      "camera": {
-        "position": [
-          0,
-          1.15,
-          13.2
-        ],
-        "target": [
-          0,
-          0.2,
-          -0.9
-        ],
-        "fov": 39
-      },
-      "accentColor": "#ffd45a",
-      "headline": "ESPESANTES · AROMAS",
-      "subline": "ESTABILIZANTES",
-      "objects": [
-        {
-          "id": "stage-floor",
-          "shape": "box",
-          "color": "#11152d",
-          "position": [
-            0,
-            -2.05,
-            -1
-          ],
-          "scale": [
-            8,
-            0.25,
-            9
-          ]
-        },
-        {
-          "id": "back-wall",
-          "shape": "box",
-          "color": "#171b3d",
-          "position": [
-            0,
-            1.5,
-            -4.2
-          ],
-          "scale": [
-            8,
-            7,
-            0.25
-          ]
-        },
-        {
-          "id": "screen-frame",
-          "shape": "box",
-          "color": "#f2b544",
-          "position": [
-            0,
-            2.1,
-            -3.95
-          ],
-          "scale": [
-            4.8,
-            2.35,
-            0.22
-          ]
-        },
-        {
-          "id": "screen",
-          "shape": "box",
-          "color": "#29234d",
-          "position": [
-            0,
-            2.1,
-            -3.8
-          ],
-          "scale": [
-            4.45,
-            2,
-            0.08
-          ]
-        },
-        {
-          "id": "podium-left",
-          "shape": "box",
-          "color": "#d73543",
-          "position": [
-            -1.45,
-            -0.78,
-            -0.1
-          ],
-          "scale": [
-            1.05,
-            1.75,
-            0.85
-          ]
-        },
-        {
-          "id": "podium-right",
-          "shape": "box",
-          "color": "#277bd4",
-          "position": [
-            1.45,
-            -0.78,
-            -0.1
-          ],
-          "scale": [
-            1.05,
-            1.75,
-            0.85
-          ]
-        },
-        {
-          "id": "contestant-left-body",
-          "shape": "cylinder",
-          "color": "#e8b18b",
-          "position": [
-            -1.45,
-            0.35,
-            -0.05
-          ],
-          "scale": [
-            0.42,
-            0.62,
-            0.42
-          ]
-        },
-        {
-          "id": "contestant-left-head",
-          "shape": "sphere",
-          "color": "#e8b18b",
-          "position": [
-            -1.45,
-            1.02,
-            -0.05
-          ],
-          "scale": [
-            0.43,
-            0.43,
-            0.43
-          ]
-        },
-        {
-          "id": "contestant-right-body",
-          "shape": "cylinder",
-          "color": "#d49a72",
-          "position": [
-            1.45,
-            0.35,
-            -0.05
-          ],
-          "scale": [
-            0.42,
-            0.62,
-            0.42
-          ]
-        },
-        {
-          "id": "contestant-right-head",
-          "shape": "sphere",
-          "color": "#d49a72",
-          "position": [
-            1.45,
-            1.02,
-            -0.05
-          ],
-          "scale": [
-            0.43,
-            0.43,
-            0.43
-          ]
-        },
-        {
-          "id": "buzzer-left",
-          "shape": "sphere",
-          "color": "#ffdf55",
-          "position": [
-            -1.45,
-            0.19,
-            0.38
-          ],
-          "scale": [
-            0.2,
-            0.11,
-            0.2
-          ],
-          "animation": {
-            "type": "pulse",
-            "speed": 5,
-            "amount": 0.09
-          }
-        },
-        {
-          "id": "buzzer-right",
-          "shape": "sphere",
-          "color": "#ffdf55",
-          "position": [
-            1.45,
-            0.19,
-            0.38
-          ],
-          "scale": [
-            0.2,
-            0.11,
-            0.2
-          ],
-          "animation": {
-            "type": "pulse",
-            "speed": 5,
-            "amount": 0.09
-          }
-        },
-        {
-          "id": "stage-light-left",
-          "shape": "cone",
-          "color": "#ffcf55",
-          "position": [
-            -3,
-            3.5,
-            -1.6
-          ],
-          "scale": [
-            0.85,
-            1.9,
-            0.85
-          ],
-          "rotation": [
-            0,
-            0,
-            0.42
-          ]
-        },
-        {
-          "id": "stage-light-right",
-          "shape": "cone",
-          "color": "#65c9ff",
-          "position": [
-            3,
-            3.5,
-            -1.6
-          ],
-          "scale": [
-            0.85,
-            1.9,
-            0.85
-          ],
-          "rotation": [
-            0,
-            0,
-            -0.42
           ]
         },
         {
@@ -3025,8 +1217,11 @@
     },
     {
       "id": "game-show-cta",
-      "startFrame": 1500,
-      "durationFrames": 300,
+      "startFrame": 1140,
+      "durationFrames": 660,
+      "headline": "¡AHORA TE TOCA A VOS!",
+      "subline": "ENTRÁ A INGREDORA.COM Y SEGUÍ JUGANDO",
+      "accentColor": "#ffd45a",
       "background": "#100f29",
       "camera": {
         "position": [
@@ -3041,9 +1236,6 @@
         ],
         "fov": 39
       },
-      "accentColor": "#ffd45a",
-      "headline": "¿CUÁNTOS ACERTASTE?",
-      "subline": "ENTRÁ A INGREDORA.COM Y JUGÁ",
       "objects": [
         {
           "id": "stage-floor",
@@ -3133,146 +1325,6 @@
             1.05,
             1.75,
             0.85
-          ]
-        },
-        {
-          "id": "contestant-left-body",
-          "shape": "cylinder",
-          "color": "#e8b18b",
-          "position": [
-            -1.45,
-            0.35,
-            -0.05
-          ],
-          "scale": [
-            0.42,
-            0.62,
-            0.42
-          ]
-        },
-        {
-          "id": "contestant-left-head",
-          "shape": "sphere",
-          "color": "#e8b18b",
-          "position": [
-            -1.45,
-            1.02,
-            -0.05
-          ],
-          "scale": [
-            0.43,
-            0.43,
-            0.43
-          ]
-        },
-        {
-          "id": "contestant-right-body",
-          "shape": "cylinder",
-          "color": "#d49a72",
-          "position": [
-            1.45,
-            0.35,
-            -0.05
-          ],
-          "scale": [
-            0.42,
-            0.62,
-            0.42
-          ]
-        },
-        {
-          "id": "contestant-right-head",
-          "shape": "sphere",
-          "color": "#d49a72",
-          "position": [
-            1.45,
-            1.02,
-            -0.05
-          ],
-          "scale": [
-            0.43,
-            0.43,
-            0.43
-          ]
-        },
-        {
-          "id": "buzzer-left",
-          "shape": "sphere",
-          "color": "#ffdf55",
-          "position": [
-            -1.45,
-            0.19,
-            0.38
-          ],
-          "scale": [
-            0.2,
-            0.11,
-            0.2
-          ],
-          "animation": {
-            "type": "pulse",
-            "speed": 5,
-            "amount": 0.09
-          }
-        },
-        {
-          "id": "buzzer-right",
-          "shape": "sphere",
-          "color": "#ffdf55",
-          "position": [
-            1.45,
-            0.19,
-            0.38
-          ],
-          "scale": [
-            0.2,
-            0.11,
-            0.2
-          ],
-          "animation": {
-            "type": "pulse",
-            "speed": 5,
-            "amount": 0.09
-          }
-        },
-        {
-          "id": "stage-light-left",
-          "shape": "cone",
-          "color": "#ffcf55",
-          "position": [
-            -3,
-            3.5,
-            -1.6
-          ],
-          "scale": [
-            0.85,
-            1.9,
-            0.85
-          ],
-          "rotation": [
-            0,
-            0,
-            0.42
-          ]
-        },
-        {
-          "id": "stage-light-right",
-          "shape": "cone",
-          "color": "#65c9ff",
-          "position": [
-            3,
-            3.5,
-            -1.6
-          ],
-          "scale": [
-            0.85,
-            1.9,
-            0.85
-          ],
-          "rotation": [
-            0,
-            0,
-            -0.42
           ]
         },
         {
