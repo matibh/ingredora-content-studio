@@ -1107,8 +1107,8 @@ export async function renderPackageToWebM(
     const musicSource = offline.createBufferSource();
     musicSource.buffer = soundtrack;
     const musicGain = offline.createGain();
-    // Keep the backing track deliberately quiet while the presenter is speaking.
-    musicGain.gain.value = 0.045;
+    // The detective score must remain clearly audible beneath narration; other productions keep the quieter default.
+    musicGain.gain.value = pkg.visualPreset === "operation-label-detective" ? 0.22 : 0.045;
     musicSource.connect(musicGain).connect(offline.destination);
     musicSource.start(0);
     let voiceForMix = voice;
@@ -1278,7 +1278,7 @@ export async function renderPackageToWebM(
   const drawFrame = (frame: number) => {
     if (operationLabelSet) {
       const time = frame / fps;
-      operationLabelSet.update(time);
+      operationLabelSet.update(time, operationVoiceWords);
       const ease = (value: number) => { const x = Math.max(0, Math.min(1, value)); return x * x * (3 - 2 * x); };
       const mix = (a: number, b: number, t: number) => a + (b - a) * t;
       let cameraX = 0, cameraY = 2.35, cameraZ = 13.0;
