@@ -5,7 +5,7 @@ type OperationSegment = { text?: string; start?: number; end?: number };
 type CaptionWord = OperationWord & { captionText?: string };
 type CaptionGroup = { words: CaptionWord[]; start: number; end: number };
 
-export type OperationLabelSet = { update: (time: number) => void };
+export type OperationLabelSet = { update: (time: number, words?: OperationWord[]) => void };
 
 function makeTexture(draw: (ctx: CanvasRenderingContext2D, width: number, height: number) => void, width: number, height: number) {
   const canvas = document.createElement("canvas");
@@ -113,68 +113,79 @@ export function createOperationLabelSet(world: THREE.Scene): OperationLabelSet {
   // The suspect: an individually wrapped Guaymallén alfajor. The mystery is that
   // the ingredients list cannot be found; no ingredient names are shown anywhere.
   const product = new THREE.Group(); product.name = "guaymallen-alfajor"; product.position.set(1.22, -0.36, 0.25); product.rotation.y = -0.10; world.add(product);
-  const foil = material("#e6b91f", 0.30, 0.76);
-  const wrapper = new THREE.Mesh(new THREE.BoxGeometry(2.72, 1.24, 0.62), foil);
+  const foil = material("#e7b91c", 0.26, 0.62);
+  // Rounded pillow-pack silhouette: a soft, inflated wrapper instead of a hard rectangular box.
+  const packShape = new THREE.Shape();
+  const packW = 1.43, packH = 0.61, packR = 0.24;
+  packShape.moveTo(-packW + packR, -packH);
+  packShape.lineTo(packW - packR, -packH);
+  packShape.quadraticCurveTo(packW, -packH, packW, -packH + packR);
+  packShape.lineTo(packW, packH - packR);
+  packShape.quadraticCurveTo(packW, packH, packW - packR, packH);
+  packShape.lineTo(-packW + packR, packH);
+  packShape.quadraticCurveTo(-packW, packH, -packW, packH - packR);
+  packShape.lineTo(-packW, -packH + packR);
+  packShape.quadraticCurveTo(-packW, -packH, -packW + packR, -packH);
+  const wrapperGeometry = new THREE.ExtrudeGeometry(packShape, {
+    depth: 0.46, bevelEnabled: true, bevelSegments: 5, steps: 1,
+    bevelSize: 0.075, bevelThickness: 0.055, curveSegments: 10,
+  });
+  const wrapper = new THREE.Mesh(wrapperGeometry, [foil, foil]);
+  wrapper.position.z = -0.23;
   wrapper.castShadow = true; wrapper.receiveShadow = true; product.add(wrapper);
-
-  // Crimped, folded foil ends create the familiar pillow-pack silhouette.
-  for (const side of [-1, 1]) {
-    const end = new THREE.Mesh(new THREE.BoxGeometry(0.58, 1.12, 0.68), material("#f0c72c", 0.28, 0.82));
-    end.position.x = side * 1.18; end.rotation.z = side * 0.045; product.add(end);
-    for (let fold = 0; fold < 5; fold++) {
-      const crease = new THREE.Mesh(
-        new THREE.BoxGeometry(0.035, 1.06, 0.025),
-        new THREE.MeshBasicMaterial({ color: fold % 2 ? "#fff09a" : "#b88917" })
-      );
-      crease.position.set(side * (1.25 + fold * 0.065), 0, 0.345);
-      crease.rotation.z = side * 0.045;
-      product.add(crease);
-    }
-  }
 
   const wrapperTexture = makeTexture((ctx, w, h) => {
     const gold = ctx.createLinearGradient(0, 0, 0, h);
-    gold.addColorStop(0, "#ffe56a"); gold.addColorStop(.48, "#e8b91d"); gold.addColorStop(1, "#c88f12");
+    gold.addColorStop(0, "#fff08a"); gold.addColorStop(.22, "#f5d34b");
+    gold.addColorStop(.54, "#e7b91d"); gold.addColorStop(1, "#c58a13");
     ctx.fillStyle = gold; ctx.fillRect(0, 0, w, h);
 
-    // Fine white sunburst lines radiate outward from the central brand panel.
+    // Fine cream rays on the golden foil, kept to the two side panels.
     ctx.save();
-    ctx.strokeStyle = "rgba(255,250,198,.82)"; ctx.lineWidth = 5;
-    for (let i = -9; i <= 9; i++) {
+    ctx.strokeStyle = "rgba(255,250,208,.78)"; ctx.lineWidth = 5;
+    for (let i = -8; i <= 8; i++) {
       const y = h * .5 + i * 72;
       ctx.beginPath(); ctx.moveTo(w * .5, h * .5); ctx.lineTo(i < 0 ? 0 : w, y); ctx.stroke();
       ctx.beginPath(); ctx.moveTo(w * .5, h * .5); ctx.lineTo(i < 0 ? w : 0, y); ctx.stroke();
     }
     ctx.restore();
 
-    // A dark chocolate central field, with the red-and-white Guaymallén wordmark.
-    ctx.fillStyle = "#59321e"; ctx.fillRect(w * .285, 0, w * .43, h);
-    ctx.fillStyle = "#fff4d6"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
-    ctx.font = "900 54px Georgia, serif"; ctx.fillText("ALFAJOR", w * .5, h * .13);
-    ctx.font = "900 82px Georgia, serif";
-    ctx.lineWidth = 18; ctx.strokeStyle = "#fffaf0"; ctx.strokeText("GUAYMALLÉN", w * .5, h * .43, w * .47);
-    ctx.fillStyle = "#d82428"; ctx.fillText("GUAYMALLÉN", w * .5, h * .43, w * .47);
-    ctx.fillStyle = "#fff1cf"; ctx.font = "800 38px Arial"; ctx.fillText("DULCE DE LECHE", w * .5, h * .68);
-    ctx.font = "700 27px Arial"; ctx.fillText("BAÑO DE REPOSTERÍA", w * .5, h * .83);
-
-    ctx.font = "800 27px Arial"; ctx.fillStyle = "#5b351e";
-    ctx.fillText("38 g", w * .855, h * .86);
-    ctx.fillStyle = "rgba(255,249,204,.8)"; ctx.font = "700 20px Arial";
-    ctx.fillText("INDUSTRIA ARGENTINA", w * .5, h * .96);
+    // Curved-looking dark chocolate label, with more breathing room around the brand.
+    rounded(ctx, w * .285, h * .075, w * .43, h * .85, 28);
+    ctx.fillStyle = "#59321e"; ctx.fill();
+    ctx.textAlign = "center"; ctx.textBaseline = "middle";
+    ctx.fillStyle = "#fff0cf"; ctx.font = "900 37px Georgia, serif";
+    ctx.fillText("ALFAJOR", w * .5, h * .205);
+    ctx.font = "900 70px Georgia, serif";
+    ctx.lineWidth = 13; ctx.strokeStyle = "#fff7e7";
+    ctx.strokeText("GUAYMALLÉN", w * .5, h * .465, w * .405);
+    ctx.fillStyle = "#d82428"; ctx.fillText("GUAYMALLÉN", w * .5, h * .465, w * .405);
+    ctx.fillStyle = "#fff0cf"; ctx.font = "800 29px Arial";
+    ctx.fillText("DULCE DE LECHE", w * .5, h * .675);
+    ctx.font = "700 22px Arial"; ctx.fillText("BAÑO DE REPOSTERÍA", w * .5, h * .80);
+    ctx.font = "800 25px Arial"; ctx.fillText("38 g", w * .5, h * .885);
   }, 1280, 560);
+
   const wrapperFront = new THREE.Mesh(
-    new THREE.PlaneGeometry(2.69, 1.21),
+    new THREE.PlaneGeometry(2.72, 1.14),
     new THREE.MeshBasicMaterial({ map: wrapperTexture })
   );
-  wrapperFront.position.set(0, 0, 0.316); product.add(wrapperFront);
-  const wrapperBack = new THREE.Mesh(new THREE.PlaneGeometry(2.69, 1.21), material("#d8ab23", .34, .65));
-  wrapperBack.position.z = -0.316; wrapperBack.rotation.y = Math.PI; product.add(wrapperBack);
-  const crimpTop = material("#fff0a0", .24, .7);
+  wrapperFront.position.set(0, 0, 0.298); product.add(wrapperFront);
+
+  // Narrow accordion crimps at both ends: small folded foil ridges, not bulky blocks.
+  const foldMats = [
+    material("#fff1a4", 0.22, 0.72),
+    material("#b98715", 0.28, 0.68),
+    material("#f7d85c", 0.24, 0.72),
+  ];
   for (const side of [-1, 1]) {
-    for (let fold = 0; fold < 4; fold++) {
-      const ridge = new THREE.Mesh(new THREE.BoxGeometry(.11, 1.13, .035), crimpTop);
-      ridge.position.set(side * (1.29 + fold * .035), 0, .355);
-      ridge.rotation.z = side * .08;
+    for (let fold = 0; fold < 5; fold++) {
+      const ridge = new THREE.Mesh(
+        new THREE.BoxGeometry(0.022, 1.02, 0.018),
+        foldMats[fold % foldMats.length],
+      );
+      ridge.position.set(side * (1.285 + fold * 0.028), 0, 0.301);
+      ridge.rotation.z = side * (fold - 2) * 0.018;
       product.add(ridge);
     }
   }
@@ -225,8 +236,9 @@ export function createOperationLabelSet(world: THREE.Scene): OperationLabelSet {
     block("detective-brow", hair, [side * 0.16, 2.16, 0.35], [0.17, 0.05, 0.035]);
     block("sideburn", hair, [side * 0.34, 2.00, 0.01], [0.10, 0.35, 0.30]);
   }
-  block("detective-nose", skin, [0, 1.94, 0.39], [0.11, 0.13, 0.10]);
-  block("detective-moustache", hair, [0, 1.84, 0.365], [0.26, 0.07, 0.07]);
+  // A visible, separate mouth and lower jaw so the detective can speak on camera.
+  const mouth = block("detective-mouth", material("#241714", 0.98), [0, 1.815, 0.37], [0.205, 0.065, 0.026]);
+  const lowerJaw = block("detective-lower-jaw", skin, [0, 1.735, 0.35], [0.30, 0.105, 0.055]);
   // Fedora brim and crown.
   const brim = new THREE.Mesh(new THREE.CylinderGeometry(0.58, 0.62, 0.10, 12), hair); brim.position.set(0, 2.42, 0.02); brim.castShadow = true; detective.add(brim);
   const crown = new THREE.Mesh(new THREE.CylinderGeometry(0.42, 0.48, 0.48, 10), hair); crown.position.set(0, 2.68, -0.015); crown.castShadow = true; detective.add(crown);
@@ -268,7 +280,16 @@ export function createOperationLabelSet(world: THREE.Scene): OperationLabelSet {
   const dust = new THREE.Points(dustGeometry, new THREE.PointsMaterial({ color: "#e4c48f", size: 0.035, transparent: true, opacity: 0.35, sizeAttenuation: true }));
   world.add(dust);
 
-  const update = (time: number) => {
+  const update = (time: number, words: OperationWord[] = []) => {
+    const activeWord = words.find((word) => time >= word.start && time <= word.end);
+    const speechPulse = activeWord
+      ? Math.abs(Math.sin((time - activeWord.start) * Math.PI * 8 + 0.35))
+      : 0;
+    const mouthOpen = activeWord ? 0.16 + speechPulse * 0.84 : 0;
+    mouth.scale.y = 0.12 + mouthOpen * 0.92;
+    lowerJaw.position.y = 1.735 - mouthOpen * 0.045;
+    lowerJaw.scale.y = 0.72 + mouthOpen * 0.38;
+
     detective.position.y = -1.58 + Math.sin(time * 1.65) * 0.025;
     detective.rotation.y = Math.sin(time * 0.62) * 0.045;
     detective.rotation.z = Math.sin(time * 0.9) * 0.012;
