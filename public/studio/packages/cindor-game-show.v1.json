@@ -1209,7 +1209,7 @@
     {
       "id": "game-show-cta",
       "startFrame": 1140,
-      "durationFrames": 120,
+      "durationFrames": 240,
       "headline": "¡INGRESA EN INGREDORA.COM Y JUEGA YA!",
       "accentColor": "#ffd45a",
       "background": "#100f29",
