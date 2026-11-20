@@ -489,7 +489,7 @@ function createNutellaSet(world: THREE.Scene) {
   return {jar,frontLabel:front,backLabel:back};
 }
 
-type VoiceWordTiming = { text: string; start: number; end: number; segment?: number };
+type VoiceWordTiming = { text: string; start: number; end: number; segment?: number; captionText?: string };
 
 function roundedRect(ctx: CanvasRenderingContext2D, x: number, y: number, width: number, height: number, radius: number) {
   ctx.beginPath();
@@ -706,7 +706,7 @@ function drawOreoWordCaptions(ctx: CanvasRenderingContext2D, time: number, width
 
 type GameShowCaptionGroup = { words: VoiceWordTiming[]; start: number; end: number };
 
-function buildGameShowCaptionGroups(words: VoiceWordTiming[]): GameShowCaptionGroup[] {
+function buildGameShowCaptionGroups(words: VoiceWordTiming[], transcripts: Array<{ text?: string }> = []): GameShowCaptionGroup[] {
   const phrases = new Map<number, VoiceWordTiming[]>();
   for (const word of words) {
     const segment = word.segment ?? 0;
@@ -716,9 +716,18 @@ function buildGameShowCaptionGroups(words: VoiceWordTiming[]): GameShowCaptionGr
   }
 
   const groups: GameShowCaptionGroup[] = [];
-  for (const phrase of phrases.values()) {
+  for (const [segment, phrase] of phrases.entries()) {
     phrase.sort((a, b) => a.start - b.start);
     if (!phrase.length) continue;
+
+    // Use the complete authored phrase to retain opening/closing punctuation,
+    // ellipses and other marks that are intentionally absent from TTS word timings.
+    const transcriptTokens = transcripts[segment]?.text?.trim().match(/\S+/g) ?? [];
+    const wordsWithPunctuation =
+      transcriptTokens.length === phrase.length &&
+      transcriptTokens.every((token, index) => normalizeCaptionWord(token) === normalizeCaptionWord(phrase[index].text))
+        ? phrase.map((word, index) => ({ ...word, captionText: transcriptTokens[index] }))
+        : phrase;
 
     // Distribute each spoken phrase into balanced groups of 3–4 words
     // (a 5-word phrase becomes 3 + 2, never a one-word flash).
@@ -728,7 +737,7 @@ function buildGameShowCaptionGroups(words: VoiceWordTiming[]): GameShowCaptionGr
     let cursor = 0;
     for (let index = 0; index < groupCount; index += 1) {
       const size = baseSize + (index < extraWords ? 1 : 0);
-      const chunk = phrase.slice(cursor, cursor + size);
+      const chunk = wordsWithPunctuation.slice(cursor, cursor + size);
       cursor += size;
       const nextGroupStart = cursor < phrase.length ? phrase[cursor].start : Number.POSITIVE_INFINITY;
       groups.push({
@@ -757,7 +766,7 @@ function drawGameShowWordCaptions(
 
   // Match the former upper scene subtitle: same typeface, size, outline,
   // centered alignment and vertical anchor. Only the real spoken transcript remains.
-  const caption = visibleWords.map((word) => word.text).join(" ");
+  const caption = visibleWords.map((word) => word.captionText ?? word.text).join(" ").toLocaleUpperCase("es-AR");
   const fontSize = Math.round(width * 0.052);
   ctx.save();
   ctx.font = `800 ${fontSize}px Arial, Helvetica, sans-serif`;
@@ -1196,7 +1205,7 @@ export async function renderPackageToWebM(
   if (gameShowSet && pkg.wordTimingsUrl) {
     const timingResponse = await fetch(import.meta.env.BASE_URL + pkg.wordTimingsUrl, { cache: "no-store" });
     if (!timingResponse.ok) throw new Error("No se pudieron cargar los tiempos reales de la voz de la presentadora (" + timingResponse.status + ").");
-    const timingData = await timingResponse.json() as { words?: VoiceWordTiming[] };
+    const timingData = await timingResponse.json() as { words?: VoiceWordTiming[]; segments?: Array<{ text?: string }> };
     if (!Array.isArray(timingData.words) || timingData.words.length < 20) {
       throw new Error("El archivo de sincronización de la presentadora está vacío o incompleto.");
     }
@@ -1207,7 +1216,7 @@ export async function renderPackageToWebM(
     )) {
       throw new Error("El archivo de subtítulos de la presentadora contiene palabras o tiempos inválidos.");
     }
-    gameShowCaptionGroups = buildGameShowCaptionGroups(timingData.words);
+    gameShowCaptionGroups = buildGameShowCaptionGroups(timingData.words, timingData.segments ?? []);
     if (!gameShowCaptionGroups.length) throw new Error("No se pudieron construir los grupos de subtítulos de la presentadora.");
   }
   if (poolsideSet && pkg.wordTimingsUrl) {
