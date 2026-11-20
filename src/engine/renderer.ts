@@ -677,7 +677,7 @@ export async function renderPackageToWebM(
     const musicSource = offline.createBufferSource();
     musicSource.buffer = soundtrack;
     const musicGain = offline.createGain();
-    musicGain.gain.value = 0.055;
+    musicGain.gain.value = 0.11;
     musicSource.connect(musicGain).connect(offline.destination);
     musicSource.start(0);
     const voiceSource = offline.createBufferSource();
@@ -747,6 +747,7 @@ export async function renderPackageToWebM(
   const oreoSet = pkg.visualPreset === "oreo-family-table" ? createOreoFamilySet(world) : null;
   let nutellaVoiceWords: VoiceWordTiming[] = [];
   let poolsideVoiceWords: VoiceWordTiming[] = [];
+  let oreoVoiceWords: VoiceWordTiming[] = [];
   if (poolsideSet && pkg.wordTimingsUrl) {
     const timingResponse = await fetch(import.meta.env.BASE_URL + pkg.wordTimingsUrl);
     if (!timingResponse.ok) throw new Error("No se pudieron cargar los tiempos palabra por palabra de la voz de Coca-Cola.");
@@ -758,6 +759,18 @@ export async function renderPackageToWebM(
       throw new Error("El archivo de subtítulos contiene marcas de tiempo inválidas.");
     }
     poolsideVoiceWords = timingData.words;
+  }
+  if (oreoSet && pkg.wordTimingsUrl) {
+    const timingResponse = await fetch(import.meta.env.BASE_URL + pkg.wordTimingsUrl);
+    if (!timingResponse.ok) throw new Error("No se pudieron cargar los subtítulos de la voz de Oreo (" + timingResponse.status + ").");
+    const timingData = await timingResponse.json() as { words?: VoiceWordTiming[] };
+    if (!Array.isArray(timingData.words) || timingData.words.length < 10) {
+      throw new Error("El archivo de sincronización de la voz de Oreo está vacío o incompleto.");
+    }
+    if (timingData.words.some((word) => !Number.isFinite(word.start) || !Number.isFinite(word.end) || word.end <= word.start)) {
+      throw new Error("El archivo de subtítulos de Oreo contiene marcas de tiempo inválidas.");
+    }
+    oreoVoiceWords = timingData.words;
   }
   if (nutellaSet) {
     const timingResponse = await fetch(import.meta.env.BASE_URL + "studio/audio/nutella-v9-word-timings.json");
@@ -791,7 +804,8 @@ export async function renderPackageToWebM(
       camera.updateProjectionMatrix();
       renderer.render(world, camera);
       ctx.drawImage(renderer.domElement, 0, 0, pkg.width, pkg.height);
-      drawOreoFamilyOverlay(ctx, time, pkg.width, pkg.height);
+      const caption = oreoVoiceWords.filter((word) => word.start <= time + 0.55 && word.end >= time - 0.45).map((word) => word.text).join(" ");
+      drawOreoFamilyOverlay(ctx, time, pkg.width, pkg.height, caption);
       return;
     }
     if (poolsideSet) {
