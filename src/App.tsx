@@ -54,6 +54,7 @@ function App() {
   const [renderErrors, setRenderErrors] = useState<Record<string, string>>({});
   const [renderStages, setRenderStages] = useState<Record<string, string>>({});
   const [retryToken, setRetryToken] = useState(0);
+  const [forceRenderIds, setForceRenderIds] = useState<string[]>([]);
   const [mp4Busy, setMp4Busy] = useState(false);
   const [mp4Progress, setMp4Progress] = useState(0);
   const [mp4Error, setMp4Error] = useState<string | null>(null);
@@ -94,23 +95,28 @@ function App() {
   }, [loadProductions]);
 
   useEffect(() => {
-    const candidate = manifest.productions.find((item) =>
-      item.packageUrl && !item.videoUrl && !localVideos[item.id] && !renderingIds.current.has(item.id)
-    );
+    const forcedId = forceRenderIds[0];
+    const candidate = forcedId
+      ? manifest.productions.find((item) => item.id === forcedId && item.packageUrl && !renderingIds.current.has(item.id))
+      : manifest.productions.find((item) =>
+          item.packageUrl && !item.videoUrl && !localVideos[item.id] && !renderingIds.current.has(item.id)
+        );
     if (!candidate) return;
+    const isForcedRender = forceRenderIds.includes(candidate.id);
+    if (isForcedRender) setForceRenderIds((current) => current.filter((id) => id !== candidate.id));
     renderingIds.current.add(candidate.id);
     setRenderStages((current) => ({ ...current, [candidate.id]: "Preparando el video y el audio…" }));
 
     const produce = async () => {
       try {
-        const stored = await getRenderedVideo(candidate.id);
+        const stored = isForcedRender ? null : await getRenderedVideo(candidate.id);
         if (stored) {
           setLocalVideos((current) => ({ ...current, [candidate.id]: URL.createObjectURL(stored) }));
           return;
         }
         setRenderErrors((current) => { const next = { ...current }; delete next[candidate.id]; return next; });
         setRenderStages((current) => ({ ...current, [candidate.id]: "Cargando materiales de la producción…" }));
-        const packageResponse = await fetch(import.meta.env.BASE_URL + candidate.packageUrl + "?v=" + encodeURIComponent(candidate.version ?? "1"), { cache: "no-cache" });
+        const packageResponse = await fetch(import.meta.env.BASE_URL + candidate.packageUrl + "?v=" + encodeURIComponent(candidate.version ?? "1") + "-" + Date.now(), { cache: "no-store" });
         if (!packageResponse.ok) throw new Error("No se pudo cargar el paquete (" + packageResponse.status + ").");
         const productionPackage = await packageResponse.json() as ProductionPackage;
         setRenderStages((current) => ({ ...current, [candidate.id]: "Renderizando cada fotograma. Puede tardar unos minutos…" }));
@@ -133,11 +139,22 @@ function App() {
       }
     };
     void produce();
-  }, [manifest.productions, localVideos, retryToken]);
+  }, [manifest.productions, localVideos, retryToken, forceRenderIds]);
 
   const ready = manifest.productions.filter((item) => (item.status === "ready" && item.videoUrl) || !!localVideos[item.id]);
   const active = ready.find((item) => item.id === activeId) ?? ready[0] ?? null;
-  const activeVideoUrl = active ? (active.videoUrl || localVideos[active.id]) : undefined;
+  const activeVideoUrl = active ? (localVideos[active.id] || active.videoUrl) : undefined;
+  const activeIsRendering = !!active && renderingIds.current.has(active.id);
+  const regenerateProduction = (item: Production) => {
+    if (!item.packageUrl || renderingIds.current.has(item.id)) return;
+    const oldLocalUrl = localVideos[item.id];
+    if (oldLocalUrl) URL.revokeObjectURL(oldLocalUrl);
+    setLocalVideos((current) => { const next = { ...current }; delete next[item.id]; return next; });
+    setRenderErrors((current) => { const next = { ...current }; delete next[item.id]; return next; });
+    setRenderProgress((current) => { const next = { ...current }; delete next[item.id]; return next; });
+    setActiveId(item.id);
+    setForceRenderIds((current) => [...current.filter((id) => id !== item.id), item.id]);
+  };
 
   const convertAndUpload = async () => {
     if (!active || mp4Busy || approvalBusy) return;
@@ -217,7 +234,15 @@ function App() {
                 <div className="video-corner-label">INGREDORA / ORIGINAL</div>
               </div>
               <div className="video-details">
-                <div className="ready-label"><i /> VIDEO LISTO</div>
+                <div className="ready-label"><i /> {activeIsRendering ? "REGENERANDO VIDEO" : "VIDEO LISTO"}</div>
+                {active.packageUrl && <div className="regenerate-panel">
+                  <button className="regenerate-button" type="button" onClick={() => regenerateProduction(active)} disabled={activeIsRendering}>
+                    {activeIsRendering ? "REGENERANDO CON LOS ÚLTIMOS CAMBIOS…" : "↻ REGENERAR CON LOS ÚLTIMOS CAMBIOS"}
+                  </button>
+                  {activeIsRendering && <div className="render-progress-track" role="progressbar" aria-valuenow={renderProgress[active.id]?.percent ?? 0} aria-valuemin={0} aria-valuemax={100}><span style={{ width: String(renderProgress[active.id]?.percent ?? 0) + "%" }} /></div>}
+                  {activeIsRendering && <small>{renderStages[active.id] || "Preparando el render…"}</small>}
+                  {renderErrors[active.id] && <small className="pipeline-error">Falló el render: {renderErrors[active.id]}</small>}
+                </div>}
                 <h3>{active.title}</h3>
                 <p>{active.description || "Una nueva producción original de Ingredora."}</p>
                 <div className="metadata">
@@ -233,7 +258,7 @@ function App() {
                   <small>Al confirmar, convertimos el WebM original a MP4 y subimos el archivo a «Contenido a subir». Verificamos también el TXT correspondiente. No se publica nada en redes y el WebM original no se modifica.</small>
                   <label className="approval-password-label" htmlFor="approval-password">CONTRASEÑA DE APROBACIÓN</label>
                   <input id="approval-password" className="approval-password-input" type="password" autoComplete="current-password" value={approvalKey} onChange={(event) => setApprovalKey(event.target.value)} placeholder="Ingresá tu contraseña" />
-                  <button className="approve-upload-button" type="button" onClick={convertAndUpload} disabled={!approvalKey.trim() || mp4Busy || approvalBusy}>
+                  <button className="approve-upload-button" type="button" onClick={convertAndUpload} disabled={!approvalKey.trim() || mp4Busy || approvalBusy || activeIsRendering}>
                     {mp4Busy ? `${mp4Stage} · ${mp4Progress}%` : "✓ CONVERTIR A MP4 Y SUBIR A GITHUB"}
                   </button>
                   {mp4Busy && <div className="render-progress-track mp4-progress" role="progressbar" aria-valuenow={mp4Progress} aria-valuemin={0} aria-valuemax={100}><span style={{ width: `${mp4Progress}%` }} /></div>}
