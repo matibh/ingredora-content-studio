@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-19T22:10:00-03:00",
+  "updatedAt": "2026-11-19T22:30:00-03:00",
   "productions": [
     {
-      "id": "ingredora-oreo-family-merienda-005",
-      "title": "Oreo Original — salida superior del paquete",
-      "description": "27 segundos a 60 FPS. La galletita emerge desde la abertura superior del paquete, lo supera antes de desplazarse al plato; envase elevado y apoyado correctamente sobre la mesa. Textos en la zona superior sin tapar la acción.",
+      "id": "ingredora-oreo-family-merienda-006",
+      "title": "Oreo Original — paquete recto y salida superior",
+      "description": "27 segundos a 60 FPS. Paquete vertical, sin inclinación lateral y apoyado sobre la mesa. La Oreo emerge desde la parte alta del interior por la abertura superior, supera el borde antes de desplazarse al plato. Textos en zona superior sin tapar la acción.",
       "status": "rendering",
       "packageUrl": "studio/packages/oreo-family-merienda.v1.json",
       "durationSeconds": 27,
@@ -18,8 +18,8 @@
         "Facebook Reels",
         "X"
       ],
-      "version": "4.0",
-      "createdAt": "2026-11-19T22:10:00-03:00",
+      "version": "5.0",
+      "createdAt": "2026-11-19T22:30:00-03:00",
       "caption": "¿Cuánto sabés de lo que comés? 🍪 Hoy el desafío es con Oreo Original. Tenés seis segundos para pensar sus ingredientes. ¿Cuántos acertaste? Entrá a Ingredora.com y jugá. #Ingredora #Oreo #DesafioDeIngredientes"
     },
     {
