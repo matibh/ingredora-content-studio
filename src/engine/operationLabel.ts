@@ -253,18 +253,6 @@ export function createOperationLabelSet(world: THREE.Scene): OperationLabelSet {
   const rimLight = new THREE.DirectionalLight(0x7cb7c0, 2.0); rimLight.position.set(-5, 4, -3); world.add(rimLight);
   const fill = new THREE.PointLight(0xffa85c, 5.5, 13, 1.5); fill.position.set(-3.8, 1.6, 2.7); world.add(fill);
 
-  // Slow floating dust catches the spotlights without obscuring the product.
-  const dustGeometry = new THREE.BufferGeometry();
-  const dustPositions = new Float32Array(90 * 3);
-  for (let i = 0; i < 90; i++) {
-    dustPositions[i * 3] = Math.sin(i * 18.73) * 6.0;
-    dustPositions[i * 3 + 1] = -0.2 + (i % 15) * 0.34;
-    dustPositions[i * 3 + 2] = -4 + Math.cos(i * 7.19) * 4.5;
-  }
-  dustGeometry.setAttribute("position", new THREE.BufferAttribute(dustPositions, 3));
-  const dust = new THREE.Points(dustGeometry, new THREE.PointsMaterial({ color: "#e4c48f", size: 0.035, transparent: true, opacity: 0.35, sizeAttenuation: true }));
-  world.add(dust);
-
   const update = (time: number, words: OperationWord[] = []) => {
     const activeWord = words.find((word) => time >= word.start && time <= word.end);
     const speechPulse = activeWord
@@ -282,7 +270,6 @@ export function createOperationLabelSet(world: THREE.Scene): OperationLabelSet {
     leftArm.rotation.z = Math.sin(time * 0.85) * 0.035;
     product.rotation.y = Math.sin(time * 0.72) * 0.022;
     product.position.y = -0.34 + Math.sin(time * 1.3 + 0.6) * 0.018;
-    dust.rotation.y = time * 0.012;
     if (time >= 16.5) {
       // He stops examining the package, turns squarely toward the viewer and asks for help.
       detective.rotation.y = Math.sin(time * 1.8) * 0.018;
