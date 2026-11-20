@@ -58,16 +58,21 @@ export function createOperationLabelSet(world: THREE.Scene): OperationLabelSet {
   // Warm corkboard with pinned clues, red string and brass frame.
   addBox("corkboard-frame", "#a77943", [0, 2.4, -6.88], [12.5, 7.0, 0.28], material("#8c6136", 0.52, 0.22));
   addBox("corkboard", "#96724d", [0, 2.4, -6.70], [12.1, 6.6, 0.12], material("#96724d", 0.98));
-  const cardLeft = new THREE.Mesh(new THREE.PlaneGeometry(2.2, 1.26), new THREE.MeshBasicMaterial({ map: makeEvidenceCard("CASO 047", "MUESTRA ABIERTA", "#b84d3d") }));
+  const cardLeft = new THREE.Mesh(new THREE.PlaneGeometry(2.2, 1.26), new THREE.MeshBasicMaterial({ map: makeEvidenceCard("CASO 047", "ALFAJOR GUAYMALLÉN", "#b84d3d") }));
   cardLeft.position.set(-3.55, 3.15, -6.61); world.add(cardLeft);
-  const cardRight = new THREE.Mesh(new THREE.PlaneGeometry(2.05, 1.25), new THREE.MeshBasicMaterial({ map: makeEvidenceCard("ETIQUETA", "SEIS INGREDIENTES", "#496b60") }));
+  const cardRight = new THREE.Mesh(new THREE.PlaneGeometry(2.05, 1.25), new THREE.MeshBasicMaterial({ map: makeEvidenceCard("INGREDIENTES", "LISTA NO ENCONTRADA", "#a64437") }));
   cardRight.position.set(3.55, 3.15, -6.61); world.add(cardRight);
   const pinnedPhoto = makeTexture((ctx, w, h) => {
-    ctx.fillStyle = "#d8d2bd"; ctx.fillRect(0, 0, w, h);
-    ctx.fillStyle = "#b0a58d"; ctx.fillRect(16, 16, w - 32, h - 32);
-    ctx.fillStyle = "#465b54"; ctx.fillRect(w * .28, h * .14, w * .44, h * .72);
-    ctx.fillStyle = "#c5b58f"; ctx.fillRect(w * .35, h * .23, w * .30, h * .54);
-    ctx.fillStyle = "#354441"; ctx.font = "bold 22px Arial"; ctx.textAlign = "center"; ctx.fillText("MUESTRA", w / 2, h * .88);
+    ctx.fillStyle = "#e8dfca"; ctx.fillRect(0, 0, w, h);
+    ctx.strokeStyle = "#b8a98a"; ctx.lineWidth = 8; ctx.strokeRect(12, 12, w - 24, h - 24);
+    ctx.fillStyle = "#33453c"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+    ctx.font = "900 25px Arial"; ctx.fillText("LISTA DE", w / 2, h * .13);
+    ctx.font = "900 30px Arial"; ctx.fillText("INGREDIENTES", w / 2, h * .22);
+    ctx.strokeStyle = "#aaa087"; ctx.lineWidth = 2;
+    for (let i = 0; i < 4; i++) { ctx.beginPath(); ctx.moveTo(28, h * (.38 + i * .105)); ctx.lineTo(w - 28, h * (.38 + i * .105)); ctx.stroke(); }
+    ctx.save(); ctx.translate(w / 2, h * .82); ctx.rotate(-.12);
+    ctx.fillStyle = "#a64437"; ctx.font = "900 34px Arial"; ctx.fillText("NO LOCALIZADA", 0, 0);
+    ctx.restore();
   }, 320, 420);
   const photo = new THREE.Mesh(new THREE.PlaneGeometry(1.45, 1.85), new THREE.MeshBasicMaterial({ map: pinnedPhoto }));
   photo.position.set(0, 2.25, -6.60); photo.rotation.z = -0.06; world.add(photo);
@@ -105,46 +110,92 @@ export function createOperationLabelSet(world: THREE.Scene): OperationLabelSet {
   lampShade.position.set(4.05, 0.10, -1.6); lampShade.rotation.z = Math.PI; world.add(lampShade);
   const lampGlow = new THREE.PointLight(0xffc16b, 18, 11, 1.8); lampGlow.position.set(3.95, -0.15, 0.2); world.add(lampGlow);
 
-  // The suspect: a fully fictional sample carton. Its six readable rows are the memory puzzle.
-  const product = new THREE.Group(); product.name = "fictional-label-sample"; product.position.set(1.22, -0.34, 0.25); world.add(product);
-  const cartonMaterial = material("#c9b58a", 0.84, 0.01);
-  const carton = new THREE.Mesh(new THREE.BoxGeometry(1.72, 2.48, 0.82), cartonMaterial);
-  carton.castShadow = true; carton.receiveShadow = true; product.add(carton);
-  const cartonTop = new THREE.Mesh(new THREE.BoxGeometry(1.73, 0.18, 0.84), material("#536b57", 0.64));
-  cartonTop.position.y = 1.24; product.add(cartonTop);
-  const cartonSide = new THREE.Mesh(new THREE.BoxGeometry(0.07, 2.30, 0.84), material("#887651", 0.8));
-  cartonSide.position.x = -0.86; product.add(cartonSide);
-  const labelTexture = makeTexture((ctx, w, h) => {
-    const bg = ctx.createLinearGradient(0, 0, w, h); bg.addColorStop(0, "#f3e8cf"); bg.addColorStop(1, "#dfcfaa");
-    ctx.fillStyle = bg; ctx.fillRect(0, 0, w, h);
-    ctx.strokeStyle = "#263d35"; ctx.lineWidth = 18; ctx.strokeRect(18, 18, w - 36, h - 36);
-    ctx.fillStyle = "#263d35"; ctx.fillRect(28, 28, w - 56, 160);
-    ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.fillStyle = "#f4e8c9";
-    ctx.font = "900 58px Arial"; ctx.fillText("EXPEDIENTE 047", w / 2, 91);
-    ctx.font = "700 34px Arial"; ctx.fillText("MUESTRA FICTICIA", w / 2, 145);
-    ctx.fillStyle = "#35443a"; ctx.font = "900 62px Arial"; ctx.fillText("INGREDIENTES", w / 2, 260);
-    ctx.strokeStyle = "#a18d67"; ctx.lineWidth = 5; ctx.beginPath(); ctx.moveTo(88, 310); ctx.lineTo(w - 88, 310); ctx.stroke();
-    const ingredients = ["HARINA DE TRIGO", "AZÚCAR", "CACAO", "ACEITE VEGETAL", "LECHE EN POLVO", "SAL"];
-    ingredients.forEach((item, index) => {
-      const y = 405 + index * 150;
-      ctx.fillStyle = "#8d4036"; ctx.beginPath(); ctx.arc(112, y, 17, 0, Math.PI * 2); ctx.fill();
-      ctx.fillStyle = "#29372f"; ctx.textAlign = "left"; ctx.font = "800 48px Arial"; ctx.fillText(item, 158, y + 2, w - 225);
-      ctx.strokeStyle = "rgba(72,82,62,.24)"; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(92, y + 58); ctx.lineTo(w - 92, y + 58); ctx.stroke();
-    });
-    ctx.textAlign = "center"; ctx.fillStyle = "#8d4036"; ctx.font = "900 34px Arial";
-    ctx.fillText("ETIQUETA DE DEMOSTRACIÓN", w / 2, h - 86);
-  }, 1024, 1600);
-  const label = new THREE.Mesh(new THREE.PlaneGeometry(1.64, 2.39), new THREE.MeshBasicMaterial({ map: labelTexture }));
-  label.position.set(0, 0, 0.417); product.add(label);
-  const stamp = addBox("sample-stamp", "#a64437", [2.15, 0.63, 0.72], [0.54, 0.19, 0.08], material("#a64437", 0.45));
-  stamp.rotation.z = -0.22;
-  const sampleTag = makeTexture((ctx, w, h) => {
-    ctx.fillStyle = "#a64437"; ctx.fillRect(0, 0, w, h);
-    ctx.fillStyle = "#fff1d7"; ctx.font = "900 52px Arial"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
-    ctx.fillText("MUESTRA", w / 2, h / 2);
-  }, 420, 120);
-  const tag = new THREE.Mesh(new THREE.PlaneGeometry(0.52, 0.15), new THREE.MeshBasicMaterial({ map: sampleTag }));
-  tag.position.set(0.45, 0.88, 0.43); product.add(tag);
+  // The suspect: an individually wrapped Guaymallén alfajor. The mystery is that
+  // the ingredients list cannot be found; no ingredient names are shown anywhere.
+  const product = new THREE.Group(); product.name = "guaymallen-alfajor"; product.position.set(1.22, -0.36, 0.25); product.rotation.y = -0.10; world.add(product);
+  const foil = material("#e6b91f", 0.30, 0.76);
+  const wrapper = new THREE.Mesh(new THREE.BoxGeometry(2.72, 1.24, 0.62), foil);
+  wrapper.castShadow = true; wrapper.receiveShadow = true; product.add(wrapper);
+
+  // Crimped, folded foil ends create the familiar pillow-pack silhouette.
+  for (const side of [-1, 1]) {
+    const end = new THREE.Mesh(new THREE.BoxGeometry(0.58, 1.12, 0.68), material("#f0c72c", 0.28, 0.82));
+    end.position.x = side * 1.18; end.rotation.z = side * 0.045; product.add(end);
+    for (let fold = 0; fold < 5; fold++) {
+      const crease = new THREE.Mesh(
+        new THREE.BoxGeometry(0.035, 1.06, 0.025),
+        new THREE.MeshBasicMaterial({ color: fold % 2 ? "#fff09a" : "#b88917" })
+      );
+      crease.position.set(side * (1.25 + fold * 0.065), 0, 0.345);
+      crease.rotation.z = side * 0.045;
+      product.add(crease);
+    }
+  }
+
+  const wrapperTexture = makeTexture((ctx, w, h) => {
+    const gold = ctx.createLinearGradient(0, 0, 0, h);
+    gold.addColorStop(0, "#ffe56a"); gold.addColorStop(.48, "#e8b91d"); gold.addColorStop(1, "#c88f12");
+    ctx.fillStyle = gold; ctx.fillRect(0, 0, w, h);
+
+    // Fine white sunburst lines radiate outward from the central brand panel.
+    ctx.save();
+    ctx.strokeStyle = "rgba(255,250,198,.82)"; ctx.lineWidth = 5;
+    for (let i = -9; i <= 9; i++) {
+      const y = h * .5 + i * 72;
+      ctx.beginPath(); ctx.moveTo(w * .5, h * .5); ctx.lineTo(i < 0 ? 0 : w, y); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(w * .5, h * .5); ctx.lineTo(i < 0 ? w : 0, y); ctx.stroke();
+    }
+    ctx.restore();
+
+    // A dark chocolate central field, with the red-and-white Guaymallén wordmark.
+    ctx.fillStyle = "#59321e"; ctx.fillRect(w * .285, 0, w * .43, h);
+    ctx.fillStyle = "#fff4d6"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+    ctx.font = "900 54px Georgia, serif"; ctx.fillText("ALFAJOR", w * .5, h * .13);
+    ctx.font = "900 82px Georgia, serif";
+    ctx.lineWidth = 18; ctx.strokeStyle = "#fffaf0"; ctx.strokeText("GUAYMALLÉN", w * .5, h * .43, w * .47);
+    ctx.fillStyle = "#d82428"; ctx.fillText("GUAYMALLÉN", w * .5, h * .43, w * .47);
+    ctx.fillStyle = "#fff1cf"; ctx.font = "800 38px Arial"; ctx.fillText("DULCE DE LECHE", w * .5, h * .68);
+    ctx.font = "700 27px Arial"; ctx.fillText("BAÑO DE REPOSTERÍA", w * .5, h * .83);
+
+    ctx.font = "800 27px Arial"; ctx.fillStyle = "#5b351e";
+    ctx.fillText("38 g", w * .855, h * .86);
+    ctx.fillStyle = "rgba(255,249,204,.8)"; ctx.font = "700 20px Arial";
+    ctx.fillText("INDUSTRIA ARGENTINA", w * .5, h * .96);
+  }, 1280, 560);
+  const wrapperFront = new THREE.Mesh(
+    new THREE.PlaneGeometry(2.69, 1.21),
+    new THREE.MeshBasicMaterial({ map: wrapperTexture })
+  );
+  wrapperFront.position.set(0, 0, 0.316); product.add(wrapperFront);
+  const wrapperBack = new THREE.Mesh(new THREE.PlaneGeometry(2.69, 1.21), material("#d8ab23", .34, .65));
+  wrapperBack.position.z = -0.316; wrapperBack.rotation.y = Math.PI; product.add(wrapperBack);
+  const crimpTop = material("#fff0a0", .24, .7);
+  for (const side of [-1, 1]) {
+    for (let fold = 0; fold < 4; fold++) {
+      const ridge = new THREE.Mesh(new THREE.BoxGeometry(.11, 1.13, .035), crimpTop);
+      ridge.position.set(side * (1.29 + fold * .035), 0, .355);
+      ridge.rotation.z = side * .08;
+      product.add(ridge);
+    }
+  }
+
+  // A torn-open-looking file sleeve rests next to the wrapped alfajor; it is empty.
+  const emptySleeve = new THREE.Mesh(new THREE.BoxGeometry(1.12, .075, 1.55), material("#d4c5a4", .92));
+  emptySleeve.position.set(-3.20, -1.43, 1.15); emptySleeve.rotation.y = .24; emptySleeve.rotation.z = -.07; world.add(emptySleeve);
+  const emptyFileTexture = makeTexture((ctx, w, h) => {
+    ctx.fillStyle = "#e8dfca"; ctx.fillRect(0, 0, w, h);
+    ctx.strokeStyle = "#b7a88b"; ctx.lineWidth = 6; ctx.strokeRect(8, 8, w - 16, h - 16);
+    ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.fillStyle = "#314339";
+    ctx.font = "900 31px Arial"; ctx.fillText("INGREDIENTES", w / 2, h * .19);
+    ctx.font = "700 24px Arial"; ctx.fillText("LISTA SOLICITADA", w / 2, h * .34);
+    ctx.strokeStyle = "#aaa087"; ctx.lineWidth = 2;
+    for (let line = 0; line < 4; line++) { ctx.beginPath(); ctx.moveTo(28, h * (.48 + line * .09)); ctx.lineTo(w - 28, h * (.48 + line * .09)); ctx.stroke(); }
+    ctx.save(); ctx.translate(w / 2, h * .86); ctx.rotate(-.10);
+    ctx.fillStyle = "#a64437"; ctx.font = "900 36px Arial"; ctx.fillText("SIN DATOS", 0, 0);
+    ctx.restore();
+  }, 480, 640);
+  const emptyFile = new THREE.Mesh(new THREE.PlaneGeometry(1.05, 1.46), new THREE.MeshBasicMaterial({ map: emptyFileTexture }));
+  emptyFile.position.set(-3.20, -1.375, 1.94); emptyFile.rotation.y = .24; emptyFile.rotation.z = -.07; world.add(emptyFile);
 
   // A charming blocky noir detective with trench coat, fedora and articulated magnifying glass.
   const detective = new THREE.Group(); detective.name = "detective"; detective.position.set(-1.18, -1.58, 0.38); world.add(detective);
@@ -223,10 +274,12 @@ export function createOperationLabelSet(world: THREE.Scene): OperationLabelSet {
     product.rotation.y = Math.sin(time * 0.72) * 0.022;
     product.position.y = -0.34 + Math.sin(time * 1.3 + 0.6) * 0.018;
     dust.rotation.y = time * 0.012;
-    if (time >= 20.8 && time < 23.2) {
-      detective.rotation.y = -0.12 + Math.sin(time * 3.5) * 0.06;
-      leftArm.rotation.z = -0.42 + Math.sin(time * 4.2) * 0.08;
-      rightArm.rotation.z = 0.12;
+    if (time >= 16.5) {
+      // He stops examining the package, turns squarely toward the viewer and asks for help.
+      detective.rotation.y = Math.sin(time * 1.8) * 0.018;
+      leftArm.rotation.z = -0.48 + Math.sin(time * 3.2) * 0.045;
+      rightArm.rotation.z = 0.18;
+      magnifier.rotation.z = -0.10 + Math.sin(time * 2.3) * 0.025;
     }
   };
   return { update };
@@ -316,40 +369,24 @@ export function drawOperationLabelOverlay(
   ctx.strokeStyle = "rgba(218,178,111,.76)"; ctx.lineWidth = Math.max(1.5, width * 0.002); ctx.stroke();
   ctx.textAlign = "center"; ctx.textBaseline = "middle";
   ctx.font = `900 ${Math.round(width * 0.031)}px Arial, Helvetica, sans-serif`;
-  ctx.fillStyle = "#e3c58c"; ctx.fillText("INGREDORA  /  ARCHIVO 047", badgeX + badgeW / 2, badgeY + badgeH / 2, badgeW * 0.93);
+  ctx.fillStyle = "#e3c58c"; ctx.fillText("INGREDORA  /  CASO GUAYMALLÉN", badgeX + badgeW / 2, badgeY + badgeH / 2, badgeW * 0.93);
   ctx.restore();
 
-  // Six silent seconds: the visual timer ticks from 6 to 1 over the label close-up.
-  if (time >= 17 && time < 23) {
-    const remaining = Math.min(6, Math.max(1, Math.ceil(23 - time)));
+  // The detective turns the open file toward the viewer: this case now needs an audience response.
+  if (time >= 21.5) {
+    const progress = Math.min(1, (time - 21.5) / 0.55);
     const scale = width / 720;
-    const x = width * 0.80, y = height * 0.175, r = 54 * scale;
-    ctx.save();
-    ctx.shadowColor = "rgba(0,0,0,.65)"; ctx.shadowBlur = 20 * scale;
-    ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2);
-    ctx.fillStyle = "rgba(8,23,24,.78)"; ctx.fill();
-    ctx.shadowBlur = 0;
-    ctx.lineWidth = 7 * scale; ctx.strokeStyle = "rgba(215,173,97,.95)";
-    ctx.beginPath(); ctx.arc(x, y, r - 5 * scale, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * ((time - 17) / 6)); ctx.stroke();
-    ctx.font = `900 ${Math.round(66 * scale)}px Arial Black, Arial, sans-serif`;
-    ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.fillStyle = "#fff0ce";
-    ctx.fillText(String(remaining), x, y + 2 * scale);
-    ctx.restore();
-  }
-
-  if (time >= 25.2) {
-    const progress = Math.min(1, (time - 25.2) / 0.5);
-    const scale = width / 720;
-    const panelW = width * 0.66, panelH = height * 0.052;
+    const panelW = width * 0.72, panelH = height * 0.052;
     const x = (width - panelW) / 2, y = height * 0.14 - height * 0.035 * (1 - progress);
     ctx.save();
     ctx.globalAlpha = progress;
     rounded(ctx, x, y, panelW, panelH, panelH * 0.48);
-    ctx.fillStyle = "rgba(12,34,28,.90)"; ctx.fill();
+    ctx.fillStyle = "rgba(12,34,28,.92)"; ctx.fill();
     ctx.strokeStyle = "#d4b06d"; ctx.lineWidth = 2 * scale; ctx.stroke();
     ctx.font = `900 ${Math.round(width * 0.037)}px Arial, Helvetica, sans-serif`;
     ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.fillStyle = "#f2d79d";
-    ctx.fillText("RESOLVÉ EL PRÓXIMO CASO", width / 2, y + panelH / 2, panelW * 0.92);
+    ctx.fillText("CASO EN TUS MANOS", width / 2, y + panelH / 2, panelW * 0.92);
     ctx.restore();
   }
 }
+
