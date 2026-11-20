@@ -77,7 +77,7 @@ function createGameShowSet(world: THREE.Scene): GameShowSet {
     ctx.fillStyle="rgba(25,8,18,.22)";ctx.fillRect(0,h*.76,w,h*.24);
     ctx.textAlign="center";ctx.textBaseline="middle";ctx.shadowColor="#3a0710";ctx.shadowBlur=24;
     ctx.fillStyle="#fff3dc";ctx.font="900 210px Arial Black,Arial";ctx.fillText("CINDOR",w*.5,h*.38,w*.88);
-    ctx.shadowBlur=0;ctx.fillStyle="#ffe3aa";ctx.font="800 54px Arial";ctx.fillText("EL DESAFÍO DE LOS INGREDIENTES",w*.5,h*.72,w*.92);
+    ctx.shadowBlur=0;ctx.fillStyle="#ffe3aa";ctx.font="800 54px Arial";ctx.fillText("EL DESAFÍO INGREDORA",w*.5,h*.72,w*.92);
     ctx.fillStyle="#fff";ctx.font="700 38px Arial";ctx.fillText("ORIGINAL · 200 ml",w*.5,h*.88,w*.8);
   },1536,600);
   const cindorScreen=new THREE.Mesh(new THREE.PlaneGeometry(7.98,2.94),new THREE.MeshBasicMaterial({map:cindorScreenTexture}));
@@ -189,12 +189,15 @@ function createGameShowSet(world: THREE.Scene): GameShowSet {
   }
   block("nose",hostSkin,[0,2.23,.365],[.09,.10,.075]);
   block("smile",mat("#873d4c",.8,0),[0,2.105,.335],[.16,.035,.025]);
-  // Rigid cuboid arms, one raised toward a block-shaped studio microphone.
-  block("left-sleeve",jacket,[-.48,1.55,0],[.24,.54,.34]).rotation.z=.20;
-  block("left-forearm",hostSkin,[-.59,1.82,.12],[.19,.34,.22]).rotation.z=.35;
-  block("left-hand",hostSkin,[-.65,2.015,.14],[.19,.17,.20]);
-  block("right-sleeve",jacket,[.48,1.55,0],[.24,.54,.34]).rotation.z=-.20;
-  block("right-forearm",hostSkin,[.59,1.78,.14],[.19,.30,.22]).rotation.z=-.30;
+  // Articulated cuboid arms: a subtle presenter idle, with the microphone hand
+  // gently lifting and settling while the free hand makes a small welcoming gesture.
+  const freeArm=new THREE.Group(); freeArm.position.set(-.38,1.55,0); host.add(freeArm);
+  const freeSleeve=block("left-sleeve",jacket,[-.48,1.55,0],[.24,.54,.34]); freeSleeve.rotation.z=.20; freeArm.add(freeSleeve);
+  const freeForearm=block("left-forearm",hostSkin,[-.59,1.82,.12],[.19,.34,.22]); freeForearm.rotation.z=.35; freeArm.add(freeForearm);
+  const freeHand=block("left-hand",hostSkin,[-.65,2.015,.14],[.19,.17,.20]); freeArm.add(freeHand);
+  const micArm=new THREE.Group(); micArm.position.set(.38,1.55,0); host.add(micArm);
+  const micSleeve=block("right-sleeve",jacket,[.48,1.55,0],[.24,.54,.34]); micSleeve.rotation.z=-.20; micArm.add(micSleeve);
+  const micForearm=block("right-forearm",hostSkin,[.59,1.78,.14],[.19,.30,.22]); micForearm.rotation.z=-.30; micArm.add(micForearm);
   block("microphone-handle",micMat,[.64,2.03,.18],[.09,.28,.09]);
   block("microphone-head",gold,[.64,2.20,.18],[.15,.13,.15]);
   block("microphone-grille",micMat,[.64,2.255,.18],[.12,.035,.12]);
@@ -258,8 +261,15 @@ function createGameShowSet(world: THREE.Scene): GameShowSet {
     update(time:number){
       spotlights.forEach((_,i)=>{ const target=spotTargets[i]; target.position.x=Math.sin(time*.55+i*1.2)*5.5; target.position.z=-2.4+Math.cos(time*.42+i)*1.8; });
       beams.forEach((beam,i)=>{ beam.rotation.z=Math.sin(time*.65+i)*.24; beam.rotation.x=Math.cos(time*.48+i)*.18; beam.material instanceof THREE.MeshBasicMaterial && (beam.material.opacity=.045+.025*(.5+.5*Math.sin(time*2+i))); });
-      // Keep the blocky hair/head silhouette rigid in close-ups; confusion is shown
-      // with restrained arm gestures only, never by independently wobbling the hairline.
+      // The presenter stays Minecraft-blocky but never looks frozen: subtle
+      // shoulder-led microphone motion and a gentle free-hand welcoming gesture.
+      const idle=Math.sin(time*2.1);
+      const gesture=Math.sin(time*.92+.65);
+      micArm.rotation.z=-.045+idle*.055;
+      micArm.rotation.x=.025+Math.sin(time*1.35)*.025;
+      freeArm.rotation.z=.10+gesture*.075;
+      freeArm.rotation.x=Math.sin(time*1.1+.8)*.025;
+      host.rotation.y=-.035+Math.sin(time*.7)*.018;
       people.forEach((person,i)=>{ person.rotation.y=i===0?.78:-.78; });
       const puzzled=Math.max(0,Math.min(1,(time-8)/.55))*Math.max(0,Math.min(1,(14-time)/.55));
       faceHeads.forEach((head)=>{head.rotation.set(0,0,0);head.position.y=2.12;});
