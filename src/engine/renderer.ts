@@ -103,13 +103,14 @@ function createGameShowSet(world: THREE.Scene): GameShowSet {
   const people: THREE.Group[]=[];
   const createContestant=(x:number, jersey:string, skin:string, hair:string, index:number)=>{
     const group=new THREE.Group(); group.position.set(x,-1.75,-.25); world.add(group); people.push(group);
-    const body=new THREE.Mesh(new THREE.CapsuleGeometry(.34,.82,5,12),mat(jersey,.68,.02)); body.position.y=1.22; body.castShadow=true; group.add(body);
-    const neck=new THREE.Mesh(new THREE.CylinderGeometry(.105,.12,.18,16),mat(skin)); neck.position.y=1.83; group.add(neck);
-    const head=new THREE.Mesh(new THREE.SphereGeometry(.31,24,18),mat(skin)); head.position.y=2.12; head.scale.set(.88,1.12,.9); head.castShadow=true; group.add(head);
-    const hairCap=new THREE.Mesh(new THREE.SphereGeometry(.315,20,12,0,Math.PI*2,0,Math.PI*.48),mat(hair)); hairCap.position.set(0,2.24,-.018); group.add(hairCap);
+    const body=new THREE.Mesh(new THREE.BoxGeometry(.72,1.22,.42),mat(jersey,.68,.02)); body.position.y=1.22; body.castShadow=true; group.add(body);
+    const neck=new THREE.Mesh(new THREE.BoxGeometry(.22,.20,.22),mat(skin)); neck.position.y=1.83; group.add(neck);
+    const head=new THREE.Mesh(new THREE.BoxGeometry(.58,.58,.58),mat(skin)); head.position.y=2.12; head.scale.set(1,1,1); head.castShadow=true; group.add(head);
+    const hairCap=new THREE.Mesh(new THREE.BoxGeometry(.64,.20,.64),mat(hair)); hairCap.position.set(0,2.24,-.018); group.add(hairCap);
+    for(const eyeX of [-.13,.13]){ const eye=new THREE.Mesh(new THREE.BoxGeometry(.075,.075,.035),new THREE.MeshBasicMaterial({color:"#171923"})); eye.position.set(eyeX,2.12,.294); group.add(eye); }
     for(const side of [-1,1]){
-      const arm=new THREE.Mesh(new THREE.CapsuleGeometry(.105,.57,4,10),mat(skin)); arm.position.set(side*.43,1.24,.03); arm.rotation.z=side*(index===0?-.25:.25); group.add(arm);
-      const hand=addSphere("contestant-hand",skin,[x+side*.48,-.48,.04],[.13,.13,.13]); group.remove(hand); group.add(hand); hand.position.set(side*.48, .91, .05);
+      const arm=new THREE.Mesh(new THREE.BoxGeometry(.18,.72,.18),mat(skin)); arm.position.set(side*.43,1.24,.03); arm.rotation.z=side*(index===0?-.25:.25); group.add(arm);
+      const hand=new THREE.Mesh(new THREE.BoxGeometry(.20,.20,.20),mat(skin)); hand.position.set(side*.48,.91,.05); group.add(hand);
     }
     const podium=new THREE.Group(); podium.position.set(x,-1.74,.85); world.add(podium); podiums.push(podium);
     const color=index===0?"#bd283d":"#1765b4";
@@ -124,9 +125,9 @@ function createGameShowSet(world: THREE.Scene): GameShowSet {
   createContestant(3.15,"#5d3548","#8d583f","#211c1b",1);
   // Host centered between contestants, slightly behind the front edge.
   const host=new THREE.Group(); host.position.set(0,-1.72,-2.0); world.add(host);
-  const hostBody=new THREE.Mesh(new THREE.CapsuleGeometry(.36,.92,5,14),mat("#e9e9e6",.45,.08)); hostBody.position.y=1.25; host.add(hostBody);
-  const hostHead=addSphere("host-head","#d5a07e",[0,.5,0],[.27,.34,.27]); host.remove(hostHead); hostHead.position.set(0,2.05,0); host.add(hostHead);
-  const hostHair=addSphere("host-hair","#28232a",[0,0,0],[.28,.15,.28]); host.remove(hostHair); hostHair.position.set(0,2.28,-.015); host.add(hostHair);
+  const hostBody=new THREE.Mesh(new THREE.BoxGeometry(.76,1.30,.44),mat("#e9e9e6",.45,.08)); hostBody.position.y=1.25; host.add(hostBody);
+  const hostHead=new THREE.Mesh(new THREE.BoxGeometry(.56,.62,.56),mat("#d5a07e")); hostHead.position.set(0,2.05,0); host.add(hostHead);
+  const hostHair=new THREE.Mesh(new THREE.BoxGeometry(.60,.18,.60),mat("#28232a")); hostHair.position.set(0,2.38,-.015); host.add(hostHair);
   const mic=new THREE.Mesh(new THREE.CylinderGeometry(.035,.035,.55,12),mat("#292c36",.25,.8)); mic.position.set(.48,1.7,.1); mic.rotation.z=-.25; host.add(mic);
   const hostPodium=new THREE.Mesh(new THREE.BoxGeometry(1.15,1.15,.7),mat("#b18a3e",.24,.55)); hostPodium.position.set(0,.58,-.22); host.add(hostPodium);
   // Audience risers behind the main stage: rows of spectators with varied clothes/skin/hair.
@@ -139,11 +140,12 @@ function createGameShowSet(world: THREE.Scene): GameShowSet {
       const x=-9.3+col*1.16+(row%2)*.25;
       const skin=skinTones[(col*3+row)%skinTones.length], shirt=shirts[(col*5+row*2)%shirts.length];
       const spectator=new THREE.Group(); spectator.position.set(x,y,z-.05); world.add(spectator);
-      const torso=new THREE.Mesh(new THREE.CapsuleGeometry(.19,.38,3,8),mat(shirt)); torso.position.y=.24; spectator.add(torso);
-      const head=new THREE.Mesh(new THREE.SphereGeometry(.17,12,10),mat(skin)); head.position.y=.68; spectator.add(head);
-      const hairMesh=new THREE.Mesh(new THREE.SphereGeometry(.175,12,8,0,Math.PI*2,0,Math.PI*.48),mat(["#201d22","#45302a","#171923","#9a7955"][(col+row)%4])); hairMesh.position.y=.76; spectator.add(hairMesh);
+      const torso=new THREE.Mesh(new THREE.BoxGeometry(.40,.54,.24),mat(shirt)); torso.position.y=.24; spectator.add(torso);
+      const head=new THREE.Mesh(new THREE.BoxGeometry(.34,.34,.34),mat(skin)); head.position.y=.68; spectator.add(head);
+      const hairMesh=new THREE.Mesh(new THREE.BoxGeometry(.38,.13,.38),mat(["#201d22","#45302a","#171923","#9a7955"][(col+row)%4])); hairMesh.position.y=.82; spectator.add(hairMesh);
+      for(const eyeX of [-.075,.075]){ const eye=new THREE.Mesh(new THREE.BoxGeometry(.045,.045,.025),new THREE.MeshBasicMaterial({color:"#171923"})); eye.position.set(eyeX,.68,z*0+.13); spectator.add(eye); }
       for(const side of [-1,1]){
-        const arm=new THREE.Mesh(new THREE.CapsuleGeometry(.055,.30,3,6),mat(skin)); arm.position.set(side*.24,.38,.02); arm.rotation.z=side*(.22+((col+row)%3)*.18); spectator.add(arm);
+        const arm=new THREE.Mesh(new THREE.BoxGeometry(.11,.40,.12),mat(skin)); arm.position.set(side*.24,.38,.02); arm.rotation.z=side*(.22+((col+row)%3)*.18); spectator.add(arm);
       }
       spectator.userData.cheerPhase=(col%7)*.55+row*.3;
     }
