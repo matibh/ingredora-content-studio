@@ -38,6 +38,153 @@ function createObject(item: SceneObject): THREE.Mesh {
   return mesh;
 }
 
+
+type GameShowSet = { update: (time: number) => void };
+
+function createGameShowSet(world: THREE.Scene): GameShowSet {
+  world.background = new THREE.Color("#080a18");
+  world.fog = new THREE.Fog("#080a18", 24, 48);
+  const mat = (color: string, roughness = 0.55, metalness = 0.08) =>
+    new THREE.MeshStandardMaterial({ color, roughness, metalness });
+  const addBox = (name: string, color: string, pos: [number,number,number], size: [number,number,number], material?: THREE.Material) => {
+    const mesh = new THREE.Mesh(new THREE.BoxGeometry(...size), material || mat(color));
+    mesh.name = name; mesh.position.set(...pos); mesh.castShadow = true; mesh.receiveShadow = true; world.add(mesh); return mesh;
+  };
+  const addSphere = (name: string, color: string, pos: [number,number,number], scale: [number,number,number], material?: THREE.Material) => {
+    const mesh = new THREE.Mesh(new THREE.SphereGeometry(.5, 18, 14), material || mat(color));
+    mesh.name=name; mesh.position.set(...pos); mesh.scale.set(...scale); mesh.castShadow=true; world.add(mesh); return mesh;
+  };
+  const floorMat = mat("#171b2b", .28, .42);
+  const floor = new THREE.Mesh(new THREE.PlaneGeometry(34, 36), floorMat);
+  floor.rotation.x=-Math.PI/2; floor.position.set(0,-2.12,-3); floor.receiveShadow=true; world.add(floor);
+  // Glossy circular broadcast stage with illuminated perimeter.
+  const stage = new THREE.Mesh(new THREE.CylinderGeometry(7.2,7.45,.32,96), mat("#252b42",.24,.38));
+  stage.position.set(0,-1.91,-1.1); stage.receiveShadow=true; stage.castShadow=true; world.add(stage);
+  const ringMat = new THREE.MeshStandardMaterial({color:"#f5bb48",emissive:"#b46b12",emissiveIntensity:1.3,metalness:.55,roughness:.24});
+  const ring = new THREE.Mesh(new THREE.TorusGeometry(6.9,.075,12,120),ringMat); ring.rotation.x=Math.PI/2; ring.position.set(0,-1.72,-1.1); world.add(ring);
+  // Rear LED wall, side fins and large center scoreboard.
+  addBox("rear-led-wall","#10162c",[0,2.1,-7.2],[19,9,.42],mat("#10162c",.35,.25));
+  for(let i=0;i<17;i++){
+    const x=-8+i;
+    const strip=addBox("led-column-"+i,i%2?"#1c2e57":"#281d50",[x,2.15,-6.94],[.055,7.8,.035],new THREE.MeshBasicMaterial({color:i%2?"#1c2e57":"#281d50"}));
+    strip.position.x=x;
+  }
+  addBox("scoreboard-frame","#dcae51",[0,3.2,-6.72],[8.5,3.45,.38],mat("#d7a642",.25,.65));
+  addBox("scoreboard-screen","#121b39",[0,3.2,-6.49],[8.12,3.08,.12],new THREE.MeshBasicMaterial({color:"#121b39"}));
+  // Decorative LED arcs on both sides.
+  for(const side of [-1,1]){
+    for(let n=0;n<4;n++){
+      const arch = new THREE.Mesh(new THREE.TorusGeometry(2.5+n*.35,.055,8,64,Math.PI),new THREE.MeshBasicMaterial({color:side<0?(n%2?"#ff4e69":"#ffb43d"):(n%2?"#38bfff":"#9a6bff")}));
+      arch.position.set(side*7.5,1.0,-4.8); arch.rotation.z=side<0?Math.PI:0; world.add(arch);
+    }
+    addBox("side-led-tower","#202b4b",[side*9,1.2,-5.8],[.42,6.2,.5],mat("#27345c",.25,.45));
+    for(let j=0;j<8;j++) addBox("tower-pixel","#ffcf56",[side*9, -1.2+j*.68,-5.51],[.18,.18,.06],new THREE.MeshBasicMaterial({color:j%2?"#52c8ff":"#ffcf56"}));
+  }
+  // Overhead lighting truss and visible stage fixtures.
+  for(const z of [-5.6,-1.8,2.0]){
+    addBox("overhead-truss","#343b4e",[0,7.1,z],[19,.16,.16],mat("#343b4e",.35,.8));
+    for(let x=-8;x<=8;x+=2){
+      const lamp=addSphere("studio-par-can","#f4f0d7",[x,6.85,z],[.22,.16,.22],new THREE.MeshStandardMaterial({color:"#fff1c7",emissive:"#fff0c0",emissiveIntensity:1.8}));
+      lamp.rotation.x=.25;
+    }
+  }
+  const spotTargets: THREE.Object3D[]=[];
+  const spotlights: THREE.SpotLight[]=[];
+  for(let i=0;i<6;i++){
+    const x=-7+i*2.8;
+    const color=[0xffd26a,0x6ccaff,0xff6386,0xb68cff,0x7fffd1,0xffd26a][i];
+    const spot=new THREE.SpotLight(color,95,28,Math.PI/7,.55,1.2);
+    spot.position.set(x,6.6,1.5); spot.castShadow=i===1||i===4;
+    const target=new THREE.Object3D(); target.position.set(x*.45,-1.4,-1.8); world.add(target); spot.target=target;
+    world.add(spot); spotlights.push(spot); spotTargets.push(target);
+  }
+  // Two opposing contestant podiums with illuminated trims and real button caps.
+  const podiums: THREE.Group[]=[];
+  const people: THREE.Group[]=[];
+  const createContestant=(x:number, jersey:string, skin:string, hair:string, index:number)=>{
+    const group=new THREE.Group(); group.position.set(x,-1.75,-.25); world.add(group); people.push(group);
+    const body=new THREE.Mesh(new THREE.CapsuleGeometry(.34,.82,5,12),mat(jersey,.68,.02)); body.position.y=1.22; body.castShadow=true; group.add(body);
+    const neck=new THREE.Mesh(new THREE.CylinderGeometry(.105,.12,.18,16),mat(skin)); neck.position.y=1.83; group.add(neck);
+    const head=new THREE.Mesh(new THREE.SphereGeometry(.31,24,18),mat(skin)); head.position.y=2.12; head.scale.set(.88,1.12,.9); head.castShadow=true; group.add(head);
+    const hairCap=new THREE.Mesh(new THREE.SphereGeometry(.315,20,12,0,Math.PI*2,0,Math.PI*.48),mat(hair)); hairCap.position.set(0,2.24,-.018); group.add(hairCap);
+    for(const side of [-1,1]){
+      const arm=new THREE.Mesh(new THREE.CapsuleGeometry(.105,.57,4,10),mat(skin)); arm.position.set(side*.43,1.24,.03); arm.rotation.z=side*(index===0?-.25:.25); group.add(arm);
+      const hand=addSphere("contestant-hand",skin,[x+side*.48,-.48,.04],[.13,.13,.13]); group.remove(hand); group.add(hand); hand.position.set(side*.48, .91, .05);
+    }
+    const podium=new THREE.Group(); podium.position.set(x,-1.74,.85); world.add(podium); podiums.push(podium);
+    const color=index===0?"#bd283d":"#1765b4";
+    const shell=new THREE.Mesh(new THREE.BoxGeometry(1.5,1.62,.9),mat(color,.25,.35)); shell.position.y=.82; shell.castShadow=true; podium.add(shell);
+    const face=new THREE.Mesh(new THREE.BoxGeometry(1.28,.95,.035),mat(index===0?"#f14b5d":"#3698ec",.3,.2)); face.position.set(0,.88,.47); podium.add(face);
+    const trim=new THREE.Mesh(new THREE.BoxGeometry(1.48,.055,.95),new THREE.MeshStandardMaterial({color:"#f8d16a",emissive:"#a66a16",emissiveIntensity:.7,metalness:.5})); trim.position.y=1.63; podium.add(trim);
+    const buttonBase=new THREE.Mesh(new THREE.CylinderGeometry(.25,.3,.14,32),mat("#202334",.25,.6)); buttonBase.position.set(0,1.78,.14); podium.add(buttonBase);
+    const button=new THREE.Mesh(new THREE.SphereGeometry(.22,24,16),new THREE.MeshStandardMaterial({color:"#ffe56a",emissive:"#ffb51e",emissiveIntensity:1.4,roughness:.2})); button.scale.y=.55; button.position.set(0,1.91,.14); podium.add(button);
+    return group;
+  };
+  createContestant(-3.15,"#263d69","#d9a17e","#28202a",0);
+  createContestant(3.15,"#5d3548","#8d583f","#211c1b",1);
+  // Host centered between contestants, slightly behind the front edge.
+  const host=new THREE.Group(); host.position.set(0,-1.72,-2.0); world.add(host);
+  const hostBody=new THREE.Mesh(new THREE.CapsuleGeometry(.36,.92,5,14),mat("#e9e9e6",.45,.08)); hostBody.position.y=1.25; host.add(hostBody);
+  const hostHead=addSphere("host-head","#d5a07e",[0,.5,0],[.27,.34,.27]); host.remove(hostHead); hostHead.position.set(0,2.05,0); host.add(hostHead);
+  const hostHair=addSphere("host-hair","#28232a",[0,0,0],[.28,.15,.28]); host.remove(hostHair); hostHair.position.set(0,2.28,-.015); host.add(hostHair);
+  const mic=new THREE.Mesh(new THREE.CylinderGeometry(.035,.035,.55,12),mat("#292c36",.25,.8)); mic.position.set(.48,1.7,.1); mic.rotation.z=-.25; host.add(mic);
+  const hostPodium=new THREE.Mesh(new THREE.BoxGeometry(1.15,1.15,.7),mat("#b18a3e",.24,.55)); hostPodium.position.set(0,.58,-.22); host.add(hostPodium);
+  // Audience risers behind the main stage: rows of spectators with varied clothes/skin/hair.
+  const skinTones=["#e1b08c","#9a6247","#f0c8a4","#704a39","#c88e68"];
+  const shirts=["#d74758","#315f9c","#e3b33f","#5c9b77","#8a65b7","#d9e0e7","#c96c3d"];
+  for(let row=0;row<4;row++){
+    const z=-9.2-row*1.25, y=-1.35+row*.46;
+    addBox("audience-riser","#242a3b",[0,-1.95+row*.32,z],[21,.35,1.0],mat("#242a3b",.45,.3));
+    for(let col=0;col<17;col++){
+      const x=-9.3+col*1.16+(row%2)*.25;
+      const skin=skinTones[(col*3+row)%skinTones.length], shirt=shirts[(col*5+row*2)%shirts.length];
+      const spectator=new THREE.Group(); spectator.position.set(x,y,z-.05); world.add(spectator);
+      const torso=new THREE.Mesh(new THREE.CapsuleGeometry(.19,.38,3,8),mat(shirt)); torso.position.y=.24; spectator.add(torso);
+      const head=new THREE.Mesh(new THREE.SphereGeometry(.17,12,10),mat(skin)); head.position.y=.68; spectator.add(head);
+      const hairMesh=new THREE.Mesh(new THREE.SphereGeometry(.175,12,8,0,Math.PI*2,0,Math.PI*.48),mat(["#201d22","#45302a","#171923","#9a7955"][(col+row)%4])); hairMesh.position.y=.76; spectator.add(hairMesh);
+      for(const side of [-1,1]){
+        const arm=new THREE.Mesh(new THREE.CapsuleGeometry(.055,.30,3,6),mat(skin)); arm.position.set(side*.24,.38,.02); arm.rotation.z=side*(.22+((col+row)%3)*.18); spectator.add(arm);
+      }
+      spectator.userData.cheerPhase=(col%7)*.55+row*.3;
+    }
+  }
+  // Hanging practicals and moving-beam cones for a live-TV atmosphere.
+  const beams: THREE.Mesh[]=[];
+  for(let i=0;i<5;i++){
+    const beam=new THREE.Mesh(new THREE.ConeGeometry(1.0,8,24,1,true),new THREE.MeshBasicMaterial({color:[0x5c9dff,0xffd36c,0xff5c9c,0x9a75ff,0x54e0ce][i],transparent:true,opacity:.075,depthWrite:false,side:THREE.DoubleSide}));
+    beam.position.set(-7+i*3.5,2.4,-1.2); beam.rotation.z=(i-2)*.12; world.add(beam); beams.push(beam);
+  }
+  // Cindor carton hero prop with a bespoke printed front panel.
+  const carton=new THREE.Group(); carton.position.set(0,-.05,1.75); carton.rotation.y=-.12; world.add(carton);
+  const cartonMat=mat("#c72b39",.32,.08);
+  const cartonBody=new THREE.Mesh(new THREE.BoxGeometry(.78,1.42,.48),cartonMat); cartonBody.castShadow=true; carton.add(cartonBody);
+  const front=makeCanvasTexture((ctx,w,h)=>{
+    const g=ctx.createLinearGradient(0,0,w,h);g.addColorStop(0,"#e9474d");g.addColorStop(.55,"#bd1f35");g.addColorStop(1,"#72152b");ctx.fillStyle=g;ctx.fillRect(0,0,w,h);
+    ctx.fillStyle="#fff4e8";ctx.textAlign="center";ctx.textBaseline="middle";ctx.font="900 142px Arial";ctx.fillText("CINDOR",w/2,h*.34,w*.9);
+    ctx.font="800 42px Arial";ctx.fillText("CHOCOLATADA",w/2,h*.52,w*.88);
+    ctx.fillStyle="#f4d7b0";ctx.beginPath();ctx.ellipse(w*.5,h*.73,w*.27,h*.09,0,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle="#5b251d";ctx.beginPath();ctx.ellipse(w*.5,h*.70,w*.21,h*.065,0,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle="#fff";ctx.font="700 32px Arial";ctx.fillText("200 ml",w/2,h*.91);
+  },512,768);
+  const label=new THREE.Mesh(new THREE.PlaneGeometry(.7,1.31),new THREE.MeshBasicMaterial({map:front,side:THREE.DoubleSide})); label.position.set(0,0,.246); carton.add(label);
+  const cap=new THREE.Mesh(new THREE.CylinderGeometry(.12,.12,.12,24),mat("#f0e9d9",.25,.15)); cap.position.set(.19,.79,0); carton.add(cap);
+  const productSpot=new THREE.PointLight(0xffc66b,16,9,2); productSpot.position.set(0,3.8,3.2); world.add(productSpot);
+  // Broadcast lighting mix: soft base + colored side/rim lights.
+  world.add(new THREE.HemisphereLight(0xa8b8ff,0x17182c,1.7));
+  const key=new THREE.DirectionalLight(0xffe5c2,2.4); key.position.set(-5,9,8); key.castShadow=true; world.add(key);
+  const fill=new THREE.DirectionalLight(0x75a9ff,1.5); fill.position.set(6,5,2); world.add(fill);
+  const rimLight=new THREE.DirectionalLight(0xff5478,1.9); rimLight.position.set(0,5,-8); world.add(rimLight);
+  return {
+    update(time:number){
+      spotlights.forEach((spot,i)=>{ const target=spotTargets[i]; target.position.x=Math.sin(time*.55+i*1.2)*5.5; target.position.z=-2.4+Math.cos(time*.42+i)*1.8; });
+      beams.forEach((beam,i)=>{ beam.rotation.z=Math.sin(time*.65+i)*.24; beam.rotation.x=Math.cos(time*.48+i)*.18; beam.material instanceof THREE.MeshBasicMaterial && (beam.material.opacity=.045+.025*(.5+.5*Math.sin(time*2+i))); });
+      people.forEach((person,i)=>{ person.rotation.y=Math.sin(time*1.2+i)*.035; });
+      carton.position.y=-.05+Math.sin(time*1.7)*.045;
+      carton.rotation.y=-.12+Math.sin(time*.55)*.045;
+    }
+  };
+}
+
 function drawOverlay(ctx: CanvasRenderingContext2D, scene: ProductionScene, width: number, height: number) {
   const accent = scene.accentColor || "#d8f36a";
   const gradient = ctx.createLinearGradient(0, height * 0.55, 0, height);
