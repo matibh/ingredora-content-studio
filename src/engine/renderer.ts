@@ -192,15 +192,15 @@ function createGameShowSet(world: THREE.Scene): GameShowSet {
   // Articulated cuboid arms: a subtle presenter idle, with the microphone hand
   // gently lifting and settling while the free hand makes a small welcoming gesture.
   const freeArm=new THREE.Group(); freeArm.position.set(-.38,1.55,0); host.add(freeArm);
-  const freeSleeve=block("left-sleeve",jacket,[-.48,1.55,0],[.24,.54,.34]); freeSleeve.rotation.z=.20; freeArm.add(freeSleeve);
-  const freeForearm=block("left-forearm",hostSkin,[-.59,1.82,.12],[.19,.34,.22]); freeForearm.rotation.z=.35; freeArm.add(freeForearm);
-  const freeHand=block("left-hand",hostSkin,[-.65,2.015,.14],[.19,.17,.20]); freeArm.add(freeHand);
+  const freeSleeve=block("left-sleeve",jacket,[-.10,0,0],[.24,.54,.34]); freeSleeve.rotation.z=.20; freeArm.add(freeSleeve);
+  const freeForearm=block("left-forearm",hostSkin,[-.21,.27,.12],[.19,.34,.22]); freeForearm.rotation.z=.35; freeArm.add(freeForearm);
+  const freeHand=block("left-hand",hostSkin,[-.27,.465,.14],[.19,.17,.20]); freeArm.add(freeHand);
   const micArm=new THREE.Group(); micArm.position.set(.38,1.55,0); host.add(micArm);
-  const micSleeve=block("right-sleeve",jacket,[.48,1.55,0],[.24,.54,.34]); micSleeve.rotation.z=-.20; micArm.add(micSleeve);
-  const micForearm=block("right-forearm",hostSkin,[.59,1.78,.14],[.19,.30,.22]); micForearm.rotation.z=-.30; micArm.add(micForearm);
-  block("microphone-handle",micMat,[.64,2.03,.18],[.09,.28,.09]);
-  block("microphone-head",gold,[.64,2.20,.18],[.15,.13,.15]);
-  block("microphone-grille",micMat,[.64,2.255,.18],[.12,.035,.12]);
+  const micSleeve=block("right-sleeve",jacket,[.10,0,0],[.24,.54,.34]); micSleeve.rotation.z=-.20; micArm.add(micSleeve);
+  const micForearm=block("right-forearm",hostSkin,[.21,.23,.14],[.19,.30,.22]); micForearm.rotation.z=-.30; micArm.add(micForearm);
+  block("microphone-handle",micMat,[.26,.48,.18],[.09,.28,.09]);
+  block("microphone-head",gold,[.26,.65,.18],[.15,.13,.15]);
+  block("microphone-grille",micMat,[.26,.705,.18],[.12,.035,.12]);
   // Compact block lectern stays below her face and keeps the product unobstructed.
   block("host-podium",mat("#26304b",.35,.2),[0,.36,-.25],[1.05,.72,.62]);
   block("host-podium-top",gold,[0,.745,-.25],[1.12,.07,.68]);
