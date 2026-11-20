@@ -1,0 +1,260 @@
+{
+  "voice": "es-AR-ElenaNeural",
+  "words": [
+    {
+      "text": "Hola",
+      "start": 0.098166,
+      "end": 0.410666
+    },
+    {
+      "text": "Cuánto",
+      "start": 1.307875,
+      "end": 1.620375
+    },
+    {
+      "text": "sabés",
+      "start": 1.6435,
+      "end": 1.932833
+    },
+    {
+      "text": "de",
+      "start": 1.956,
+      "end": 2.0022909
+    },
+    {
+      "text": "lo",
+      "start": 2.037041,
+      "end": 2.106499
+    },
+    {
+      "text": "que",
+      "start": 2.152791,
+      "end": 2.222249
+    },
+    {
+      "text": "comés",
+      "start": 2.2685,
+      "end": 2.754625
+    },
+    {
+      "text": "Mirá",
+      "start": 3.611125,
+      "end": 3.900458
+    },
+    {
+      "text": "cómo",
+      "start": 3.969916,
+      "end": 4.143541
+    },
+    {
+      "text": "sale",
+      "start": 4.166666,
+      "end": 4.444457
+    },
+    {
+      "text": "esta",
+      "start": 4.456,
+      "end": 4.6875
+    },
+    {
+      "text": "Oreo",
+      "start": 4.6875,
+      "end": 4.919
+    },
+    {
+      "text": "del",
+      "start": 4.953708,
+      "end": 5.046291
+    },
+    {
+      "text": "paquete",
+      "start": 5.104166,
+      "end": 5.532416
+    },
+    {
+      "text": "Ahora",
+      "start": 6.423625,
+      "end": 6.724541
+    },
+    {
+      "text": "pensá",
+      "start": 6.794,
+      "end": 7.048625
+    },
+    {
+      "text": "rápido",
+      "start": 7.083333,
+      "end": 7.534708
+    },
+    {
+      "text": "qué",
+      "start": 7.870375,
+      "end": 7.939833
+    },
+    {
+      "text": "ingredientes",
+      "start": 7.939833,
+      "end": 8.564833
+    },
+    {
+      "text": "tiene",
+      "start": 8.611125,
+      "end": 8.819458
+    },
+    {
+      "text": "Oreo",
+      "start": 8.842583,
+      "end": 9.085624
+    },
+    {
+      "text": "Original",
+      "start": 9.085666,
+      "end": 9.629666
+    },
+    {
+      "text": "Tenés",
+      "start": 10.462958,
+      "end": 10.763874
+    },
+    {
+      "text": "seis",
+      "start": 10.763875,
+      "end": 11.006916
+    },
+    {
+      "text": "segundos",
+      "start": 11.006958,
+      "end": 11.666666
+    },
+    {
+      "text": "seis",
+      "start": 11.863416,
+      "end": 12.361082
+    },
+    {
+      "text": "cinco",
+      "start": 12.546291,
+      "end": 13.055541
+    },
+    {
+      "text": "cuatro",
+      "start": 13.310166,
+      "end": 13.773124
+    },
+    {
+      "text": "tres",
+      "start": 14.085666,
+      "end": 14.456041
+    },
+    {
+      "text": "dos",
+      "start": 14.710666,
+      "end": 15.046332
+    },
+    {
+      "text": "uno",
+      "start": 15.2315,
+      "end": 15.555583
+    },
+    {
+      "text": "Tiempo",
+      "start": 16.423625,
+      "end": 16.863458
+    },
+    {
+      "text": "Azúcar",
+      "start": 17.743041,
+      "end": 18.356457
+    },
+    {
+      "text": "harina",
+      "start": 18.460666,
+      "end": 18.761582
+    },
+    {
+      "text": "de",
+      "start": 18.842583,
+      "end": 18.877291
+    },
+    {
+      "text": "trigo",
+      "start": 18.958333,
+      "end": 19.328708
+    },
+    {
+      "text": "aceite",
+      "start": 19.6065,
+      "end": 19.976875
+    },
+    {
+      "text": "vegetal",
+      "start": 20.0,
+      "end": 20.567125
+    },
+    {
+      "text": "cacao",
+      "start": 20.763875,
+      "end": 21.238416
+    },
+    {
+      "text": "y",
+      "start": 21.458333,
+      "end": 21.527791
+    },
+    {
+      "text": "varios",
+      "start": 21.550916,
+      "end": 21.828707
+    },
+    {
+      "text": "más",
+      "start": 21.875,
+      "end": 22.2685
+    },
+    {
+      "text": "Cuántos",
+      "start": 23.136583,
+      "end": 23.506958
+    },
+    {
+      "text": "acertaste",
+      "start": 23.506958,
+      "end": 24.143541
+    },
+    {
+      "text": "Entrá",
+      "start": 25.034708,
+      "end": 25.358791
+    },
+    {
+      "text": "a",
+      "start": 25.358791,
+      "end": 25.4050819
+    },
+    {
+      "text": "Ingredora",
+      "start": 25.42825,
+      "end": 25.868083
+    },
+    {
+      "text": "punto",
+      "start": 25.949083,
+      "end": 26.215291
+    },
+    {
+      "text": "com",
+      "start": 26.273166,
+      "end": 26.562499
+    },
+    {
+      "text": "Te",
+      "start": 27.38425,
+      "end": 27.476833
+    },
+    {
+      "text": "espero",
+      "start": 27.476833,
+      "end": 27.974499
+    }
+  ]
+}
