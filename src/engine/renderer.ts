@@ -1281,34 +1281,63 @@ export async function renderPackageToWebM(
       operationLabelSet.update(time);
       const ease = (value: number) => { const x = Math.max(0, Math.min(1, value)); return x * x * (3 - 2 * x); };
       const mix = (a: number, b: number, t: number) => a + (b - a) * t;
-      let cameraX = 0, cameraY = 2.25, cameraZ = 12.6;
+      let cameraX = 0, cameraY = 2.35, cameraZ = 13.0;
       let targetX = 0, targetY = 0.05, targetZ = -0.7, fieldOfView = 44;
-      if (time < 3.2) {
-        const p = ease(time / 3.2);
-        cameraX = mix(0.5, 0, p); cameraY = mix(2.5, 2.0, p); cameraZ = mix(13.2, 11.8, p);
-        targetY = mix(0.2, 0.0, p); fieldOfView = mix(46, 42, p);
-      } else if (time < 6.8) {
-        const p = ease((time - 3.2) / 0.85);
-        cameraX = mix(0, -1.15, p); cameraY = mix(2.0, 0.95, p); cameraZ = mix(11.8, 7.1, p);
-        targetX = -1.18; targetY = 0.68; targetZ = 0.25; fieldOfView = mix(42, 34, p);
-      } else if (time < 14.8) {
-        const p = ease((time - 6.8) / 0.9);
-        cameraX = mix(-1.15, 1.22, p); cameraY = mix(0.95, 0.5, p); cameraZ = mix(7.1, 6.35, p);
-        targetX = 1.22; targetY = -0.28; targetZ = 0.35; fieldOfView = mix(34, 32, p);
-      } else if (time < 23.0) {
-        cameraX = 1.22; cameraY = 0.50; cameraZ = 6.35;
-        targetX = 1.22; targetY = -0.28; targetZ = 0.35; fieldOfView = 32;
-      } else if (time < 25.2) {
-        const p = ease((time - 23.0) / 0.55);
-        cameraX = mix(1.22, -1.18, p); cameraY = mix(0.5, 0.7, p); cameraZ = mix(6.35, 6.65, p);
-        targetX = -1.18; targetY = 0.92; targetZ = 0.36; fieldOfView = mix(32, 34, p);
+
+      // Establish the office, reveal the Guaymallén wrapper, investigate the missing
+      // ingredient sheet, then turn the detective directly toward the viewer.
+      if (time < 3.0) {
+        const p = ease(time / 3.0);
+        cameraX = mix(0.55, 0.05, p);
+        cameraY = mix(2.65, 2.25, p);
+        cameraZ = mix(14.0, 12.6, p);
+        targetY = 0.10;
+        fieldOfView = mix(46, 43, p);
+      } else if (time < 7.7) {
+        const p = ease((time - 3.0) / 0.85);
+        cameraX = mix(0.05, 1.22, p);
+        cameraY = mix(2.25, 0.65, p);
+        cameraZ = mix(12.6, 6.8, p);
+        targetX = 1.22; targetY = -0.05; targetZ = 0.25;
+        fieldOfView = mix(43, 43, p);
+      } else if (time < 12.3) {
+        const p = ease((time - 7.7) / 0.75);
+        cameraX = mix(1.22, 0.25, p);
+        cameraY = mix(0.65, 1.15, p);
+        cameraZ = mix(6.8, 8.0, p);
+        targetX = mix(1.22, -0.15, p);
+        targetY = mix(-0.05, 0.45, p);
+        targetZ = 0.1;
+        fieldOfView = mix(43, 39, p);
+      } else if (time < 15.7) {
+        const p = ease((time - 12.3) / 0.55);
+        cameraX = mix(0.25, 3.0, p);
+        cameraY = mix(1.15, 2.55, p);
+        cameraZ = mix(8.0, 5.9, p);
+        targetX = mix(-0.15, 3.55, p);
+        targetY = mix(0.45, 2.75, p);
+        targetZ = mix(0.1, -6.65, p);
+        fieldOfView = mix(39, 38, p);
+      } else if (time < 20.4) {
+        const p = ease((time - 15.7) / 0.65);
+        cameraX = mix(3.0, -0.2, p);
+        cameraY = mix(2.55, 1.65, p);
+        cameraZ = mix(5.9, 8.0, p);
+        targetX = mix(3.55, -0.45, p);
+        targetY = mix(2.75, 1.15, p);
+        targetZ = mix(-6.65, 0.35, p);
+        fieldOfView = mix(38, 40, p);
       } else {
-        const p = ease((time - 25.2) / 1.1);
-        cameraX = mix(-1.18, 0.1, p); cameraY = mix(0.7, 2.3, p); cameraZ = mix(6.65, 12.4, p);
-        targetX = mix(-1.18, 0, p); targetY = mix(0.92, 0.0, p); targetZ = mix(0.36, -0.8, p);
-        fieldOfView = mix(34, 44, p);
+        const p = ease((time - 20.4) / 1.0);
+        cameraX = mix(-0.2, 0.0, p);
+        cameraY = mix(1.65, 2.45, p);
+        cameraZ = mix(8.0, 12.9, p);
+        targetX = mix(-0.45, 0.0, p);
+        targetY = mix(1.15, 0.05, p);
+        targetZ = mix(0.35, -0.75, p);
+        fieldOfView = mix(40, 45, p);
       }
-      cameraX += Math.sin(time * 0.52) * 0.022;
+      cameraX += Math.sin(time * 0.52) * 0.018;
       camera.position.set(cameraX, cameraY, cameraZ);
       camera.lookAt(targetX, targetY, targetZ);
       camera.fov = fieldOfView;
