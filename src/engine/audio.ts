@@ -373,97 +373,107 @@ export async function generateOriginalSoundtrack({
 
 
   if (theme === "detective-case") {
-    // An original noir-electro cue: muted pizzicato, tense minor seconds,
-    // ticking evidence-room percussion and a bright resolution sting.
-    const bpm = 112;
+    // Freshly composed noir suspense score: low strings, dissonant sustained harmony,
+    // a restrained piano ostinato and cinematic impacts. No clock ticks or crowd sounds.
+    const bpm = 82;
     const q = 60 / bpm;
     const barLength = q * 4;
-    const roots = [55.00, 58.27, 49.00, 65.41]; // A, Bb, G, C
-    const noirChords = [
-      [220.00, 261.63, 329.63],
-      [233.08, 277.18, 349.23],
-      [196.00, 233.08, 293.66],
-      [261.63, 311.13, 392.00],
+    const roots = [73.42, 58.27, 65.41, 55.00]; // D, Bb, C, A
+    const chords = [
+      [146.83, 174.61, 220.00, 261.63], // Dm add9
+      [116.54, 146.83, 174.61, 220.00], // Bb maj7 colour
+      [130.81, 155.56, 196.00, 233.08], // Cm tension
+      [110.00, 130.81, 164.81, 207.65], // A7 suspension
     ];
 
-    // Low, short pizzicato bass line with offbeat answers.
+    const addStringPad = (frequency: number, start: number, length: number, pan: number, peak: number) => {
+      if (start >= durationSeconds || length <= 0) return;
+      const end = Math.min(durationSeconds, start + length);
+      const oscillator = context.createOscillator();
+      const filter = context.createBiquadFilter();
+      const envelope = context.createGain();
+      const panner = context.createStereoPanner();
+      oscillator.type = "sawtooth";
+      oscillator.frequency.setValueAtTime(frequency, start);
+      oscillator.detune.setValueAtTime(-4, start);
+      filter.type = "lowpass"; filter.frequency.setValueAtTime(980, start); filter.Q.value = 0.6;
+      envelope.gain.setValueAtTime(0.0001, start);
+      envelope.gain.linearRampToValueAtTime(peak, Math.min(end, start + 0.42));
+      envelope.gain.setValueAtTime(peak, Math.max(start + 0.43, end - 0.38));
+      envelope.gain.exponentialRampToValueAtTime(0.0001, end);
+      panner.pan.setValueAtTime(pan, start);
+      oscillator.connect(filter); filter.connect(envelope); envelope.connect(panner); panner.connect(master);
+      oscillator.start(start); oscillator.stop(end + 0.01);
+    };
+
+    // Slow, dark bowed-string harmony and a deep investigative drone.
     for (let barIndex = 0, at = 0; at < durationSeconds; barIndex += 1, at += barLength) {
       const root = roots[barIndex % roots.length];
-      const pattern = [0, 0.75, 1.5, 2.0, 2.75, 3.5];
-      pattern.forEach((offset, index) => {
-        const t = at + offset * q;
-        addTone(root, t, q * (index % 2 ? 0.25 : 0.38), "triangle", 0.14, 420, index % 2 ? 0.14 : -0.14);
-        if (index === 2 || index === 5) addTone(root * 2, t + 0.025, 0.11, "square", 0.026, 1_050, index === 2 ? 0.25 : -0.25);
+      const chord = chords[barIndex % chords.length];
+      addTone(root, at, barLength * 1.12, "sine", 0.085, 190, 0);
+      addTone(root * 0.5, at + 0.015, barLength * 0.88, "triangle", 0.045, 120, 0);
+      chord.forEach((hz, noteIndex) =>
+        addStringPad(hz, at + (noteIndex === 3 ? 0.20 : 0), barLength * 0.96,
+          (noteIndex - 1.5) * 0.30, noteIndex === 0 ? 0.024 : 0.017),
+      );
+      // A low, soft cinematic thud at the start of each measure.
+      addTone(root * 0.75, at + 0.04, 0.32, "sine", 0.105, 150, 0);
+      if (at + q * 2 < durationSeconds) addTone(root, at + q * 2, 0.18, "triangle", 0.035, 260, 0.04);
+    }
+
+    // A measured, slightly dissonant piano-like motif, leaving space for the narration.
+    const ostinato = [293.66, 440.00, 311.13, 392.00, 293.66, 466.16, 349.23, 392.00];
+    for (let barIndex = 0, at = 0.42; at < durationSeconds; barIndex += 1, at += barLength) {
+      [0, 1.5, 2.5, 3.25].forEach((beatOffset, noteIndex) => {
+        const t = at + beatOffset * q;
+        const hz = ostinato[(barIndex * 2 + noteIndex) % ostinato.length];
+        addTone(hz, t, 0.22, "triangle", noteIndex === 0 ? 0.050 : 0.034,
+          2_200, noteIndex % 2 ? 0.24 : -0.24);
+        if (noteIndex === 2) addTone(hz * 0.5, t + 0.035, 0.18, "sine", 0.025, 820, 0);
       });
-
-      // Sparse, smoky jazz clusters on the second half of each measure.
-      const chord = noirChords[barIndex % noirChords.length];
-      [1.25, 3.0].forEach((offset, hit) => {
-        chord.forEach((hz, note) => addTone(
-          hz * (hit === 1 && note === 2 ? 2 : 1),
-          at + offset * q,
-          hit === 0 ? 0.32 : 0.22,
-          "sine",
-          hit === 0 ? 0.038 : 0.028,
-          1_900,
-          (note - 1) * 0.34,
-        ));
-      });
     }
 
-    // A repeating four-note investigation motif, played with a dry plucked timbre.
-    const motif = [440.00, 466.16, 392.00, 349.23, 440.00, 523.25, 466.16, 392.00];
-    for (let index = 0, at = 0.65; at < durationSeconds; index += 1, at += q * 0.75) {
-      const note = motif[index % motif.length];
-      const accent = index % 4 === 0;
-      addTone(note, at, accent ? 0.24 : 0.14, "triangle", accent ? 0.072 : 0.045, 2_600, index % 2 ? 0.24 : -0.24);
-      if (index % 4 === 2) addTone(note * 1.5, at + 0.06, 0.12, "sine", 0.018, 3_800, index % 2 ? -0.3 : 0.3);
+    // Muted high strings add a slow shiver above the harmony, never a ticking clock.
+    for (let at = 1.15, index = 0; at < durationSeconds; at += barLength * 2, index += 1) {
+      const hz = [587.33, 622.25, 523.25, 554.37][index % 4];
+      addStringPad(hz, at, Math.min(barLength * 1.7, durationSeconds - at), index % 2 ? 0.28 : -0.28, 0.010);
     }
 
-    // Dry finger snaps and brushed metallic ticks: deliberately no applause or crowd.
-    const tickLength = Math.ceil(sampleRate * 0.075);
-    const tickBuffer = context.createBuffer(1, tickLength, sampleRate);
-    const tickData = tickBuffer.getChannelData(0);
-    for (let i = 0; i < tickLength; i++) tickData[i] = (random() * 2 - 1) * Math.exp(-i / (sampleRate * 0.012));
-    for (let beatIndex = 0, at = 0; at < durationSeconds; beatIndex += 1, at += q) {
-      if (beatIndex % 2 === 1) {
-        const source = context.createBufferSource();
-        const filter = context.createBiquadFilter();
-        const gain = context.createGain();
-        source.buffer = tickBuffer;
-        filter.type = "bandpass"; filter.frequency.value = 2_800; filter.Q.value = 0.8;
-        gain.gain.setValueAtTime(0.0001, at);
-        gain.gain.linearRampToValueAtTime(0.027, at + 0.003);
-        gain.gain.exponentialRampToValueAtTime(0.0001, Math.min(durationSeconds, at + 0.075));
-        source.connect(filter); filter.connect(gain); gain.connect(master); source.start(at);
-      }
+    // Deterministic filtered-noise swells: paper movement and a dramatic missing-list reveal.
+    const swellLength = Math.ceil(sampleRate * 0.82);
+    const swellBuffer = context.createBuffer(1, swellLength, sampleRate);
+    const swellData = swellBuffer.getChannelData(0);
+    for (let i = 0; i < swellLength; i += 1) {
+      const fade = Math.sin((i / swellLength) * Math.PI);
+      swellData[i] = (random() * 2 - 1) * fade;
     }
-
-    // Quiet paper shuffles while the detective searches, then a low, unresolved sting
-    // when the ingredient list cannot be found. No countdown or ticking-clock effect.
-    for (const at of [7.45, 8.05, 11.95, 12.35]) {
+    for (const at of [7.38, 11.92, 15.98]) {
       const source = context.createBufferSource();
       const filter = context.createBiquadFilter();
       const gain = context.createGain();
-      source.buffer = tickBuffer;
-      filter.type = "bandpass"; filter.frequency.value = at < 10 ? 1_850 : 1_250; filter.Q.value = 0.42;
+      source.buffer = swellBuffer;
+      filter.type = "bandpass"; filter.frequency.setValueAtTime(520, at);
+      filter.frequency.exponentialRampToValueAtTime(2_600, at + 0.58); filter.Q.value = 0.48;
       gain.gain.setValueAtTime(0.0001, at);
-      gain.gain.linearRampToValueAtTime(at < 10 ? 0.042 : 0.060, at + 0.018);
-      gain.gain.exponentialRampToValueAtTime(0.0001, Math.min(durationSeconds, at + 0.24));
+      gain.gain.linearRampToValueAtTime(0.042, at + 0.34);
+      gain.gain.exponentialRampToValueAtTime(0.0001, Math.min(durationSeconds, at + 0.82));
       source.connect(filter); filter.connect(gain); gain.connect(master); source.start(at);
     }
-    addTone(73.42, 12.30, 0.72, "sine", 0.15, 240, 0);
-    addTone(69.30, 12.42, 0.62, "triangle", 0.055, 520, 0.12);
 
-    // The viewer invitation gets a subtle warm lift; the final resolve sting lands after the CTA.
+    // Unresolved low chord when the missing ingredients are revealed.
+    addTone(73.42, 12.30, 0.92, "sine", 0.18, 220, 0);
+    addTone(69.30, 12.42, 0.82, "triangle", 0.070, 420, 0.12);
+    addTone(103.83, 12.48, 0.68, "sine", 0.052, 380, -0.12);
+
+    // A restrained harmonic lift under the audience invitation, then a final detective sting.
     [349.23, 440.00, 523.25].forEach((hz, index) =>
-      addTone(hz, 19.88 + index * 0.10, 0.55, "triangle", 0.052, 3_900, (index - 1) * 0.22),
+      addTone(hz, 19.88 + index * 0.10, 0.70, "triangle", 0.060, 3_600, (index - 1) * 0.22),
     );
     [261.63, 329.63, 392.00].forEach((hz, index) =>
-      addTone(hz, 27.15 + index * 0.12, 0.70, "sine", 0.052, 3_400, (index - 1) * 0.28),
+      addTone(hz, 27.15 + index * 0.12, 0.78, "sine", 0.066, 3_200, (index - 1) * 0.28),
     );
-    addTone(1_760, 29.05, 0.22, "sine", 0.028, 5_800, 0.28);
-    addTone(2_090, 29.20, 0.24, "sine", 0.024, 6_200, -0.28);
+    addTone(1_760, 29.05, 0.24, "sine", 0.032, 5_600, 0.28);
+    addTone(2_090, 29.20, 0.26, "sine", 0.028, 6_000, -0.28);
   }
 
   return context.startRendering();
