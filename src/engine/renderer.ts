@@ -1108,7 +1108,7 @@ export async function renderPackageToWebM(
     musicSource.buffer = soundtrack;
     const musicGain = offline.createGain();
     // The detective score must remain clearly audible beneath narration; other productions keep the quieter default.
-    musicGain.gain.value = pkg.visualPreset === "operation-label-detective" ? 0.22 : 0.045;
+    musicGain.gain.value = pkg.visualPreset === "operation-label-detective" ? 0.42 : 0.045;
     musicSource.connect(musicGain).connect(offline.destination);
     musicSource.start(0);
     let voiceForMix = voice;
