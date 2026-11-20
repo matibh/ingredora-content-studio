@@ -1,17 +1,17 @@
 {
   "schemaVersion": 1,
   "engineVersion": "1.0.0",
-  "id": "ingredora-oreo-family-merienda-006",
-  "title": "Oreo Original — paquete recto y salida superior",
-  "description": "Producción con animación de apertura y salida superior de la Oreo, movimiento con arco y rebote suave al aterrizar, música original, efectos sincronizados y voz femenina argentina con subtítulos.",
-  "createdAt": "2026-11-19T22:30:00-03:00",
+  "id": "ingredora-oreo-family-merienda-007",
+  "title": "Oreo Original — voz clara y cámara cinematográfica",
+  "description": "Corte de 30 segundos a 60 FPS. Voz femenina argentina al frente y música más baja, efectos y subtítulos sincronizados. Cámara cinematográfica con plano general, acercamiento al paquete, seguimiento de la galletita hasta el plato, plano detalle y cierre abierto.",
+  "createdAt": "2026-11-20T19:10:00-03:00",
   "fps": 60,
   "width": 720,
   "height": 1280,
   "visualPreset": "oreo-family-table",
   "scenes": [
     {
-      "id": "family-table-oreo-emerges-from-pack",
+      "id": "family-table-oreo-cinematic-voice-007",
       "startFrame": 0,
       "durationFrames": 1800,
       "background": "#e8d8c0",
@@ -34,7 +34,7 @@
       "objects": []
     }
   ],
-  "voiceoverUrl": "studio/audio/oreo-family-v1-voice-es-AR.mp3",
-  "wordTimingsUrl": "studio/audio/oreo-family-v1-word-timings.json",
+  "voiceoverUrl": "studio/audio/oreo-family-v1-voice-es-AR.mp3?v=20261120b",
+  "wordTimingsUrl": "studio/audio/oreo-family-v1-word-timings.json?v=20261120b",
   "voiceoverOffsetSeconds": 0
 }
