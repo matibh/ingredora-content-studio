@@ -14,6 +14,7 @@ import type { ProductionPackage, ProductionScene, SceneObject } from "./types";
 import { createCocaColaPoolsideSet, drawCocaColaPoolsideOverlay } from "./cocaColaPoolside";
 import { createOreoFamilySet, drawOreoFamilyOverlay } from "./oreoFamily";
 import { createOperationLabelSet, drawOperationLabelOverlay, type OperationWord } from "./operationLabel";
+import { createEntrePartidasSet, drawEntrePartidasCaptions, type EntrePartidasCue } from "./entrePartidas";
 
 export type RenderProgress = { frame: number; totalFrames: number; percent: number };
 
@@ -1183,7 +1184,7 @@ export async function renderPackageToWebM(
   output.setMetadataTags({ title: pkg.title, artist: "Ingredora Content Studio", date: new Date(pkg.createdAt) });
 
   const world = new THREE.Scene();
-  if (!pkg.id.startsWith("ingredora-cindor-game-show-") && pkg.visualPreset !== "nutella-supermarket" && pkg.visualPreset !== "coca-cola-poolside" && pkg.visualPreset !== "oreo-family-table" && pkg.visualPreset !== "operation-label-detective") {
+  if (!pkg.id.startsWith("ingredora-cindor-game-show-") && pkg.visualPreset !== "nutella-supermarket" && pkg.visualPreset !== "coca-cola-poolside" && pkg.visualPreset !== "oreo-family-table" && pkg.visualPreset !== "operation-label-detective" && pkg.visualPreset !== "entre-partidas-supermarket") {
     world.add(new THREE.HemisphereLight(0xffffff, 0x273b2c, 2.0));
     const key = new THREE.DirectionalLight(0xffffff, 3.0);
     key.position.set(-3, 5, 6);
@@ -1200,6 +1201,8 @@ export async function renderPackageToWebM(
   const oreoSet = pkg.visualPreset === "oreo-family-table" ? createOreoFamilySet(world) : null;
   const gameShowSet = pkg.id.startsWith("ingredora-cindor-game-show-") ? createGameShowSet(world) : null;
   const operationLabelSet = pkg.visualPreset === "operation-label-detective" ? createOperationLabelSet(world) : null;
+  const entrePartidasSet = pkg.visualPreset === "entre-partidas-supermarket" ? createEntrePartidasSet(world) : null;
+  const entrePartidasDialogue = (pkg.dialogue ?? []) as EntrePartidasCue[];
   let nutellaVoiceWords: VoiceWordTiming[] = [];
   let poolsideVoiceWords: VoiceWordTiming[] = [];
   let oreoVoiceWords: VoiceWordTiming[] = [];
@@ -1276,6 +1279,27 @@ export async function renderPackageToWebM(
   let lastSceneId = "";
 
   const drawFrame = (frame: number) => {
+    if (entrePartidasSet) {
+      const time = frame / fps;
+      entrePartidasSet.update(time, entrePartidasDialogue);
+      const ease = (v: number) => { const x = Math.max(0, Math.min(1, v)); return x*x*(3-2*x); };
+      const mix = (a: number,b: number,t: number) => a+(b-a)*t;
+      let x=0,y=2.35,z=13.0,tx=0,ty=.35,tz=-2.0,fov=44;
+      if(time<5){const p=ease(time/5);x=mix(-.55,-.12,p);y=mix(2.8,2.45,p);z=mix(15,12.5,p);ty=.35;tz=-2.6;fov=mix(48,43,p);}
+      else if(time<10){const p=ease((time-5)/.8);x=mix(-.12,-1.05,p);y=mix(2.45,1.9,p);z=mix(12.5,7.1,p);tx=-.45;ty=1.35;tz=.35;fov=35;}
+      else if(time<17){const p=ease((time-10)/1.0);x=mix(-1.05,0,p);y=mix(1.9,2.45,p);z=mix(7.1,10.4,p);tx=0;ty=.45;tz=-.2;fov=mix(35,43,p);}
+      else if(time<26){const p=ease((time-17)/.7);x=mix(0,-1.55,p);y=2.25;z=mix(10.4,7.0,p);tx=-.55;ty=1.55;tz=.2;fov=mix(43,35,p);}
+      else if(time<34){const p=ease((time-26)/.7);x=mix(-1.55,2.25,p);y=2.25;z=mix(7,7.4,p);tx=mix(-.55,1.95,p);ty=1.5;tz=.15;fov=36;}
+      else if(time<46){const phase=Math.floor((time-34)/3)%3;x=phase===0?-1.65:phase===1?2.3:0;y=2.15;z=phase===2?9.2:6.6;tx=phase===0?-2.1:phase===1?2.05:0;ty=1.45;tz=.1;fov=phase===2?43:35;}
+      else if(time<55){x=2.35;y=2.2;z=6.2;tx=2.05;ty=1.55;tz=.1;fov=34;}
+      else {const p=ease((time-55)/2);x=mix(2.35,.15,p);y=mix(2.2,2.9,p);z=mix(6.2,12.6,p);tx=0;ty=.45;tz=-1.6;fov=mix(34,47,p);}
+      x += Math.sin(time*.36)*.025;
+      camera.position.set(x,y,z);camera.lookAt(tx,ty,tz);camera.fov=fov;camera.updateProjectionMatrix();
+      renderer.render(world,camera);
+      ctx.drawImage(renderer.domElement,0,0,pkg.width,pkg.height);
+      drawEntrePartidasCaptions(ctx,time,pkg.width,pkg.height,entrePartidasDialogue);
+      return;
+    }
     if (operationLabelSet) {
       const time = frame / fps;
       operationLabelSet.update(time, operationVoiceWords);
