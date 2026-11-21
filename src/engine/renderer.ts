@@ -1288,17 +1288,36 @@ export async function renderPackageToWebM(
       entrePartidasSet.update(time, entrePartidasDialogue);
       const ease = (v: number) => { const x = Math.max(0, Math.min(1, v)); return x*x*(3-2*x); };
       const mix = (a: number,b: number,t: number) => a+(b-a)*t;
-      let x=0,y=2.35,z=13.0,tx=0,ty=-.45,tz=-2.0,fov=44;
-      if(time<5){const p=ease(time/5);x=mix(-.55,-.12,p);y=mix(2.8,2.45,p);z=mix(15,12.5,p);ty=-.45;tz=-2.6;fov=mix(48,43,p);}
-      else if(time<10){const p=ease((time-5)/.8);x=mix(-.12,-1.05,p);y=mix(2.45,1.9,p);z=mix(12.5,7.1,p);tx=-.45;ty=-1.0;tz=.35;fov=35;}
-      else if(time<17){const p=ease((time-10)/1.0);x=mix(-1.05,0,p);y=mix(1.9,2.45,p);z=mix(7.1,10.4,p);tx=0;ty=-.45;tz=-.2;fov=mix(35,43,p);}
-      else if(time<26){const p=ease((time-17)/.7);x=mix(0,-1.55,p);y=2.25;z=mix(10.4,7.0,p);tx=-.55;ty=.10;tz=.2;fov=mix(43,35,p);}
-      else if(time<34){const p=ease((time-26)/.7);x=mix(-1.55,2.25,p);y=2.25;z=mix(7,7.4,p);tx=mix(-.55,1.95,p);ty=.05;tz=.15;fov=36;}
-      else if(time<46){const phase=Math.floor((time-34)/3)%3;x=phase===0?-1.65:phase===1?2.3:0;y=2.15;z=phase===2?9.2:6.6;tx=phase===0?-2.1:phase===1?2.05:0;ty=.05;tz=.1;fov=phase===2?43:35;}
-      else if(time<55){x=2.35;y=2.2;z=6.2;tx=2.05;ty=.05;tz=.1;fov=34;}
-      else {const p=ease((time-55)/2);x=mix(2.35,.15,p);y=mix(2.2,2.9,p);z=mix(6.2,12.6,p);tx=0;ty=-.45;tz=-1.6;fov=mix(34,47,p);}
-      x += Math.sin(time*.36)*.025;
-      camera.position.set(x,y,z);camera.lookAt(tx,ty,tz);camera.fov=fov;camera.updateProjectionMatrix();
+      const cue=entrePartidasDialogue.find(item=>time>=item.start&&time<=item.end);
+      let desiredPosition=new THREE.Vector3(0,2.45,13.0);
+      let desiredTarget=new THREE.Vector3(0,-.35,-2.0);
+      let desiredFov=45;
+      // Establish the aisle first, then keep every speaking character in the
+      // active camera's focus. This replaces fixed time-based pans that often
+      // framed a listener while someone else was delivering the line.
+      if(time<1.55){
+        const p=ease(time/1.55);
+        desiredPosition.set(mix(-.45,0,p),mix(2.9,2.5,p),mix(15,13.2,p));
+        desiredTarget.set(0,-.35,-2.2);desiredFov=mix(49,45,p);
+      }else if(cue){
+        const subject=entrePartidasSet.getSpeakerPosition(cue.speaker);
+        desiredPosition.set(subject.x+.10,subject.y+.48,subject.z+6.65);
+        desiredTarget.set(subject.x,subject.y+.02,subject.z);
+        desiredFov=34;
+      }else{
+        // Short reaction gaps breathe on a two/three-shot before the next line.
+        desiredPosition.set(0,2.35,12.8);
+        desiredTarget.set(0,-.35,-1.5);
+        desiredFov=43;
+      }
+      const blend=time<1.55?.055:cue?.start===undefined?.08:.14;
+      camera.position.lerp(desiredPosition,blend);
+      const currentTarget=(camera.userData.entreTarget as THREE.Vector3|undefined)??desiredTarget.clone();
+      currentTarget.lerp(desiredTarget,blend);
+      camera.userData.entreTarget=currentTarget;
+      camera.lookAt(currentTarget);
+      camera.fov=mix(camera.fov||45,desiredFov,.12);
+      camera.updateProjectionMatrix();
       renderer.render(world,camera);
       ctx.drawImage(renderer.domElement,0,0,pkg.width,pkg.height);
       drawEntrePartidasCaptions(ctx,time,pkg.width,pkg.height,entrePartidasDialogue);
