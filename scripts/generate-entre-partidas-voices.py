@@ -190,7 +190,7 @@ def activate_series_production():
         raise RuntimeError("Faltan pistas de voz: " + ", ".join(missing))
     production["status"] = "rendering"
     manifest["updatedAt"] = "2026-11-21T15:00:00Z"
-    manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\\n", encoding="utf-8")
+    manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 if __name__ == "__main__":
     asyncio.run(main())
