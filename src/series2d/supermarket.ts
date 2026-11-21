@@ -66,8 +66,7 @@ function drawCart(parent: Container, x: number, y: number) {
   shape(cart, g => g.moveTo(26, 50).lineTo(124, 50).moveTo(23, 70).lineTo(120, 70), "#FFFFFF", "#91A09B", 1.5);
   shape(cart, g => g.circle(36, 108, 9), "#59615E", "#3F4846", 2);
   shape(cart, g => g.circle(111, 108, 9), "#59615E", "#3F4846", 2);
-  product(cart, 48, 10, 26, 34, "#D6A54C", 2);
-  product(cart, 78, 19, 27, 26, "#6B9572", 1);
+  // The basket is intentionally almost empty: this is part of the closing visual joke.
   parent.addChild(cart);
 }
 
