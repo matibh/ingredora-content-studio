@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { renderPackageToWebM, type RenderProgress } from "./engine/renderer";
 import { renderSitcomPackageToWebM } from "./series2d/renderer";
+import { renderSitcom3DToWebM } from "./series3d/renderer";
 import type { SitcomProductionPackage } from "./series2d/types";
 import { convertWebMToMp4 } from "./engine/mp4Converter";
 import { getRenderedVideo, saveRenderedVideo } from "./engine/storage";
@@ -22,7 +23,7 @@ type Production = {
   createdAt?: string;
   caption?: string;
   collection?: "advertising" | "series";
-  renderEngine?: "three" | "pixi2d";
+  renderEngine?: "three" | "pixi2d" | "three-series";
 };
 
 type Manifest = {
@@ -151,9 +152,11 @@ function App() {
         const onFrameProgress = (progress: RenderProgress) => {
           setRenderProgress((current) => ({ ...current, [candidate.id]: progress }));
         };
-        const blob = candidate.renderEngine === "pixi2d"
-          ? await renderSitcomPackageToWebM(productionPackage as unknown as SitcomProductionPackage, onFrameProgress)
-          : await renderPackageToWebM(productionPackage, onFrameProgress);
+        const blob = candidate.renderEngine === "three-series"
+          ? await renderSitcom3DToWebM(productionPackage as never, onFrameProgress)
+          : candidate.renderEngine === "pixi2d"
+            ? await renderSitcomPackageToWebM(productionPackage as unknown as SitcomProductionPackage, onFrameProgress)
+            : await renderPackageToWebM(productionPackage, onFrameProgress);
         if (!blob.size) throw new Error("El render terminó sin generar un archivo de video.");
         setRenderStages((current) => ({ ...current, [candidate.id]: "Guardando el video para reproducirlo…" }));
         await saveRenderedVideo(candidate.id, blob);
