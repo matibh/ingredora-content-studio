@@ -531,8 +531,8 @@ export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
     const speaker=cue?.speaker;
     const ease=(v:number)=>{const q=Math.max(0,Math.min(1,v));return q*q*(3-2*q);};
     const approach=ease((time-8.05)/1.05);
-    martina.root.visible=time>=8.05;
-    valentina.root.visible=time>=8.05;
+    martina.root.visible=time>=9.0833;
+    valentina.root.visible=time>=9.0833;
     martina.root.position.x=-2.65;
     valentina.root.position.x=-1.35;
     martina.root.position.z=-4.05+1.62*approach;
