@@ -4,7 +4,7 @@
 
 **[Abrir la Guía Maestra de Producción de Video](docs/GUIA_MAESTRA_PRODUCCION_VIDEO.md)**
 
-Incluye el flujo completo desde la idea hasta el MP4 aprobado, el template para pedir nuevas producciones a ChatGPT, storyboard segundo a segundo, estructura del Production Package, render Three.js, audio/subtítulos, control de calidad, metadatos TXT y aprobación/subida a GitHub.
+Incluye el flujo completo desde la idea hasta el MP4 aprobado, storyboard, paquetes versionados, motores independientes para publicidad 3D (Three.js) y series 2D (PixiJS), audio/subtítulos, control de calidad, metadatos y aprobación.
 
 ---
 
@@ -21,7 +21,7 @@ Documentación central de la serie de Ingredora: premisa, cinco protagonistas, r
 Ingredora Content Studio combina la preparación creativa desde ChatGPT con la ejecución y revisión en la aplicación. El usuario no tiene que completar briefs, prompts ni storyboards manualmente dentro de la web.
 
 - La dirección creativa, guiones, storyboards, escenas, assets, audio, subtítulos y metadatos se preparan desde la conversación y se entregan como paquetes versionados.
-- El motor del Studio valida y ejecuta las producciones, renderiza en el navegador y permite obtener el video para revisión.
+- El Studio mantiene dos rutas separadas: Three.js para publicidad 3D y PixiJS para series 2D. Ambas generan fotogramas en el navegador y comparten el pipeline de audio/video Mediabunny.
 - El render base genera WebM. La conversión a MP4 es un paso adicional y conserva el WebM original.
 - Supabase se utiliza para persistir datos y recursos; no es el motor de render.
 - GitHub mantiene el código y la documentación. La carpeta `Contenido a subir` es el destino acordado para los archivos aprobados.
