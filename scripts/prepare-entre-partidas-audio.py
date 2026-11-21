@@ -51,10 +51,10 @@ def silence(duration: float, label: str | None = None) -> str:
 
 # Original first section, then the two calls moved together to 11.0s.
 source_clip(0.0, 11.0, "prefix")
-source_clip(12.05, 12.62, "bruno_call_1")
-silence(0.06, "call_gap")
-source_clip(14.05, 14.60, "bruno_call_2")
-silence(0.92, "before_response")
+source_clip(12.05, 12.55, "bruno_call_1")
+silence(0.02, "call_gap")
+source_clip(14.05, 14.58, "bruno_call_2")
+silence(1.05, "before_response")
 
 # Preserve the original exchange between the two calls and the corrected line.
 source_clip(15.711, 25.0, "middle")
