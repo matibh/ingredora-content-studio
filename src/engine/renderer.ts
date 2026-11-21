@@ -1287,42 +1287,48 @@ export async function renderPackageToWebM(
       const time = frame / fps;
       entrePartidasSet.update(time, entrePartidasDialogue);
       const mix = (a: number,b: number,t: number) => a+(b-a)*t;
+      const ease=(value:number)=>{const q=Math.max(0,Math.min(1,value));return q*q*(3-2*q);};
       const cue=entrePartidasDialogue.find(item=>time>=item.start&&time<=item.end);
-      let desiredPosition=new THREE.Vector3(0,2.45,13.0);
-      let desiredTarget=new THREE.Vector3(0,-.75,-2.0);
-      let desiredFov=45;
-      // Series-style coverage: strict side profile, wide cross-aisle reveal,
-      // then medium singles that keep faces, torsos and meaningful body language in frame.
-      if(time<6){
-        // Strict profile opening with a restrained, continuous push-in toward Bruno studying the labels.
-        const push=Math.max(0,Math.min(1,time/4.8));
-        const ease=push*push*(3-2*push);
-        desiredPosition.set(mix(4.65,3.95,ease),mix(.20,.12,ease),mix(.48,.34,ease));
-        desiredTarget.set(0,mix(-1.15,-.78,ease),.20);
-        desiredFov=mix(54,48,ease);
-      }else if(time>=6&&time<12){
-        // Wide master reveals the open cross-aisle as the girls enter from opposite side passages.
-        desiredPosition.set(.10,3.05,12.2);
-        desiredTarget.set(0,-.45,-6.15);
-        desiredFov=51;
+      let desiredPosition=new THREE.Vector3(0,6.6,21.0);
+      let desiredTarget=new THREE.Vector3(0,.45,-5.0);
+      let desiredFov=56;
+      // Sitcom language: establish the street and neighbouring house at night,
+      // cut inside to Bruno, then reveal the girls only once they are already nearby.
+      if(time<4.15){
+        const push=ease(time/4.15);
+        desiredPosition.set(0,mix(7.6,6.7,push),mix(22.0,20.5,push));
+        desiredTarget.set(0,.40,-5.0);
+        desiredFov=mix(57,54,push);
+      }else if(time<7.65){
+        const cut=ease((time-4.15)/.62);
+        desiredPosition.set(mix(4.65,3.95,cut),mix(.24,.12,cut),mix(.60,.34,cut));
+        desiredTarget.set(0,mix(-1.12,-.78,cut),.20);
+        desiredFov=mix(54,48,cut);
+      }else if(time<12){
+        const reveal=ease((time-7.65)/1.25);
+        // Both girls are framed together on the same side; the short push-in avoids
+        // showing their entire route through the store or any passage through gondolas.
+        desiredPosition.set(mix(.95,.55,reveal),mix(2.0,1.55,reveal),mix(9.4,6.9,reveal));
+        desiredTarget.set(-2.0,-.30,-2.55);
+        desiredFov=mix(48,40.5,reveal);
       }else if(cue){
         const subject=entrePartidasSet.getSpeakerPosition(cue.speaker);
-        const angle=cue.speaker==="martina"?.48:cue.speaker==="valentina"?-.48:.58;
-        desiredPosition.set(subject.x+angle,subject.y+1.08,subject.z+6.2);
+        const angle=cue.speaker==="martina"?.42:cue.speaker==="valentina"?-.42:.50;
+        desiredPosition.set(subject.x+angle,subject.y+1.05,subject.z+5.8);
         desiredTarget.set(subject.x,subject.y,subject.z);
         desiredFov=cue.speaker==="bruno"?41:40;
       }else{
-        // A calm three-shot for reactions; no camera teleporting between lines.
-        desiredPosition.set(0,2.45,10.8);
-        desiredTarget.set(0,-.65,-2.2);
-        desiredFov=47;
+        // A restrained three-shot for reactions, staying in the aisle.
+        desiredPosition.set(-.35,2.15,9.8);
+        desiredTarget.set(-.75,-.45,-1.6);
+        desiredFov=45;
       }
       if(frame===0){
         camera.position.copy(desiredPosition);
         camera.userData.entreTarget=desiredTarget.clone();
         camera.fov=desiredFov;
       }
-      const blend = time < 6 ? 0.075 : cue ? 0.16 : 0.08;
+      const blend = time < 4.15 ? 0.045 : time < 7.65 ? 0.15 : time < 12 ? 0.19 : cue ? 0.16 : 0.10;
       camera.position.lerp(desiredPosition,blend);
       const currentTarget=(camera.userData.entreTarget as THREE.Vector3|undefined)??desiredTarget.clone();
       currentTarget.lerp(desiredTarget,blend);
