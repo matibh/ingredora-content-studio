@@ -2,6 +2,7 @@ import asyncio
 import io
 import json
 from pathlib import Path
+from datetime import datetime, timezone
 import subprocess
 
 import edge_tts
@@ -99,6 +100,7 @@ async def main():
     }
     word_timings = []
     segment_manifest = []
+    speaker_samples = {speaker: [] for speaker in VOICE_CAST}
 
     for index, segment in enumerate(SEGMENTS):
         audio, words = await synthesize(segment)
@@ -118,6 +120,7 @@ async def main():
 
         master = master.overlay(audio, position=start_ms)
         stems[segment["speaker"]] = stems[segment["speaker"]].overlay(audio, position=start_ms)
+        speaker_samples[segment["speaker"]].append(audio)
         word_timings.extend({
             "text": word["text"],
             "start": round(segment["start"] + word["start"], 4),
@@ -141,11 +144,21 @@ async def main():
 
     master_path = OUTPUT_DIR / "voice-track.mp3"
     master.export(master_path, format="mp3", bitrate="192k")
+    audition_files = {}
     for speaker, stem in stems.items():
         stem_path = OUTPUT_DIR / (speaker + ".mp3")
         stem.export(stem_path, format="mp3", bitrate="160k")
         if not stem_path.exists() or stem_path.stat().st_size < 1024:
             raise RuntimeError("No se pudo guardar la pista individual de " + speaker)
+        audition = AudioSegment.silent(duration=220, frame_rate=24_000).set_channels(2)
+        for take in speaker_samples[speaker]:
+            audition += take + AudioSegment.silent(duration=280, frame_rate=24_000).set_channels(2)
+        audition_name = "audition-" + speaker + ".mp3"
+        audition_path = OUTPUT_DIR / audition_name
+        audition.export(audition_path, format="mp3", bitrate="160k")
+        audition_files[speaker] = audition_name
+        if not audition_path.exists() or audition_path.stat().st_size < 1024:
+            raise RuntimeError("No se pudo crear la muestra de voz de " + speaker)
 
     (OUTPUT_DIR / "word-timings.json").write_text(
         json.dumps({
@@ -160,7 +173,7 @@ async def main():
         json.dumps({
             "status": "provisional casting test",
             "note": "Distinct Spanish neural voice IDs. Regional identity varies within the Southern Cone; review before public release.",
-            "cast": VOICE_CAST,
+            "cast": {speaker: {**details, "auditionFile": audition_files[speaker]} for speaker, details in VOICE_CAST.items()},
         }, ensure_ascii=False, indent=2),
         encoding="utf-8",
     )
@@ -184,12 +197,13 @@ def activate_series_production():
         OUTPUT_DIR / "voice-track.mp3",
         OUTPUT_DIR / "word-timings.json",
         *(OUTPUT_DIR / (speaker + ".mp3") for speaker in VOICE_CAST),
+        *(OUTPUT_DIR / ("audition-" + speaker + ".mp3") for speaker in VOICE_CAST),
     ]
     missing = [str(path) for path in required_audio if not path.exists() or path.stat().st_size < 1024]
     if missing:
         raise RuntimeError("Faltan pistas de voz: " + ", ".join(missing))
     production["status"] = "rendering"
-    manifest["updatedAt"] = "2026-11-21T15:00:00Z"
+    manifest["updatedAt"] = datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
     manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 if __name__ == "__main__":
