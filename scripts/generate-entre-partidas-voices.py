@@ -208,8 +208,13 @@ def activate_series_production():
         raise RuntimeError("El paquete del prepiloto no está registrado en productions.json.")
     package_path = Path("public/studio/series/entre-partidas/episodes/prepiloto-v1.json")
     episode_package = json.loads(package_path.read_text(encoding="utf-8"))
+    timings_path = OUTPUT_DIR / "word-timings.json"
+    timing_data = json.loads(timings_path.read_text(encoding="utf-8"))
+    generated_segments = timing_data.get("segments", [])
+    if len(generated_segments) != len(SEGMENTS):
+        raise RuntimeError("El archivo de tiempos no contiene los ocho diálogos del prepiloto.")
     cue_by_id = {cue["id"]: cue for cue in episode_package.get("dialogue", [])}
-    for segment in segment_manifest:
+    for segment in generated_segments:
         cue = cue_by_id.get(segment["id"])
         if cue is None or cue.get("speaker") != segment["speaker"]:
             raise RuntimeError("El paquete del episodio no coincide con el guion de voz: " + segment["id"])
