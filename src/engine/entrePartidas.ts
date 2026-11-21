@@ -47,13 +47,10 @@ function makeCharacter(name: EntrePartidasCue["speaker"], x: number, z: number):
     box(root,[.76,.88,.48],shirt,[0,.78,0]);
     box(root,[.76,.20,.49],mat("#a95637"),[0,.31,0]);
   }else{
-    // Fitted tank top and narrow waist; a subtly faceted hip volume softens the silhouette
-    // without losing the voxel-game look or becoming an exaggerated hourglass.
+    // Strict Minecraft silhouette: flat cuboid torso, square waist and straight hips.
     box(root,[.60,.58,.38],shirt,[0,1.40,0]);
     box(root,[.53,.20,.37],shirt,[0,1.08,0]);
-    const hips=new THREE.Mesh(new THREE.SphereGeometry(1,8,6),pants);
-    hips.scale.set(.405,.255,.235);hips.position.set(0,.82,0);
-    hips.castShadow=true;hips.receiveShadow=true;root.add(hips);
+    box(root,[.58,.25,.38],pants,[0,.82,0]);
     box(root,[.16,.18,.38],skin,[-.36,1.59,0]);
     box(root,[.16,.18,.38],skin,[.36,1.59,0]);
     box(root,[.30,.045,.025],mat(isMartina?"#e3b79a":"#a9cbd1"),[0,1.59,.205],false);
@@ -66,33 +63,32 @@ function makeCharacter(name: EntrePartidasCue["speaker"], x: number, z: number):
     box(head,[.66,.15,.58],hair,[0,.37,-.04]);
     box(head,[.18,.20,.20],hair,[-.25,.12,.20]);
   }else{
-    // Clean voxel hair: one crown, a clear stepped fringe and a tied-up silhouette.
-    // No cheek-level strands overlap the face; every piece is deliberately separated.
-    box(head,[.74,.26,.62],hair,[0,.30,-.045]);
-    box(head,[.70,.43,.22],hair,[0,-.10,-.24]);
-    // Three chunky fringe sections sit just in front of the forehead, never across the eyes.
-    box(head,[.25,.13,.105],hair,[-.235,.205,.345]);
-    box(head,[.24,.17,.105],hair,[0,.185,.345]);
-    box(head,[.25,.12,.105],hair,[.235,.215,.345]);
+    // Keep the entire forehead clear: no fringe, bangs or hair pieces over the face.
+    // The voxel hair sits on the crown, back and outer sides only.
+    box(head,[.74,.25,.61],hair,[0,.31,-.035]);
+    box(head,[.70,.57,.18],hair,[0,-.035,-.285]);
+    box(head,[.13,.48,.42],hair,[-.305,-.055,-.015]);
+    box(head,[.13,.48,.42],hair,[.305,-.055,-.015]);
     if(isMartina){
-      // High ponytail tied at the crown, built from stepped square sections.
-      box(head,[.24,.15,.22],hair,[.13,.49,-.27]);
-      box(head,[.105,.10,.12],hairTie,[.13,.48,-.39]);
-      box(head,[.22,.31,.22],hair,[.17,.29,-.49]);
-      box(head,[.18,.23,.18],hair,[.21,.035,-.57]);
+      // High ponytail grows from behind the crown; the tie remains visible from profile.
+      box(head,[.25,.16,.20],hair,[.12,.49,-.29]);
+      box(head,[.10,.10,.11],hairTie,[.12,.48,-.405]);
+      box(head,[.22,.32,.22],hair,[.15,.28,-.51]);
+      box(head,[.18,.24,.18],hair,[.19,.025,-.59]);
     }else{
-      // Compact high half-ponytail with a visible light hair tie.
-      box(head,[.28,.20,.25],hair,[-.12,.48,-.25]);
-      box(head,[.115,.09,.13],hairTie,[-.12,.47,-.39]);
-      box(head,[.20,.27,.20],hair,[-.15,.27,-.49]);
+      // A small high half-ponytail, also fully behind the head.
+      box(head,[.27,.18,.21],hair,[-.12,.49,-.29]);
+      box(head,[.105,.095,.11],hairTie,[-.12,.48,-.405]);
+      box(head,[.20,.28,.20],hair,[-.15,.27,-.52]);
     }
   }
 
   const eyeWhite=mat("#fff8e9"),pupil=mat("#25201e"),brow=mat(isBruno?"#30241f":"#211b1a");
   for(const side of [-1,1]){
-    box(head,[.13,.09,.035],eyeWhite,[side*.15,.04,.302],false);
-    box(head,[.045,.065,.025],pupil,[side*.15,.035,.326],false);
-    box(head,[.14,.025,.025],brow,[side*.15,.15,.30],false);
+    // Eye layers sit almost flush with the cubic face, avoiding the protruding-eye profile.
+    box(head,[.13,.09,.018],eyeWhite,[side*.15,.04,.298],false);
+    box(head,[.045,.065,.012],pupil,[side*.15,.035,.307],false);
+    box(head,[.14,.025,.014],brow,[side*.15,.15,.292],false);
   }
   // No noses on any character; keep the face clean and readable at this scale.
   const mouth=box(head,[.15,.025,.025],mat("#743f3a"),[0,-.22,.302],false);
@@ -118,6 +114,14 @@ function makeCharacter(name: EntrePartidasCue["speaker"], x: number, z: number):
     box(pivot,[.32,.17,.42],shoes,[0,-.60,.07]);
     return pivot;
   };
+  // Moving character meshes do not receive/cast shadow maps: this prevents shadow acne
+  // and temporal shadow flicker on skin, hair and clothes during the walking close-up.
+  root.traverse(object=>{
+    if(object instanceof THREE.Mesh){
+      object.castShadow=false;
+      object.receiveShadow=false;
+    }
+  });
   return {root,head,mouth,leftArm:arm(-1),rightArm:arm(1),leftLeg:leg(-1),rightLeg:leg(1),name};
 }
 export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
@@ -354,8 +358,11 @@ export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
   const parkedCartB=cart.clone(true);parkedCartB.position.set(6.75,-1.96,-5.7);parkedCartB.scale.setScalar(.78);parkedCartB.rotation.y=.20;world.add(parkedCartB);
   // One upright product in each hand. Each package is its own rigged prop with a sealed top and visible front label.
   const bruno=makeCharacter("bruno",0,.20);
-  const martina=makeCharacter("martina",-7.1,-11.25);
-  const valentina=makeCharacter("valentina",7.1,-11.25);
+  // Both women enter together from the same side of the central aisle.
+  const martina=makeCharacter("martina",-2.55,-4.15);
+  const valentina=makeCharacter("valentina",-1.25,-4.15);
+  martina.root.visible=false;
+  valentina.root.visible=false;
   world.add(bruno.root,martina.root,valentina.root);
   const makeHandPacket=(material:THREE.Material,width:number,height:number)=>{
     const product=new THREE.Group();
@@ -375,21 +382,105 @@ export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
   key.position.set(-3.8,7.5,5.5);key.target.position.set(0,.2,-1);key.castShadow=true;world.add(key,key.target);
   const fill=new THREE.DirectionalLight(0xd9e7ed,1.45);fill.position.set(5,4,2);world.add(fill);
   const rim=new THREE.DirectionalLight(0xffd5a0,1.15);rim.position.set(0,4,-8);world.add(rim);
+  // Keep the full supermarket interior assembled, but begin on a sitcom-style
+  // nighttime exterior establishing shot before cutting inside.
+  const interior=new THREE.Group();
+  [...world.children].forEach(object=>interior.add(object));
+  interior.visible=false;
+  world.add(interior);
+  const exterior=new THREE.Group();
+  world.add(exterior);
+  const extMat=(color:string,roughness=.86,metalness=0)=>new THREE.MeshStandardMaterial({color,roughness,metalness});
+  const extBox=(size:[number,number,number],position:[number,number,number],material:THREE.Material)=>{
+    const mesh=new THREE.Mesh(new THREE.BoxGeometry(...size),material);
+    mesh.position.set(...position);mesh.castShadow=true;mesh.receiveShadow=true;exterior.add(mesh);return mesh;
+  };
+  const extGround=new THREE.Mesh(new THREE.PlaneGeometry(48,48),extMat("#232b32",.98));
+  extGround.rotation.x=-Math.PI/2;extGround.position.set(0,-1.99,-4);extGround.receiveShadow=true;exterior.add(extGround);
+  const asphalt=new THREE.Mesh(new THREE.PlaneGeometry(48,12),extMat("#20272f",.98));
+  asphalt.rotation.x=-Math.PI/2;asphalt.position.set(0,-1.975,5.3);asphalt.receiveShadow=true;exterior.add(asphalt);
+  const sidewalk=extMat("#777a78",.94),curb=extMat("#b7b7ad",.85),roadLine=extMat("#d5c58f",.92);
+  extBox([26,.16,2.5],[0,-1.88,-1.95],sidewalk);
+  extBox([26,.24,.22],[0,-1.82,-3.16],curb);
+  for(let i=-2;i<=2;i++)extBox([2.6,.012,.10],[i*4,-1.955,5.6],roadLine);
+
+  // Supermarket facade: broad lit windows, glass entrance, fascia and a readable sign.
+  const storeWall=extMat("#3d514b",.9),storeTrim=extMat("#172a27",.7),windowFrame=extMat("#b9c2ba",.38,.32);
+  extBox([8.2,5.35,.72],[-2.65,.70,-5.25],storeWall);
+  extBox([8.45,.48,.90],[-2.65,3.38,-5.15],storeTrim);
+  extBox([8.35,.16,.96],[-2.65,-1.91,-5.15],extMat("#263a34",.8));
+  const litGlass=new THREE.MeshStandardMaterial({color:"#d7c49c",emissive:"#efb65f",emissiveIntensity:.42,roughness:.22,metalness:.08});
+  extBox([5.75,2.35,.055],[-3.55,.10,-4.865],litGlass);
+  extBox([.18,2.48,.12],[-3.55,.10,-4.80],windowFrame);
+  extBox([.12,2.45,.12],[-6.38,.10,-4.80],windowFrame);
+  extBox([.12,2.45,.12],[-.70,.10,-4.80],windowFrame);
+  extBox([1.08,2.50,.18],[.32,.08,-4.79],storeTrim);
+  extBox([.90,2.28,.06],[.32,.08,-4.665],new THREE.MeshStandardMaterial({color:"#9caea9",emissive:"#d39b4e",emissiveIntensity:.20,transparent:true,opacity:.88,roughness:.16}));
+  extBox([.08,2.30,.10],[-.17,.08,-4.62],windowFrame);
+  extBox([.08,2.30,.10],[.81,.08,-4.62],windowFrame);
+  extBox([9.0,.18,.95],[-2.65,3.02,-5.05],extMat("#202e2a",.7,.18));
+  const storeSignTex=texture((ctx,w,h)=>{
+    const g=ctx.createLinearGradient(0,0,w,h);g.addColorStop(0,"#25483d");g.addColorStop(1,"#112b25");ctx.fillStyle=g;ctx.fillRect(0,0,w,h);
+    ctx.strokeStyle="#e6c77a";ctx.lineWidth=10;ctx.strokeRect(12,12,w-24,h-24);
+    ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle="#fff7e5";
+    ctx.font="900 76px Arial Black,Arial";ctx.fillText("SUPERMERCADO",w/2,h*.54,w*.91);
+  },1024,190);
+  const storeSign=new THREE.Mesh(new THREE.PlaneGeometry(7.8,.68),new THREE.MeshBasicMaterial({map:storeSignTex}));
+  storeSign.position.set(-2.65,3.42,-4.56);exterior.add(storeSign);
+  // Warm pendant lighting is visible through the windows from the street.
+  for(let i=0;i<5;i++){
+    const lamp=new THREE.Mesh(new THREE.SphereGeometry(.12,10,8),new THREE.MeshBasicMaterial({color:"#ffdb91"}));
+    lamp.position.set(-5.5+i*1.0,1.18,-4.72);exterior.add(lamp);
+    const glow=new THREE.PointLight("#ffbf65",1.4,4.5);glow.position.copy(lamp.position);exterior.add(glow);
+  }
+  // The neighbouring family house makes the shot read as a real street block.
+  const houseWall=extMat("#b8aa91",.94);
+  extBox([4.65,4.25,.78],[5.35,.12,-5.32],houseWall);
+  const roofMat=extMat("#463c3a",.86);
+  const roofLeft=extBox([2.85,.24,1.15],[4.18,2.38,-5.30],roofMat);roofLeft.rotation.z=-.48;
+  const roofRight=extBox([2.85,.24,1.15],[6.52,2.38,-5.30],roofMat);roofRight.rotation.z=.48;
+  extBox([.22,2.55,.12],[5.35,-.02,-4.88],extMat("#493b30",.82));
+  extBox([1.22,1.18,.07],[4.35,.63,-4.86],new THREE.MeshStandardMaterial({color:"#b2c6bb",emissive:"#e2b16a",emissiveIntensity:.32,roughness:.2}));
+  extBox([1.22,1.18,.07],[6.32,.63,-4.86],new THREE.MeshStandardMaterial({color:"#b2c6bb",emissive:"#e2b16a",emissiveIntensity:.32,roughness:.2}));
+  extBox([.07,1.22,.11],[4.35,.63,-4.78],windowFrame);
+  extBox([.07,1.22,.11],[6.32,.63,-4.78],windowFrame);
+  extBox([.06,1.22,.11],[4.35,.63,-4.78],windowFrame);
+  // A short garden fence, front gate and a glowing porch sconce give the house life.
+  for(let i=0;i<8;i++)extBox([.10,.65,.10],[3.25+i*.60,-1.30,-3.75],extMat("#665645",.9));
+  extBox([4.65,.10,.12],[5.35,-1.12,-3.75],extMat("#665645",.9));
+  extBox([.22,.40,.15],[7.95,-1.46,-4.2],extMat("#5e604e",.95));
+  const porchLight=new THREE.PointLight("#ffd28a",2.2,5);porchLight.position.set(5.35,1.05,-4.35);exterior.add(porchLight);
+  const streetLamp=extBox([.13,6.8,.13],[-9.4,1.45,-1.85],extMat("#333c40",.55,.3));
+  const streetArm=extBox([1.15,.10,.10],[-8.9,4.72,-1.85],extMat("#333c40",.55,.3));streetArm.rotation.z=-.15;
+  const streetGlow=new THREE.PointLight("#ffe0a1",3.2,9);streetGlow.position.set(-8.55,4.55,-1.85);exterior.add(streetGlow);
+  const streetBulb=new THREE.Mesh(new THREE.SphereGeometry(.17,10,8),new THREE.MeshBasicMaterial({color:"#fff0c2"}));
+  streetBulb.position.copy(streetGlow.position);exterior.add(streetBulb);
+  // A deep navy night sky; all emissive shop and house windows stay warm by contrast.
+  exterior.traverse(object=>{if(object instanceof THREE.Mesh){object.castShadow=false;object.receiveShadow=false;}});
+  const exteriorBackground=new THREE.Color("#0a1424");
+  const exteriorFog=new THREE.Fog("#0a1424",34,78);
+  const interiorBackground=new THREE.Color("#d9d5ca");
+  const interiorFog=new THREE.Fog("#d9d5ca",22,48);
+
   const update=(time:number,dialogue:EntrePartidasCue[])=>{
     const cue=dialogue.find(c=>time>=c.start&&time<=c.end);
     const speaker=cue?.speaker;
     const ease=(v:number)=>{const q=Math.max(0,Math.min(1,v));return q*q*(3-2*q);};
-    const entry=ease((time-6)/1.7);
-    const walk=ease((time-7.7)/5.3);
-    const entryX=7.1-3.8*entry;
-    const walkX=3.3-2.15*walk;
-    martina.root.position.x=-(time<7.7?entryX:walkX);
-    valentina.root.position.x=(time<7.7?entryX:walkX);
-    martina.root.position.z=-7.4+7.7*walk;
-    valentina.root.position.z=-7.4+7.7*walk;
-    martina.root.rotation.y=(Math.PI/2)*(1-entry)*(1-walk*.08);
-    valentina.root.rotation.y=-(Math.PI/2)*(1-entry)*(1-walk*.08);
-    if(time>=12.7){martina.root.rotation.y=.12;valentina.root.rotation.y=-.12;}
+    const approach=ease((time-7.65)/2.0);
+    const walkFade=1-ease((time-10.0)/.55);
+    martina.root.visible=time>=7.65;
+    valentina.root.visible=time>=7.65;
+    martina.root.position.x=-2.65;
+    valentina.root.position.x=-1.35;
+    martina.root.position.z=-4.05+1.62*approach;
+    valentina.root.position.z=-4.05+1.62*approach;
+    martina.root.rotation.y=0;
+    valentina.root.rotation.y=0;
+    if(time>=11.4){martina.root.rotation.y=.10;valentina.root.rotation.y=-.10;}
+    interior.visible=time>=4.15;
+    exterior.visible=time<4.15;
+    world.background.copy(time<4.15?exteriorBackground:interiorBackground);
+    world.fog=time<4.15?exteriorFog:interiorFog;
     bruno.root.rotation.y=0;
     bruno.leftLeg.rotation.x=-1.02;bruno.rightLeg.rotation.x=-1.16;
     bruno.leftLeg.rotation.z=-.025;bruno.rightLeg.rotation.z=.025;
@@ -431,21 +522,23 @@ export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
       packet.rotation.set(0,0,0);
       packet2.rotation.set(0,0,0);
     }
-    if(time>=6&&time<13){
-      const fade=1-ease((time-12.1)/.9);
-      // Gait phase follows the actual path length (X entry + Z approach), not elapsed time.
-      const travelled=Math.max(0,7.1-entryX)+7.7*walk;
-      const cycle=travelled*(Math.PI*2/1.45);
+    if(time>=7.65&&time<10.8){
+      const fade=1-ease((time-9.95)/.75);
+      // Short, gentle synchronized steps: both women approach from the same direction.
+      const travelled=1.62*approach;
+      const cycle=travelled*(Math.PI*2/1.55);
       for(const rig of [martina,valentina]){
-        const stride=Math.sin(cycle+(rig.name==="martina"?0:Math.PI))*.23*fade;
+        const phase=rig.name==="martina"?0:.16;
+        const stride=Math.sin(cycle+phase)*.155*fade;
         rig.leftLeg.rotation.x=stride;
         rig.rightLeg.rotation.x=-stride;
         rig.leftLeg.rotation.z=0;rig.rightLeg.rotation.z=0;
-        rig.leftArm.rotation.x=-stride*.34;
-        rig.rightArm.rotation.x=stride*.34;
-        rig.leftArm.rotation.z=Math.sin(cycle+Math.PI)*.018*fade;
-        rig.rightArm.rotation.z=Math.sin(cycle)*.018*fade;
-        rig.root.position.y=-1.975+Math.abs(Math.sin(cycle))*.018*fade;
+        rig.leftArm.rotation.x=-stride*.28;
+        rig.rightArm.rotation.x=stride*.28;
+        rig.leftArm.rotation.z=Math.sin(cycle+Math.PI+phase)*.012*fade;
+        rig.rightArm.rotation.z=Math.sin(cycle+phase)*.012*fade;
+        // A tiny vertical body bounce gives the walk a natural weight shift.
+        rig.root.position.y=-1.975+Math.abs(Math.sin(cycle+phase))*.025*fade;
       }
     }else{
       for(const rig of [martina,valentina]){
@@ -483,7 +576,7 @@ export function drawEntrePartidasBranding(ctx:CanvasRenderingContext2D,time:numb
     ctx.fillStyle=g;rounded(x,y,panelW,panelH,22*scale);ctx.fill();
     ctx.shadowBlur=0;ctx.textAlign="center";ctx.textBaseline="middle";
     ctx.fillStyle="#d7e8ad";ctx.font="900 "+Math.round(18*scale)+"px Arial";
-    ctx.fillText("INGREDORA ORIGINAL",width/2,y+panelH*.16);
+    ctx.fillText("INGREDORA ORIGINALS",width/2,y+panelH*.16);
     ctx.fillStyle="#fffaf0";ctx.font="900 "+Math.round(72*scale)+"px Arial Black,Arial";
     ctx.fillText("ENTRE PARTIDAS",width/2,y+panelH*.49);
     ctx.fillStyle="#f0d18b";ctx.font="900 "+Math.round(27*scale)+"px Arial";
