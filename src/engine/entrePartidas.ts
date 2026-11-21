@@ -45,7 +45,8 @@ function makeCharacter(name: EntrePartidasCue["speaker"], x: number, z: number):
   // Minecraft-like proportions: crisp cubic head, torso and articulated block limbs.
   if(isBruno){
     box(root,[.76,.88,.48],shirt,[0,.78,0]);
-    box(root,[.76,.20,.49],mat("#a95637"),[0,.31,0]);
+    // Clean shirt hem: avoid near-coplanar overlapping orange faces that shimmer at profile angles.
+    box(root,[.755,.16,.475],mat("#a95637"),[0,.29,0]);
   }else{
     // Strict Minecraft silhouette: flat cuboid torso, square waist and straight hips.
     box(root,[.60,.58,.38],shirt,[0,1.40,0]);
@@ -972,15 +973,33 @@ export function drawEntrePartidasBranding(ctx:CanvasRenderingContext2D,time:numb
 export function drawEntrePartidasCaptions(ctx:CanvasRenderingContext2D,time:number,width:number,height:number,dialogue:EntrePartidasCue[]){
   const cue=dialogue.find(item=>time>=item.start&&time<=item.end);if(!cue)return;
   const names={bruno:"BRUNO",martina:"MARTINA",valentina:"VALENTINA"};
-  const scale=width/720,boxW=width*.88,boxH=height*.105,x=(width-boxW)/2,y=height*.835;
-  ctx.save();ctx.globalAlpha=.94;
-  ctx.fillStyle="rgba(18,25,24,.86)";ctx.beginPath();ctx.roundRect(x,y,boxW,boxH,16*scale);ctx.fill();
-  ctx.fillStyle="#d5e8b2";ctx.font=`900 ${Math.round(22*scale)}px Arial`;ctx.textAlign="left";ctx.textBaseline="middle";
-  ctx.fillText(names[cue.speaker],x+24*scale,y+boxH*.30);
-  ctx.fillStyle="#fffaf0";ctx.font=`700 ${Math.round(29*scale)}px Arial`;
-  const words=cue.text.split(" ").filter(Boolean);let line="",lines:string[]=[];
-  for(const word of words){const candidate=line?line+" "+word:word;if(ctx.measureText(candidate).width>boxW-48*scale&&line){lines.push(line);line=word;}else line=candidate;}
-  if(line)lines.push(line);const lineH=34*scale;
-  lines.slice(0,2).forEach((value,i)=>ctx.fillText(value,x+24*scale,y+boxH*.65+i*lineH));
+  const scale=width/720,boxW=width*.90,x=(width-boxW)/2;
+  ctx.save();
+  ctx.font="700 "+Math.round(29*scale)+"px Arial";
+  const maxTextW=boxW-48*scale;
+  // Wrap every cue into measured lines, then paginate in groups of at most two.
+  const words=cue.text.split(/\\s+/).filter(Boolean);let line="",allLines:string[]=[];
+  for(const word of words){
+    const candidate=line?line+" "+word:word;
+    if(ctx.measureText(candidate).width>maxTextW&&line){allLines.push(line);line=word;}
+    else line=candidate;
+  }
+  if(line)allLines.push(line);
+  const pages=Math.max(1,Math.ceil(allLines.length/2));
+  const duration=Math.max(.01,cue.end-cue.start);
+  const page=Math.min(pages-1,Math.floor(((time-cue.start)/duration)*pages));
+  const lines=allLines.slice(page*2,page*2+2);
+  const lineH=34*scale;
+  // Height follows the actual number of visible lines; the lower edge stays anchored.
+  const nameBand=31*scale,topPad=13*scale,bottomPad=13*scale;
+  const boxH=topPad+nameBand+lines.length*lineH+bottomPad;
+  const y=height*.965-boxH;
+  ctx.globalAlpha=.94;
+  ctx.fillStyle="rgba(18,25,24,.88)";ctx.beginPath();ctx.roundRect(x,y,boxW,boxH,16*scale);ctx.fill();
+  ctx.fillStyle="#d5e8b2";ctx.font="900 "+Math.round(22*scale)+"px Arial";
+  ctx.textAlign="left";ctx.textBaseline="middle";
+  ctx.fillText(names[cue.speaker],x+24*scale,y+topPad+nameBand*.5);
+  ctx.fillStyle="#fffaf0";ctx.font="700 "+Math.round(29*scale)+"px Arial";
+  lines.forEach((value,i)=>ctx.fillText(value,x+24*scale,y+topPad+nameBand+i*lineH+lineH*.5));
   ctx.restore();
 }
