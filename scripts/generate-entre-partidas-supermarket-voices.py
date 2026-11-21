@@ -43,7 +43,14 @@ async def synthesize(cue, index):
     )
     audio = AudioSegment(data=decoded.stdout, sample_width=2, frame_rate=24000, channels=2)
     # Keep the dialogue brisk and sitcom-paced without making the neural voices sound rushed.
-    audio = audio.speedup(playback_speed=1.22, chunk_size=150, crossfade=25)
+    # A gentler time stretch preserves consonants and gives the three voices room to breathe.
+    audio = audio.speedup(playback_speed=1.17, chunk_size=180, crossfade=35)
+    ending = cue["text"].strip()
+    if ending.endswith("!"):
+        audio = audio + 1.2
+    elif ending.endswith("?"):
+        audio = audio + 0.45
+    audio = audio.fade_in(12).fade_out(35)
     if len(audio) < 250:
         raise RuntimeError("El diálogo quedó vacío: " + str(index))
     return audio, words
