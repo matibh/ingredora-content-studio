@@ -34,86 +34,67 @@ const texture = (draw: (ctx: CanvasRenderingContext2D,w:number,h:number)=>void,w
 
 function makeCharacter(name: EntrePartidasCue["speaker"], x: number, z: number): CharacterRig {
   const root=new THREE.Group();root.position.set(x,-1.975,z);
-  const isBruno=name==="bruno";
-  const isMartina=name==="martina";
+  const isBruno=name==="bruno", isMartina=name==="martina";
   const skin=mat(isBruno?"#c98e6e":isMartina?"#d6a080":"#e0ad8b");
   const hair=mat(isBruno?"#30241f":isMartina?"#30201c":"#211b1a");
   const shirt=mat(isBruno?"#c46a43":isMartina?"#bd7958":"#47788a");
-  const pants=mat(isBruno?"#34404c":"#35414a");
-  const shoes=mat("#222528",.56);
-  const ellipsoid=(parent:THREE.Object3D,scale:[number,number,number],material:THREE.Material,pos:[number,number,number],segments=12)=>{
-    const mesh=new THREE.Mesh(new THREE.SphereGeometry(1,segments,Math.max(6,Math.floor(segments*.72))),material);
-    mesh.scale.set(...scale);mesh.position.set(...pos);mesh.castShadow=true;mesh.receiveShadow=true;parent.add(mesh);return mesh;
-  };
-  if(isBruno){
-    // Rounded seated torso replaces the old square block; the pose stays relaxed and upright.
-    ellipsoid(root,[.37,.47,.245],shirt,[0,.78,0],12);
-    ellipsoid(root,[.37,.18,.235],mat("#a95637"),[0,.43,0],12);
-  }else{
-    // One slim tank top, a defined waist and gently wider hips; no duplicate chest geometry.
-    ellipsoid(root,[.305,.325,.19],shirt,[0,1.40,0],12);
-    ellipsoid(root,[.27,.17,.18],shirt,[0,1.14,0],12);
-    ellipsoid(root,[.405,.235,.225],pants,[0,.86,0],12);
-    // Exposed shoulder caps sit naturally above the low tank neckline.
-    ellipsoid(root,[.082,.085,.075],skin,[-.315,1.61,0],10);
-    ellipsoid(root,[.082,.085,.075],skin,[.315,1.61,0],10);
-    // A narrow fabric neckline detail, kept flat against the top.
-    box(root,[.24,.025,.014],mat(isMartina?"#e3b79a":"#a9cbd1"),[0,1.58,.188],false);
-  }
-  ellipsoid(root,[.095,.125,.088],skin,[0,isBruno?1.30:1.77,0],10);
+  const pants=mat("#35414a"), shoes=mat("#222528",.56);
   const head=new THREE.Group();head.position.set(0,isBruno?1.62:2.12,0);root.add(head);
-  ellipsoid(head,[.335,.37,.295],skin,[0,0,0],14);
+  // Minecraft-inspired rig: hard-edged cuboids, square silhouette and pixel-game proportions.
   if(isBruno){
-    ellipsoid(head,[.365,.22,.30],hair,[0,.245,-.035],12);
-    ellipsoid(head,[.34,.22,.25],hair,[0,.30,-.10],10);
-    ellipsoid(head,[.12,.16,.13],hair,[-.27,.09,-.04],8);
+    box(root,[.76,.88,.48],shirt,[0,.78,0]);
+    box(root,[.76,.20,.49],mat("#a95637"),[0,.31,0]);
   }else{
-    // Rounded low-poly crown, a soft rear fall and distinct side locks.
-    const cap=new THREE.Mesh(new THREE.SphereGeometry(1,14,10,0,Math.PI*2,0,Math.PI*.64),hair);
-    cap.scale.set(.37,.40,.31);cap.position.set(0,.08,-.025);cap.castShadow=true;head.add(cap);
-    ellipsoid(head,[.34,.34,.22],hair,[0,-.10,-.16],10);
-    ellipsoid(head,[.12,.43,.145],hair,[-.285,-.12,-.015],10);
-    ellipsoid(head,[.12,isMartina?.46:.40,.145],hair,[.285,-.12,-.02],10);
-    // Three tapered locks follow the forehead curve instead of a flat rectangular fringe.
-    const fringe=(x:number,angle:number)=>{
-      const lock=new THREE.Mesh(new THREE.CylinderGeometry(.073,.008,.265,7),hair);
-      lock.position.set(x,.19,.275);lock.rotation.z=angle;lock.castShadow=true;head.add(lock);
-    };
-    if(isMartina){fringe(-.145,.22);fringe(-.015,-.04);fringe(.13,-.25);}
-    else{fringe(-.15,.16);fringe(-.01,-.08);fringe(.145,-.22);}
+    // Tank top, exposed shoulders and a subtly wider, cubic hip silhouette.
+    box(root,[.60,.58,.38],shirt,[0,1.40,0]);
+    box(root,[.53,.20,.37],shirt,[0,1.08,0]);
+    box(root,[.78,.46,.44],pants,[0,.82,0]);
+    box(root,[.16,.18,.38],skin,[-.36,1.59,0]);
+    box(root,[.16,.18,.38],skin,[.36,1.59,0]);
+    box(root,[.30,.045,.025],mat(isMartina?"#e3b79a":"#a9cbd1"),[0,1.59,.205],false);
+  }
+  box(root,[.19,.25,.18],skin,[0,isBruno?1.28:1.78,0]);
+  box(head,[.66,.72,.58],skin,[0,0,0]);
+  if(isBruno){
+    box(head,[.70,.22,.62],hair,[0,.27,-.015]);
+    box(head,[.66,.15,.58],hair,[0,.37,-.04]);
+    box(head,[.18,.20,.20],hair,[-.25,.12,.20]);
+  }else{
+    // Square crown, rear hair and stepped fringe: clearly block-built, not rounded meshes.
+    box(head,[.74,.30,.62],hair,[0,.27,-.045]);
+    box(head,[.70,.43,.22],hair,[0,-.10,-.24]);
+    box(head,[.18,.62,.22],hair,[-.34,-.12,-.04]);
+    box(head,[.18,.62,.22],hair,[.34,-.12,-.04]);
+    box(head,[.24,.15,.12],hair,[-.23,.13,.32]);
+    box(head,[.24,.19,.12],hair,[0,.10,.32]);
+    box(head,[.24,.13,.12],hair,[.23,.14,.32]);
   }
   const eyeWhite=mat("#fff8e9"),pupil=mat("#25201e"),brow=mat(isBruno?"#30241f":"#211b1a");
   for(const side of [-1,1]){
-    ellipsoid(head,[.064,.047,.023],eyeWhite,[side*.145,.035,.268],8);
-    ellipsoid(head,[.023,.032,.017],pupil,[side*.145,.03,.29],8);
-    box(head,[.108,.018,.018],brow,[side*.145,.128,.267],false);
+    box(head,[.13,.09,.035],eyeWhite,[side*.15,.04,.302],false);
+    box(head,[.045,.065,.025],pupil,[side*.15,.035,.326],false);
+    box(head,[.14,.025,.025],brow,[side*.15,.15,.30],false);
   }
-  ellipsoid(head,[.034,.052,.034],skin,[0,-.045,.285],8);
-  const mouth=box(head,[.115,.024,.018],mat("#743f3a"),[0,-.205,.286],false);
-
+  box(head,[.07,.08,.07],skin,[0,-.075,.32],false);
+  const mouth=box(head,[.15,.025,.025],mat("#743f3a"),[0,-.22,.302],false);
   const arm=(side:number)=>{
     const pivot=new THREE.Group();
-    pivot.position.set(side*(isBruno?.40:.345),isBruno?1.02:1.56,0);root.add(pivot);
+    pivot.position.set(side*(isBruno?.40:.39),isBruno?1.02:1.56,0);root.add(pivot);
     if(isBruno){
-      const upper=new THREE.Mesh(new THREE.CylinderGeometry(.105,.092,.40,8),shirt);
-      upper.position.set(0,-.18,0);upper.castShadow=true;pivot.add(upper);
-      const forearm=new THREE.Mesh(new THREE.CylinderGeometry(.077,.067,.40,8),skin);
-      forearm.position.set(0,-.56,.035);forearm.castShadow=true;forearm.receiveShadow=true;pivot.add(forearm);
-      ellipsoid(pivot,[.078,.07,.062],skin,[0,-.77,.12],8);
+      box(pivot,[.22,.40,.25],shirt,[0,-.18,0]);
+      box(pivot,[.16,.40,.18],skin,[0,-.56,.035]);
+      box(pivot,[.16,.14,.16],skin,[0,-.80,.10]);
     }else{
-      // Slim, continuous upper arm with a small integrated shoulder; hands hang naturally.
-      ellipsoid(pivot,[.078,.085,.075],skin,[0,-.045,0],8);
-      const fullArm=new THREE.Mesh(new THREE.CylinderGeometry(.069,.052,.69,8),skin);
-      fullArm.position.set(0,-.385,.018);fullArm.castShadow=true;fullArm.receiveShadow=true;pivot.add(fullArm);
-      ellipsoid(pivot,[.060,.057,.052],skin,[0,-.735,.035],8);
+      box(pivot,[.17,.18,.18],skin,[0,-.06,0]);
+      box(pivot,[.14,.53,.15],skin,[0,-.39,.018]);
+      box(pivot,[.15,.15,.15],skin,[0,-.72,.035]);
     }
     return pivot;
   };
   const leg=(side:number)=>{
-    const pivot=new THREE.Group();pivot.position.set(side*(isBruno?.20:.19),isBruno?.36:.70,0);root.add(pivot);
-    const thigh=new THREE.Mesh(new THREE.CylinderGeometry(.13,.115,.58,8),pants);
-    thigh.position.set(0,-.27,0);thigh.castShadow=true;pivot.add(thigh);
-    box(pivot,[.30,.17,.42],shoes,[0,-.60,.07]);
+    const pivot=new THREE.Group();pivot.position.set(side*(isBruno?.20:.22),isBruno?.36:.70,0);root.add(pivot);
+    box(pivot,[.31,.58,.36],pants,[0,-.27,0]);
+    box(pivot,[.32,.17,.42],shoes,[0,-.60,.07]);
     return pivot;
   };
   return {root,head,mouth,leftArm:arm(-1),rightArm:arm(1),leftLeg:leg(-1),rightLeg:leg(1),name};
@@ -379,7 +360,6 @@ export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
     const ease=(v:number)=>{const q=Math.max(0,Math.min(1,v));return q*q*(3-2*q);};
     const entry=ease((time-6)/1.7);
     const walk=ease((time-7.7)/5.3);
-    // They enter from a wide perpendicular aisle, turn into Bruno's aisle, then walk forward.
     const entryX=7.1-3.8*entry;
     const walkX=3.3-2.15*walk;
     martina.root.position.x=-(time<7.7?entryX:walkX);
@@ -390,10 +370,8 @@ export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
     valentina.root.rotation.y=-(Math.PI/2)*(1-entry)*(1-walk*.08);
     if(time>=12.7){martina.root.rotation.y=.12;valentina.root.rotation.y=-.12;}
     bruno.root.rotation.y=0;
-    bruno.leftLeg.rotation.x=-1.02;
-    bruno.rightLeg.rotation.x=-1.16;
-    bruno.leftLeg.rotation.z=-.025;
-    bruno.rightLeg.rotation.z=.025;
+    bruno.leftLeg.rotation.x=-1.02;bruno.rightLeg.rotation.x=-1.16;
+    bruno.leftLeg.rotation.z=-.025;bruno.rightLeg.rotation.z=.025;
     for(const rig of [bruno,martina,valentina]){
       const talking=rig.name===speaker;
       const lookAngle=cue?.look===rig.name ? -.13 : cue?.look ? .07 : 0;
@@ -401,21 +379,31 @@ export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
       rig.head.rotation.y=lookAngle+Math.sin(time*.48+phase)*.007;
       rig.head.rotation.x=talking?Math.sin(time*2.9+phase)*.022:Math.sin(time*.55+phase)*.006;
       rig.head.rotation.z=Math.sin(time*.62+phase)*.006;
-      // Slower, smaller jaw movement and occasional nods make the exchanges less mechanical.
-      const syllablePulse=Math.pow(Math.max(0,Math.sin(time*9.2+phase)),1.25);
-      const mouthOpen=talking?.34+syllablePulse*.72:.08;
+      // Approximate mouth articulation from the syllable rhythm of the active spoken line.
+      let mouthOpen=.025;
+      if(talking&&cue){
+        const words=cue.text.toLowerCase().match(/[a-záéíóúüñ]+/g)??[];
+        const syllables=words.map(word=>Math.max(1,(word.match(/[aeiouáéíóúü]/g)??[]).length));
+        const total=syllables.reduce((a,b)=>a+b,0)||1;
+        const duration=Math.max(.08,cue.end-cue.start);
+        const progress=Math.max(0,Math.min(.999,(time-cue.start)/duration));
+        let cursor=0,local=0;
+        for(const count of syllables){const span=count/total;if(progress>=cursor&&progress<cursor+span){local=(progress-cursor)/span;break;}cursor+=span;}
+        const syllablePulse=Math.pow(Math.max(0,Math.sin(local*Math.PI*2)),.72);
+        mouthOpen=.06+syllablePulse*.78;
+      }
       rig.mouth.scale.set(1,mouthOpen,1);
-      rig.mouth.position.y=-.205-(talking?mouthOpen*.003:0);
+      rig.mouth.position.y=-.22-mouthOpen*.004;
+      // Small conversational gestures, with relaxed elbows and no exaggerated waving.
       const gesture=talking?1:0;
-      rig.leftArm.rotation.z=gesture ? -.012+Math.sin(time*1.35+phase)*.008 : 0;
-      rig.rightArm.rotation.z=gesture ? .014+Math.sin(time*1.25+phase+1)*.008 : 0;
-      rig.leftArm.rotation.x=gesture ? .004 : 0;
-      rig.rightArm.rotation.x=gesture ? -.004 : 0;
+      rig.leftArm.rotation.z=gesture?-.055+Math.sin(time*2.0+phase)*.025:0;
+      rig.rightArm.rotation.z=gesture?.055+Math.sin(time*1.8+phase+1)*.025:0;
+      rig.leftArm.rotation.x=gesture?.045+Math.sin(time*2.2+phase)*.025:0;
+      rig.rightArm.rotation.x=gesture?-.045+Math.sin(time*1.9+phase+1)*.025:0;
       rig.root.rotation.z=talking?Math.sin(time*1.1+phase)*.004:0;
       rig.root.position.y=-1.975;
     }
     if(time<18){
-      // Bruno keeps both forearms steady and straight; each hand supports one vertical package.
       bruno.leftArm.rotation.set(0,.015,.018);
       bruno.rightArm.rotation.set(0,-.015,-.018);
       bruno.head.rotation.x=-.20+Math.sin(time*1.2)*.008;
@@ -424,19 +412,19 @@ export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
     }
     if(time>=6&&time<13){
       const fade=1-ease((time-12.1)/.9);
-      const stride=Math.sin((time-6)*Math.PI*1.22)*.026*fade;
-      const cycle=(time-6)*Math.PI*1.22;
+      // Gait phase follows the actual path length (X entry + Z approach), not elapsed time.
+      const travelled=Math.max(0,7.1-entryX)+7.7*walk;
+      const cycle=travelled*(Math.PI*2/1.45);
       for(const rig of [martina,valentina]){
+        const stride=Math.sin(cycle+(rig.name==="martina"?0:Math.PI))*.23*fade;
         rig.leftLeg.rotation.x=stride;
         rig.rightLeg.rotation.x=-stride;
-        rig.leftLeg.rotation.z=0;
-        rig.rightLeg.rotation.z=0;
-        // Arms and hands barely counter-swing; the gait is carried mostly by the legs.
-        rig.leftArm.rotation.x=-stride*.035;
-        rig.rightArm.rotation.x=stride*.035;
-        rig.leftArm.rotation.z=Math.sin(cycle+Math.PI)*.003;
-        rig.rightArm.rotation.z=Math.sin(cycle)*.003;
-        rig.root.position.y=-1.975+Math.abs(Math.sin(cycle))*.003;
+        rig.leftLeg.rotation.z=0;rig.rightLeg.rotation.z=0;
+        rig.leftArm.rotation.x=-stride*.34;
+        rig.rightArm.rotation.x=stride*.34;
+        rig.leftArm.rotation.z=Math.sin(cycle+Math.PI)*.018*fade;
+        rig.rightArm.rotation.z=Math.sin(cycle)*.018*fade;
+        rig.root.position.y=-1.975+Math.abs(Math.sin(cycle))*.018*fade;
       }
     }else{
       for(const rig of [martina,valentina]){
@@ -446,7 +434,7 @@ export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
         rig.leftArm.rotation.z=0;rig.rightArm.rotation.z=0;
       }
     }
-    if(time>=46&&time<55)valentina.rightArm.rotation.z=.035;
+    if(time>=46&&time<55)valentina.rightArm.rotation.z=.08;
     cart.position.x=-2.75;
   };
   return {
@@ -467,7 +455,7 @@ export function drawEntrePartidasBranding(ctx:CanvasRenderingContext2D,time:numb
   if(time<2.05){
     const fade=Math.min(1,time/.28,(2.05-time)/.35);
     ctx.save();ctx.globalAlpha=Math.max(0,fade);
-    const panelW=width*.92,panelH=height*.16,x=(width-panelW)/2,y=height*.025;
+    const panelW=width*.92,panelH=height*.19,x=(width-panelW)/2,y=(height-panelH)/2;
     ctx.shadowColor="rgba(0,0,0,.34)";ctx.shadowBlur=28*scale;
     const g=ctx.createLinearGradient(x,y,x+panelW,y+panelH);
     g.addColorStop(0,"rgba(20,48,39,.94)");g.addColorStop(1,"rgba(31,67,54,.92)");
