@@ -32,7 +32,7 @@ const texture = (draw: (ctx: CanvasRenderingContext2D,w:number,h:number)=>void,w
 };
 
 function makeCharacter(name: EntrePartidasCue["speaker"], x: number, z: number): CharacterRig {
-  const root=new THREE.Group();root.position.set(x,-1.93,z);
+  const root=new THREE.Group();root.position.set(x,-1.975,z);
   const skin=mat(name==="bruno"?"#c98e6e":name==="martina"?"#d6a080":"#e0ad8b");
   const hair=mat(name==="bruno"?"#30241f":name==="martina"?"#30201c":"#211b1a");
   const shirt=mat(name==="bruno"?"#c46a43":name==="martina"?"#b5a06c":"#416c80");
@@ -157,7 +157,7 @@ export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
   },512,160)});
   const sign=new THREE.Mesh(new THREE.PlaneGeometry(2.8,.85),signMat);sign.position.set(0,3.05,-12.2);world.add(sign);
   // A trolley with a recognisable metal basket and four grounded wheels.
-  const cart=new THREE.Group();cart.position.set(1.25,-1.93,.65);world.add(cart);
+  const cart=new THREE.Group();cart.position.set(1.25,-1.995,.65);world.add(cart);
   const metal=mat("#aab2b1",.26,.78);
   box(cart,[1.05,.08,.78],metal,[0,.88,0]);
   for(const x of [-.48,.48])for(const z of [-.34,.34]){
@@ -198,7 +198,7 @@ export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
       rig.mouth.scale.y=talking?.65+Math.abs(Math.sin(time*10))*.75:.12;
       rig.leftArm.rotation.z=talking?-.10+Math.sin(time*3.4)*.055:Math.sin(time*.8)*.018;
       rig.rightArm.rotation.z=talking?.12+Math.sin(time*3.1)*.045:Math.sin(time*.9)*.016;
-      rig.root.position.y=-1.93+Math.sin(time*.9+(rig.name==="bruno"?0:1.7))*.006;
+      rig.root.position.y=-1.975+Math.sin(time*.9+(rig.name==="bruno"?0:1.7))*.006;
     }
     if(time<10){
       bruno.head.rotation.x=-.12; bruno.rightArm.rotation.z=-.38;
