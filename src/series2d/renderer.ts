@@ -294,7 +294,7 @@ export async function renderSitcomPackageToWebM(
       if (signal?.aborted) throw new Error("Render 2D cancelado.");
       const time = frame / pkg.fps;
       const activeCue = pkg.dialogue.find(cue => time >= cue.startSeconds && time <= cue.endSeconds);
-      const cameraBeat = time >= pkg.durationSeconds - 1.8;
+      const cameraBeat = time >= 23.6;
 
       for (const rig of characters) {
         updateCharacter(
