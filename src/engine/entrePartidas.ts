@@ -38,30 +38,29 @@ function makeCharacter(name: EntrePartidasCue["speaker"], x: number, z: number):
   const isMartina=name==="martina";
   const skin=mat(isBruno?"#c98e6e":isMartina?"#d6a080":"#e0ad8b");
   const hair=mat(isBruno?"#30241f":isMartina?"#30201c":"#211b1a");
-  const shirt=mat(isBruno?"#c46a43":isMartina?"#c17c58":"#47788a");
-  const pants=mat(isBruno?"#34404c":isMartina?"#41454a":"#35414a");
+  const shirt=mat(isBruno?"#c46a43":isMartina?"#bd7958":"#47788a");
+  const pants=mat(isBruno?"#34404c":"#35414a");
   const shoes=mat("#222528",.56);
   const ellipsoid=(parent:THREE.Object3D,scale:[number,number,number],material:THREE.Material,pos:[number,number,number],segments=12)=>{
     const mesh=new THREE.Mesh(new THREE.SphereGeometry(1,segments,Math.max(6,Math.floor(segments*.72))),material);
     mesh.scale.set(...scale);mesh.position.set(...pos);mesh.castShadow=true;mesh.receiveShadow=true;parent.add(mesh);return mesh;
   };
   if(isBruno){
-    // Compact seated silhouette; the torso remains upright while the legs rest forward.
-    box(root,[.76,.88,.43],shirt,[0,.72,0]);
-    box(root,[.68,.34,.39],mat("#a95637"),[0,1.12,0]);
+    // Rounded seated torso replaces the old square block; the pose stays relaxed and upright.
+    ellipsoid(root,[.37,.47,.245],shirt,[0,.78,0],12);
+    ellipsoid(root,[.37,.18,.235],mat("#a95637"),[0,.43,0],12);
   }else{
-    // Natural, gently tapered torso and wider hips create a feminine silhouette without exaggeration.
-    ellipsoid(root,[.34,.43,.22],shirt,[0,1.34,0],12);
-    ellipsoid(root,[.29,.25,.205],shirt,[0,1.05,0],12);
-    ellipsoid(root,[.425,.265,.245],pants,[0,.83,0],12);
-    box(root,[.78,.105,.43],mat(isMartina?"#353d43":"#283a45"),[0,.96,0]);
-    // Off-shoulder tank: the neckline sits below the shoulder line, leaving the shoulders visible.
-    ellipsoid(root,[.375,.205,.225],shirt,[0,1.48,0],12);
-    ellipsoid(root,[.105,.105,.12],skin,[-.355,1.62,0],10);
-    ellipsoid(root,[.105,.105,.12],skin,[.355,1.62,0],10);
-    box(root,[.30,.045,.018],mat(isMartina?"#e3b79a":"#a9cbd1"),[0,1.55,.218],false);
+    // One slim tank top, a defined waist and gently wider hips; no duplicate chest geometry.
+    ellipsoid(root,[.305,.325,.19],shirt,[0,1.40,0],12);
+    ellipsoid(root,[.27,.17,.18],shirt,[0,1.14,0],12);
+    ellipsoid(root,[.405,.235,.225],pants,[0,.86,0],12);
+    // Exposed shoulder caps sit naturally above the low tank neckline.
+    ellipsoid(root,[.082,.085,.075],skin,[-.315,1.61,0],10);
+    ellipsoid(root,[.082,.085,.075],skin,[.315,1.61,0],10);
+    // A narrow fabric neckline detail, kept flat against the top.
+    box(root,[.24,.025,.014],mat(isMartina?"#e3b79a":"#a9cbd1"),[0,1.58,.188],false);
   }
-  box(root,[.20,.20,.20],skin,[0,isBruno?1.34:1.76,0],false);
+  ellipsoid(root,[.095,.125,.088],skin,[0,isBruno?1.30:1.77,0],10);
   const head=new THREE.Group();head.position.set(0,isBruno?1.62:2.12,0);root.add(head);
   ellipsoid(head,[.335,.37,.295],skin,[0,0,0],14);
   if(isBruno){
@@ -69,57 +68,49 @@ function makeCharacter(name: EntrePartidasCue["speaker"], x: number, z: number):
     ellipsoid(head,[.34,.22,.25],hair,[0,.30,-.10],10);
     ellipsoid(head,[.12,.16,.13],hair,[-.27,.09,-.04],8);
   }else{
-    // A soft low-poly cap and separate tapered side locks replace the old flat fringe patch.
+    // Rounded low-poly crown, a soft rear fall and distinct side locks.
     const cap=new THREE.Mesh(new THREE.SphereGeometry(1,14,10,0,Math.PI*2,0,Math.PI*.64),hair);
     cap.scale.set(.37,.40,.31);cap.position.set(0,.08,-.025);cap.castShadow=true;head.add(cap);
     ellipsoid(head,[.34,.34,.22],hair,[0,-.10,-.16],10);
-    ellipsoid(head,[.125,.43,.15],hair,[-.285,-.12,-.015],10);
-    ellipsoid(head,[.125,isMartina?.46:.40,.15],hair,[.285,-.12,-.02],10);
-    const addFringe=(points:[number,number][])=>{
-      const shape=new THREE.Shape();shape.moveTo(points[0][0],points[0][1]);
-      for(let i=1;i<points.length;i++)shape.lineTo(points[i][0],points[i][1]);
-      shape.closePath();
-      const mesh=new THREE.Mesh(new THREE.ShapeGeometry(shape,3),hair);
-      mesh.position.z=.286;mesh.castShadow=true;head.add(mesh);
+    ellipsoid(head,[.12,.43,.145],hair,[-.285,-.12,-.015],10);
+    ellipsoid(head,[.12,isMartina?.46:.40,.145],hair,[.285,-.12,-.02],10);
+    // Three tapered locks follow the forehead curve instead of a flat rectangular fringe.
+    const fringe=(x:number,angle:number)=>{
+      const lock=new THREE.Mesh(new THREE.CylinderGeometry(.073,.008,.265,7),hair);
+      lock.position.set(x,.19,.275);lock.rotation.z=angle;lock.castShadow=true;head.add(lock);
     };
-    if(isMartina){
-      addFringe([[-.25,.245],[-.13,.285],[-.015,.255],[-.085,.10],[-.13,.17],[-.20,.095]]);
-      addFringe([[-.05,.265],[.075,.285],[.20,.23],[.115,.12],[.06,.18],[.01,.13]]);
-      addFringe([[.16,.245],[.27,.22],[.25,.095],[.19,.15]]);
-    }else{
-      addFringe([[-.26,.245],[-.13,.29],[-.035,.26],[-.15,.10],[-.19,.17]]);
-      addFringe([[-.02,.27],[.11,.285],[.25,.235],[.10,.12],[.055,.19]]);
-      addFringe([[.18,.24],[.29,.22],[.25,.10],[.21,.16]]);
-    }
+    if(isMartina){fringe(-.145,.22);fringe(-.015,-.04);fringe(.13,-.25);}
+    else{fringe(-.15,.16);fringe(-.01,-.08);fringe(.145,-.22);}
   }
   const eyeWhite=mat("#fff8e9"),pupil=mat("#25201e"),brow=mat(isBruno?"#30241f":"#211b1a");
   for(const side of [-1,1]){
-    ellipsoid(head,[.073,.052,.025],eyeWhite,[side*.145,.035,.268],8);
-    ellipsoid(head,[.027,.037,.018],pupil,[side*.145,.03,.291],8);
-    box(head,[.13,.026,.022],brow,[side*.145,.135,.267],false);
+    ellipsoid(head,[.064,.047,.023],eyeWhite,[side*.145,.035,.268],8);
+    ellipsoid(head,[.023,.032,.017],pupil,[side*.145,.03,.29],8);
+    box(head,[.108,.018,.018],brow,[side*.145,.128,.267],false);
   }
-  ellipsoid(head,[.045,.065,.045],skin,[0,-.045,.29],8);
-  const mouth=box(head,[.145,.035,.025],mat("#743f3a"),[0,-.205,.286],false);
+  ellipsoid(head,[.034,.052,.034],skin,[0,-.045,.285],8);
+  const mouth=box(head,[.115,.024,.018],mat("#743f3a"),[0,-.205,.286],false);
 
   const arm=(side:number)=>{
     const pivot=new THREE.Group();
-    pivot.position.set(side*(isBruno?.42:.385),isBruno?1.02:1.58,0);root.add(pivot);
+    pivot.position.set(side*(isBruno?.40:.345),isBruno?1.02:1.56,0);root.add(pivot);
     if(isBruno){
-      box(pivot,[.22,.39,.22],shirt,[0,-.15,0]);
+      const upper=new THREE.Mesh(new THREE.CylinderGeometry(.105,.092,.40,8),shirt);
+      upper.position.set(0,-.18,0);upper.castShadow=true;pivot.add(upper);
+      const forearm=new THREE.Mesh(new THREE.CylinderGeometry(.077,.067,.40,8),skin);
+      forearm.position.set(0,-.56,.035);forearm.castShadow=true;forearm.receiveShadow=true;pivot.add(forearm);
+      ellipsoid(pivot,[.078,.07,.062],skin,[0,-.77,.12],8);
     }else{
-      // One continuous tapered arm avoids visible sphere/cylinder seams at the shoulder and elbow.
-      const fullArm=new THREE.Mesh(new THREE.CylinderGeometry(.105,.074,.74,10),skin);
-      fullArm.position.set(0,-.37,.025);fullArm.castShadow=true;fullArm.receiveShadow=true;pivot.add(fullArm);
+      // Slim, continuous upper arm with a small integrated shoulder; hands hang naturally.
+      ellipsoid(pivot,[.078,.085,.075],skin,[0,-.045,0],8);
+      const fullArm=new THREE.Mesh(new THREE.CylinderGeometry(.069,.052,.69,8),skin);
+      fullArm.position.set(0,-.385,.018);fullArm.castShadow=true;fullArm.receiveShadow=true;pivot.add(fullArm);
+      ellipsoid(pivot,[.060,.057,.052],skin,[0,-.735,.035],8);
     }
-    if(isBruno){
-      const forearm=new THREE.Mesh(new THREE.CylinderGeometry(.075,.095,.39,8),skin);
-      forearm.position.set(0,-.57,.035);forearm.castShadow=true;pivot.add(forearm);
-    }
-    ellipsoid(pivot,[.087,.078,.068],skin,[0,isBruno?-.65:-.755,isBruno?.24:.075],8);
     return pivot;
   };
   const leg=(side:number)=>{
-    const pivot=new THREE.Group();pivot.position.set(side*.20,isBruno?.36:.70,0);root.add(pivot);
+    const pivot=new THREE.Group();pivot.position.set(side*(isBruno?.20:.19),isBruno?.36:.70,0);root.add(pivot);
     const thigh=new THREE.Mesh(new THREE.CylinderGeometry(.13,.115,.58,8),pants);
     thigh.position.set(0,-.27,0);thigh.castShadow=true;pivot.add(thigh);
     box(pivot,[.30,.17,.42],shoes,[0,-.60,.07]);
@@ -127,7 +118,6 @@ function makeCharacter(name: EntrePartidasCue["speaker"], x: number, z: number):
   };
   return {root,head,mouth,leftArm:arm(-1),rightArm:arm(1),leftLeg:leg(-1),rightLeg:leg(1),name};
 }
-
 export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
   world.background=new THREE.Color("#d9d5ca");world.fog=new THREE.Fog("#d9d5ca",22,48);
   const floor=new THREE.Mesh(new THREE.PlaneGeometry(48,48),mat("#b8b4a9",.92));
@@ -375,8 +365,8 @@ export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
   };
   const packet=makeHandPacket(packMats[0],.42,.62);
   const packet2=makeHandPacket(packMats[2],.40,.60);
-  bruno.rightArm.add(packet);packet.position.set(0,-.40,.13);packet.rotation.y=.76;
-  bruno.leftArm.add(packet2);packet2.position.set(0,-.40,.13);packet2.rotation.y=.88;
+  bruno.rightArm.add(packet);packet.position.set(0,-.40,.18);packet.rotation.y=.76;
+  bruno.leftArm.add(packet2);packet2.position.set(0,-.40,.49);packet2.rotation.y=.88;
   // Cinematic commercial lighting: soft overhead, warm key, cool rim, contact shadows.
   world.add(new THREE.HemisphereLight(0xf8f3e7,0x666d68,1.45));
   const key=new THREE.SpotLight(0xffe5c6,62,30,Math.PI/4,.62,1.25);
@@ -394,8 +384,8 @@ export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
     const walkX=3.3-2.15*walk;
     martina.root.position.x=-(time<7.7?entryX:walkX);
     valentina.root.position.x=(time<7.7?entryX:walkX);
-    martina.root.position.z=-11.25+8.0*walk;
-    valentina.root.position.z=-11.25+8.0*walk;
+    martina.root.position.z=-7.4+7.7*walk;
+    valentina.root.position.z=-7.4+7.7*walk;
     martina.root.rotation.y=(Math.PI/2)*(1-entry)*(1-walk*.08);
     valentina.root.rotation.y=-(Math.PI/2)*(1-entry)*(1-walk*.08);
     if(time>=12.7){martina.root.rotation.y=.12;valentina.root.rotation.y=-.12;}
