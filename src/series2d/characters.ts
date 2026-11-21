@@ -1,8 +1,7 @@
 import { Container, Graphics } from "pixi.js";
-import type { CharacterId, DialogueCue, Expression, Gesture } from "./types";
+import type { CharacterId, DialogueCue, Gesture } from "./types";
 
 const INK = "#473A34";
-const SKIN = "#E4B498";
 const WHITE = "#FFF8EF";
 
 interface CharacterProfile {
@@ -62,7 +61,7 @@ function shape(parent: Container, draw: (g: Graphics) => void, fill: string, wid
   const g = new Graphics();
   draw(g);
   g.fill(fill);
-  g.stroke({ color: INK, width, join: "round", cap: "round" });
+  if (width > 0) g.stroke({ color: INK, width, join: "round", cap: "round" });
   parent.addChild(g);
   return g;
 }
@@ -409,10 +408,13 @@ export function updateCharacter(
   }
 
   // Both shoes stay planted on the same baseline. There is no root-height bobbing.
-  rig.root.x = rig.baseX + Math.sin(time * 0.47 + rig.phase) * 0.55;
+  rig.root.x = rig.baseX;
   rig.root.y = rig.baseY;
-  rig.torso.rotation = cue ? 0.012 * Math.sin((time - cue.startSeconds) * 3.8) : 0.003 * Math.sin(time * 1.1 + rig.phase);
-  rig.torso.scale.y = 1 + Math.sin(time * 1.25 + rig.phase) * 0.002;
+  const listeningTilt = rig.id === "tomas" ? -0.012 : rig.id === "ernesto" ? 0.006 : 0;
+  rig.torso.rotation = cue
+    ? 0.018 * Math.sin((time - cue.startSeconds) * 3.1)
+    : listeningTilt + 0.002 * Math.sin(time * 0.65 + rig.phase);
+  rig.torso.scale.y = 1;
   rig.head.rotation = headTurn + (cue ? Math.sin((time - cue.startSeconds) * 5.5) * 0.018 : Math.sin(time * 0.9 + rig.phase) * 0.008);
 
   const gesture: Gesture = cue?.gesture || "none";
