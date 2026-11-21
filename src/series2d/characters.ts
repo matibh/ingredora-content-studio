@@ -140,13 +140,38 @@ function createFace(profile: CharacterProfile, head: Container) {
   const w = profile.headWidth;
   const h = profile.headHeight;
   const face = new Graphics();
-  face.moveTo(-w * 0.95, -h * 0.35)
-    .bezierCurveTo(-w * 1.03, -h * 0.95, -w * 0.43, -h * 1.12, 0, -h * 1.02)
-    .bezierCurveTo(w * 0.62, -h * 1.12, w * 1.02, -h * 0.75, w * 0.95, -h * 0.18)
-    .lineTo(w * 0.78, h * 0.53)
-    .bezierCurveTo(w * 0.47, h * 1.02, -w * 0.44, h * 1.04, -w * 0.78, h * 0.50)
-    .closePath().fill(profile.skin)
-    .stroke({ color: INK, width: 4.5, join: "round" });
+  if (profile.id === "martina") {
+    face.moveTo(-w * 0.95, -h * 0.30)
+      .bezierCurveTo(-w * 1.02, -h * 0.90, -w * 0.43, -h * 1.10, 0, -h * 1.02)
+      .bezierCurveTo(w * 0.64, -h * 1.10, w * 1.00, -h * 0.72, w * 0.94, -h * 0.12)
+      .lineTo(w * 0.70, h * 0.48).lineTo(w * 0.28, h * 0.95)
+      .quadraticCurveTo(0, h * 1.13, -w * 0.28, h * 0.95)
+      .lineTo(-w * 0.72, h * 0.48).closePath();
+  } else if (profile.id === "bruno") {
+    face.moveTo(-w * 0.96, -h * 0.24)
+      .bezierCurveTo(-w * 1.04, -h * 0.87, -w * 0.52, -h * 1.08, 0, -h * 1.00)
+      .bezierCurveTo(w * 0.63, -h * 1.08, w * 1.03, -h * 0.73, w * 0.98, -h * 0.12)
+      .lineTo(w * 0.90, h * 0.43).quadraticCurveTo(w * 0.66, h * 0.94, 0, h * 0.92)
+      .quadraticCurveTo(-w * 0.70, h * 0.92, -w * 0.91, h * 0.40).closePath();
+  } else if (profile.id === "tomas") {
+    face.moveTo(-w * 0.91, -h * 0.30)
+      .bezierCurveTo(-w * 0.98, -h * 0.94, -w * 0.45, -h * 1.13, 0, -h * 1.04)
+      .bezierCurveTo(w * 0.57, -h * 1.13, w * 0.94, -h * 0.72, w * 0.90, -h * 0.10)
+      .lineTo(w * 0.70, h * 0.53).quadraticCurveTo(0, h * 1.10, -w * 0.70, h * 0.53).closePath();
+  } else if (profile.id === "valentina") {
+    face.moveTo(-w * 0.96, -h * 0.27)
+      .bezierCurveTo(-w * 1.05, -h * 0.88, -w * 0.43, -h * 1.12, 0, -h * 1.02)
+      .bezierCurveTo(w * 0.57, -h * 1.12, w * 1.03, -h * 0.78, w * 0.96, -h * 0.18)
+      .lineTo(w * 0.74, h * 0.43).quadraticCurveTo(w * 0.44, h * 0.72, 0, h * 1.08)
+      .quadraticCurveTo(-w * 0.43, h * 0.72, -w * 0.74, h * 0.43).closePath();
+  } else {
+    face.moveTo(-w * 0.98, -h * 0.25)
+      .bezierCurveTo(-w * 1.05, -h * 0.87, -w * 0.50, -h * 1.08, 0, -h * 1.02)
+      .bezierCurveTo(w * 0.64, -h * 1.08, w * 1.05, -h * 0.72, w * 0.98, -h * 0.15)
+      .lineTo(w * 0.92, h * 0.38).quadraticCurveTo(w * 0.65, h * 0.99, 0, h * 0.98)
+      .quadraticCurveTo(-w * 0.68, h * 0.99, -w * 0.92, h * 0.38).closePath();
+  }
+  face.fill(profile.skin).stroke({ color: INK, width: 4.5, join: "round" });
   head.addChild(face);
 
   shape(head, g => g.ellipse(-w * 0.97, -h * 0.12, 5.5, 9), profile.skin, 3);
