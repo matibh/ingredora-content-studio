@@ -14,6 +14,7 @@ import type { ProductionPackage, ProductionScene, SceneObject } from "./types";
 import { createCocaColaPoolsideSet, drawCocaColaPoolsideOverlay } from "./cocaColaPoolside";
 import { createOreoFamilySet, drawOreoFamilyOverlay } from "./oreoFamily";
 import { createOperationLabelSet, drawOperationLabelOverlay, type OperationWord } from "./operationLabel";
+import { createEntrePartidasSet, drawEntrePartidasCaptions, drawEntrePartidasBranding, type EntrePartidasCue } from "./entrePartidas";
 
 export type RenderProgress = { frame: number; totalFrames: number; percent: number };
 
@@ -1150,13 +1151,17 @@ export async function renderPackageToWebM(
   }
   if (signal?.aborted) throw new Error("Render cancelado.");
 
-  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false, powerPreference: "high-performance" });
+  const isEntrePartidas = pkg.visualPreset === "entre-partidas-supermarket";
+  // SwiftShader has no physical GPU. For this detailed supermarket set, disabling
+  // shadow-map passes keeps the same materials, lighting, framing and animation
+  // while making deterministic headless rendering substantially faster.
+  const renderer = new THREE.WebGLRenderer({ antialias: !isEntrePartidas, alpha: false, powerPreference: "high-performance" });
   renderer.setPixelRatio(1);
   renderer.setSize(pkg.width, pkg.height, false);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = pkg.visualPreset === "coca-cola-poolside" ? 1.08 : 0.92;
-  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.enabled = !isEntrePartidas;
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
   const outputCanvas = document.createElement("canvas");
@@ -1183,7 +1188,7 @@ export async function renderPackageToWebM(
   output.setMetadataTags({ title: pkg.title, artist: "Ingredora Content Studio", date: new Date(pkg.createdAt) });
 
   const world = new THREE.Scene();
-  if (!pkg.id.startsWith("ingredora-cindor-game-show-") && pkg.visualPreset !== "nutella-supermarket" && pkg.visualPreset !== "coca-cola-poolside" && pkg.visualPreset !== "oreo-family-table" && pkg.visualPreset !== "operation-label-detective") {
+  if (!pkg.id.startsWith("ingredora-cindor-game-show-") && pkg.visualPreset !== "nutella-supermarket" && pkg.visualPreset !== "coca-cola-poolside" && pkg.visualPreset !== "oreo-family-table" && pkg.visualPreset !== "operation-label-detective" && pkg.visualPreset !== "entre-partidas-supermarket") {
     world.add(new THREE.HemisphereLight(0xffffff, 0x273b2c, 2.0));
     const key = new THREE.DirectionalLight(0xffffff, 3.0);
     key.position.set(-3, 5, 6);
@@ -1200,6 +1205,8 @@ export async function renderPackageToWebM(
   const oreoSet = pkg.visualPreset === "oreo-family-table" ? createOreoFamilySet(world) : null;
   const gameShowSet = pkg.id.startsWith("ingredora-cindor-game-show-") ? createGameShowSet(world) : null;
   const operationLabelSet = pkg.visualPreset === "operation-label-detective" ? createOperationLabelSet(world) : null;
+  const entrePartidasSet = pkg.visualPreset === "entre-partidas-supermarket" ? createEntrePartidasSet(world) : null;
+  const entrePartidasDialogue = (pkg.dialogue ?? []) as EntrePartidasCue[];
   let nutellaVoiceWords: VoiceWordTiming[] = [];
   let poolsideVoiceWords: VoiceWordTiming[] = [];
   let oreoVoiceWords: VoiceWordTiming[] = [];
@@ -1276,6 +1283,58 @@ export async function renderPackageToWebM(
   let lastSceneId = "";
 
   const drawFrame = (frame: number) => {
+    if (entrePartidasSet) {
+      const time = frame / fps;
+      entrePartidasSet.update(time, entrePartidasDialogue);
+      const mix = (a: number,b: number,t: number) => a+(b-a)*t;
+      const cue=entrePartidasDialogue.find(item=>time>=item.start&&time<=item.end);
+      let desiredPosition=new THREE.Vector3(0,2.45,13.0);
+      let desiredTarget=new THREE.Vector3(0,-.75,-2.0);
+      let desiredFov=45;
+      // Series-style coverage: strict side profile, wide cross-aisle reveal,
+      // then medium singles that keep faces, torsos and meaningful body language in frame.
+      if(time<6){
+        // Wider profile from the opening frame: full seated posture and both packages remain visible.
+        // Medium-wide strict side profile, still inside the gondola edges, with Bruno seated fully in frame.
+        desiredPosition.set(4.65,.20,.48);
+        desiredTarget.set(0,-1.15,.20);
+        desiredFov=54;
+      }else if(time>=6&&time<12){
+        // Wide master reveals the open cross-aisle as the girls enter from opposite side passages.
+        desiredPosition.set(.10,3.05,12.2);
+        desiredTarget.set(0,-.45,-6.15);
+        desiredFov=51;
+      }else if(cue){
+        const subject=entrePartidasSet.getSpeakerPosition(cue.speaker);
+        const angle=cue.speaker==="martina"?.48:cue.speaker==="valentina"?-.48:.58;
+        desiredPosition.set(subject.x+angle,subject.y+1.08,subject.z+6.2);
+        desiredTarget.set(subject.x,subject.y,subject.z);
+        desiredFov=cue.speaker==="bruno"?41:40;
+      }else{
+        // A calm three-shot for reactions; no camera teleporting between lines.
+        desiredPosition.set(0,2.45,10.8);
+        desiredTarget.set(0,-.65,-2.2);
+        desiredFov=47;
+      }
+      if(frame===0){
+        camera.position.copy(desiredPosition);
+        camera.userData.entreTarget=desiredTarget.clone();
+        camera.fov=desiredFov;
+      }
+      const blend = time < 6 ? 0.24 : cue ? 0.16 : 0.08;
+      camera.position.lerp(desiredPosition,blend);
+      const currentTarget=(camera.userData.entreTarget as THREE.Vector3|undefined)??desiredTarget.clone();
+      currentTarget.lerp(desiredTarget,blend);
+      camera.userData.entreTarget=currentTarget;
+      camera.lookAt(currentTarget);
+      camera.fov=mix(camera.fov||45,desiredFov,.12);
+      camera.updateProjectionMatrix();
+      renderer.render(world,camera);
+      ctx.drawImage(renderer.domElement,0,0,pkg.width,pkg.height);
+      drawEntrePartidasCaptions(ctx,time,pkg.width,pkg.height,entrePartidasDialogue);
+      drawEntrePartidasBranding(ctx,time,pkg.width,pkg.height);
+      return;
+    }
     if (operationLabelSet) {
       const time = frame / fps;
       operationLabelSet.update(time, operationVoiceWords);

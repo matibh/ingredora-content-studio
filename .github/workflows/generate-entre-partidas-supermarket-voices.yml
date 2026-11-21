@@ -1,0 +1,41 @@
+name: Generate Entre Partidas supermarket dialogue
+
+on:
+  push:
+    branches:
+      - feature/entre-partidas-ad-engine
+    paths:
+      - "scripts/generate-entre-partidas-supermarket-voices.py"
+      - ".github/workflows/generate-entre-partidas-supermarket-voices.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: entre-partidas-supermarket-voices
+  cancel-in-progress: false
+
+jobs:
+  synthesize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install zero-cost voice tooling
+        run: python -m pip install --disable-pip-version-check edge-tts pydub imageio-ffmpeg
+      - name: Generate three distinct Spanish character voices
+        run: python scripts/generate-entre-partidas-supermarket-voices.py
+      - name: Commit voice track, stems and timing data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/studio/audio/entre-partidas/supermarket-01 public/studio/packages/entre-partidas-supermarket.v1.json public/studio/productions.json
+          git diff --cached --quiet || git commit -m "Add three-character supermarket dialogue voices"
+          git push origin HEAD:${{ github.ref_name }}

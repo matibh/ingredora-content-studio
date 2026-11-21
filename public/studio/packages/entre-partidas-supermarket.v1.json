@@ -1,0 +1,167 @@
+{
+  "schemaVersion": 1,
+  "engineVersion": "1.0.0",
+  "id": "ingredora-entre-partidas-supermarket-001",
+  "title": "Entre Partidas — El entrenamiento",
+  "description": "Sitcom 3D cinematográfica en el pasillo de un supermercado. Bruno estudia etiquetas para el Desafío Diario mientras Martina y Valentina lo descubren.",
+  "createdAt": "2026-11-21T16:45:00-03:00",
+  "fps": 30,
+  "width": 720,
+  "height": 1280,
+  "visualPreset": "entre-partidas-supermarket",
+  "scenes": [
+    {
+      "id": "supermarket-aisle-story",
+      "startFrame": 0,
+      "durationFrames": 1950,
+      "background": "#d9d5ca",
+      "objects": []
+    }
+  ],
+  "dialogue": [
+    {
+      "speaker": "bruno",
+      "text": "Harina de trigo... azúcar... aceite vegetal... maltodextrina...",
+      "start": 2.0,
+      "end": 5.467,
+      "look": "bruno"
+    },
+    {
+      "speaker": "bruno",
+      "text": "¿Maltodextrina...? Bueno, esto también lo tengo que aprender.",
+      "start": 6.0,
+      "end": 9.653,
+      "look": "bruno"
+    },
+    {
+      "speaker": "valentina",
+      "text": "Bruno...",
+      "start": 12.0,
+      "end": 13.193,
+      "look": "bruno"
+    },
+    {
+      "speaker": "valentina",
+      "text": "Bruno.",
+      "start": 14.0,
+      "end": 15.661,
+      "look": "bruno"
+    },
+    {
+      "speaker": "bruno",
+      "text": "Un segundo...",
+      "start": 15.711,
+      "end": 17.372,
+      "look": "valentina"
+    },
+    {
+      "speaker": "martina",
+      "text": "¿Estás leyendo los ingredientes?",
+      "start": 17.422,
+      "end": 19.659,
+      "look": "bruno"
+    },
+    {
+      "speaker": "bruno",
+      "text": "Me estoy preparando.",
+      "start": 20.0,
+      "end": 21.661,
+      "look": "martina"
+    },
+    {
+      "speaker": "valentina",
+      "text": "¿Para qué? ¿Te toman examen?",
+      "start": 22.0,
+      "end": 24.633,
+      "look": "bruno"
+    },
+    {
+      "speaker": "bruno",
+      "text": "Mañana es el Desafío Diario. Esta vez lo quiero hacer bien.",
+      "start": 25.0,
+      "end": 28.773,
+      "look": "martina"
+    },
+    {
+      "speaker": "martina",
+      "text": "Ah... ¿y ya sabés qué producto va a salir?",
+      "start": 29.0,
+      "end": 31.609,
+      "look": "bruno"
+    },
+    {
+      "speaker": "bruno",
+      "text": "No.",
+      "start": 32.0,
+      "end": 33.661,
+      "look": "martina"
+    },
+    {
+      "speaker": "valentina",
+      "text": "Ah, bueno.",
+      "start": 33.711,
+      "end": 35.372,
+      "look": "bruno"
+    },
+    {
+      "speaker": "bruno",
+      "text": "Justamente. Por eso estoy estudiando. Puede tocar cualquier producto. Son quince segundos.",
+      "start": 35.422,
+      "end": 41.403,
+      "look": "martina"
+    },
+    {
+      "speaker": "martina",
+      "text": "¿Y tu plan es leer todos los productos del supermercado?",
+      "start": 41.453,
+      "end": 44.458,
+      "look": "bruno"
+    },
+    {
+      "speaker": "bruno",
+      "text": "No todos. Empecé por galletitas. Después sigo con lácteos, conservas y congelados.",
+      "start": 45.0,
+      "end": 50.699,
+      "look": "martina"
+    },
+    {
+      "speaker": "valentina",
+      "text": "¿Y cuándo pensás comprar algo?",
+      "start": 50.749,
+      "end": 52.71,
+      "look": "bruno"
+    },
+    {
+      "speaker": "bruno",
+      "text": "Después.",
+      "start": 52.76,
+      "end": 54.421,
+      "look": "valentina"
+    },
+    {
+      "speaker": "martina",
+      "text": "¿Viniste solo a estudiar?",
+      "start": 54.471,
+      "end": 56.384,
+      "look": "bruno"
+    },
+    {
+      "speaker": "valentina",
+      "text": "¡Y acordate de comprar comida!",
+      "start": 58.0,
+      "end": 60.075,
+      "look": "bruno"
+    },
+    {
+      "speaker": "bruno",
+      "text": "Sí, sí...",
+      "start": 60.4,
+      "end": 62.061,
+      "look": "valentina"
+    }
+  ],
+  "durationSeconds": 65,
+  "voiceoverUrl": "studio/audio/entre-partidas/supermarket-01/voice-track.mp3",
+  "wordTimingsUrl": "studio/audio/entre-partidas/supermarket-01/word-timings.json",
+  "voiceoverOffsetSeconds": 0
+}
