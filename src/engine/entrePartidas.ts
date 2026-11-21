@@ -128,8 +128,8 @@ function makeCharacter(name: EntrePartidasCue["speaker"], x: number, z: number):
 
 export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
   world.background=new THREE.Color("#d9d5ca");world.fog=new THREE.Fog("#d9d5ca",22,48);
-  const floor=new THREE.Mesh(new THREE.PlaneGeometry(32,38),mat("#b8b4a9",.92));
-  floor.rotation.x=-Math.PI/2;floor.position.set(0,-1.96,-4);floor.receiveShadow=true;world.add(floor);
+  const floor=new THREE.Mesh(new THREE.PlaneGeometry(48,48),mat("#b8b4a9",.92));
+  floor.rotation.x=-Math.PI/2;floor.position.set(0,-1.96,-5);floor.receiveShadow=true;world.add(floor);
   // Supermarket aisle: long, repeated gondolas with detailed packaging, price rails and depth.
   const steel=mat("#59645f",.55,.25),edge=mat("#c1c4bd",.34,.62);
   const palette=[
@@ -153,40 +153,41 @@ export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
     ctx.fillStyle="#252923";ctx.font="900 38px Arial";ctx.fillText(["$ 1.890","$ 2.450","$ 3.190","$ 1.250"][i%4],10,70);
   },256,84),side:THREE.DoubleSide}));
   for(const side of [-1,1]){
-    const x=side*4.1;
-    box(world,[.18,5.2,22],steel,[x,.65,-5]);
+    const x=side*5.3;
+    box(world,[.18,5.2,18],steel,[x,.65,-1.5]);
     for(let row=0;row<5;row++){
       const y=-1.42+row*1.02;
-      box(world,[1.55,.10,21],steel,[x-side*.78,y,-5]);
-      box(world,[1.55,.045,21],edge,[x-side*.78,y-.075,-5]);
-      for(let depth=0;depth<2;depth++)for(let i=0;i<20;i++){
+      box(world,[1.65,.10,18],steel,[x-side*.88,y,-1.5]);
+      box(world,[1.65,.045,18],edge,[x-side*.88,y-.075,-1.5]);
+      for(let depth=0;depth<2;depth++)for(let i=0;i<18;i++){
         const index=(i*3+row*5+depth*2+(side>0?1:0))%packMats.length;
         const h=.38+((i+row+depth)%4)*.07,w=.31+(i%3)*.025;
         const pack=new THREE.Mesh(new THREE.BoxGeometry(w,h,.30),packMats[index]);
-        pack.position.set(x-side*(.28+depth*.48),y+.08+h/2,-14+i*.95);
+        pack.position.set(x-side*(.32+depth*.52),y+.08+h/2,-8.7+i*.88);
         pack.castShadow=true;pack.receiveShadow=true;world.add(pack);
       }
-      const rail=box(world,[1.6,.20,.075],edge,[x-side*.78,y-.18,5.42],false);
+      const rail=box(world,[1.68,.20,.075],edge,[x-side*.88,y-.18,7.40],false);
       rail.material=steel;
       for(let i=0;i<12;i++){
         const tag=new THREE.Mesh(new THREE.PlaneGeometry(.40,.18),priceMats[(i+row*3)%12]);
-        tag.position.set(x-side*(.25+i*.105),y-.18,5.36);world.add(tag);
+        tag.position.set(x-side*(.28+i*.11),y-.18,7.34);world.add(tag);
       }
     }
-    box(world,[.22,5.7,.26],edge,[x,1,-5]);
-    box(world,[1.55,.30,21],steel,[x-side*.78,3.42,-5]);
+    box(world,[.22,5.7,.26],edge,[x,1,-1.5]);
+    box(world,[1.65,.30,18],steel,[x-side*.88,3.42,-1.5]);
   }
   // Painted supermarket walls, tiled floor seams and category signage give the
   // aisle a finished retail-store feel instead of an empty grey studio.
   const wallPaint=mat("#e8dfcd",.94), lowerPaint=mat("#a9b8a4",.88), trimPaint=mat("#d1c8b7",.72);
   for(const side of [-1,1]){
-    const wallX=side*5.88;
-    box(world,[.16,5.55,23.5],wallPaint,[wallX,.72,-5.1],false);
-    box(world,[.20,.82,23.35],lowerPaint,[side*5.77,-1.36,-5.1],false);
-    box(world,[.23,.09,23.35],trimPaint,[side*5.74,-.91,-5.1],false);
+    const wallX=side*8.15;
+    // The side walls stop before the cross-aisle, leaving a visibly open junction behind the gondolas.
+    box(world,[.16,5.55,18.2],wallPaint,[wallX,.72,-1.45],false);
+    box(world,[.20,.82,18.05],lowerPaint,[side*8.03,-1.36,-1.45],false);
+    box(world,[.23,.09,18.05],trimPaint,[side*8.00,-.91,-1.45],false);
     for(let panel=0;panel<5;panel++){
-      const z=-14.3+panel*4.55;
-      box(world,[.025,1.72,.055],trimPaint,[side*5.77,.63,z],false);
+      const z=-8.8+panel*3.65;
+      box(world,[.025,1.72,.055],trimPaint,[side*8.03,.63,z],false);
     }
     const wallSignMat=new THREE.MeshBasicMaterial({map:texture((ctx,w,h)=>{
       ctx.fillStyle="#f7f1e5";ctx.fillRect(0,0,w,h);
@@ -195,23 +196,23 @@ export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
       ctx.fillStyle="#35443b";ctx.font="800 31px Arial";ctx.fillText(side<0?"FRUTAS · VERDURAS":"LECHE · QUESOS",w/2,h*.68);
     },512,160)});
     const wallSign=new THREE.Mesh(new THREE.PlaneGeometry(2.15,.68),wallSignMat);
-    wallSign.position.set(side*5.775,2.45,-12.8);wallSign.rotation.y=side<0?Math.PI/2:-Math.PI/2;world.add(wallSign);
+    wallSign.position.set(side*8.045,2.45,-6.7);wallSign.rotation.y=side<0?Math.PI/2:-Math.PI/2;world.add(wallSign);
   }
   const tileLine=mat("#aaa99f",.96);
-  for(let x=-5.2;x<=5.2;x+=1.3)box(world,[.012,.008,23],tileLine,[x,-1.948,-5],false);
-  for(let z=-16;z<=6;z+=1.35)box(world,[11,.008,.012],tileLine,[0,-1.948,z],false);
+  for(let x=-7.5;x<=7.5;x+=1.5)box(world,[.012,.008,27],tileLine,[x,-1.948,-4],false);
+  for(let z=-22;z<=8;z+=1.35)box(world,[16,.008,.012],tileLine,[0,-1.948,z],false);
 
   // A more varied assortment: tins, jars, cartons and bottles break up the
   // repeated rectangular packs while remaining firmly seated on the shelves.
   const canMaterials=["#b94c3d","#6e8790","#c59b43","#64815d","#8a6a91"].map(c=>mat(c,.28,.42));
   const bottleMaterials=["#66845b","#c3a35d","#8a4d42","#66839a"].map(c=>mat(c,.22,.12));
   for(const side of [-1,1]){
-    const x=side*4.1;
+    const x=side*5.3;
     for(let row=0;row<5;row++){
       const shelfY=-1.42+row*1.02;
       for(let i=0;i<7;i++){
-        const z=-13.25+i*2.75+(row%2)*.35;
-        const cx=x-side*.30;
+        const z=-8.55+i*2.35+(row%2)*.35;
+        const cx=x-side*.40;
         if(i%2===0){
           const can=new THREE.Mesh(new THREE.CylinderGeometry(.13,.13,.34,18),canMaterials[(i+row+(side>0?1:0))%canMaterials.length]);
           can.position.set(cx,shelfY+.08+.17,z);can.castShadow=true;world.add(can);
@@ -235,16 +236,16 @@ export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
 
   // Cold-drink refrigerators and a stocked end-cap in the back of the aisle.
   const fridgeBody=mat("#59676a",.38,.38), glass=new THREE.MeshStandardMaterial({color:"#b9d1d1",transparent:true,opacity:.25,roughness:.12,metalness:.2});
-  box(world,[4.8,3.35,.42],fridgeBody,[0,-.20,-16.15]);
+  box(world,[8.2,3.35,.42],fridgeBody,[0,-.20,-20.2]);
   for(let door=0;door<3;door++){
-    const dx=-1.55+door*1.55;
-    box(world,[1.42,2.82,.035],glass,[dx,.02,-15.91],false);
-    box(world,[.035,2.72,.055],edge,[dx+.66,.02,-15.86],false);
+    const dx=-2.60+door*2.60;
+    box(world,[2.46,2.82,.035],glass,[dx,.02,-19.96],false);
+    box(world,[.035,2.72,.055],edge,[dx+1.20,.02,-19.90],false);
     for(let shelf=0;shelf<3;shelf++){
-      box(world,[1.32,.045,.34],edge,[dx,-.82+shelf*.78,-15.62],false);
+      box(world,[2.30,.045,.34],edge,[dx,-.82+shelf*.78,-19.70],false);
       for(let bottle=0;bottle<5;bottle++){
         const drink=new THREE.Mesh(new THREE.CylinderGeometry(.085,.095,.42,14),bottleMaterials[(door+bottle+shelf)%bottleMaterials.length]);
-        drink.position.set(dx-.52+bottle*.26,-.60+shelf*.78,-15.66);drink.castShadow=true;world.add(drink);
+        drink.position.set(dx-.94+bottle*.45,-.60+shelf*.78,-19.74);drink.castShadow=true;world.add(drink);
         const cap=new THREE.Mesh(new THREE.CylinderGeometry(.045,.045,.055,12),mat("#f0e8d8"));
         cap.position.set(drink.position.x,drink.position.y+.23,drink.position.z);world.add(cap);
       }
@@ -253,7 +254,7 @@ export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
   // Crates of produce and a couple of parked trolleys in the background.
   const crateMat=mat("#9b7650",.9), fruitMats=["#c94c37","#d6a23e","#73934e","#d77c3e"].map(c=>mat(c,.42));
   for(const side of [-1,1]){
-    const stand=new THREE.Group();stand.position.set(side*2.75,-1.95,-10.5);world.add(stand);
+    const stand=new THREE.Group();stand.position.set(side*7.05,-1.95,-13.0);world.add(stand);
     box(stand,[1.55,.16,.95],crateMat,[0,.28,0]);
     for(let row=0;row<2;row++)for(let col=0;col<4;col++){
       const fruit=new THREE.Mesh(new THREE.SphereGeometry(.17,14,12),fruitMats[(row*4+col+(side>0?1:0))%fruitMats.length]);
@@ -263,47 +264,108 @@ export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
   }
 
   // End-of-aisle architecture, ceiling light panels and subtle warm/cool contrast.
-  const ceiling=box(world,[9,.18,24],mat("#eee9dc",.9),[0,5.0,-5],false);
+  const ceiling=box(world,[16,.18,29],mat("#eee9dc",.9),[0,5.0,-5],false);
   ceiling.material.side=THREE.DoubleSide;
   for(let i=0;i<5;i++){
-    const panel=new THREE.Mesh(new THREE.BoxGeometry(1.35,.035,4.8),new THREE.MeshBasicMaterial({color:"#fff7e5"}));
-    panel.position.set(-3.2+i*1.6,4.88,-5.4);world.add(panel);
+    const panel=new THREE.Mesh(new THREE.BoxGeometry(2.25,.035,4.8),new THREE.MeshBasicMaterial({color:"#fff7e5"}));
+    panel.position.set(-5.5+i*2.75,4.88,-2.8);world.add(panel);
   }
-  box(world,[8,.24,.45],mat("#e9e4d7"),[0,3.72,-15],false);
+  box(world,[10,.24,.45],mat("#e9e4d7"),[0,3.72,-19.0],false);
   // A few distant aisle signs create readable scale without visual clutter.
   const signMat=new THREE.MeshBasicMaterial({map:texture((ctx,w,h)=>{
     ctx.fillStyle="#314a40";ctx.fillRect(0,0,w,h);ctx.fillStyle="#f6f0df";
-    ctx.font="900 52px Arial";ctx.textAlign="center";ctx.fillText("ALMACÉN",w/2,h*.57);
+    ctx.font="900 46px Arial";ctx.textAlign="center";ctx.fillText("PASILLO PRINCIPAL",w/2,h*.57);
   },512,160)});
-  const sign=new THREE.Mesh(new THREE.PlaneGeometry(2.8,.85),signMat);sign.position.set(0,3.05,-12.2);world.add(sign);
-  // A trolley with a recognisable metal basket and four grounded wheels.
-  const cart=new THREE.Group();cart.position.set(1.25,-1.995,.65);world.add(cart);
-  const metal=mat("#aab2b1",.26,.78);
-  box(cart,[1.05,.08,.78],metal,[0,.88,0]);
-  for(const x of [-.48,.48])for(const z of [-.34,.34]){
-    box(cart,[.035,.62,.035],metal,[x,1.19,z]);
-    const wheel=new THREE.Mesh(new THREE.CylinderGeometry(.085,.085,.065,20),mat("#303638",.55));
-    wheel.rotation.z=Math.PI/2;wheel.position.set(x,.12,z);cart.add(wheel);
-  }
-  for(let y=.96;y<1.48;y+=.13)box(cart,[.98,.022,.72],metal,[0,y,0]);
-  for(let z=-.30;z<=.30;z+=.15)box(cart,[.98,.018,.018],metal,[0,1.20,z]);
-  box(cart,[1.08,.06,.07],mat("#303a3a"),[0,1.55,-.40]);
-  const parkedCartA=cart.clone(true);parkedCartA.position.set(-2.55,-1.995,-7.7);parkedCartA.scale.setScalar(.78);parkedCartA.rotation.y=-.22;world.add(parkedCartA);
-  const parkedCartB=cart.clone(true);parkedCartB.position.set(2.45,-1.995,-8.9);parkedCartB.scale.setScalar(.72);parkedCartB.rotation.y=.28;world.add(parkedCartB);
-  // Two packets Bruno is comparing; the trolley remains visibly empty for the final joke.
-  const packetMat=new THREE.MeshStandardMaterial({map:packMats[0].map,roughness:.68});
-  const packet=new THREE.Group();packet.position.set(-.50,1.92,.46);packet.rotation.y=-.10;world.add(packet);
-  box(packet,[.42,.60,.10],packetMat,[0,0,0]);
-  const packet2=new THREE.Group();packet2.position.set(.34,1.80,.43);packet2.rotation.y=.12;world.add(packet2);
-  box(packet2,[.38,.53,.10],packMats[2],[0,0,0]);
+  const sign=new THREE.Mesh(new THREE.PlaneGeometry(4.2,.85),signMat);sign.position.set(0,3.05,-16.3);world.add(sign);
+  // Realistic low-poly metal trolley: tapered wire basket, reinforced chassis and swivel casters.
+  const metal=mat("#aeb8b7",.24,.84),darkMetal=mat("#56615f",.34,.72),rubber=mat("#252b2d",.58,.02);
+  const addRod=(parent:THREE.Object3D,a:[number,number,number],b:[number,number,number],radius:number,material:THREE.Material)=>{
+    const va=new THREE.Vector3(...a),vb=new THREE.Vector3(...b),delta=vb.clone().sub(va);
+    const mesh=new THREE.Mesh(new THREE.CylinderGeometry(radius,radius,delta.length(),6),material);
+    mesh.position.copy(va.add(vb).multiplyScalar(.5));
+    mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),delta.normalize());
+    mesh.castShadow=true;mesh.receiveShadow=true;parent.add(mesh);return mesh;
+  };
+  const makeCart=()=>{
+    const trolley=new THREE.Group();
+    // Undercarriage and the four protected wheel mounts.
+    box(trolley,[.96,.055,.055],darkMetal,[0,.78,0]);
+    for(const z of [-.34,.34])addRod(trolley,[-.45,.79,z],[.45,.79,z],.025,darkMetal);
+    box(trolley,[.90,.045,.68],mat("#84918f",.46,.72),[0,.91,0]);
+    // Tapered basket: lower footprint is smaller than its upper rim.
+    const bottom=[[-.43,.96,-.31],[.43,.96,-.31],[-.43,.96,.31],[.43,.96,.31]] as const;
+    const top=[[-.56,1.52,-.43],[.56,1.52,-.43],[-.56,1.52,.43],[.56,1.52,.43]] as const;
+    for(const level of [0,1]){
+      const p=level?top:bottom;
+      addRod(trolley,p[0] as [number,number,number],p[1] as [number,number,number],.022,metal);
+      addRod(trolley,p[2] as [number,number,number],p[3] as [number,number,number],.022,metal);
+      addRod(trolley,p[0] as [number,number,number],p[2] as [number,number,number],.022,metal);
+      addRod(trolley,p[1] as [number,number,number],p[3] as [number,number,number],.022,metal);
+    }
+    for(let i=0;i<4;i++)addRod(trolley,bottom[i] as [number,number,number],top[i] as [number,number,number],.018,metal);
+    for(const y of [1.12,1.30,1.46]){
+      const t=(y-.96)/.56;
+      const hx=.43+(.56-.43)*t,hz=.31+(.43-.31)*t;
+      addRod(trolley,[-hx,y,-hz],[hx,y,-hz],.012,metal);
+      addRod(trolley,[-hx,y,hz],[hx,y,hz],.012,metal);
+      addRod(trolley,[-hx,y,-hz],[-hx,y,hz],.012,metal);
+      addRod(trolley,[hx,y,-hz],[hx,y,hz],.012,metal);
+    }
+    // Fine upright wires and a grid floor make the basket read as a shopping cart, not a box.
+    for(let i=1;i<9;i++){
+      const t=i/9,x=-.43+.86*t,tx=-.56+1.12*t;
+      addRod(trolley,[x,.97,-.31],[tx,1.51,-.43],.009,metal);
+      addRod(trolley,[x,.97,.31],[tx,1.51,.43],.009,metal);
+    }
+    for(let i=1;i<6;i++){
+      const t=i/6,z=-.31+.62*t,tz=-.43+.86*t;
+      addRod(trolley,[-.43,.97,z],[-.56,1.51,tz],.009,metal);
+      addRod(trolley,[.43,.97,z],[.56,1.51,tz],.009,metal);
+    }
+    for(let i=1;i<7;i++){
+      const x=-.39+i*.13;addRod(trolley,[x,.94,-.29],[x,.94,.29],.009,metal);
+    }
+    for(let i=1;i<5;i++){
+      const z=-.28+i*.14;addRod(trolley,[-.40,.94,z],[.40,.94,z],.009,metal);
+    }
+    // Rear handle, angled stays and softly rounded dark grip.
+    for(const side of [-1,1]){
+      addRod(trolley,[side*.46,1.05,-.31],[side*.50,1.49,-.55],.026,darkMetal);
+      const caster=box(trolley,[.11,.13,.12],darkMetal,[side*.48,.78,-.34],false);
+      caster.rotation.x=-.12;
+      const wheel=new THREE.Mesh(new THREE.CylinderGeometry(.105,.105,.072,12),rubber);
+      wheel.rotation.z=Math.PI/2;wheel.position.set(side*.48,.16,-.34);wheel.castShadow=true;trolley.add(wheel);
+      const frontWheel=new THREE.Mesh(new THREE.CylinderGeometry(.105,.105,.072,12),rubber);
+      frontWheel.rotation.z=Math.PI/2;frontWheel.position.set(side*.48,.16,.34);frontWheel.castShadow=true;trolley.add(frontWheel);
+      box(trolley,[.035,.12,.035],darkMetal,[side*.48,.27,-.34]);
+      box(trolley,[.035,.12,.035],darkMetal,[side*.48,.27,.34]);
+    }
+    addRod(trolley,[-.52,1.53,-.57],[.52,1.53,-.57],.036,metal);
+    const grip=new THREE.Mesh(new THREE.CylinderGeometry(.052,.052,.88,10),mat("#303a3a",.72));
+    grip.rotation.z=Math.PI/2;grip.position.set(0,1.53,-.57);trolley.add(grip);
+    trolley.traverse(object=>{if(object instanceof THREE.Mesh){object.castShadow=true;object.receiveShadow=true;}});
+    return trolley;
+  };
+  const cart=makeCart();cart.position.set(-2.75,-1.96,1.8);world.add(cart);
+  const parkedCartA=cart.clone(true);parkedCartA.position.set(-6.75,-1.96,-5.7);parkedCartA.scale.setScalar(.82);parkedCartA.rotation.y=-.18;world.add(parkedCartA);
+  const parkedCartB=cart.clone(true);parkedCartB.position.set(6.75,-1.96,-5.7);parkedCartB.scale.setScalar(.78);parkedCartB.rotation.y=.20;world.add(parkedCartB);
+  // One upright product in each hand. Each package is its own rigged prop with a sealed top and visible front label.
   const bruno=makeCharacter("bruno",0,.20);
-  // Martina and Valentina enter through the clear central aisle, never through shelving.
-  const martina=makeCharacter("martina",-.95,-12.8);
-  const valentina=makeCharacter("valentina",.95,-12.8);
+  const martina=makeCharacter("martina",-7.1,-11.25);
+  const valentina=makeCharacter("valentina",7.1,-11.25);
   world.add(bruno.root,martina.root,valentina.root);
-  // The packets are parented to Bruno’s hands so they follow his body instead of hovering in world space.
-  world.remove(packet); bruno.rightArm.add(packet); packet.position.set(-.10,-.76,.34); packet.scale.set(1.08,1.06,1);
-  world.remove(packet2); bruno.leftArm.add(packet2); packet2.position.set(.10,-.76,.34); packet2.scale.set(1.04,1.02,1);
+  const makeHandPacket=(material:THREE.Material,width:number,height:number)=>{
+    const product=new THREE.Group();
+    box(product,[width,height,.115],material,[0,0,0]);
+    box(product,[width*.96,.035,.124],mat("#e8dfc9",.7),[0,height*.5-.035,0]);
+    box(product,[width*.92,.025,.126],mat("#76674c",.72),[0,-height*.5+.025,0]);
+    box(product,[.035,height*.84,.012],mat("#ffffff",.5),[-width*.46,0,.064],false);
+    return product;
+  };
+  const packet=makeHandPacket(packMats[0],.42,.62);
+  const packet2=makeHandPacket(packMats[2],.40,.60);
+  bruno.rightArm.add(packet);packet.position.set(0,-.40,.13);packet.rotation.y=.76;
+  bruno.leftArm.add(packet2);packet2.position.set(0,-.40,.13);packet2.rotation.y=.88;
   // Cinematic commercial lighting: soft overhead, warm key, cool rim, contact shadows.
   world.add(new THREE.HemisphereLight(0xf8f3e7,0x666d68,1.45));
   const key=new THREE.SpotLight(0xffe5c6,62,30,Math.PI/4,.62,1.25);
