@@ -15,7 +15,7 @@ import {
   WebMOutputFormat,
 } from "mediabunny";
 import { createCharacter, updateCharacter, type CharacterRig } from "./characters";
-import type { CharacterId, DialogueCue, SitcomProductionPackage } from "./types";
+import type { CharacterId, SitcomProductionPackage } from "./types";
 
 export type Series2DRenderProgress = { frame: number; totalFrames: number; percent: number };
 
@@ -301,9 +301,9 @@ export async function renderSitcomPackageToWebM(
           rig,
           time,
           pkg.dialogue,
-          pkg.characters.map(item => ({ id: item.id, x: item.x }))
+          pkg.characters.map(item => ({ id: item.id, x: item.x })),
+          cameraBeat
         );
-        if (cameraBeat) rig.head.rotation *= 0.35;
       }
 
       if (activeCue) {
@@ -336,11 +336,7 @@ export async function renderSitcomPackageToWebM(
         dialoguePanel.visible = false;
       }
 
-      // At the final beat, the group notices the lens and settles their gaze on it.
-      if (cameraBeat) {
-        for (const rig of characters) rig.head.rotation *= 0.72;
-      }
-
+      // At the final beat, every character deliberately turns their eyes toward the lens.
       app.renderer.render({ container: stage });
       await videoSource.add(time, 1 / pkg.fps);
       onProgress({
