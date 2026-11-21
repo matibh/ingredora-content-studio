@@ -95,7 +95,8 @@ function makeCharacter(name: EntrePartidasCue["speaker"], x: number, z: number):
 
   const arm=(side:number)=>{
     const pivot=new THREE.Group();
-    pivot.position.set(side*(isBruno?.40:.39),isBruno?1.02:1.56,0);root.add(pivot);
+    // Bruno is seated, so raise the whole arm rig to keep the packages at chest level.
+    pivot.position.set(side*(isBruno?.40:.39),isBruno?1.42:1.56,0);root.add(pivot);
     if(isBruno){
       box(pivot,[.22,.40,.25],shirt,[0,-.18,0]);
       box(pivot,[.16,.40,.18],skin,[0,-.56,.035]);
