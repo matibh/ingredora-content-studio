@@ -61,7 +61,7 @@
 <path d="M-33 205Q-21 198-9 206M10 206Q23 198 34 205" fill="none" stroke="#2E211F" stroke-width="5"/><ellipse cx="-21" cy="229" rx="6" ry="8" fill="#302A28" stroke="none"/><ellipse cx="21" cy="229" rx="6" ry="8" fill="#302A28" stroke="none"/><path d="M0 239Q-4 252 2 255M-12 261Q0 265 12 257" fill="none" stroke="#9C6155" stroke-width="4"/><circle cx="53" cy="260" r="6" fill="#DCAE56" stroke="#493B34" stroke-width="3"/>
 </g>
 <!-- Ernesto -->
-<g transform="translate(1355 140) scale(.76)" stroke="#493B34" stroke-linejoin="round" stroke-linecap="round">
+<g transform="translate(1355 173) scale(.76)" stroke="#493B34" stroke-linejoin="round" stroke-linecap="round">
 <path d="M-51 176Q-60 89 0 80Q61 80 53 177L40 208H-40Z" fill="#7C7D78"/>
 <path d="M-72 309Q-89 369-76 552Q-77 579 0 594Q77 579 76 552Q89 369 72 309Q0 269-72 309Z" fill="#B86F50" stroke-width="7"/><path d="M-31 305L0 347L31 305" fill="none" stroke="#F0E4D1" stroke-width="16"/><path d="M0 346V573" stroke="#E3CEB8" stroke-width="5"/><circle cx="0" cy="414" r="4" fill="#F0E4D1"/><circle cx="0" cy="460" r="4" fill="#F0E4D1"/><circle cx="0" cy="506" r="4" fill="#F0E4D1"/>
 <path d="M-70 329Q-97 377-82 477" fill="none" stroke="#B86F50" stroke-width="27"/><path d="M-82 477L-78 522" fill="none" stroke="#D6A486" stroke-width="18"/><ellipse cx="-77" cy="529" rx="12" ry="15" fill="#D6A486"/>
