@@ -1070,7 +1070,7 @@ export async function renderPackageToWebM(
 
   // Original music is synthesized offline. Narration, when configured, is fetched as a
   // pre-generated asset so provider credentials never enter the public browser bundle.
-  const soundtrack = await generateOriginalSoundtrack({ durationSeconds, sampleRate: 48_000, theme: pkg.id.startsWith("ingredora-cindor-game-show-") ? "game-show" : pkg.visualPreset === "operation-label-detective" ? "detective-case" : pkg.visualPreset === "coca-cola-poolside" ? "summer-poolside" : pkg.visualPreset === "oreo-family-table" ? "family-merienda" : undefined });
+  const soundtrack = await generateOriginalSoundtrack({ durationSeconds, sampleRate: 48_000, theme: pkg.id.startsWith("ingredora-cindor-game-show-") ? "game-show" : pkg.visualPreset === "operation-label-detective" ? "detective-case" : pkg.visualPreset === "coca-cola-poolside" ? "summer-poolside" : pkg.visualPreset === "oreo-family-table" ? "family-merienda" : pkg.visualPreset === "entre-partidas-supermarket" ? "sitcom-intro" : undefined });
   let mixedSoundtrack = soundtrack;
   if (pkg.voiceoverUrl) {
     const voiceUrl = import.meta.env.BASE_URL + pkg.voiceoverUrl
@@ -1109,7 +1109,7 @@ export async function renderPackageToWebM(
     musicSource.buffer = soundtrack;
     const musicGain = offline.createGain();
     // The detective score must remain clearly audible beneath narration; other productions keep the quieter default.
-    musicGain.gain.value = pkg.visualPreset === "operation-label-detective" ? 0.42 : 0.045;
+    musicGain.gain.value = pkg.visualPreset === "operation-label-detective" ? 0.42 : pkg.visualPreset === "entre-partidas-supermarket" ? 0.55 : 0.045;
     musicSource.connect(musicGain).connect(offline.destination);
     musicSource.start(0);
     let voiceForMix = voice;
@@ -1292,25 +1292,26 @@ export async function renderPackageToWebM(
       let desiredPosition=new THREE.Vector3(0,6.6,21.0);
       let desiredTarget=new THREE.Vector3(0,.45,-5.0);
       let desiredFov=56;
-      // Sitcom language: establish the street and neighbouring house at night,
-      // cut inside to Bruno, then reveal the girls only once they are already nearby.
-      if(time<4.15){
-        const push=ease(time/4.15);
+      const exteriorEnd=4.15;
+      const girlsReveal=9.0833; // Bruno's final word "aprender" begins here.
+      const girlsResponse=13.10; // Bruno answers after the two calls.
+      // Sitcom coverage: establish the block at night, hard-cut to an already
+      // composed side profile of Bruno, then cut to both girls on "aprender".
+      if(time<exteriorEnd){
+        const push=ease(time/exteriorEnd);
         desiredPosition.set(0,mix(7.6,6.7,push),mix(22.0,20.5,push));
         desiredTarget.set(0,.40,-5.0);
         desiredFov=mix(57,54,push);
-      }else if(time<7.65){
-        const cut=ease((time-4.15)/.62);
-        desiredPosition.set(mix(4.65,3.95,cut),mix(.24,.12,cut),mix(.60,.34,cut));
-        desiredTarget.set(0,mix(-1.12,-.78,cut),.20);
-        desiredFov=mix(54,48,cut);
-      }else if(time<12){
-        const reveal=ease((time-7.65)/1.25);
-        // Both girls are framed together on the same side; the short push-in avoids
-        // showing their entire route through the store or any passage through gondolas.
-        desiredPosition.set(mix(.95,.55,reveal),mix(2.0,1.55,reveal),mix(9.4,6.9,reveal));
-        desiredTarget.set(-2.0,-.30,-2.55);
-        desiredFov=mix(48,40.5,reveal);
+      }else if(time<girlsReveal){
+        const push=ease((time-exteriorEnd)/(girlsReveal-exteriorEnd));
+        desiredPosition.set(mix(4.65,3.95,push),mix(.24,.12,push),mix(.60,.34,push));
+        desiredTarget.set(0,mix(-1.12,-.78,push),.20);
+        desiredFov=mix(54,48,push);
+      }else if(time<girlsResponse){
+        // Keep Martina and Valentina together while they watch Bruno for a beat.
+        desiredPosition.set(-.20,2.30,6.90);
+        desiredTarget.set(-2.0,-.35,-2.43);
+        desiredFov=42.5;
       }else if(cue){
         const subject=entrePartidasSet.getSpeakerPosition(cue.speaker);
         const angle=cue.speaker==="martina"?.42:cue.speaker==="valentina"?-.42:.50;
@@ -1318,17 +1319,21 @@ export async function renderPackageToWebM(
         desiredTarget.set(subject.x,subject.y,subject.z);
         desiredFov=cue.speaker==="bruno"?41:40;
       }else{
-        // A restrained three-shot for reactions, staying in the aisle.
         desiredPosition.set(-.35,2.15,9.8);
         desiredTarget.set(-.75,-.45,-1.6);
         desiredFov=45;
       }
-      if(frame===0){
+      const hardCutFrames=[
+        Math.ceil(exteriorEnd*fps),
+        Math.ceil(girlsReveal*fps),
+        Math.ceil(girlsResponse*fps),
+      ];
+      if(frame===0||hardCutFrames.includes(frame)){
         camera.position.copy(desiredPosition);
         camera.userData.entreTarget=desiredTarget.clone();
         camera.fov=desiredFov;
       }
-      const blend = time < 4.15 ? 0.045 : time < 7.65 ? 0.15 : time < 12 ? 0.19 : cue ? 0.16 : 0.10;
+      const blend = time < exteriorEnd ? 0.045 : time < girlsReveal ? 0.10 : time < girlsResponse ? 0.12 : cue ? 0.18 : 0.10;
       camera.position.lerp(desiredPosition,blend);
       const currentTarget=(camera.userData.entreTarget as THREE.Vector3|undefined)??desiredTarget.clone();
       currentTarget.lerp(desiredTarget,blend);
