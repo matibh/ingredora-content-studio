@@ -10,6 +10,12 @@
 
 No buscar un aspecto infantil genérico ni copiar el lenguaje visual exacto de una serie existente. Crear una identidad original para Ingredora.
 
+## Prototipo visual v0 — referencia no canónica
+
+Se generó un primer animatic vertical de 9 segundos para probar composición, paleta, lectura del elenco y ritmo de una conversación en el departamento. El prototipo y su fotograma vectorial fuente están registrados en [05 — Prototipo visual y prepiloto v0](./05-prototipo-visual-v0.md).
+
+**Importante:** los cinco diseños que aparecen son exploratorios. No reemplazan las fichas de personajes ni constituyen modelos maestros aprobados. No deben copiarse automáticamente a episodios futuros. La paleta y las proporciones finales siguen pendientes de aprobación.
+
 ## 1. Lenguaje visual
 
 - Formas claras y simplificadas, con personalidad.
