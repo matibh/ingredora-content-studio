@@ -107,13 +107,15 @@ function makeCharacter(name: EntrePartidasCue["speaker"], x: number, z: number):
     if(isBruno){
       box(pivot,[.22,.39,.22],shirt,[0,-.15,0]);
     }else{
-      ellipsoid(pivot,[.125,.135,.13],skin,[0,-.04,.015],8);
-      const upper=new THREE.Mesh(new THREE.CylinderGeometry(.092,.115,.37,8),skin);
-      upper.position.set(0,-.245,.015);upper.castShadow=true;pivot.add(upper);
+      // One continuous tapered arm avoids visible sphere/cylinder seams at the shoulder and elbow.
+      const fullArm=new THREE.Mesh(new THREE.CylinderGeometry(.105,.074,.74,10),skin);
+      fullArm.position.set(0,-.37,.025);fullArm.castShadow=true;fullArm.receiveShadow=true;pivot.add(fullArm);
     }
-    const forearm=new THREE.Mesh(new THREE.CylinderGeometry(.075,.095,.39,8),skin);
-    forearm.position.set(0,-.57,.035);forearm.castShadow=true;pivot.add(forearm);
-    ellipsoid(pivot,[.095,.085,.07],skin,[0,isBruno?-.65:-.79,isBruno?.24:.085],8);
+    if(isBruno){
+      const forearm=new THREE.Mesh(new THREE.CylinderGeometry(.075,.095,.39,8),skin);
+      forearm.position.set(0,-.57,.035);forearm.castShadow=true;pivot.add(forearm);
+    }
+    ellipsoid(pivot,[.087,.078,.068],skin,[0,isBruno?-.65:-.755,isBruno?.24:.075],8);
     return pivot;
   };
   const leg=(side:number)=>{
@@ -339,6 +341,15 @@ export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
       frontWheel.rotation.z=Math.PI/2;frontWheel.position.set(side*.48,.105,.34);frontWheel.castShadow=true;trolley.add(frontWheel);
       box(trolley,[.035,.12,.035],darkMetal,[side*.48,.27,-.34]);
       box(trolley,[.035,.12,.035],darkMetal,[side*.48,.27,.34]);
+      // Four structural uprights connect the caster axles to the trolley chassis.
+      for(const z of [-.34,.34]){
+        addRod(trolley,[side*.48,.15,z],[side*.48,.78,z],.032,darkMetal);
+      }
+    }
+    // Continuous axles and lateral cross-braces keep all four wheels visibly attached.
+    for(const z of [-.34,.34]){
+      addRod(trolley,[-.48,.105,z],[.48,.105,z],.028,darkMetal);
+      addRod(trolley,[-.48,.74,z],[.48,.74,z],.028,darkMetal);
     }
     addRod(trolley,[-.52,1.53,-.57],[.52,1.53,-.57],.036,metal);
     const grip=new THREE.Mesh(new THREE.CylinderGeometry(.052,.052,.88,10),mat("#303a3a",.72));
