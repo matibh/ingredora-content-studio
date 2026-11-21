@@ -666,9 +666,6 @@ export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
   const carBox=(size:[number,number,number],pos:[number,number,number],material:THREE.Material)=>{
     const mesh=new THREE.Mesh(new THREE.BoxGeometry(...size),material);mesh.position.set(...pos);mesh.castShadow=true;mesh.receiveShadow=true;car.add(mesh);return mesh;
   };
-  const carSphere=(pos:[number,number,number],scale:[number,number,number],material:THREE.Material)=>{
-    const mesh=new THREE.Mesh(new THREE.SphereGeometry(.5,12,8),material);mesh.position.set(...pos);mesh.scale.set(...scale);car.add(mesh);return mesh;
-  };
   const carRod=(a:[number,number,number],b:[number,number,number],radius:number,material:THREE.Material)=>{
     const start=new THREE.Vector3(...a),end=new THREE.Vector3(...b),delta=end.clone().sub(start);
     const mesh=new THREE.Mesh(new THREE.CylinderGeometry(radius,radius,delta.length(),8),material);
