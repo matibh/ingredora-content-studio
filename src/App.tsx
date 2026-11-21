@@ -120,10 +120,13 @@ function App() {
   }, [loadProductions]);
 
   useEffect(() => {
+    const scopedProductions = manifest.productions.filter((item) =>
+      collectionFilter === "all" || (item.collection || "advertising") === collectionFilter
+    );
     const forcedId = forceRenderIds[0];
     const candidate = forcedId
-      ? manifest.productions.find((item) => item.id === forcedId && item.status !== "planned" && item.packageUrl && !renderingIds.current.has(item.id))
-      : manifest.productions.find((item) =>
+      ? scopedProductions.find((item) => item.id === forcedId && item.status !== "planned" && item.packageUrl && !renderingIds.current.has(item.id))
+      : scopedProductions.find((item) =>
           item.status !== "planned" && item.packageUrl && !item.videoUrl && !localVideos[item.id] && !renderingIds.current.has(item.id)
         );
     if (!candidate) return;
@@ -167,7 +170,7 @@ function App() {
       }
     };
     void produce();
-  }, [manifest.productions, localVideos, retryToken, forceRenderIds]);
+  }, [manifest.productions, localVideos, retryToken, forceRenderIds, collectionFilter]);
 
   const visibleProductions = manifest.productions.filter((item) =>
     collectionFilter === "all" || (item.collection || "advertising") === collectionFilter
