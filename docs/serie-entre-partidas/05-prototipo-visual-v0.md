@@ -44,6 +44,38 @@ El MP4 fue generado como animatic mediante composición SVG fotograma a fotogram
 
 El fotograma es una referencia compuesta de la escena, no sustituye los archivos individuales `model.svg`, `expressions.svg`, `poses.svg` y `character.json` que deberán crearse para cada personaje.
 
+## Motor 2D y prepiloto v1 — integrado en rama de prototipo
+
+La siguiente iteración técnica está desarrollada en la rama `prototype/entre-partidas-visual-v0` y no está publicada en el Studio de producción todavía.
+
+### Cambios implementados en código
+
+- PixiJS 8.23.0 como renderer 2D independiente.
+- Three.js permanece como renderer de publicidad.
+- El Studio separa las colecciones **Publicidad** y **Series originales**.
+- Los paquetes indican `renderEngine: "pixi2d"` para utilizar el motor nuevo.
+- El motor 2D compone el living, cinco rigs, diálogos, miradas, parpadeos, gestos y subtítulos.
+- La animación se evalúa con tiempo absoluto por fotograma. Los pies permanecen apoyados y el root no rebota verticalmente.
+- Mediabunny se reutiliza para crear el WebM con audio. La conversión MP4 sigue utilizando el módulo existente.
+- El renderer valida que la pista de voces exista y no esté en silencio antes de empezar el render.
+
+### Casting provisional de cinco voces
+
+El paquete está preparado para cinco identidades de voz en español:
+- Martina: Elena, es-AR.
+- Bruno: Tomás, es-AR.
+- Tomás: Mateo, es-UY.
+- Valentina: Valentina, es-UY.
+- Ernesto: Lorenzo, es-CL.
+
+Se generan una mezcla de diálogo, cinco pistas individuales, cinco muestras cortas de audición y marcas de tiempo por palabra. El reparto es distinto, pero mezcla variedades del Cono Sur; no debe presentarse como cinco acentos argentinos. Las voces se consideran provisionales hasta escuchar y aprobar las muestras.
+
+### Estado de la generación y publicación
+
+El paquete del episodio está registrado inicialmente como `planned` para impedir un render silencioso. Un workflow de GitHub Actions genera las voces, valida los archivos y cambia el estado a `rendering`. Después, la publicación de Pages se vuelve a ejecutar para incluir los MP3 y el manifiesto actualizado.
+
+**Pendiente de verificación:** la rama debe superar `npm run build`, el workflow de voces debe terminar correctamente, las cinco muestras deben escucharse y el renderer debe completar un WebM de prueba antes de integrar los cambios a `main`. Hasta entonces, la nueva versión no se considera publicada ni aprobada.
+
 ## Evaluación pendiente
 
 Antes de bloquear los diseños, revisar:
