@@ -973,12 +973,14 @@ export function drawEntrePartidasBranding(ctx:CanvasRenderingContext2D,time:numb
 export function drawEntrePartidasCaptions(ctx:CanvasRenderingContext2D,time:number,width:number,height:number,dialogue:EntrePartidasCue[]){
   const cue=dialogue.find(item=>time>=item.start&&time<=item.end);if(!cue)return;
   const names={bruno:"BRUNO",martina:"MARTINA",valentina:"VALENTINA"};
-  const scale=width/720,boxW=width*.90,x=(width-boxW)/2;
+  const scale=width/720,maxTextW=width*.90;
   ctx.save();
+  // Floating subtitles, with a heavy black outline instead of a background panel.
+  ctx.textAlign="center";ctx.textBaseline="middle";
+  ctx.lineJoin="round";ctx.lineCap="round";
+  ctx.strokeStyle="rgba(0,0,0,.98)";
+  const words=cue.text.split(/\s+/).filter(Boolean);let line="",allLines:string[]=[];
   ctx.font="700 "+Math.round(29*scale)+"px Arial";
-  const maxTextW=boxW-48*scale;
-  // Wrap every cue into measured lines, then paginate in groups of at most two.
-  const words=cue.text.split(/\\s+/).filter(Boolean);let line="",allLines:string[]=[];
   for(const word of words){
     const candidate=line?line+" "+word:word;
     if(ctx.measureText(candidate).width>maxTextW&&line){allLines.push(line);line=word;}
@@ -989,17 +991,16 @@ export function drawEntrePartidasCaptions(ctx:CanvasRenderingContext2D,time:numb
   const duration=Math.max(.01,cue.end-cue.start);
   const page=Math.min(pages-1,Math.floor(((time-cue.start)/duration)*pages));
   const lines=allLines.slice(page*2,page*2+2);
-  const lineH=34*scale;
-  // Height follows the actual number of visible lines; the lower edge stays anchored.
-  const nameBand=31*scale,topPad=13*scale,bottomPad=13*scale;
-  const boxH=topPad+nameBand+lines.length*lineH+bottomPad;
-  const y=height*.965-boxH;
-  ctx.globalAlpha=.94;
-  ctx.fillStyle="rgba(18,25,24,.88)";ctx.beginPath();ctx.roundRect(x,y,boxW,boxH,16*scale);ctx.fill();
-  ctx.fillStyle="#d5e8b2";ctx.font="900 "+Math.round(22*scale)+"px Arial";
-  ctx.textAlign="left";ctx.textBaseline="middle";
-  ctx.fillText(names[cue.speaker],x+24*scale,y+topPad+nameBand*.5);
-  ctx.fillStyle="#fffaf0";ctx.font="700 "+Math.round(29*scale)+"px Arial";
-  lines.forEach((value,i)=>ctx.fillText(value,x+24*scale,y+topPad+nameBand+i*lineH+lineH*.5));
+  const lineH=38*scale,nameH=27*scale,gap=5*scale;
+  const totalH=nameH+gap+lines.length*lineH;
+  let y=height*.955-totalH/2;
+  ctx.font="900 "+Math.round(19*scale)+"px Arial";
+  ctx.lineWidth=6*scale;ctx.fillStyle="#d5e8b2";
+  const speaker=names[cue.speaker];
+  ctx.strokeText(speaker,width/2,y);ctx.fillText(speaker,width/2,y);
+  y+=nameH+gap;
+  ctx.font="900 "+Math.round(29*scale)+"px Arial";
+  ctx.fillStyle="#fffaf0";ctx.lineWidth=7*scale;
+  lines.forEach(value=>{ctx.strokeText(value,width/2,y);ctx.fillText(value,width/2,y);y+=lineH;});
   ctx.restore();
 }
