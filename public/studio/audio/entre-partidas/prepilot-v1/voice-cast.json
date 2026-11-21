@@ -1,0 +1,51 @@
+{
+  "status": "provisional casting test",
+  "note": "Distinct Spanish neural voice IDs. Regional identity varies within the Southern Cone; review before public release.",
+  "cast": {
+    "martina": {
+      "voice": "es-AR-ElenaNeural",
+      "region": "Argentina",
+      "rate": "-3%",
+      "pitch": "-2Hz",
+      "volume": "+5%",
+      "direction": "measured, observant, dry and self-assured",
+      "auditionFile": "audition-martina.mp3"
+    },
+    "bruno": {
+      "voice": "es-AR-TomasNeural",
+      "region": "Argentina",
+      "rate": "+7%",
+      "pitch": "+4Hz",
+      "volume": "+7%",
+      "direction": "energetic, competitive, quick and expressive",
+      "auditionFile": "audition-bruno.mp3"
+    },
+    "tomas": {
+      "voice": "es-UY-MateoNeural",
+      "region": "Uruguay",
+      "rate": "+9%",
+      "pitch": "+7Hz",
+      "volume": "+5%",
+      "direction": "curious, playful, slightly improvisational",
+      "auditionFile": "audition-tomas.mp3"
+    },
+    "valentina": {
+      "voice": "es-UY-ValentinaNeural",
+      "region": "Uruguay",
+      "rate": "-5%",
+      "pitch": "-1Hz",
+      "volume": "+5%",
+      "direction": "confident, ironic, precise and relaxed",
+      "auditionFile": "audition-valentina.mp3"
+    },
+    "ernesto": {
+      "voice": "es-CL-LorenzoNeural",
+      "region": "Chile",
+      "rate": "-12%",
+      "pitch": "-6Hz",
+      "volume": "+6%",
+      "direction": "warm, lower, calm and dry",
+      "auditionFile": "audition-ernesto.mp3"
+    }
+  }
+}
