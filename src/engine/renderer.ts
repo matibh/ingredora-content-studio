@@ -1307,7 +1307,7 @@ export async function renderPackageToWebM(
         // The camera stays still here: no searching pan or push after the exterior cut.
         desiredPosition.set(4.20,.12,2.50);
         desiredTarget.set(0,-.78,.20);
-        desiredFov=48;
+        desiredFov=58;
       }else if(time<girlsResponse){
         // Keep Martina and Valentina together while they watch Bruno for a beat.
         desiredPosition.set(-.20,2.30,6.90);
