@@ -23,6 +23,10 @@ type Production = {
   caption?: string;
   collection?: "advertising" | "series";
   renderEngine?: "three" | "pixi2d";
+  seriesTitle?: string;
+  seasonNumber?: number;
+  episodeNumber?: number;
+  episodeLabel?: string;
 };
 
 type Manifest = {
@@ -290,6 +294,26 @@ function App() {
                 </article>
               ))}
             </div>
+          </section>
+        )}
+
+        {collectionFilter === "series" && (
+          <section className="chapters-section" aria-label="Capítulos de las series">
+            <div className="section-topline"><div><p className="eyebrow">SERIES ORIGINALS</p><h2>Capítulos</h2></div><span className="section-index">BIBLIOTECA POR EPISODIOS</span></div>
+            {Array.from(new Set(visibleProductions.filter((item) => item.collection === "series" && item.seriesTitle).map((item) => item.seriesTitle!))).map((seriesTitle) => {
+              const episodes = visibleProductions.filter((item) => item.collection === "series" && item.seriesTitle === seriesTitle).sort((left, right) => (left.episodeNumber ?? 999) - (right.episodeNumber ?? 999));
+              return <div className="series-block" key={seriesTitle}>
+                <div className="series-heading"><div><span className="series-kicker">SERIE ORIGINAL · TEMPORADA {episodes[0]?.seasonNumber ?? 1}</span><h3>{seriesTitle}</h3></div><span>{episodes.length} {episodes.length === 1 ? "CAPÍTULO" : "CAPÍTULOS"}</span></div>
+                <div className="chapter-grid">{episodes.map((episode) => {
+                  const playable = (episode.status === "ready" && !!episode.videoUrl) || !!localVideos[episode.id];
+                  return <button className={playable ? "chapter-card playable" : "chapter-card pending"} key={episode.id} type="button" disabled={!playable} onClick={() => { setActiveId(episode.id); window.scrollTo({ top: 0, behavior: "smooth" }); }}>
+                    <span className="chapter-number">{episode.episodeNumber === 0 ? "P" : String(episode.episodeNumber ?? 1).padStart(2, "0")}</span>
+                    <span className="chapter-copy"><strong>{episode.episodeLabel || episode.title}</strong><small>{episode.description}</small><em>{playable ? "REPRODUCIR CAPÍTULO" : "RENDER LISTO · PENDIENTE DE INTEGRAR A LA BIBLIOTECA"}</em></span>
+                    <span className="chapter-duration">{formatDuration(episode.durationSeconds)}</span>
+                  </button>;
+                })}</div>
+              </div>;
+            })}
           </section>
         )}
 
