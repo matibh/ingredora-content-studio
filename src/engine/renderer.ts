@@ -1296,7 +1296,7 @@ export async function renderPackageToWebM(
       if(time<6){
         // Wider profile from the opening frame: full seated posture and both packages remain visible.
         desiredPosition.set(5.4,-.28,.42);
-        desiredTarget.set(0,-1.05,.20);
+        desiredTarget.set(0,-.70,.20);
         desiredFov=44;
       }else if(time>=6&&time<12){
         // Wide master reveals the open cross-aisle as the girls enter from opposite side passages.
@@ -1306,9 +1306,9 @@ export async function renderPackageToWebM(
       }else if(cue){
         const subject=entrePartidasSet.getSpeakerPosition(cue.speaker);
         const angle=cue.speaker==="martina"?.48:cue.speaker==="valentina"?-.48:.58;
-        desiredPosition.set(subject.x+angle,subject.y+1.05,subject.z+5.75);
+        desiredPosition.set(subject.x+angle,subject.y+1.08,subject.z+6.2);
         desiredTarget.set(subject.x,subject.y,subject.z);
-        desiredFov=cue.speaker==="bruno"?40:39;
+        desiredFov=cue.speaker==="bruno"?41:40;
       }else{
         // A calm three-shot for reactions; no camera teleporting between lines.
         desiredPosition.set(0,2.45,10.8);
