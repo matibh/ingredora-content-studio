@@ -390,6 +390,16 @@ export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
   world.add(interior);
   const exterior=new THREE.Group();
   world.add(exterior);
+  // Dedicated low-key exterior illumination: the street remains nighttime-blue,
+  // but the shopfront, house facade and roof stay readable instead of collapsing
+  // into silhouettes against the sky.
+  exterior.add(new THREE.HemisphereLight(0x9db5d4,0x35404a,1.65));
+  const exteriorKey=new THREE.DirectionalLight(0xffd5a5,2.25);
+  exteriorKey.position.set(-5.5,8.5,7.0);
+  exterior.add(exteriorKey);
+  const exteriorCoolFill=new THREE.DirectionalLight(0x86a8d4,0.85);
+  exteriorCoolFill.position.set(7.0,4.0,-1.5);
+  exterior.add(exteriorCoolFill);
   const extMat=(color:string,roughness=.86,metalness=0)=>new THREE.MeshStandardMaterial({color,roughness,metalness});
   const extBox=(size:[number,number,number],position:[number,number,number],material:THREE.Material)=>{
     const mesh=new THREE.Mesh(new THREE.BoxGeometry(...size),material);
