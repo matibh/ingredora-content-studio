@@ -411,7 +411,22 @@ export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
   };
   const extGround=new THREE.Mesh(new THREE.PlaneGeometry(48,48),extMat("#232b32",.98));
   extGround.rotation.x=-Math.PI/2;extGround.position.set(0,-1.99,-4);extGround.receiveShadow=true;exterior.add(extGround);
-  const asphalt=new THREE.Mesh(new THREE.PlaneGeometry(48,12),extMat("#20272f",.98));
+  const asphaltTexture=texture((ctx,w,h)=>{
+    ctx.fillStyle="#252c33";ctx.fillRect(0,0,w,h);
+    for(let i=0;i<1450;i++){
+      const x=(i*97)%w,y=(i*193)%h;
+      const shade= i%3===0 ? "rgba(164,174,178,.10)" : "rgba(8,13,17,.12)";
+      ctx.fillStyle=shade;ctx.fillRect(x,y,1+(i%4),1+(i%2));
+    }
+    for(let i=0;i<18;i++){
+      const x=(i*137)%w,y=(i*83)%h;
+      ctx.strokeStyle="rgba(9,13,17,.28)";ctx.lineWidth=2+(i%3);
+      ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+18+(i%4)*11,y+3+(i%3)*5);ctx.lineTo(x+25+(i%5)*12,y+1);ctx.stroke();
+    }
+  },512,512);
+  asphaltTexture.wrapS=THREE.RepeatWrapping;asphaltTexture.wrapT=THREE.RepeatWrapping;asphaltTexture.repeat.set(6,2);
+  const asphaltMat=new THREE.MeshStandardMaterial({map:asphaltTexture,roughness:.98,color:"#b5bdc1"});
+  const asphalt=new THREE.Mesh(new THREE.PlaneGeometry(48,12),asphaltMat);
   asphalt.rotation.x=-Math.PI/2;asphalt.position.set(0,-1.975,5.3);asphalt.receiveShadow=true;exterior.add(asphalt);
   const sidewalk=extMat("#777a78",.94),curb=extMat("#b7b7ad",.85),roadLine=extMat("#d5c58f",.92);
   extBox([26,.16,2.5],[0,-1.88,-1.95],sidewalk);
@@ -420,7 +435,7 @@ export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
 
   // Supermarket facade: broad lit windows, glass entrance, fascia and a readable sign.
   const storeWall=extMat("#3d514b",.9),storeTrim=extMat("#172a27",.7),windowFrame=extMat("#b9c2ba",.38,.32);
-  extBox([8.2,5.35,.72],[-2.65,.70,-5.25],storeWall);
+  extBox([8.2,5.35,5.8],[-2.65,.70,-7.75],storeWall);
   extBox([8.45,.48,.90],[-2.65,3.38,-5.15],storeTrim);
   extBox([8.35,.16,.96],[-2.65,-1.91,-5.15],extMat("#263a34",.8));
   const litGlass=new THREE.MeshStandardMaterial({color:"#d7c49c",emissive:"#efb65f",emissiveIntensity:.42,roughness:.22,metalness:.08});
@@ -472,7 +487,7 @@ export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
     ctx.fillStyle=shade;ctx.fillRect(0,0,w,h);
   },512,1024);
   const brickMaterial=new THREE.MeshStandardMaterial({map:brickTexture,roughness:.96});
-  extBox([4.85,13.15,.86],[5.35,4.66,-5.32],brickMaterial);
+  extBox([4.85,13.15,5.2],[5.35,4.66,-7.49],brickMaterial);
   const buildingTrim=extMat("#6d382c",.88),buildingConcrete=extMat("#8e8d82",.9),buildingMetal=extMat("#343b3c",.54,.25);
   // Flat roofline and parapet replace the pitched house roof.
   extBox([5.05,.34,1.02],[5.35,11.34,-5.25],buildingTrim);
@@ -522,6 +537,276 @@ export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
   const streetGlow=new THREE.PointLight("#ffe0a1",3.2,9);streetGlow.position.set(-8.55,4.55,-1.85);exterior.add(streetGlow);
   const streetBulb=new THREE.Mesh(new THREE.SphereGeometry(.17,10,8),new THREE.MeshBasicMaterial({color:"#fff0c2"}));
   streetBulb.position.copy(streetGlow.position);exterior.add(streetBulb);
+  // Complete street dressing: three-dimensional city blocks, rooftop equipment,
+  // a parked compact car, a locked bicycle and a small dog waiting by the entrance.
+  const roofMat=extMat("#454b49",.88),roofEdge=extMat("#777c76",.86),roofDark=extMat("#343b3a",.72,.12);
+  // The supermarket is a complete building volume now, not a thin stage wall.
+  extBox([8.55,.24,6.15],[-2.65,3.48,-7.75],roofMat);
+  extBox([8.4,.32,.18],[-2.65,3.68,-4.92],roofEdge);
+  extBox([.20,4.95,5.72],[-6.82,.72,-7.75],storeWall);
+  extBox([.20,4.95,5.72],[1.52,.72,-7.75],storeWall);
+  extBox([8.28,.16,.20],[-2.65,-1.91,-4.83],roofDark);
+  // Rooftop parapets, ventilation housings, ducts and service walkway.
+  extBox([8.52,.28,.18],[-2.65,3.70,-10.72],roofEdge);
+  extBox([.18,.28,5.82],[-6.82,3.70,-7.82],roofEdge);
+  extBox([.18,.28,5.82],[1.52,3.70,-7.82],roofEdge);
+  for(let i=0;i<3;i++){
+    const hvac=extBox([1.05,.62,.82],[-5.25+i*2.3,3.96,-8.55],roofDark);
+    extBox([.78,.075,.62],[-5.25+i*2.3,4.30,-8.55],roofEdge);
+    for(let vent=0;vent<4;vent++)extBox([.055,.32,.60],[-5.58+i*2.3+vent*.20,3.94,-8.55],roofEdge);
+  }
+  const ductMat=extMat("#9a9d94",.55,.38);
+  extBox([.22,.18,2.1],[-.85,3.82,-9.6],ductMat);
+  extBox([.18,.85,.18],[-.85,4.20,-10.4],ductMat);
+
+  // The apartment block has a real return wall and roof thickness; the side face
+  // catches cool street light and makes its mass readable in the establishing shot.
+  extBox([.22,13.05,5.12],[2.91,4.66,-7.49],buildingTrim);
+  extBox([.22,13.05,5.12],[7.79,4.66,-7.49],buildingTrim);
+  extBox([5.05,.24,5.45],[5.35,11.32,-7.50],buildingTrim);
+  extBox([5.12,.26,.20],[5.35,11.52,-4.82],buildingConcrete);
+  extBox([5.12,.26,.20],[5.35,11.52,-10.18],buildingConcrete);
+  // Roof terrace parapet and a visible service stair core / water tanks.
+  extBox([.16,1.0,5.1],[2.92,11.95,-7.5],buildingConcrete);
+  extBox([.16,1.0,5.1],[7.78,11.95,-7.5],buildingConcrete);
+  const tankMat=extMat("#7d8987",.52,.18);
+  for(let i=0;i<2;i++){
+    const tank=new THREE.Mesh(new THREE.CylinderGeometry(.48,.48,.95,16),tankMat);
+    tank.position.set(4.25+i*1.15,12.12,-8.6);tank.castShadow=true;exterior.add(tank);
+    extBox([.12,.12,.12],[4.25+i*1.15,12.64,-8.6],roofDark);
+    extBox([.07,.55,.07],[4.25+i*1.15,12.85,-8.6],roofDark);
+  }
+  // More natural surrounding city context: a lower residential building on the
+  // left and a corner apartment block on the right, both with side walls and roofs.
+  const sideConcrete=extMat("#777b76",.94),sideCream=extMat("#c4b9a4",.92),sideShadow=extMat("#514e47",.82);
+  extBox([5.45,7.6,5.8],[-10.45,1.80,-7.55],sideConcrete);
+  extBox([5.65,.22,6.0],[-10.45,5.72,-7.55],roofEdge);
+  extBox([.18,7.25,5.6],[-13.18,1.80,-7.55],sideShadow);
+  for(let floor=0;floor<3;floor++){
+    const wy=-.65+floor*2.15;
+    for(let col=0;col<2;col++){
+      const wx=-11.55+col*2.15;
+      extBox([.98,1.22,.12],[wx,wy,-4.60],sideShadow);
+      const pane=new THREE.MeshStandardMaterial({color:floor===1&&col===0?"#b5a17d":"#72878d",emissive:floor===1&&col===0?"#8a633c":"#1c2b33",emissiveIntensity:.13,roughness:.25});
+      extBox([.82,1.05,.05],[wx,wy,-4.51],pane);
+      extBox([.04,1.08,.07],[wx,wy,-4.47],buildingMetal);
+      extBox([.86,.045,.07],[wx,wy,-4.47],buildingMetal);
+    }
+    extBox([5.35,.10,.18],[-10.45,wy-.78,-4.52],buildingConcrete);
+  }
+  extBox([5.7,.20,5.95],[-10.45,-1.88,-7.55],sideShadow);
+  extBox([5.5,.18,5.9],[-10.45,5.55,-7.55],sideCream);
+  // Right-hand corner building: plaster, concrete bands, balconies, recessed
+  // windows, a ground-floor doorway and rooftop plant room.
+  extBox([5.65,8.85,6.0],[10.55,2.45,-7.55],sideCream);
+  extBox([5.82,.24,6.15],[10.55,6.99,-7.55],roofEdge);
+  extBox([.22,8.55,5.85],[7.72,2.45,-7.55],sideShadow);
+  for(let floor=0;floor<4;floor++){
+    const wy=-.52+floor*1.95;
+    for(let col=0;col<2;col++){
+      const wx=9.45+col*2.18;
+      extBox([1.02,1.28,.14],[wx,wy,-4.45],buildingMetal);
+      const pane=new THREE.MeshStandardMaterial({color:(floor+col)%3===0?"#87969a":"#c7bda8",emissive:(floor+col)%3===0?"#263943":"#9a6a3d",emissiveIntensity:(floor+col)%3===0?.06:.16,roughness:.25,metalness:.06});
+      extBox([.86,1.10,.05],[wx,wy,-4.35],pane);
+      extBox([.045,1.12,.065],[wx,wy,-4.32],buildingMetal);
+      extBox([.90,.045,.065],[wx,wy,-4.32],buildingMetal);
+    }
+    extBox([5.55,.10,.24],[10.55,wy-.80,-4.40],buildingConcrete);
+    if(floor<3){
+      for(const col of [0,1]){
+        const bx=9.45+col*2.18,by=wy-.30;
+        extBox([1.18,.07,.54],[bx,by,-4.10],buildingMetal);
+        extBox([1.18,.055,.06],[bx,by+.38,-3.84],buildingMetal);
+        for(const dx of [-.50,-.16,.16,.50])extBox([.035,.38,.035],[bx+dx,by+.18,-3.84],buildingMetal);
+      }
+    }
+  }
+  extBox([1.05,2.15,.16],[10.55,-.82,-4.37],buildingMetal);
+  extBox([.78,1.92,.055],[10.55,-.82,-4.25],sideShadow);
+  extBox([1.30,.12,.72],[10.55,.36,-4.18],buildingConcrete);
+  extBox([5.75,.16,5.95],[10.55,-1.88,-7.55],sideShadow);
+  extBox([1.5,1.1,1.1],[11.55,7.48,-8.15],roofDark);
+  extBox([.95,.70,.95],[9.35,7.28,-8.8],tankMat);
+
+  // Sidewalk construction: individual paving slabs, curb stones, a lowered
+  // crossing ramp, tactile paving and storm-water grates.
+  const pavingLine=extMat("#626865",.96),pavingLight=extMat("#999b94",.96);
+  for(let i=-12;i<=12;i++){
+    extBox([.018,.012,2.24],[i*1.0,-1.795,-1.94],pavingLine);
+    if(i%3===0)extBox([.88,.012,.018],[i*1.0,-1.795,-2.86],pavingLight);
+  }
+  for(let i=-5;i<=5;i++)extBox([2.33,.16,.04],[i*2.35,-1.80,-3.13],curb);
+  extBox([2.1,.035,.72],[1.7,-1.86,-3.38],pavingLight);
+  const tactileMat=extMat("#b7a77d",.9);
+  extBox([1.65,.025,.42],[1.7,-1.83,-2.97],tactileMat);
+  for(let row=0;row<3;row++)for(let col=0;col<9;col++){
+    const stud=new THREE.Mesh(new THREE.CylinderGeometry(.035,.035,.035,8),tactileMat);
+    stud.position.set(.98+col*.18,-1.80,-3.10+row*.12);exterior.add(stud);
+  }
+  const grateMat=extMat("#30383a",.76,.34);
+  extBox([.68,.025,.22],[-7.6,-1.945,1.5],grateMat);
+  for(let i=0;i<8;i++)extBox([.025,.012,.20],[-7.88+i*.08,-1.925,1.5],buildingConcrete);
+  const manholeMat=extMat("#454c4c",.72,.38);
+  const manhole=new THREE.Mesh(new THREE.CylinderGeometry(.42,.42,.035,24),manholeMat);
+  manhole.rotation.x=Math.PI/2;manhole.position.set(6.1,-1.952,6.8);exterior.add(manhole);
+  const manholeRing=new THREE.Mesh(new THREE.TorusGeometry(.35,.025,6,24),roofEdge);
+  manholeRing.position.set(6.1,-1.925,6.8);exterior.add(manholeRing);
+
+  // Low-profile street markings and a proper parking bay around the car.
+  const paintMat=extMat("#d8d8c7",.88);
+  extBox([.09,.012,4.8],[-7.75,-1.953,2.7],paintMat);
+  extBox([.09,.012,4.8],[-2.95,-1.953,2.7],paintMat);
+  for(let i=0;i<8;i++)extBox([.16,.012,.08],[-7.5+i*.58,-1.953,5.8],roadLine);
+
+  // A parked five-door compact car with independent body panels, glazing,
+  // headlights, mirrors, tyres, alloy rims, door seams and a soft contact shadow.
+  const car=new THREE.Group();car.position.set(-5.35,-1.975,2.65);car.rotation.y=-.025;exterior.add(car);
+  const carPaint=extMat("#263d50",.30,.32),carDark=extMat("#17252e",.46,.15),carGlass=new THREE.MeshStandardMaterial({color:"#7f9ca5",roughness:.12,metalness:.25,transparent:true,opacity:.78});
+  const carMetal=extMat("#aeb9b9",.24,.82),rubber=extMat("#171b1d",.72,.02),lampMat=new THREE.MeshStandardMaterial({color:"#f7e8bd",emissive:"#f3d28d",emissiveIntensity:.48,roughness:.2});
+  const carBox=(size:[number,number,number],pos:[number,number,number],material:THREE.Material)=>{
+    const mesh=new THREE.Mesh(new THREE.BoxGeometry(...size),material);mesh.position.set(...pos);mesh.castShadow=true;mesh.receiveShadow=true;car.add(mesh);return mesh;
+  };
+  const carSphere=(pos:[number,number,number],scale:[number,number,number],material:THREE.Material)=>{
+    const mesh=new THREE.Mesh(new THREE.SphereGeometry(.5,12,8),material);mesh.position.set(...pos);mesh.scale.set(...scale);car.add(mesh);return mesh;
+  };
+  const carRod=(a:[number,number,number],b:[number,number,number],radius:number,material:THREE.Material)=>{
+    const start=new THREE.Vector3(...a),end=new THREE.Vector3(...b),delta=end.clone().sub(start);
+    const mesh=new THREE.Mesh(new THREE.CylinderGeometry(radius,radius,delta.length(),8),material);
+    mesh.position.copy(start.add(end).multiplyScalar(.5));mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),delta.normalize());car.add(mesh);return mesh;
+  };
+  carBox([3.85,.62,1.50],[0,.73,0],carPaint);
+  carBox([1.12,.40,1.47],[1.33,.83,0],carPaint);
+  carBox([.82,.34,1.46],[-1.48,.79,0],carPaint);
+  carBox([1.90,.72,1.28],[-.12,1.27,0],carPaint);
+  carBox([1.78,.58,1.19],[-.12,1.31,0],carGlass);
+  // Pillars separate the windscreen and door glazing instead of one opaque cabin cube.
+  for(const side of [-1,1]){
+    const z=side*.675;
+    for(const x of [-.98,-.12,.72])carRod([x,1.00,z],[x+.02,1.60,z*.91],.045,carDark);
+    carBox([.70,.40,.025],[-.57,1.32,side*.654],carGlass);
+    carBox([.69,.40,.025],[.30,1.32,side*.654],carGlass);
+    carBox([.035,.075,.035],[-.88,.91,side*.77],carMetal);
+    carBox([.32,.045,.025],[.08,.98,side*.758],carDark);
+    carBox([.16,.045,.025],[.66,.98,side*.758],carDark);
+    carBox([.15,.12,.16],[.92,1.18,side*.76],carPaint);
+  }
+  carBox([.10,.26,1.30],[1.93,.72,0],carDark);
+  carBox([.12,.27,.42],[1.99,.77,.0],carMetal);
+  carBox([.08,.22,.40],[-1.99,.78,0],lampMat);
+  for(const x of [-1.20,1.18])for(const side of [-1,1]){
+    const tyre=new THREE.Mesh(new THREE.CylinderGeometry(.36,.36,.20,20),rubber);
+    tyre.rotation.x=Math.PI/2;tyre.position.set(x,.36,side*.76);tyre.castShadow=true;car.add(tyre);
+    const rim=new THREE.Mesh(new THREE.CylinderGeometry(.205,.205,.214,18),carMetal);
+    rim.rotation.x=Math.PI/2;rim.position.set(x,.36,side*.77);car.add(rim);
+    const hub=new THREE.Mesh(new THREE.CylinderGeometry(.075,.075,.22,12),carDark);
+    hub.rotation.x=Math.PI/2;hub.position.set(x,.36,side*.78);car.add(hub);
+    for(let spoke=0;spoke<6;spoke++){
+      const angle=spoke*Math.PI/3;
+      const bolt=new THREE.Mesh(new THREE.SphereGeometry(.026,6,5),roofEdge);
+      bolt.position.set(x+Math.cos(angle)*.145,.36+Math.sin(angle)*.145,side*.895);car.add(bolt);
+    }
+  }
+  carBox([.05,.20,.19],[1.95,.94,.48],lampMat);
+  carBox([.05,.20,.19],[1.95,.94,-.48],lampMat);
+  carBox([.08,.22,.18],[-1.96,.93,.50],extMat("#a44339",.35));
+  carBox([.08,.22,.18],[-1.96,.93,-.50],extMat("#a44339",.35));
+  carBox([.18,.09,.42],[1.91,.56,0],carDark);
+  carBox([.18,.09,.42],[-1.92,.57,0],carDark);
+  const carShadow=new THREE.Mesh(new THREE.PlaneGeometry(4.3,2.05),new THREE.MeshBasicMaterial({color:"#080d12",transparent:true,opacity:.30,depthWrite:false}));
+  carShadow.rotation.x=-Math.PI/2;carShadow.position.set(-5.35,-1.962,2.65);exterior.add(carShadow);
+
+  // A properly framed city bicycle: two spoked wheels, welded diamond frame,
+  // front fork, chain ring, pedals, saddle, handlebar, fenders and kickstand.
+  const bike=new THREE.Group();bike.position.set(3.55,-1.975,-3.02);bike.rotation.y=.025;exterior.add(bike);
+  const bikeMetal=extMat("#aeb8b5",.30,.82),bikeDark=extMat("#293236",.52,.25),bikeRubber=extMat("#171b1d",.72,.02);
+  const bikeRod=(a:[number,number,number],b:[number,number,number],radius:number,material:THREE.Material)=>{
+    const va=new THREE.Vector3(...a),vb=new THREE.Vector3(...b),delta=vb.clone().sub(va);
+    const mesh=new THREE.Mesh(new THREE.CylinderGeometry(radius,radius,delta.length(),8),material);
+    mesh.position.copy(va.add(vb).multiplyScalar(.5));mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),delta.normalize());bike.add(mesh);return mesh;
+  };
+  const wheelCenters=[[-.68,.48,0],[.68,.48,0]] as const;
+  for(const [wx,wy,wz] of wheelCenters){
+    const tire=new THREE.Mesh(new THREE.TorusGeometry(.43,.052,8,28),bikeRubber);tire.position.set(wx,wy,wz);bike.add(tire);
+    const rim=new THREE.Mesh(new THREE.TorusGeometry(.365,.018,6,28),bikeMetal);rim.position.set(wx,wy,.006);bike.add(rim);
+    const hub=new THREE.Mesh(new THREE.CylinderGeometry(.075,.075,.13,14),bikeMetal);hub.rotation.x=Math.PI/2;hub.position.set(wx,wy,.01);bike.add(hub);
+    for(let i=0;i<10;i++){
+      const a=i*Math.PI/5;
+      bikeRod([wx,wy,0],[wx+Math.cos(a)*.36,wy+Math.sin(a)*.36,0],.008,bikeMetal);
+    }
+    const fender=new THREE.Mesh(new THREE.TorusGeometry(.47,.018,6,28,Math.PI),bikeDark);fender.position.set(wx,wy,.04);bike.add(fender);
+  }
+  bikeRod([-.68,.48,0],[-.10,.52,0],.027,bikeMetal);
+  bikeRod([-.10,.52,0],[-.32,1.00,0],.027,bikeMetal);
+  bikeRod([-.32,1.00,0],[-.68,.48,0],.027,bikeMetal);
+  bikeRod([-.32,1.00,0],[.38,1.02,0],.027,bikeMetal);
+  bikeRod([.38,1.02,0],[.68,.48,0],.027,bikeMetal);
+  bikeRod([.68,.48,0],[-.10,.52,0],.027,bikeMetal);
+  bikeRod([.38,1.02,0],[.31,1.16,0],.045,bikeDark);
+  bikeRod([.18,1.16,0],[.45,1.16,0],.035,bikeMetal);
+  bikeRod([-.32,1.00,0],[-.40,1.16,0],.032,bikeDark);
+  bikeRod([-.63,1.17,0],[-.20,1.17,0],.042,bikeDark);
+  const saddle=bikeRod([-.55,1.17,0],[-.20,1.17,0],.001,bikeDark);
+  saddle.scale.set(1,1,.1);
+  bikeRod([-.10,.52,0],[-.10,.32,0],.035,bikeDark);
+  bikeRod([-.26,.32,0],[.06,.32,0],.022,bikeMetal);
+  bikeRod([-.10,.32,0],[-.23,.27,0],.028,bikeDark);
+  bikeRod([-.10,.32,0],[.03,.27,0],.028,bikeDark);
+  bikeRod([-.68,.48,.035],[.68,.48,.035],.012,bikeDark);
+  bikeRod([-.32,1.00,.05],[-.32,1.20,.05],.018,bikeMetal);
+  const frontLamp=new THREE.Mesh(new THREE.SphereGeometry(.08,10,8),lampMat);frontLamp.position.set(.42,1.12,.02);bike.add(frontLamp);
+  const rearReflector=new THREE.Mesh(new THREE.BoxGeometry(.11,.07,.06),new THREE.MeshBasicMaterial({color:"#df493f"}));rearReflector.position.set(-.42,1.12,.04);bike.add(rearReflector);
+  bikeRod([.13,.27,0],[.18,.02,0],.018,bikeDark);
+  const bikeShadow=new THREE.Mesh(new THREE.PlaneGeometry(2.25,1.0),new THREE.MeshBasicMaterial({color:"#0a1013",transparent:true,opacity:.23,depthWrite:false}));
+  bikeShadow.rotation.x=-Math.PI/2;bikeShadow.position.set(3.55,-1.962,-3.02);exterior.add(bikeShadow);
+
+  // A small but articulated mixed-breed dog waits beside the supermarket door.
+  // Distinct muzzle, ears, paws, collar, tail and face keep it readable as an animal.
+  const dog=new THREE.Group();dog.position.set(1.75,-1.975,-3.95);dog.rotation.y=-.18;exterior.add(dog);
+  const fur=extMat("#9a6946",.92),furLight=extMat("#d0a77e",.88),furDark=extMat("#54392b",.9),dogBlack=extMat("#201b19",.48);
+  const dogEllipsoid=(pos:[number,number,number],scale:[number,number,number],material:THREE.Material)=>{
+    const mesh=new THREE.Mesh(new THREE.SphereGeometry(.5,14,10),material);mesh.position.set(...pos);mesh.scale.set(...scale);mesh.castShadow=true;mesh.receiveShadow=true;dog.add(mesh);return mesh;
+  };
+  const dogRod=(a:[number,number,number],b:[number,number,number],radius:number,material:THREE.Material)=>{
+    const va=new THREE.Vector3(...a),vb=new THREE.Vector3(...b),delta=vb.clone().sub(va);
+    const mesh=new THREE.Mesh(new THREE.CylinderGeometry(radius*.82,radius,delta.length(),8),material);
+    mesh.position.copy(va.add(vb).multiplyScalar(.5));mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),delta.normalize());dog.add(mesh);return mesh;
+  };
+  dogEllipsoid([-.05,.64,0],[1.08,.63,.48],fur);
+  dogEllipsoid([-.44,.70,0],[.43,.48,.40],furLight);
+  dogEllipsoid([.36,.79,0],[.40,.51,.39],fur);
+  dogEllipsoid([.43,1.03,0],[.62,.57,.53],fur);
+  dogEllipsoid([.72,.91,.015],[.34,.23,.30],furLight);
+  dogEllipsoid([.88,.97,.02],[.13,.10,.16],dogBlack);
+  for(const side of [-1,1]){
+    dogEllipsoid([.47,1.10,side*.235],[.055,.075,.028],dogBlack);
+    const ear=dogEllipsoid([.25,1.22,side*.25],[.15,.29,.13],furDark);ear.rotation.z=side===-1?.22:-.18;
+    dogEllipsoid([-.50,.25,side*.18],[.21,.24,.17],fur);
+    dogRod([-.50,.31,side*.18],[-.52,.08,side*.18],.105,fur);
+    dogEllipsoid([-.52,.075,side*.18],[.18,.095,.14],furDark);
+    dogEllipsoid([.35,.27,side*.18],[.20,.24,.16],fur);
+    dogRod([.35,.31,side*.18],[.39,.08,side*.18],.105,fur);
+    dogEllipsoid([.39,.075,side*.18],[.18,.095,.14],furDark);
+  }
+  dogRod([-.54,.80,0],[-.78,1.00,0],.10,furDark);
+  dogEllipsoid([-.81,1.03,0],[.15,.16,.15],furDark);
+  const collar=new THREE.Mesh(new THREE.TorusGeometry(.23,.035,8,20),extMat("#8e3434",.5,.1));
+  collar.rotation.y=Math.PI/2;collar.position.set(.26,.91,0);dog.add(collar);
+  dogEllipsoid([.27,.70,.24],[.09,.12,.045],carMetal);
+  dogEllipsoid([.95,.94,.02],[.045,.035,.045],dogBlack);
+  const dogShadow=new THREE.Mesh(new THREE.PlaneGeometry(1.55,.82),new THREE.MeshBasicMaterial({color:"#090e12",transparent:true,opacity:.24,depthWrite:false}));
+  dogShadow.rotation.x=-Math.PI/2;dogShadow.position.set(1.75,-1.962,-3.95);exterior.add(dogShadow);
+
+  // Warm door-side light, a simple notice panel and metal bollards anchor the props
+  // to the architecture instead of leaving them floating in an empty street.
+  extBox([.12,1.10,.10],[1.12,-.95,-4.40],roofDark);
+  extBox([.82,.12,.26],[1.12,-.36,-4.31],buildingConcrete);
+  const bollardMat=extMat("#4b5554",.38,.48);
+  for(const x of [-.65,2.9]) {
+    const bollard=new THREE.Mesh(new THREE.CylinderGeometry(.075,.10,.72,10),bollardMat);
+    bollard.position.set(x,-1.60,-3.48);exterior.add(bollard);
+    const cap=new THREE.Mesh(new THREE.SphereGeometry(.08,8,6),carMetal);cap.position.set(x,-1.22,-3.48);exterior.add(cap);
+  }
+
   // A deep navy night sky; all emissive shop and house windows stay warm by contrast.
   exterior.traverse(object=>{if(object instanceof THREE.Mesh){object.castShadow=false;object.receiveShadow=false;}});
   const exteriorBackground=new THREE.Color("#0a1424");
