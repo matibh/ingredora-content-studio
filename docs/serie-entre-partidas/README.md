@@ -19,6 +19,7 @@
 2. [Personajes principales](./02-personajes.md) — fichas de Martina, Bruno, Tomás, Valentina y Ernesto.
 3. [Dirección de arte](./03-direccion-de-arte.md) — estilo 2D, paleta, contornos, diseño maestro y consistencia.
 4. [Continuidad y producción](./04-continuidad-y-produccion.md) — reglas para guiones, episodios, animación y control de calidad.
+5. [Prototipo visual y prepiloto v0](./05-prototipo-visual-v0.md) — primer render de prueba, alcance, decisiones pendientes y archivos fuente.
 
 ## Reglas de autoridad
 
