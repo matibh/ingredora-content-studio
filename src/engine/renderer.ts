@@ -1289,38 +1289,38 @@ export async function renderPackageToWebM(
       const mix = (a: number,b: number,t: number) => a+(b-a)*t;
       const cue=entrePartidasDialogue.find(item=>time>=item.start&&time<=item.end);
       let desiredPosition=new THREE.Vector3(0,2.45,13.0);
-      let desiredTarget=new THREE.Vector3(0,-.35,-2.0);
+      let desiredTarget=new THREE.Vector3(0,-.75,-2.0);
       let desiredFov=45;
-      // Series-style coverage: clean establishing frame, an aisle entrance
-      // master, then controlled singles at eye level for the active speaker.
+      // Series-style coverage: strict side profile, wide cross-aisle reveal,
+      // then medium singles that keep faces, torsos and meaningful body language in frame.
       if(time<6){
-        // Begin on a strict side profile from frame zero; the perpendicular aisle and the girls stay out of this composition.
-        desiredPosition.set(3.35,-.48,.42);
-        desiredTarget.set(0,-.93,.20);
-        desiredFov=37;
+        // Wider profile from the opening frame: full seated posture and both packages remain visible.
+        desiredPosition.set(5.4,-.28,.42);
+        desiredTarget.set(0,-1.05,.20);
+        desiredFov=44;
       }else if(time>=6&&time<12){
         // Wide master reveals the open cross-aisle as the girls enter from opposite side passages.
-        desiredPosition.set(.10,3.25,13.2);
-        desiredTarget.set(0,-.10,-6.4);
-        desiredFov=53;
+        desiredPosition.set(.10,3.05,12.2);
+        desiredTarget.set(0,-.45,-6.15);
+        desiredFov=51;
       }else if(cue){
         const subject=entrePartidasSet.getSpeakerPosition(cue.speaker);
         const angle=cue.speaker==="martina"?.48:cue.speaker==="valentina"?-.48:.58;
-        desiredPosition.set(subject.x+angle,subject.y+1.12,subject.z+5.55);
+        desiredPosition.set(subject.x+angle,subject.y+1.05,subject.z+5.75);
         desiredTarget.set(subject.x,subject.y,subject.z);
-        desiredFov=cue.speaker==="bruno"?38:37;
+        desiredFov=cue.speaker==="bruno"?40:39;
       }else{
         // A calm three-shot for reactions; no camera teleporting between lines.
-        desiredPosition.set(0,2.65,10.8);
-        desiredTarget.set(0,-.28,-2.2);
-        desiredFov=46;
+        desiredPosition.set(0,2.45,10.8);
+        desiredTarget.set(0,-.65,-2.2);
+        desiredFov=47;
       }
       if(frame===0){
         camera.position.copy(desiredPosition);
         camera.userData.entreTarget=desiredTarget.clone();
         camera.fov=desiredFov;
       }
-      const blend = time < 6 ? 0.24 : cue ? 0.14 : 0.08;
+      const blend = time < 6 ? 0.24 : cue ? 0.16 : 0.08;
       camera.position.lerp(desiredPosition,blend);
       const currentTarget=(camera.userData.entreTarget as THREE.Vector3|undefined)??desiredTarget.clone();
       currentTarget.lerp(desiredTarget,blend);
