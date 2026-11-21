@@ -1310,6 +1310,10 @@ export async function renderPackageToWebM(
         desiredTarget.set(0,-.35,-1.5);
         desiredFov=43;
       }
+      if(frame===0){
+        camera.position.set(0,2.5,13.2);
+        camera.userData.entreTarget=new THREE.Vector3(0,-.35,-2.2);
+      }
       const blend = time < 1.55 ? 0.055 : cue ? 0.14 : 0.08;
       camera.position.lerp(desiredPosition,blend);
       const currentTarget=(camera.userData.entreTarget as THREE.Vector3|undefined)??desiredTarget.clone();
