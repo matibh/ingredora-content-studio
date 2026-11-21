@@ -369,11 +369,12 @@ export function updateCharacter(
   rig: CharacterRig,
   time: number,
   cues: DialogueCue[],
-  placements: Array<{ id: CharacterId; x: number }>
+  placements: Array<{ id: CharacterId; x: number }>,
+  forceCamera = false
 ) {
   const cue = cues.find(item => item.speaker === rig.id && time >= item.startSeconds && time <= item.endSeconds);
   const activeSpeaker = cues.find(item => time >= item.startSeconds && time <= item.endSeconds);
-  const lookTarget = cue?.lookAt || (activeSpeaker && activeSpeaker.speaker !== rig.id ? activeSpeaker.speaker : null);
+  const lookTarget = forceCamera ? "camera" : (cue?.lookAt || (activeSpeaker && activeSpeaker.speaker !== rig.id ? activeSpeaker.speaker : null));
   let headTurn = 0;
   if (lookTarget === "camera") {
     headTurn = 0;
