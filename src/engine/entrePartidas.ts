@@ -334,9 +334,9 @@ export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
       const caster=box(trolley,[.11,.13,.12],darkMetal,[side*.48,.78,-.34],false);
       caster.rotation.x=-.12;
       const wheel=new THREE.Mesh(new THREE.CylinderGeometry(.105,.105,.072,12),rubber);
-      wheel.rotation.z=Math.PI/2;wheel.position.set(side*.48,.16,-.34);wheel.castShadow=true;trolley.add(wheel);
+      wheel.rotation.z=Math.PI/2;wheel.position.set(side*.48,.105,-.34);wheel.castShadow=true;trolley.add(wheel);
       const frontWheel=new THREE.Mesh(new THREE.CylinderGeometry(.105,.105,.072,12),rubber);
-      frontWheel.rotation.z=Math.PI/2;frontWheel.position.set(side*.48,.16,.34);frontWheel.castShadow=true;trolley.add(frontWheel);
+      frontWheel.rotation.z=Math.PI/2;frontWheel.position.set(side*.48,.105,.34);frontWheel.castShadow=true;trolley.add(frontWheel);
       box(trolley,[.035,.12,.035],darkMetal,[side*.48,.27,-.34]);
       box(trolley,[.035,.12,.035],darkMetal,[side*.48,.27,.34]);
     }
