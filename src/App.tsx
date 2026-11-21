@@ -31,6 +31,14 @@ type Manifest = {
   productions: Production[];
 };
 
+const SERIES_VOICE_AUDITIONS = [
+  { id: "martina", name: "Martina", voice: "Elena · Argentina", direction: "Precisa y serena" },
+  { id: "bruno", name: "Bruno", voice: "Tomás · Argentina", direction: "Enérgico y competitivo" },
+  { id: "tomas", name: "Tomás", voice: "Mateo · Uruguay", direction: "Curioso e improvisado" },
+  { id: "valentina", name: "Valentina", voice: "Valentina · Uruguay", direction: "Irónica y segura" },
+  { id: "ernesto", name: "Ernesto", voice: "Lorenzo · Chile", direction: "Cálido y pausado" },
+] as const;
+
 const MANIFEST_URL = `${import.meta.env.BASE_URL}studio/productions.json`;
 const EMPTY_MANIFEST: Manifest = { schemaVersion: 1, updatedAt: null, productions: [] };
 
@@ -52,6 +60,7 @@ function App() {
   const [manifest, setManifest] = useState<Manifest>(EMPTY_MANIFEST);
   const [loading, setLoading] = useState(true);
   const [collectionFilter, setCollectionFilter] = useState<"all" | "advertising" | "series">("all");
+  const [voiceAuditionsReady, setVoiceAuditionsReady] = useState(false);
   const [connection, setConnection] = useState<"connected" | "error">("connected");
   const [activeId, setActiveId] = useState<string | null>(null);
   const [localVideos, setLocalVideos] = useState<Record<string, string>>({});
@@ -86,6 +95,17 @@ function App() {
     } finally {
       setLoading(false);
     }
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    const castUrl = import.meta.env.BASE_URL + "studio/audio/entre-partidas/prepilot-v1/voice-cast.json";
+    void fetch(castUrl, { cache: "no-store" })
+      .then((response) => {
+        if (response.ok && !cancelled) setVoiceAuditionsReady(true);
+      })
+      .catch(() => undefined);
+    return () => { cancelled = true; };
   }, []);
 
   useEffect(() => {
@@ -245,6 +265,30 @@ function App() {
             <button type="button" className={collectionFilter === "series" ? "collection-tab active" : "collection-tab"} aria-pressed={collectionFilter === "series"} onClick={() => setCollectionFilter("series")}>Series originales</button>
           </div>
         </section>
+
+        {collectionFilter === "series" && voiceAuditionsReady && (
+          <section className="voice-cast-section" aria-label="Audiciones del elenco">
+            <div className="section-topline">
+              <div><p className="eyebrow">CASTING PROVISIONAL</p><h2>Las cinco voces</h2></div>
+              <span className="section-index">ESPAÑOL · 5 IDENTIDADES</span>
+            </div>
+            <p className="voice-cast-intro">Escuchá cada muestra por separado. Son voces sintéticas de prueba en distintas variedades del Cono Sur; el reparto todavía no está aprobado.</p>
+            <div className="voice-audition-grid">
+              {SERIES_VOICE_AUDITIONS.map((item) => (
+                <article className="voice-audition-card" key={item.id}>
+                  <div className="voice-audition-heading">
+                    <strong>{item.name}</strong>
+                    <small>{item.voice}</small>
+                  </div>
+                  <p>{item.direction}</p>
+                  <audio controls preload="none" aria-label={`Escuchar muestra de voz de ${item.name}`}>
+                    <source src={import.meta.env.BASE_URL + "studio/audio/entre-partidas/prepilot-v1/audition-" + item.id + ".mp3"} type="audio/mpeg" />
+                  </audio>
+                </article>
+              ))}
+            </div>
+          </section>
+        )}
 
         <section className="player-section" aria-label="Última producción">
           <div className="section-topline"><div><p className="eyebrow">THE SCREENING ROOM</p><h2>Última producción</h2></div><span className="section-index">01 — PLAY</span></div>
