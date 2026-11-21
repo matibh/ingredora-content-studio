@@ -8,6 +8,7 @@ on:
       - "public/studio/packages/entre-partidas-supermarket.v1.json"
       - "public/studio/audio/entre-partidas/**"
       - "scripts/render-supermarket.*"
+      - "render-supermarket.html"
       - ".github/workflows/render-entre-partidas-supermarket.yml"
   workflow_dispatch:
 
