@@ -5,6 +5,7 @@ on:
     branches: ["feature/entre-partidas-ad-engine"]
     paths:
       - "src/engine/**"
+      - "src/render-supermarket.ts"
       - "public/studio/packages/entre-partidas-supermarket.v1.json"
       - "public/studio/audio/entre-partidas/**"
       - "scripts/render-supermarket.*"
@@ -44,6 +45,9 @@ jobs:
           done
       - name: Render the complete Three.js scene with narration
         run: node scripts/render-supermarket.mjs
+      - name: Print Vite diagnostics on failure
+        if: failure()
+        run: cat /tmp/vite-preview.log || true
       - name: Convert WebM to MP4
         run: ffmpeg -y -i /tmp/ingredora-entre-partidas-supermercado.webm -c:v libx264 -preset veryfast -crf 20 -pix_fmt yuv420p -c:a aac -b:a 192k -movflags +faststart /tmp/ingredora-entre-partidas-supermercado.mp4
       - name: Upload final MP4
