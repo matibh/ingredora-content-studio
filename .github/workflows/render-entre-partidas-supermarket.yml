@@ -15,6 +15,10 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: entre-partidas-supermarket-render
+  cancel-in-progress: true
+
 jobs:
   render:
     runs-on: ubuntu-latest
@@ -31,9 +35,9 @@ jobs:
           npx playwright install --with-deps chromium
       - name: Build TypeScript and Vite
         run: npm run build
-      - name: Start production preview
+      - name: Start Vite source server for the render harness
         run: |
-          npm run preview -- --host 0.0.0.0 --port 4173 > /tmp/vite-preview.log 2>&1 &
+          npm run dev -- --host 0.0.0.0 --port 4173 > /tmp/vite-preview.log 2>&1 &
           for i in $(seq 1 60); do
             curl -fsS http://127.0.0.1:4173/ >/dev/null && break
             sleep 2
