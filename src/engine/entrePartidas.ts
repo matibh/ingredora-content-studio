@@ -477,7 +477,7 @@ export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
     if(time>=11.4){martina.root.rotation.y=.10;valentina.root.rotation.y=-.10;}
     interior.visible=time>=4.15;
     exterior.visible=time<4.15;
-    world.background.copy(time<4.15?exteriorBackground:interiorBackground);
+    world.background=time<4.15?exteriorBackground:interiorBackground;
     world.fog=time<4.15?exteriorFog:interiorFog;
     bruno.root.rotation.y=0;
     bruno.leftLeg.rotation.x=-1.02;bruno.rightLeg.rotation.x=-1.16;
