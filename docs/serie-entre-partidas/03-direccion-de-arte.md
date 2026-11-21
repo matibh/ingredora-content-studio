@@ -135,6 +135,16 @@ Las articulaciones deben mantener proporciones y evitar deformaciones accidental
 
 No hace falta animar todo de forma continua. Cortes, poses, cambios de expresión y timing cómico pueden generar una sensación de animación más cuidada con un costo de producción menor.
 
+## 5.1 Movimiento natural y apoyo corporal
+
+- Los pies mantienen una línea base estable mientras el personaje está parado; no usar flotación ni rebote continuo del cuerpo.
+- Respiración casi imperceptible, parpadeos no sincronizados y pequeñas inclinaciones de cabeza.
+- Los gestos de brazos deben responder al diálogo: abrir una mano, señalar, encogerse de hombros o acompañar una idea.
+- El personaje que escucha mira al hablante; el hablante mira al interlocutor o al objetivo dramático.
+- La cámara solo recibe miradas cuando el guion lo indica. No poner a todo el elenco mirando al espectador de forma permanente.
+- Evitar que los cinco gesticulen simultáneamente. Las pausas y reacciones silenciosas son parte de la actuación.
+- Los cambios de pose deben conservar el peso del cuerpo y el contacto con el suelo o el asiento.
+
 ## 6. Fondos y cámara
 
 El departamento principal debe tener un plano general reutilizable y zonas de acción claras. Crear variaciones de cámara a partir de los mismos fondos:
