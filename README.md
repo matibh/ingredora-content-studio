@@ -8,6 +8,14 @@ Incluye el flujo completo desde la idea hasta el MP4 aprobado, el template para 
 
 ---
 
+## Series originales
+
+**[Biblia de la sitcom 2D — Entre Partidas](docs/serie-entre-partidas/README.md)**
+
+Documentación central de la serie de Ingredora: premisa, cinco protagonistas, relaciones, dirección de arte 2D vectorial, consistencia visual y protocolo de continuidad/producción.
+
+---
+
 ## Operación del estudio: producción desde ChatGPT
 
 Ingredora Content Studio combina la preparación creativa desde ChatGPT con la ejecución y revisión en la aplicación. El usuario no tiene que completar briefs, prompts ni storyboards manualmente dentro de la web.
