@@ -6,10 +6,14 @@ reordered and retimed. No external TTS, stock audio or replacement voice is used
 """
 from __future__ import annotations
 
+import os
 import subprocess
 from pathlib import Path
 
-VOICE = Path("public/studio/audio/entre-partidas/supermarket-01/voice-track.mp3")
+VOICE = Path(os.environ.get(
+    "ENTRE_PARTIDAS_VOICE_TRACK",
+    "public/studio/audio/entre-partidas/supermarket-01/voice-track.mp3",
+))
 TEMP = VOICE.with_name("voice-track.revised.mp3")
 
 if not VOICE.exists():
