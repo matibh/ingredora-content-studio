@@ -1294,21 +1294,16 @@ export async function renderPackageToWebM(
       let desiredFov=45;
       // Series-style coverage: clean establishing frame, an aisle entrance
       // master, then controlled singles at eye level for the active speaker.
-      if(time<2.05){
-        const p=ease(time/2.05);
-        desiredPosition.set(mix(-.45,0,p),mix(3.0,2.65,p),mix(16,14.0,p));
-        desiredTarget.set(0,-.25,-3.2);desiredFov=mix(51,47,p);
+      if(time<6){
+        // Begin on a strict side profile from frame zero; the perpendicular aisle and the girls stay out of this composition.
+        desiredPosition.set(3.35,-.48,.42);
+        desiredTarget.set(0,-.93,.20);
+        desiredFov=37;
       }else if(time>=6&&time<12){
-        // A clean master shot follows the girls' measured approach down the aisle.
-        desiredPosition.set(.15,2.55,9.4);
-        desiredTarget.set(0,-.35,-5.5);
-        desiredFov=48;
-      }else if(time>=2.05&&time<6){
-        // Early Bruno coverage: a close three-quarter side angle, framing his face and the packets.
-        // The narrow composition keeps the girls out of the background while he studies the labels.
-        desiredPosition.set(2.35,.72,4.25);
-        desiredTarget.set(0,-.88,.18);
-        desiredFov=34;
+        // Wide master reveals the open cross-aisle as the girls enter from opposite side passages.
+        desiredPosition.set(.10,3.25,13.2);
+        desiredTarget.set(0,-.10,-6.4);
+        desiredFov=53;
       }else if(cue){
         const subject=entrePartidasSet.getSpeakerPosition(cue.speaker);
         const angle=cue.speaker==="martina"?.48:cue.speaker==="valentina"?-.48:.58;
@@ -1322,10 +1317,11 @@ export async function renderPackageToWebM(
         desiredFov=46;
       }
       if(frame===0){
-        camera.position.set(0,2.5,13.2);
-        camera.userData.entreTarget=new THREE.Vector3(0,-.35,-2.2);
+        camera.position.copy(desiredPosition);
+        camera.userData.entreTarget=desiredTarget.clone();
+        camera.fov=desiredFov;
       }
-      const blend = time < 1.55 ? 0.055 : cue ? 0.14 : 0.08;
+      const blend = time < 6 ? 0.24 : cue ? 0.14 : 0.08;
       camera.position.lerp(desiredPosition,blend);
       const currentTarget=(camera.userData.entreTarget as THREE.Vector3|undefined)??desiredTarget.clone();
       currentTarget.lerp(desiredTarget,blend);
