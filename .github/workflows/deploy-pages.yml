@@ -7,7 +7,7 @@ on:
   # The voice generator commits its MP3 with GITHUB_TOKEN, which does not
   # trigger another push workflow. Deploy again after that workflow succeeds.
   workflow_run:
-    workflows: ["Generate Cindor game-show presenter voice", "Generate Ingredora Operation Label voice", "Generate Entre Partidas five-character voices"]
+    workflows: ["Generate Cindor game-show presenter voice", "Generate Ingredora Operation Label voice", "Generate Entre Partidas five-character voices", "Generate Entre Partidas supermarket scene voices"]
     types: [completed]
     branches: ["main"]
 
