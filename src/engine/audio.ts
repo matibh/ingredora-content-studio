@@ -25,11 +25,11 @@ export async function generateOriginalSoundtrack({
   const master = context.createGain();
   const compressor = context.createDynamicsCompressor();
   master.gain.setValueAtTime(0.0001, 0);
-  const masterLevel = theme === "detective-case" ? 0.94 : theme === "sitcom-intro" ? 0.84 : 0.72;
+  const masterLevel = theme === "detective-case" ? 0.94 : theme === "sitcom-intro" ? 0.96 : 0.72;
   if (theme === "sitcom-intro") {
     master.gain.linearRampToValueAtTime(masterLevel, 0.12);
-    master.gain.setValueAtTime(masterLevel, 3.20);
-    master.gain.linearRampToValueAtTime(0.0001, 4.15);
+    master.gain.setValueAtTime(masterLevel, 4.78);
+    master.gain.linearRampToValueAtTime(0.0001, 5.20);
   } else {
     master.gain.linearRampToValueAtTime(masterLevel, Math.min(0.8, durationSeconds * 0.12));
     master.gain.setValueAtTime(masterLevel, Math.max(0.8, durationSeconds - 0.55));
@@ -280,6 +280,7 @@ export async function generateOriginalSoundtrack({
     const hook = [
       659.25, 783.99, 880.00, 783.99, 659.25, 587.33, 523.25, 587.33,
       698.46, 783.99, 987.77, 880.00, 783.99, 698.46, 659.25, 523.25,
+      659.25, 698.46, 783.99, 1_046.50,
     ];
     for (let i = 0; i < hook.length; i += 1) {
       const at = i * q * 0.5;
@@ -287,7 +288,9 @@ export async function generateOriginalSoundtrack({
         4_200, i % 2 === 0 ? -0.22 : 0.22);
       if (i % 4 === 2) addTone(hook[i] * 0.5, at + 0.025, 0.16, "sine", 0.055, 1_500, 0);
     }
-    const bassNotes = [130.81, 130.81, 110.00, 110.00, 87.31, 87.31, 98.00, 98.00];
+    const bassNotes = [130.81, 130.81, 110.00, 110.00, 87.31, 87.31, 98.00, 98.00,
+      130.81, 130.81, 110.00, 110.00, 146.83, 146.83, 130.81, 130.81,
+      98.00, 98.00, 130.81, 130.81];
     bassNotes.forEach((hz, i) => {
       const at = i * q * 0.5;
       addTone(hz, at, 0.23, "triangle", 0.20, 420, 0);
@@ -299,7 +302,7 @@ export async function generateOriginalSoundtrack({
     for (let i = 0; i < hitLength; i += 1) {
       hitData[i] = (random() * 2 - 1) * Math.exp(-(i / sampleRate) * 38);
     }
-    for (let beatIndex = 0, at = 0; at < 3.75; beatIndex += 1, at += q) {
+    for (let beatIndex = 0, at = 0; at < 4.70; beatIndex += 1, at += q) {
       // Small soft kick on each quarter note.
       addTone(beatIndex % 2 === 0 ? 72 : 86, at, 0.12, "sine", 0.11, 180, 0);
       // Brushed snare/clap on beats two and four, intentionally light and comic.
@@ -328,8 +331,8 @@ export async function generateOriginalSoundtrack({
       }
     }
     // A tiny rising two-note tag makes the sting land like the start of a sitcom.
-    addTone(783.99, 3.15, 0.24, "triangle", 0.14, 4_000, -0.12);
-    addTone(1_046.50, 3.38, 0.42, "triangle", 0.16, 4_800, 0.16);
+    addTone(783.99, 4.18, 0.26, "triangle", 0.15, 4_000, -0.12);
+    addTone(1_046.50, 4.43, 0.50, "triangle", 0.18, 4_800, 0.16);
   }
 
   if (theme === "game-show") {

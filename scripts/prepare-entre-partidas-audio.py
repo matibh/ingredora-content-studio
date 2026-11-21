@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
-"""Prepare the revised Entre Partidas voice track from the original recorded voice.
+"""Prepare the revised Entre Partidas voice track with one clean Edge-TTS retake.
 
-The voice is kept intact and only existing Bruno/Valentina word fragments are
-reordered and retimed. No external TTS, stock audio or replacement voice is used.
+All original dialogue stays on the existing recordings. Only Bruno's sentence is
+re-synthesized as one continuous utterance in the same es-AR-TomasNeural voice.
 """
 from __future__ import annotations
 
 import os
 import subprocess
+import sys
 from pathlib import Path
 
 VOICE = Path(os.environ.get(
@@ -15,16 +16,61 @@ VOICE = Path(os.environ.get(
     "public/studio/audio/entre-partidas/supermarket-01/voice-track.mp3",
 ))
 TEMP = VOICE.with_name("voice-track.revised.mp3")
+PHRASE = VOICE.with_name("bruno-daily-challenge.generated.mp3")
+NORMALIZED = VOICE.with_name("bruno-daily-challenge.normalized.mp3")
+TARGET_LINE_SECONDS = 3.2
+PHRASE_TEXT = "El Desafío Diario de mañana lo quiero hacer bien."
 
 if not VOICE.exists():
     raise SystemExit(f"Missing source narration: {VOICE}")
+
+
+def run(command: list[str]) -> None:
+    subprocess.run(command, check=True)
+
+
+def duration(path: Path) -> float:
+    result = subprocess.run(
+        ["ffprobe", "-v", "error", "-show_entries", "format=duration",
+         "-of", "default=noprint_wrappers=1:nokey=1", str(path)],
+        check=True, capture_output=True, text=True,
+    )
+    return float(result.stdout.strip())
+
+
+# Generate a natural, complete utterance; no syllable splicing or patching.
+run([
+    sys.executable, "-m", "edge_tts",
+    "--voice", "es-AR-TomasNeural",
+    "--rate", "+0%",
+    "--text", PHRASE_TEXT,
+    "--write-media", str(PHRASE),
+])
+if not PHRASE.exists() or PHRASE.stat().st_size < 20_000:
+    raise SystemExit("Edge TTS did not generate Bruno's replacement line.")
+
+raw_duration = duration(PHRASE)
+if not 1.5 <= raw_duration <= 7.0:
+    raise SystemExit(f"Unexpected replacement line duration: {raw_duration:.3f}s")
+
+# Fit the line to its exact 3.2-second dialogue slot without changing the voice.
+tempo = raw_duration / TARGET_LINE_SECONDS
+run([
+    "ffmpeg", "-hide_banner", "-loglevel", "error", "-y",
+    "-i", str(PHRASE),
+    "-filter:a", f"atempo={tempo:.7f}",
+    "-ar", "48000", "-ac", "2", "-c:a", "libmp3lame", "-b:a", "192k",
+    str(NORMALIZED),
+])
+PHRASE.unlink(missing_ok=True)
+NORMALIZED.replace(PHRASE)
 
 filters: list[str] = []
 labels: list[str] = []
 counter = 0
 
 
-def source_clip(start: float, end: float, label: str | None = None) -> str:
+def source_clip(start: float, end: float, label: str | None = None) -> None:
     global counter
     name = label or f"a{counter}"
     counter += 1
@@ -34,69 +80,54 @@ def source_clip(start: float, end: float, label: str | None = None) -> str:
         f"aformat=sample_fmts=fltp:channel_layouts=stereo[{name}]"
     )
     labels.append(f"[{name}]")
-    return name
 
 
-def silence(duration: float, label: str | None = None) -> str:
+def silence(seconds: float, label: str | None = None) -> None:
     global counter
     name = label or f"a{counter}"
     counter += 1
     filters.append(
-        f"anullsrc=r=48000:cl=stereo,atrim=duration={duration:.4f},"
-        f"asetpts=PTS-STARTPTS, aformat=sample_fmts=fltp:channel_layouts=stereo[{name}]"
+        f"anullsrc=r=48000:cl=stereo,atrim=duration={seconds:.4f},"
+        f"asetpts=PTS-STARTPTS,aformat=sample_fmts=fltp:channel_layouts=stereo[{name}]"
     )
     labels.append(f"[{name}]")
-    return name
 
 
-# Original first section, then the two calls moved together to 11.0s.
-source_clip(0.0, 11.0, "prefix")
-source_clip(12.05, 12.55, "bruno_call_1")
-silence(0.02, "call_gap")
-source_clip(14.05, 14.58, "bruno_call_2")
-silence(1.05, "before_response")
+# Finish Bruno's thought, then Valentina calls just once, only 0.15–0.2s later.
+# Her call now lands at 9.8s, shortly after Bruno finishes saying "aprender".
+source_clip(0.0, 9.8, "prefix")
+source_clip(12.05, 12.55, "valentina_single_call")
+silence(0.20, "before_bruno_reply")
 
-# Preserve the original exchange between the two calls and the corrected line.
+# Keep the original voices and performances for the remaining exchange.
 source_clip(15.711, 25.0, "middle")
 
-# Rebuild: "El Desafío Diario de mañana lo quiero hacer bien."
-# Each syllable comes from the same original Bruno recording.
-phrase = [
-    (25.66, 25.78, "el"),
-    (25.78, 26.16, "desafio"),
-    (26.16, 26.53, "diario"),
-    (2.405, 2.56, "de"),
-    (25.04, 25.56, "manana"),
-    (27.745, 27.93, "lo"),
-    (27.925, 28.12, "quiero"),
-    (28.12, 28.34, "hacer"),
-    (28.34, 28.64, "bien"),
-]
-for index, (start, end, label) in enumerate(phrase):
-    source_clip(start, end, f"phrase_{label}")
-    if index < len(phrase) - 1:
-        silence(0.04, f"phrase_gap_{index}")
-
-# The new sentence occupies 25.0–27.765s; retain the original 1.235s pause
-# before Martina's next line at 29.0s.
-silence(1.235, "after_corrected_line")
+# The new, complete Argentine Bruno take replaces the previously stitched phrase.
+filters.append(
+    "[1:a]atrim=start=0:duration=3.2000,asetpts=PTS-STARTPTS,aresample=48000,"
+    "aformat=sample_fmts=fltp:channel_layouts=stereo[daily_line]"
+)
+labels.append("[daily_line]")
+silence(0.80, "after_daily_line")
 source_clip(29.0, 65.0, "tail")
-# The dialogue after "Bruno, Bruno" was moved 2.611s earlier. Restore the
-# original 65-second programme duration with silence after the last line.
-silence(2.611, "end_padding")
+
+# Preserve the 65-second runtime after the earlier, cleaner exchange.
+fixed_duration = 9.8 + 0.5 + 0.2 + (25.0 - 15.711) + 3.2 + 0.8 + (65.0 - 29.0)
+end_padding = max(0.0, 65.0 - fixed_duration)
+if end_padding:
+    silence(end_padding, "end_padding")
 
 graph = ";".join(filters) + ";" + "".join(labels) + f"concat=n={len(labels)}:v=0:a=1[out]"
-
-command = [
+run([
     "ffmpeg", "-hide_banner", "-loglevel", "error", "-y",
-    "-i", str(VOICE),
+    "-i", str(VOICE), "-i", str(PHRASE),
     "-filter_complex", graph,
     "-map", "[out]",
     "-c:a", "libmp3lame", "-b:a", "192k", "-ar", "48000",
     str(TEMP),
-]
-subprocess.run(command, check=True)
+])
 if not TEMP.exists() or TEMP.stat().st_size < 100_000:
     raise SystemExit("The revised voice track was not created correctly.")
 TEMP.replace(VOICE)
-print(f"Prepared revised Entre Partidas narration: {VOICE.stat().st_size} bytes")
+PHRASE.unlink(missing_ok=True)
+print(f"Prepared 65-second revised Entre Partidas narration: {VOICE.stat().st_size} bytes")

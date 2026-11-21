@@ -50,8 +50,12 @@ jobs:
           sudo apt-get install -y ffmpeg
           ffmpeg -version
           ffmpeg -hide_banner -encoders | grep -E 'libx264| h264 '
-      - name: Re-time original voice fragments for revised dialogue
-        run: python3 scripts/prepare-entre-partidas-audio.py
+      - name: Install Edge TTS for Bruno's clean retake
+        run: |
+          python3 -m venv /tmp/edge-tts
+          /tmp/edge-tts/bin/python -m pip install --disable-pip-version-check --no-cache-dir edge-tts
+      - name: Prepare original voices and Bruno's complete replacement line
+        run: /tmp/edge-tts/bin/python scripts/prepare-entre-partidas-audio.py
       - name: Render the complete Three.js scene with narration
         run: node scripts/render-supermarket.mjs
       - name: Preserve original WebM render

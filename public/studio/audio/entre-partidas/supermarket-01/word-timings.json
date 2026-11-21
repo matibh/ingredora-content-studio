@@ -109,619 +109,612 @@
     },
     {
       "text": "Bruno",
-      "start": 11.0466,
-      "end": 11.4579,
+      "start": 9.8,
+      "end": 10.3,
       "speaker": "valentina",
       "segment": 2
     },
     {
-      "text": "Bruno",
-      "start": 11.5666,
-      "end": 11.9563,
-      "speaker": "valentina",
+      "text": "Un",
+      "start": 10.5958,
+      "end": 10.7,
+      "speaker": "bruno",
       "segment": 3
     },
     {
-      "text": "Un",
-      "start": 13.1958,
-      "end": 13.3,
-      "speaker": "bruno",
-      "segment": 4
-    },
-    {
       "text": "segundo",
-      "start": 13.3104,
-      "end": 13.7479,
+      "start": 10.7104,
+      "end": 11.1479,
       "speaker": "bruno",
-      "segment": 4
+      "segment": 3
     },
     {
       "text": "Estás",
-      "start": 14.9083,
-      "end": 15.1985,
+      "start": 12.3083,
+      "end": 12.5985,
       "speaker": "martina",
-      "segment": 5
+      "segment": 4
     },
     {
       "text": "leyendo",
-      "start": 15.2208,
-      "end": 15.5891,
+      "start": 12.6208,
+      "end": 12.9891,
       "speaker": "martina",
-      "segment": 5
+      "segment": 4
     },
     {
       "text": "los",
-      "start": 15.6115,
-      "end": 15.7565,
+      "start": 13.0115,
+      "end": 13.1565,
       "speaker": "martina",
-      "segment": 5
+      "segment": 4
     },
     {
       "text": "ingredientes",
-      "start": 15.7789,
-      "end": 16.549,
+      "start": 13.1789,
+      "end": 13.949,
       "speaker": "martina",
-      "segment": 5
+      "segment": 4
     },
     {
       "text": "Me",
-      "start": 17.4848,
-      "end": 17.5786,
+      "start": 14.8848,
+      "end": 14.9786,
       "speaker": "bruno",
-      "segment": 6
+      "segment": 5
     },
     {
       "text": "estoy",
-      "start": 17.5786,
-      "end": 17.7765,
+      "start": 14.9786,
+      "end": 15.1765,
       "speaker": "bruno",
-      "segment": 6
+      "segment": 5
     },
     {
       "text": "preparando",
-      "start": 17.8182,
-      "end": 18.2661,
+      "start": 15.2182,
+      "end": 15.6661,
       "speaker": "bruno",
-      "segment": 6
+      "segment": 5
     },
     {
       "text": "Para",
-      "start": 19.4823,
-      "end": 19.6879,
+      "start": 16.8823,
+      "end": 17.0879,
       "speaker": "valentina",
-      "segment": 7
+      "segment": 6
     },
     {
       "text": "qué",
-      "start": 19.7528,
-      "end": 19.8935,
+      "start": 17.1528,
+      "end": 17.2935,
       "speaker": "valentina",
-      "segment": 7
+      "segment": 6
     },
     {
       "text": "Te",
-      "start": 20.731,
-      "end": 20.8176,
+      "start": 18.131,
+      "end": 18.2176,
       "speaker": "valentina",
-      "segment": 7
+      "segment": 6
     },
     {
       "text": "toman",
-      "start": 20.8933,
-      "end": 21.099,
+      "start": 18.2933,
+      "end": 18.499,
       "speaker": "valentina",
-      "segment": 7
+      "segment": 6
     },
     {
       "text": "examen",
-      "start": 21.1206,
-      "end": 21.6617,
+      "start": 18.5206,
+      "end": 19.0617,
       "speaker": "valentina",
-      "segment": 7
+      "segment": 6
     },
     {
       "text": "Ah",
-      "start": 26.4836,
-      "end": 26.718,
+      "start": 23.8836,
+      "end": 24.118,
       "speaker": "martina",
-      "segment": 9
+      "segment": 8
     },
     {
       "text": "y",
-      "start": 26.9078,
-      "end": 26.9747,
+      "start": 24.3078,
+      "end": 24.3747,
       "speaker": "martina",
-      "segment": 9
+      "segment": 8
     },
     {
       "text": "ya",
-      "start": 26.997,
-      "end": 27.131,
+      "start": 24.397,
+      "end": 24.531,
       "speaker": "martina",
-      "segment": 9
+      "segment": 8
     },
     {
       "text": "sabés",
-      "start": 27.1645,
-      "end": 27.4546,
+      "start": 24.5645,
+      "end": 24.8546,
       "speaker": "martina",
-      "segment": 9
+      "segment": 8
     },
     {
       "text": "qué",
-      "start": 27.4993,
-      "end": 27.5662,
+      "start": 24.8993,
+      "end": 24.9662,
       "speaker": "martina",
-      "segment": 9
+      "segment": 8
     },
     {
       "text": "producto",
-      "start": 27.6332,
-      "end": 27.9792,
+      "start": 25.0332,
+      "end": 25.3792,
       "speaker": "martina",
-      "segment": 9
+      "segment": 8
     },
     {
       "text": "va",
-      "start": 28.0015,
-      "end": 28.0796,
+      "start": 25.4015,
+      "end": 25.4796,
       "speaker": "martina",
-      "segment": 9
+      "segment": 8
     },
     {
       "text": "a",
-      "start": 28.0796,
-      "end": 28.1354,
+      "start": 25.4796,
+      "end": 25.5354,
       "speaker": "martina",
-      "segment": 9
+      "segment": 8
     },
     {
       "text": "salir",
-      "start": 28.1689,
-      "end": 28.5372,
+      "start": 25.5689,
+      "end": 25.9372,
       "speaker": "martina",
-      "segment": 9
+      "segment": 8
     },
     {
       "text": "No.",
-      "start": 29.4848,
-      "end": 29.6619,
+      "start": 26.8848,
+      "end": 27.0619,
       "speaker": "bruno",
-      "segment": 10
+      "segment": 9
     },
     {
       "text": "Ah",
-      "start": 31.1966,
-      "end": 31.3914,
+      "start": 28.5966,
+      "end": 28.7914,
       "speaker": "valentina",
-      "segment": 11
+      "segment": 10
     },
     {
       "text": "bueno",
-      "start": 31.6404,
-      "end": 32.0083,
+      "start": 29.0404,
+      "end": 29.4083,
       "speaker": "valentina",
-      "segment": 11
+      "segment": 10
     },
     {
       "text": "Justamente",
-      "start": 32.9068,
-      "end": 33.4693,
+      "start": 30.3068,
+      "end": 30.8693,
       "speaker": "bruno",
-      "segment": 12
+      "segment": 11
     },
     {
       "text": "Por",
-      "start": 34.2172,
-      "end": 34.3631,
+      "start": 31.6172,
+      "end": 31.7631,
       "speaker": "bruno",
-      "segment": 12
+      "segment": 11
     },
     {
       "text": "eso",
-      "start": 34.3631,
-      "end": 34.5297,
+      "start": 31.7631,
+      "end": 31.9297,
       "speaker": "bruno",
-      "segment": 12
+      "segment": 11
     },
     {
       "text": "estoy",
-      "start": 34.5297,
-      "end": 34.7277,
+      "start": 31.9297,
+      "end": 32.1277,
       "speaker": "bruno",
-      "segment": 12
+      "segment": 11
     },
     {
       "text": "estudiando",
-      "start": 34.7381,
-      "end": 35.1964,
+      "start": 32.1381,
+      "end": 32.5964,
       "speaker": "bruno",
-      "segment": 12
+      "segment": 11
     },
     {
       "text": "Puede",
-      "start": 35.9777,
-      "end": 36.1756,
+      "start": 33.3777,
+      "end": 33.5756,
       "speaker": "bruno",
-      "segment": 12
+      "segment": 11
     },
     {
       "text": "tocar",
-      "start": 36.2277,
-      "end": 36.4568,
+      "start": 33.6277,
+      "end": 33.8568,
       "speaker": "bruno",
-      "segment": 12
+      "segment": 11
     },
     {
       "text": "cualquier",
-      "start": 36.4985,
-      "end": 36.7485,
+      "start": 33.8985,
+      "end": 34.1485,
       "speaker": "bruno",
-      "segment": 12
+      "segment": 11
     },
     {
       "text": "producto",
-      "start": 36.8006,
-      "end": 37.1756,
+      "start": 34.2006,
+      "end": 34.5756,
       "speaker": "bruno",
-      "segment": 12
+      "segment": 11
     },
     {
       "text": "Son",
-      "start": 37.9485,
-      "end": 38.136,
+      "start": 35.3485,
+      "end": 35.536,
       "speaker": "bruno",
-      "segment": 12
+      "segment": 11
     },
     {
       "text": "quince",
-      "start": 38.1881,
-      "end": 38.4172,
+      "start": 35.5881,
+      "end": 35.8172,
       "speaker": "bruno",
-      "segment": 12
+      "segment": 11
     },
     {
       "text": "segundos",
-      "start": 38.4381,
-      "end": 38.9589,
+      "start": 35.8381,
+      "end": 36.3589,
       "speaker": "bruno",
+      "segment": 11
+    },
+    {
+      "text": "Y",
+      "start": 36.3366,
+      "end": 36.4371,
+      "speaker": "martina",
       "segment": 12
     },
     {
-      "text": "Y",
-      "start": 38.9366,
-      "end": 39.0371,
-      "speaker": "martina",
-      "segment": 13
-    },
-    {
       "text": "tu",
-      "start": 39.1152,
-      "end": 39.1822,
+      "start": 36.5152,
+      "end": 36.5822,
       "speaker": "martina",
-      "segment": 13
+      "segment": 12
     },
     {
       "text": "plan",
-      "start": 39.2491,
-      "end": 39.4389,
+      "start": 36.6491,
+      "end": 36.8389,
       "speaker": "martina",
-      "segment": 13
+      "segment": 12
     },
     {
       "text": "es",
-      "start": 39.45,
-      "end": 39.5282,
+      "start": 36.85,
+      "end": 36.9282,
       "speaker": "martina",
-      "segment": 13
+      "segment": 12
     },
     {
       "text": "leer",
-      "start": 39.5505,
-      "end": 39.796,
+      "start": 36.9505,
+      "end": 37.196,
       "speaker": "martina",
-      "segment": 13
+      "segment": 12
     },
     {
       "text": "todos",
-      "start": 39.8853,
-      "end": 40.0304,
+      "start": 37.2853,
+      "end": 37.4304,
       "speaker": "martina",
-      "segment": 13
+      "segment": 12
     },
     {
       "text": "los",
-      "start": 40.0639,
-      "end": 40.142,
+      "start": 37.4639,
+      "end": 37.542,
       "speaker": "martina",
-      "segment": 13
+      "segment": 12
     },
     {
       "text": "productos",
-      "start": 40.1978,
-      "end": 40.5996,
+      "start": 37.5978,
+      "end": 37.9996,
       "speaker": "martina",
-      "segment": 13
+      "segment": 12
     },
     {
       "text": "del",
-      "start": 40.5996,
-      "end": 40.6889,
+      "start": 37.9996,
+      "end": 38.0889,
       "speaker": "martina",
-      "segment": 13
+      "segment": 12
     },
     {
       "text": "supermercado",
-      "start": 40.7112,
-      "end": 41.4478,
+      "start": 38.1112,
+      "end": 38.8478,
       "speaker": "martina",
-      "segment": 13
+      "segment": 12
     },
     {
       "text": "No",
-      "start": 42.4848,
-      "end": 42.6098,
+      "start": 39.8848,
+      "end": 40.0098,
       "speaker": "bruno",
-      "segment": 14
+      "segment": 13
     },
     {
       "text": "todos",
-      "start": 42.6723,
-      "end": 43.0473,
+      "start": 40.0723,
+      "end": 40.4473,
       "speaker": "bruno",
-      "segment": 14
+      "segment": 13
     },
     {
       "text": "Empecé",
-      "start": 43.7952,
-      "end": 44.1078,
+      "start": 41.1952,
+      "end": 41.5078,
       "speaker": "bruno",
-      "segment": 14
+      "segment": 13
     },
     {
       "text": "por",
-      "start": 44.1598,
-      "end": 44.2432,
+      "start": 41.5598,
+      "end": 41.6432,
       "speaker": "bruno",
-      "segment": 14
+      "segment": 13
     },
     {
       "text": "galletitas",
-      "start": 44.2536,
-      "end": 44.8265,
+      "start": 41.6536,
+      "end": 42.2265,
       "speaker": "bruno",
-      "segment": 14
+      "segment": 13
     },
     {
       "text": "Después",
-      "start": 45.5765,
-      "end": 45.9515,
+      "start": 42.9765,
+      "end": 43.3515,
       "speaker": "bruno",
-      "segment": 14
+      "segment": 13
     },
     {
       "text": "sigo",
-      "start": 45.9515,
-      "end": 46.2432,
+      "start": 43.3515,
+      "end": 43.6432,
       "speaker": "bruno",
-      "segment": 14
+      "segment": 13
     },
     {
       "text": "con",
-      "start": 46.2952,
-      "end": 46.3786,
+      "start": 43.6952,
+      "end": 43.7786,
       "speaker": "bruno",
-      "segment": 14
+      "segment": 13
     },
     {
       "text": "lácteos",
-      "start": 46.389,
-      "end": 46.8578,
+      "start": 43.789,
+      "end": 44.2578,
       "speaker": "bruno",
-      "segment": 14
+      "segment": 13
     },
     {
       "text": "conservas",
-      "start": 47.0244,
-      "end": 47.4932,
+      "start": 44.4244,
+      "end": 44.8932,
       "speaker": "bruno",
-      "segment": 14
+      "segment": 13
     },
     {
       "text": "y",
-      "start": 47.5244,
-      "end": 47.5557,
+      "start": 44.9244,
+      "end": 44.9557,
       "speaker": "bruno",
-      "segment": 14
+      "segment": 13
     },
     {
       "text": "congelados",
-      "start": 47.5973,
-      "end": 48.2015,
+      "start": 44.9973,
+      "end": 45.6015,
       "speaker": "bruno",
+      "segment": 13
+    },
+    {
+      "text": "Y",
+      "start": 45.633,
+      "end": 45.6979,
+      "speaker": "valentina",
       "segment": 14
     },
     {
-      "text": "Y",
-      "start": 48.233,
-      "end": 48.2979,
-      "speaker": "valentina",
-      "segment": 15
-    },
-    {
       "text": "cuándo",
-      "start": 48.3628,
-      "end": 48.5576,
+      "start": 45.7628,
+      "end": 45.9576,
       "speaker": "valentina",
-      "segment": 15
+      "segment": 14
     },
     {
       "text": "pensás",
-      "start": 48.6118,
-      "end": 48.8607,
+      "start": 46.0118,
+      "end": 46.2607,
       "speaker": "valentina",
-      "segment": 15
+      "segment": 14
     },
     {
       "text": "comprar",
-      "start": 48.904,
-      "end": 49.2178,
+      "start": 46.304,
+      "end": 46.6178,
       "speaker": "valentina",
-      "segment": 15
+      "segment": 14
     },
     {
       "text": "algo",
-      "start": 49.2178,
-      "end": 49.5209,
+      "start": 46.6178,
+      "end": 46.9209,
       "speaker": "valentina",
-      "segment": 15
+      "segment": 14
     },
     {
       "text": "Después",
-      "start": 50.2448,
-      "end": 50.7032,
+      "start": 47.6448,
+      "end": 48.1032,
       "speaker": "bruno",
-      "segment": 16
+      "segment": 15
     },
     {
       "text": "Viniste",
-      "start": 51.9573,
-      "end": 52.3703,
+      "start": 49.3573,
+      "end": 49.7703,
       "speaker": "martina",
-      "segment": 17
+      "segment": 16
     },
     {
       "text": "solo",
-      "start": 52.4037,
-      "end": 52.6716,
+      "start": 49.8037,
+      "end": 50.0716,
       "speaker": "martina",
-      "segment": 17
+      "segment": 16
     },
     {
       "text": "a",
-      "start": 52.6716,
-      "end": 52.7051,
+      "start": 50.0716,
+      "end": 50.1051,
       "speaker": "martina",
-      "segment": 17
+      "segment": 16
     },
     {
       "text": "estudiar",
-      "start": 52.7274,
-      "end": 53.1738,
+      "start": 50.1274,
+      "end": 50.5738,
       "speaker": "martina",
-      "segment": 17
+      "segment": 16
     },
     {
       "text": "Y",
-      "start": 55.4856,
-      "end": 55.5614,
+      "start": 52.8856,
+      "end": 52.9614,
       "speaker": "valentina",
-      "segment": 18
+      "segment": 17
     },
     {
       "text": "acordate",
-      "start": 55.583,
-      "end": 56.0376,
+      "start": 52.983,
+      "end": 53.4376,
       "speaker": "valentina",
-      "segment": 18
+      "segment": 17
     },
     {
       "text": "de",
-      "start": 56.0809,
-      "end": 56.1242,
+      "start": 53.4809,
+      "end": 53.5242,
       "speaker": "valentina",
-      "segment": 18
+      "segment": 17
     },
     {
       "text": "comprar",
-      "start": 56.1783,
-      "end": 56.4921,
+      "start": 53.5783,
+      "end": 53.8921,
       "speaker": "valentina",
-      "segment": 18
+      "segment": 17
     },
     {
       "text": "comida",
-      "start": 56.5246,
-      "end": 56.9142,
+      "start": 53.9246,
+      "end": 54.3142,
       "speaker": "valentina",
-      "segment": 18
+      "segment": 17
     },
     {
       "text": "Sí",
-      "start": 57.8848,
-      "end": 58.114,
+      "start": 55.2848,
+      "end": 55.514,
       "speaker": "bruno",
-      "segment": 19
+      "segment": 18
     },
     {
       "text": "sí",
-      "start": 58.3223,
-      "end": 58.5411,
+      "start": 55.7223,
+      "end": 55.9411,
       "speaker": "bruno",
-      "segment": 19
+      "segment": 18
     },
     {
       "text": "El",
-      "start": 22.389,
-      "end": 22.509,
+      "start": 19.789,
+      "end": 19.949,
       "speaker": "bruno",
-      "segment": 8
+      "segment": 7
     },
     {
       "text": "Desafío",
-      "start": 22.549,
-      "end": 22.929,
+      "start": 19.949,
+      "end": 20.459,
       "speaker": "bruno",
-      "segment": 8
+      "segment": 7
     },
     {
       "text": "Diario",
-      "start": 22.969,
-      "end": 23.339,
+      "start": 20.459,
+      "end": 20.899,
       "speaker": "bruno",
-      "segment": 8
+      "segment": 7
     },
     {
       "text": "de",
-      "start": 23.379,
-      "end": 23.534,
+      "start": 20.899,
+      "end": 21.029,
       "speaker": "bruno",
-      "segment": 8
+      "segment": 7
     },
     {
       "text": "mañana",
-      "start": 23.574,
-      "end": 24.094,
+      "start": 21.029,
+      "end": 21.529,
       "speaker": "bruno",
-      "segment": 8
+      "segment": 7
     },
     {
       "text": "lo",
-      "start": 24.134,
-      "end": 24.319,
+      "start": 21.529,
+      "end": 21.669,
       "speaker": "bruno",
-      "segment": 8
+      "segment": 7
     },
     {
       "text": "quiero",
-      "start": 24.359,
-      "end": 24.554,
+      "start": 21.669,
+      "end": 22.009,
       "speaker": "bruno",
-      "segment": 8
+      "segment": 7
     },
     {
       "text": "hacer",
-      "start": 24.594,
-      "end": 24.814,
+      "start": 22.009,
+      "end": 22.329,
       "speaker": "bruno",
-      "segment": 8
+      "segment": 7
     },
     {
       "text": "bien",
-      "start": 24.854,
-      "end": 25.154,
+      "start": 22.329,
+      "end": 22.989,
       "speaker": "bruno",
-      "segment": 8
+      "segment": 7
     }
   ],
   "segments": [
@@ -746,162 +739,153 @@
     {
       "id": "03-valentina",
       "speaker": "valentina",
-      "text": "¡Bruno, Bruno!",
-      "start": 11,
-      "end": 12.05,
-      "voice": "es-UY-ValentinaNeural",
-      "wordCount": 2
-    },
-    {
-      "id": "04-valentina-call",
-      "speaker": "valentina",
       "text": "Bruno",
-      "start": 11.52,
-      "end": 12.05,
+      "start": 9.8,
+      "end": 10.3,
       "voice": "es-UY-ValentinaNeural",
       "wordCount": 1
     },
     {
-      "id": "05-bruno",
+      "id": "04-bruno",
       "speaker": "bruno",
       "text": "Un segundo...",
-      "start": 13.1,
-      "end": 14.761,
+      "start": 10.5,
+      "end": 12.161,
       "voice": "es-AR-TomasNeural",
       "wordCount": 2
     },
     {
-      "id": "06-martina",
+      "id": "05-martina",
       "speaker": "martina",
       "text": "¿Estás leyendo los ingredientes?",
-      "start": 14.811,
-      "end": 17.048,
+      "start": 12.211,
+      "end": 14.448,
       "voice": "es-AR-ElenaNeural",
       "wordCount": 4
     },
     {
-      "id": "07-bruno",
+      "id": "06-bruno",
       "speaker": "bruno",
       "text": "Me estoy preparando.",
-      "start": 17.389,
-      "end": 19.05,
+      "start": 14.789,
+      "end": 16.45,
       "voice": "es-AR-TomasNeural",
       "wordCount": 3
     },
     {
-      "id": "08-valentina",
+      "id": "07-valentina",
       "speaker": "valentina",
       "text": "¿Para qué? ¿Te toman examen?",
-      "start": 19.389,
-      "end": 22.022,
+      "start": 16.789,
+      "end": 19.422,
       "voice": "es-UY-ValentinaNeural",
       "wordCount": 5
     },
     {
-      "id": "09-bruno",
+      "id": "08-bruno",
       "speaker": "bruno",
       "text": "El Desafío Diario de mañana lo quiero hacer bien.",
-      "start": 22.389,
-      "end": 25.154,
+      "start": 19.789,
+      "end": 22.989,
       "voice": "es-AR-TomasNeural",
       "wordCount": 9
     },
     {
-      "id": "10-martina",
+      "id": "09-martina",
       "speaker": "martina",
       "text": "Ah... ¿y ya sabés qué producto va a salir?",
-      "start": 26.389,
-      "end": 28.998,
+      "start": 23.789,
+      "end": 26.398,
       "voice": "es-AR-ElenaNeural",
       "wordCount": 9
     },
     {
-      "id": "11-bruno",
+      "id": "10-bruno",
       "speaker": "bruno",
       "text": "No.",
-      "start": 29.389,
-      "end": 31.05,
+      "start": 26.789,
+      "end": 28.45,
       "voice": "es-AR-TomasNeural",
       "wordCount": 1
     },
     {
-      "id": "12-valentina",
+      "id": "11-valentina",
       "speaker": "valentina",
       "text": "Ah, bueno.",
-      "start": 31.1,
-      "end": 32.761,
+      "start": 28.5,
+      "end": 30.161,
       "voice": "es-UY-ValentinaNeural",
       "wordCount": 2
     },
     {
-      "id": "13-bruno",
+      "id": "12-bruno",
       "speaker": "bruno",
       "text": "Justamente. Por eso estoy estudiando. Puede tocar cualquier producto. Son quince segundos.",
-      "start": 32.811,
-      "end": 38.792,
+      "start": 30.211,
+      "end": 36.192,
       "voice": "es-AR-TomasNeural",
       "wordCount": 12
     },
     {
-      "id": "14-martina",
+      "id": "13-martina",
       "speaker": "martina",
       "text": "¿Y tu plan es leer todos los productos del supermercado?",
-      "start": 38.842,
-      "end": 41.847,
+      "start": 36.242,
+      "end": 39.247,
       "voice": "es-AR-ElenaNeural",
       "wordCount": 10
     },
     {
-      "id": "15-bruno",
+      "id": "14-bruno",
       "speaker": "bruno",
       "text": "No todos. Empecé por galletitas. Después sigo con lácteos, conservas y congelados.",
-      "start": 42.389,
-      "end": 48.088,
+      "start": 39.789,
+      "end": 45.488,
       "voice": "es-AR-TomasNeural",
       "wordCount": 12
     },
     {
-      "id": "16-valentina",
+      "id": "15-valentina",
       "speaker": "valentina",
       "text": "¿Y cuándo pensás comprar algo?",
-      "start": 48.138,
-      "end": 50.099,
+      "start": 45.538,
+      "end": 47.499,
       "voice": "es-UY-ValentinaNeural",
       "wordCount": 5
     },
     {
-      "id": "17-bruno",
+      "id": "16-bruno",
       "speaker": "bruno",
       "text": "Después.",
-      "start": 50.149,
-      "end": 51.81,
+      "start": 47.549,
+      "end": 49.21,
       "voice": "es-AR-TomasNeural",
       "wordCount": 1
     },
     {
-      "id": "18-martina",
+      "id": "17-martina",
       "speaker": "martina",
       "text": "¿Viniste solo a estudiar?",
-      "start": 51.86,
-      "end": 53.773,
+      "start": 49.26,
+      "end": 51.173,
       "voice": "es-AR-ElenaNeural",
       "wordCount": 4
     },
     {
-      "id": "19-valentina",
+      "id": "18-valentina",
       "speaker": "valentina",
       "text": "¡Y acordate de comprar comida!",
-      "start": 55.389,
-      "end": 57.464,
+      "start": 52.789,
+      "end": 54.864,
       "voice": "es-UY-ValentinaNeural",
       "wordCount": 5
     },
     {
-      "id": "20-bruno",
+      "id": "19-bruno",
       "speaker": "bruno",
       "text": "Sí, sí...",
-      "start": 57.789,
-      "end": 59.45,
+      "start": 55.189,
+      "end": 56.85,
       "voice": "es-AR-TomasNeural",
       "wordCount": 2
     }

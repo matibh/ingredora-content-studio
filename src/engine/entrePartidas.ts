@@ -95,13 +95,13 @@ function makeCharacter(name: EntrePartidasCue["speaker"], x: number, z: number):
 
   const arm=(side:number)=>{
     const pivot=new THREE.Group();
-    // Bruno is seated, so raise the whole arm rig to keep the packages at chest level.
-    pivot.position.set(side*(isBruno?.40:.39),isBruno?1.42:1.56,0);root.add(pivot);
+    // Bruno holds both products forward at chest height; shoulders sit outside the torso
+    // and the forearms extend along the character's forward axis instead of hanging down.
+    pivot.position.set(side*(isBruno?.43:.39),isBruno?1.08:1.56,.02);root.add(pivot);
     if(isBruno){
-      box(pivot,[.22,.40,.25],shirt,[0,-.18,0]);
-      box(pivot,[.16,.40,.18],skin,[0,-.56,.035]);
-      // Palm extends forward to meet the rear face of each package.
-      box(pivot,[.16,.14,.16],skin,[0,-.80,.22]);
+      box(pivot,[.25,.22,.36],shirt,[0,0,.18]);
+      box(pivot,[.19,.19,.40],skin,[0,-.025,.56]);
+      box(pivot,[.20,.16,.18],skin,[0,-.04,.92]);
     }else{
       box(pivot,[.17,.18,.18],skin,[0,-.06,0]);
       box(pivot,[.14,.53,.15],skin,[0,-.39,.018]);
@@ -376,8 +376,8 @@ export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
   const packet=makeHandPacket(packMats[0],.42,.62);
   const packet2=makeHandPacket(packMats[2],.40,.60);
   // Lift both products into Bruno's hands at chest height so they clear his lap and legs.
-  bruno.rightArm.add(packet);packet.position.set(0,-.54,.36);packet.rotation.set(0,0,0);
-  bruno.leftArm.add(packet2);packet2.position.set(0,-.54,.36);packet2.rotation.set(0,0,0);
+  bruno.rightArm.add(packet);packet.position.set(0,-.025,1.065);packet.rotation.set(0,0,0);
+  bruno.leftArm.add(packet2);packet2.position.set(0,-.025,1.065);packet2.rotation.set(0,0,0);
   // Cinematic commercial lighting: soft overhead, warm key, cool rim, contact shadows.
   world.add(new THREE.HemisphereLight(0xf8f3e7,0x666d68,1.45));
   const key=new THREE.SpotLight(0xffe5c6,62,30,Math.PI/4,.62,1.25);
@@ -571,7 +571,7 @@ export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
       rig.mouth.scale.set(1,mouthOpen,1);
       rig.mouth.position.y=-.22-mouthOpen*.004;
       // Small conversational gestures, with relaxed elbows and no exaggerated waving.
-      const gesture=talking?1:0;
+      const gesture=talking&&rig.name!=="bruno"?1:0;
       rig.leftArm.rotation.z=gesture?-.055+Math.sin(time*2.0+phase)*.025:0;
       rig.rightArm.rotation.z=gesture?.055+Math.sin(time*1.8+phase+1)*.025:0;
       rig.leftArm.rotation.x=gesture?.045+Math.sin(time*2.2+phase)*.025:0;
@@ -615,8 +615,8 @@ export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
     }
     // After the girls are revealed on "aprender", hold their gaze on Bruno.
     // A second later they make a tiny, restrained hand gesture before speaking.
-    if(time>=9.10&&time<11.0){
-      const gesture=ease((time-10.05)/.55);
+    if(time>=9.10&&time<10.45){
+      const gesture=ease((time-9.42)/.34);
       for(const rig of [martina,valentina]){
         const phase=rig.name==="martina"?0:.7;
         rig.head.rotation.y=Math.sin(time*.42+phase)*.008;
