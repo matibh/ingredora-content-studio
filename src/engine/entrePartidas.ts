@@ -42,8 +42,8 @@ function makeCharacter(name: EntrePartidasCue["speaker"], x: number, z: number):
   // Individual silhouettes and wardrobe, not three recolours of one model.
   if(name==="bruno"){
     // Bruno is sitting cross-legged/legs-forward on the floor, absorbed in the labels.
-    box(root,[.76,.88,.43],shirt,[0,.98,0]);
-    box(root,[.68,.34,.39],mat("#a95637"),[0,1.40,0]);
+    box(root,[.76,.88,.43],shirt,[0,.72,0]);
+    box(root,[.68,.34,.39],mat("#a95637"),[0,1.12,0]);
   } else if(name==="martina"){
     box(root,[.70,.86,.40],shirt,[0,1.26,0]);
     box(root,[.82,.38,.44],mat("#8d805c"),[0,.86,0]);
@@ -53,8 +53,8 @@ function makeCharacter(name: EntrePartidasCue["speaker"], x: number, z: number):
     box(root,[.78,.20,.44],mat("#294b5c"),[0,1.62,0]);
     box(root,[.12,.68,.10],mat("#d9e1df"),[0,1.25,.23]);
   }
-  box(root,[.22,.20,.22],skin,[0,1.77,0],false);
-  const head=new THREE.Group();head.position.set(0,name==="bruno"?1.82:2.12,0);root.add(head);
+  box(root,[.22,.20,.22],skin,[0,name==="bruno"?1.34:1.77,0],false);
+  const head=new THREE.Group();head.position.set(0,name==="bruno"?1.62:2.12,0);root.add(head);
   box(head,[.68,.68,.60],skin,[0,0,0]);
   // Hair profiles distinguish the cast even in a medium shot.
   // Keep side locks behind the facial plane. The old coplanar boxes intersected
@@ -84,13 +84,13 @@ function makeCharacter(name: EntrePartidasCue["speaker"], x: number, z: number):
   box(head,[.07,.08,.06],skin,[0,-.055,.37],false);
   const mouth=box(head,[.17,.055,.025],mat("#743f3a"),[0,-.20,.355],false);
   const arm=(side:number)=>{
-    const pivot=new THREE.Group();pivot.position.set(side*.42,name==="bruno"?1.20:1.58,0);root.add(pivot);
+    const pivot=new THREE.Group();pivot.position.set(side*.42,name==="bruno"?1.02:1.58,0);root.add(pivot);
     box(pivot,[.22,.46,.23],shirt,[0,-.15,0]);
     box(pivot,[.18,.42,.19],skin,[0,-.56,.015]);
     box(pivot,[.18,.16,.19],skin,[0,-.78,.025]);return pivot;
   };
   const leg=(side:number)=>{
-    const pivot=new THREE.Group();pivot.position.set(side*.20,name==="bruno"?.58:.70,0);root.add(pivot);
+    const pivot=new THREE.Group();pivot.position.set(side*.20,name==="bruno"?.36:.70,0);root.add(pivot);
     box(pivot,[.25,.58,.28],pants,[0,-.27,0]);
     box(pivot,[.30,.17,.42],shoes,[0,-.60,.07]);return pivot;
   };
@@ -293,6 +293,8 @@ export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
     martina.root.rotation.y=.32*ease(walkT);
     valentina.root.rotation.y=-.32*ease(walkT);
     bruno.root.rotation.y=0;
+    bruno.leftLeg.rotation.x=-1.08;
+    bruno.rightLeg.rotation.x=-1.08;
     for(const rig of [bruno,martina,valentina]){
       const talking=rig.name===speaker;
       const lookAngle=cue?.look===rig.name?-.16:cue?.look?.length? .10:0;
