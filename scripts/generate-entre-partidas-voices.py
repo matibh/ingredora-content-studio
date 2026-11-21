@@ -173,5 +173,25 @@ async def main():
     for item in segment_manifest:
         print(item["speaker"], item["start"], item["end"], item["voice"], item["text"])
 
+def activate_series_production():
+    manifest_path = Path("public/studio/productions.json")
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    production_id = "ingredora-entre-partidas-prepilot-v1"
+    production = next((item for item in manifest.get("productions", []) if item.get("id") == production_id), None)
+    if production is None:
+        raise RuntimeError("El paquete del prepiloto no está registrado en productions.json.")
+    required_audio = [
+        OUTPUT_DIR / "voice-track.mp3",
+        OUTPUT_DIR / "word-timings.json",
+        *(OUTPUT_DIR / (speaker + ".mp3") for speaker in VOICE_CAST),
+    ]
+    missing = [str(path) for path in required_audio if not path.exists() or path.stat().st_size < 1024]
+    if missing:
+        raise RuntimeError("Faltan pistas de voz: " + ", ".join(missing))
+    production["status"] = "rendering"
+    manifest["updatedAt"] = "2026-11-21T15:00:00Z"
+    manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\\n", encoding="utf-8")
+
 if __name__ == "__main__":
     asyncio.run(main())
+    activate_series_production()
