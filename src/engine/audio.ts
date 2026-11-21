@@ -134,7 +134,7 @@ export async function generateOriginalSoundtrack({
   const noiseBuffer = context.createBuffer(1, noiseLength, sampleRate);
   const noiseData = noiseBuffer.getChannelData(0);
   for (let i = 0; i < noiseLength; i += 1) noiseData[i] = (random() * 2 - 1) * (1 - i / noiseLength);
-  if (theme !== "game-show" && theme !== "detective-case") {
+  if (theme !== "game-show" && theme !== "detective-case" && theme !== "sitcom-intro") {
   for (let start = beat; start < durationSeconds; start += beat) {
     const source = context.createBufferSource();
     const filter = context.createBiquadFilter();
