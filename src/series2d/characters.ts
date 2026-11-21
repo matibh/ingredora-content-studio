@@ -311,52 +311,65 @@ function createTorso(profile: CharacterProfile, root: Container) {
   return torso;
 }
 
-function createLegs(profile: CharacterProfile, root: Container) {
+interface LegPair { left: Container; right: Container }
+interface ArmPair { upper: Container; forearm: Container }
+
+function createLegs(profile: CharacterProfile, root: Container): LegPair {
   const group = new Container();
   root.addChild(group);
   const gap = profile.body === "lanky" ? 22 : profile.body === "stocky" ? 25 : 20;
   const legWidth = profile.body === "stocky" ? 28 : profile.body === "athletic" ? 26 : 24;
+  const legs: Container[] = [];
 
   for (const side of [-1, 1]) {
     const x = side * gap;
+    const leg = new Container();
+    leg.position.set(x, -132);
+    group.addChild(leg);
     const trouser = new Graphics();
-    trouser.moveTo(x - legWidth * 0.56, -132)
-      .lineTo(x + legWidth * 0.55, -132)
-      .bezierCurveTo(x + legWidth * 0.70, -88, x + legWidth * 0.64, -38, x + legWidth * 0.66, -7)
-      .lineTo(x - legWidth * 0.62, -7)
-      .bezierCurveTo(x - legWidth * 0.70, -50, x - legWidth * 0.66, -93, x - legWidth * 0.56, -132)
-      .closePath().fill(profile.pants).stroke({ color: INK, width: 4.2, join: "round" });
-    group.addChild(trouser);
-    line(group, g => { g.moveTo(x, -120).lineTo(x + side * 1.5, -30); }, "#FFFFFF", 1.1);
+    trouser.moveTo(-legWidth * 0.56, 0)
+      .lineTo(legWidth * 0.55, 0)
+      .bezierCurveTo(legWidth * 0.70, 44, legWidth * 0.64, 94, legWidth * 0.66, 125)
+      .lineTo(-legWidth * 0.62, 125)
+      .bezierCurveTo(-legWidth * 0.70, 82, -legWidth * 0.66, 39, -legWidth * 0.56, 0)
+      .closePath().fill(profile.pants).stroke({ color: INK, width: 4, join: "round" });
+    leg.addChild(trouser);
+    line(leg, g => { g.moveTo(0, 12).lineTo(side * 1.5, 93); }, "#FFFFFF", 1.05);
     if (profile.id === "valentina") {
-      shape(group, g => g.roundRect(x - 19, -12, 39, 13, 6), "#262F37", 3);
-      shape(group, g => g.roundRect(x - 24, -5, 49, 17, 8), "#2E3840", 3);
-      line(group, g => { g.moveTo(x - 13, 3).lineTo(x + 13, 3); }, "#B9C6C6", 1.6);
+      shape(leg, g => g.roundRect(-19, 107, 39, 13, 6), "#262F37", 3);
+      shape(leg, g => g.roundRect(-24, 115, 49, 17, 8), "#2E3840", 3);
+      line(leg, g => { g.moveTo(-13, 123).lineTo(13, 123); }, "#B9C6C6", 1.6);
     } else if (profile.id === "ernesto") {
-      shape(group, g => g.roundRect(x - 22, -9, 44, 18, 8), "#4B4946", 3);
-      shape(group, g => g.roundRect(x - 27, -4, 50, 15, 7), "#5A554E", 3);
+      shape(leg, g => g.roundRect(-22, 108, 44, 18, 8), "#4B4946", 3);
+      shape(leg, g => g.roundRect(-27, 116, 50, 15, 7), "#5A554E", 3);
     } else {
-      shape(group, g => g.roundRect(x - 22, -9, 43, 18, 8), WHITE, 3);
-      shape(group, g => g.roundRect(x - 26, -4, 49, 15, 7), "#E9E0D4", 3);
+      shape(leg, g => g.roundRect(-22, 108, 43, 18, 8), WHITE, 3);
+      shape(leg, g => g.roundRect(-26, 116, 49, 15, 7), "#E9E0D4", 3);
     }
+    legs.push(leg);
   }
+  return { left: legs[0], right: legs[1] };
 }
 
-function createArm(profile: CharacterProfile, side: -1 | 1, root: Container) {
-  const arm = new Container();
-  arm.position.set(side * profile.shoulders * 0.82, -260);
-  root.addChild(arm);
-  line(arm, g => {
-    g.moveTo(0, 0).bezierCurveTo(side * 15, 20, side * 19, 45, side * 15, 63);
-  }, profile.shirt, 23);
-  line(arm, g => {
-    g.moveTo(side * 15, 61).bezierCurveTo(side * 21, 75, side * 23, 93, side * 20, 104);
+function createArm(profile: CharacterProfile, side: -1 | 1, root: Container): ArmPair {
+  const upper = new Container();
+  upper.position.set(side * profile.shoulders * 0.82, -260);
+  root.addChild(upper);
+  line(upper, g => {
+    g.moveTo(0, 0).bezierCurveTo(side * 14, 16, side * 18, 43, side * 15, 63);
+  }, profile.shirt, profile.id === "ernesto" ? 25 : 22);
+
+  const forearm = new Container();
+  forearm.position.set(side * 15, 61);
+  upper.addChild(forearm);
+  line(forearm, g => {
+    g.moveTo(0, 0).bezierCurveTo(side * 4, 14, side * 6, 28, side * 5, 42);
   }, profile.skin, 13);
-  shape(arm, g => g.ellipse(side * 20, 108, 8.5, 10.5), profile.skin, 2.8);
+  shape(forearm, g => g.ellipse(side * 5, 47, 8.2, 10), profile.skin, 2.6);
   if (profile.id === "tomas" && side === 1) {
-    shape(arm, g => g.roundRect(side * 15 - 1, 35, 18, 22, 4), "#5E8759", 2);
+    shape(upper, g => g.roundRect(side * 8, 34, 18, 22, 4), "#5E8759", 2);
   }
-  return arm;
+  return { upper, forearm };
 }
 
 export interface CharacterRig {
@@ -366,6 +379,10 @@ export interface CharacterRig {
   torso: Container;
   leftArm: Container;
   rightArm: Container;
+  leftForearm: Container;
+  rightForearm: Container;
+  leftLeg: Container;
+  rightLeg: Container;
   mouth: Graphics;
   eyes: Graphics[];
   pupils: Graphics[];
@@ -383,7 +400,7 @@ export function createCharacter(id: CharacterId, x: number, baselineY: number, s
 
   shape(root, g => g.ellipse(0, -2, 49, 8), "#5A493E", 0).alpha = 0.13;
 
-  createLegs(profile, root);
+  const legs = createLegs(profile, root);
   const leftArm = createArm(profile, -1, root);
   const rightArm = createArm(profile, 1, root);
 
@@ -405,7 +422,10 @@ export function createCharacter(id: CharacterId, x: number, baselineY: number, s
   }
 
   const rig: CharacterRig = {
-    id, root, head, torso, leftArm, rightArm,
+    id, root, head, torso,
+    leftArm: leftArm.upper, rightArm: rightArm.upper,
+    leftForearm: leftArm.forearm, rightForearm: rightArm.forearm,
+    leftLeg: legs.left, rightLeg: legs.right,
     mouth: faceParts.mouth, eyes: faceParts.eyes, pupils: faceParts.pupils,
     baseX: x, baseY: baselineY, scale, phase: Object.keys(PROFILES).indexOf(id) * 0.71
   };
@@ -426,7 +446,11 @@ export function updateCharacter(
   rig: CharacterRig,
   time: number,
   cues: DialogueCue[],
-  placements: Array<{ id: CharacterId; x: number }>,
+  placements: Array<{
+    id: CharacterId;
+    x: number;
+    entrance?: { startSeconds: number; fromX: number; durationSeconds: number };
+  }>,
   forceCamera = false
 ) {
   const cue = cues.find(item => item.speaker === rig.id && time >= item.startSeconds && time <= item.endSeconds);
@@ -437,24 +461,45 @@ export function updateCharacter(
     headTurn = 0;
   } else if (lookTarget) {
     const target = placements.find(item => item.id === lookTarget);
-    if (target) headTurn = clamp((target.x - rig.baseX) / 420, -0.20, 0.20);
+    if (target) headTurn = clamp((target.x - rig.baseX) / 440, -0.19, 0.19);
   }
 
-  // Both shoes stay planted on the same baseline. There is no root-height bobbing.
-  rig.root.x = rig.baseX;
+  const placement = placements.find(item => item.id === rig.id);
+  let walking = 0;
+  let walkProgress = 1;
+  let positionX = rig.baseX;
+  if (placement?.entrance) {
+    const entrance = placement.entrance;
+    walkProgress = clamp((time - entrance.startSeconds) / Math.max(0.01, entrance.durationSeconds), 0, 1);
+    const eased = walkProgress * walkProgress * (3 - 2 * walkProgress);
+    positionX = entrance.fromX + (rig.baseX - entrance.fromX) * eased;
+    walking = time >= entrance.startSeconds && walkProgress < 1 ? 1 : 0;
+    if (time < entrance.startSeconds) positionX = entrance.fromX;
+  }
+
+  // The baseline never moves vertically: body weight shifts through the hips, not through floating.
+  rig.root.x = positionX;
   rig.root.y = rig.baseY;
-  const listeningTilt = rig.id === "tomas" ? -0.012 : rig.id === "ernesto" ? 0.006 : 0;
-  rig.torso.rotation = cue
-    ? 0.018 * Math.sin((time - cue.startSeconds) * 3.1)
-    : listeningTilt + 0.002 * Math.sin(time * 0.65 + rig.phase);
+  const walkCycle = (time - (placement?.entrance?.startSeconds ?? 0)) * 8.2 + rig.phase;
+  rig.leftLeg.rotation = walking ? Math.sin(walkCycle) * 0.105 : 0;
+  rig.rightLeg.rotation = walking ? -Math.sin(walkCycle) * 0.105 : 0;
+
+  const progress = cue ? clamp((time - cue.startSeconds) / Math.max(0.01, cue.endSeconds - cue.startSeconds), 0, 1) : 0;
+  const gesturePulse = cue ? Math.sin(progress * Math.PI) : 0;
+  const lean = cue ? 0.012 * gesturePulse : 0;
+  rig.torso.rotation = lean + 0.002 * Math.sin(time * 0.55 + rig.phase);
   rig.torso.scale.y = 1;
-  rig.head.rotation = headTurn + (cue ? Math.sin((time - cue.startSeconds) * 5.5) * 0.018 : Math.sin(time * 0.9 + rig.phase) * 0.008);
+  rig.head.rotation = headTurn + (cue ? Math.sin(progress * Math.PI * 2) * 0.012 : Math.sin(time * 0.9 + rig.phase) * 0.006);
 
   const gesture: Gesture = cue?.gesture || "none";
-  const talking = !!cue;
-  const armMotion = talking ? Math.sin((time - cue.startSeconds) * 5.2) * 0.045 : 0;
-  rig.leftArm.rotation = gesture === "shrug" ? 0.28 + armMotion : gesture === "open-hand" ? 0.08 : 0.015 * Math.sin(time * 0.8 + rig.phase);
-  rig.rightArm.rotation = gesture === "point" ? -0.30 + armMotion : gesture === "shrug" ? -0.27 - armMotion : gesture === "open-hand" ? -0.20 + armMotion : 0.015 * Math.sin(time * 0.75 + rig.phase);
+  const walkSwing = walking ? Math.sin(walkCycle) * 0.075 : 0;
+  const openHand = gesture === "open-hand" ? 0.075 * gesturePulse : 0;
+  const point = gesture === "point" ? 0.11 * gesturePulse : 0;
+  const shrug = gesture === "shrug" ? 0.10 * gesturePulse : 0;
+  rig.leftArm.rotation = walkSwing + shrug + (gesture === "open-hand" ? 0.035 * gesturePulse : 0);
+  rig.rightArm.rotation = -walkSwing - point - shrug - openHand;
+  rig.leftForearm.rotation = walking ? -0.10 * Math.sin(walkCycle) : (gesture === "shrug" ? -0.10 * gesturePulse : 0.012 * Math.sin(time * .65 + rig.phase));
+  rig.rightForearm.rotation = walking ? 0.10 * Math.sin(walkCycle) : (gesture === "open-hand" ? -0.12 * gesturePulse : gesture === "point" ? 0.07 * gesturePulse : 0.012 * Math.sin(time * .6 + rig.phase));
 
   const blink = isBlinking(time, rig.phase);
   for (const eye of rig.eyes) eye.scale.y = blink ? 0.12 : 1;
@@ -463,11 +508,11 @@ export function updateCharacter(
   rig.pupils[1].x = 13 + pupilOffset;
 
   rig.mouth.clear();
-  if (talking && Math.sin((time - cue.startSeconds) * 16.4) > 0.03) {
+  if (cue && Math.sin((time - cue.startSeconds) * 16.4) > 0.03) {
     rig.mouth.ellipse(0, 31, 7.5, 5.8).fill("#723F42").stroke({ color: "#8A4E4B", width: 1.8 });
   } else {
     const smile = cue?.expression === "smile" || (!cue && rig.id !== "martina" && rig.id !== "ernesto");
-    rig.mouth.moveTo(-8, 31).quadraticCurveTo(0, smile ? 39 : 35, 8, 31)
-      .stroke({ color: "#8A4E4B", width: 2.8, cap: "round" });
+    rig.mouth.moveTo(-8, 31).quadraticCurveTo(0, smile ? 37 : 35, 8, 31)
+      .stroke({ color: "#8A4E4B", width: 2.7, cap: "round" });
   }
 }
