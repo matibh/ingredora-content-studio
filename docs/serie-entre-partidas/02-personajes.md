@@ -76,6 +76,36 @@ Los nombres y edades son una **primera propuesta creativa**, no datos cerrados. 
 
 **Interpretación:** no debe ser una caricatura de una persona mayor. Está actualizado, tiene vida propia y puede sorprender al resto.
 
+
+## Diseño corporal v1 — siluetas diferenciadas (propuesta)
+
+La segunda pasada conserva el lenguaje facial amable de la primera prueba, pero deja de repetir el mismo torso y las mismas piernas en los cinco personajes. La silueta, la postura y el vestuario deben identificarse incluso en negro sólido:
+
+- **Martina:** figura de proporción media, hombros moderados y cadera algo más marcada; blusa metida en pantalón recto de tiro alto. Postura erguida y estable. Los gestos son precisos y pequeños.
+- **Bruno:** hombros más anchos, torso atlético y piernas firmes; buzo con capucha y bolsillo frontal. Tiende a inclinar el pecho al hablar, pero conserva los pies apoyados.
+- **Tomás:** el más alto y delgado; extremidades algo largas, hombros relajados y camisa abierta sobre remera. Puede inclinar la cabeza al desarrollar una teoría y acompañar con una mano.
+- **Valentina:** cintura definida, pantalón de corte largo, chaqueta corta y pelo ondulado que enmarca y alarga su silueta. Su postura es segura, con brazos relajados y gestos medidos.
+- **Ernesto:** más bajo y robusto, hombros redondeados y torso ancho; cárdigan, pantalón recto, pelo gris y barba corta. Puede usar anteojos finos si el modelo final los conserva.
+
+Las diferencias no deben convertirse en caricaturas corporales ni estereotipos. Se mantienen anatomías simplificadas, manos legibles, articulaciones claras y proporciones adultas. Las caras del primer boceto son una referencia favorable, pero las formas exactas del rostro se ajustan para reforzar identidades distintas sin perder la misma familia gráfica.
+
+## Casting de voz provisional v1
+
+Prueba de cinco identidades vocales en español, una por personaje. El casting no se considera definitivo hasta escuchar las muestras completas y aprobar el acento, la interpretación y la naturalidad del diálogo.
+
+| Personaje | Voz de prueba | Variante regional | Dirección |
+|---|---|---|---|
+| Martina | Elena Neural | Argentina | Medida, precisa, seca y segura |
+| Bruno | Tomás Neural | Argentina | Enérgica, rápida y expresiva |
+| Tomás | Mateo Neural | Uruguay | Curiosa, relajada e improvisada |
+| Valentina | Valentina Neural | Uruguay | Segura, irónica y de timing seco |
+| Ernesto | Lorenzo Neural | Chile | Cálida, pausada y con ironía discreta |
+
+Las cinco son voces distintas. El reparto usa dos voces argentinas y tres voces de países cercanos; por eso no debe anunciarse como un reparto de cinco acentos argentinos. La mezcla regional queda provisional y se revisará escuchando el resultado. Los archivos de cada personaje se guardan también como pistas separadas para poder sustituir una voz sin regenerar todo el elenco.
+
+La síntesis de prueba usa Edge TTS en un workflow de GitHub Actions. Es un servicio externo que puede cambiar su disponibilidad y condiciones: el coste objetivo del proyecto sigue siendo USD 0, pero la continuidad y los derechos de uso comercial deben revisarse antes de publicar una temporada.
+
+
 ## Mapa de relaciones
 
 | Pareja | Dinámica principal | Fuente de historias |
