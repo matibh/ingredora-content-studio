@@ -1301,7 +1301,10 @@ export async function renderPackageToWebM(
         desiredTarget.set(0,-.35,-2.2);desiredFov=mix(49,45,p);
       }else if(cue){
         const subject=entrePartidasSet.getSpeakerPosition(cue.speaker);
-        desiredPosition.set(subject.x+.10,subject.y+.48,subject.z+6.65);
+        // Keep the lens near the aisle center: placing it beside an outer
+        // character made the nearest gondola intrude into the portrait frame.
+        const inwardOffset=subject.x>1.2?-1.35:subject.x< -1.2?1.35:0;
+        desiredPosition.set(subject.x+inwardOffset,subject.y+.48,subject.z+6.65);
         desiredTarget.set(subject.x,subject.y+.02,subject.z);
         desiredFov=34;
       }else{
