@@ -41,8 +41,9 @@ function makeCharacter(name: EntrePartidasCue["speaker"], x: number, z: number):
   const shoes=mat("#222528",.56);
   // Individual silhouettes and wardrobe, not three recolours of one model.
   if(name==="bruno"){
-    box(root,[.76,.88,.43],shirt,[0,1.25,0]);
-    box(root,[.68,.34,.39],mat("#a95637"),[0,1.72,0]);
+    // Bruno is sitting cross-legged/legs-forward on the floor, absorbed in the labels.
+    box(root,[.76,.88,.43],shirt,[0,.98,0]);
+    box(root,[.68,.34,.39],mat("#a95637"),[0,1.40,0]);
   } else if(name==="martina"){
     box(root,[.70,.86,.40],shirt,[0,1.26,0]);
     box(root,[.82,.38,.44],mat("#8d805c"),[0,.86,0]);
@@ -53,7 +54,7 @@ function makeCharacter(name: EntrePartidasCue["speaker"], x: number, z: number):
     box(root,[.12,.68,.10],mat("#d9e1df"),[0,1.25,.23]);
   }
   box(root,[.22,.20,.22],skin,[0,1.77,0],false);
-  const head=new THREE.Group();head.position.set(0,2.12,0);root.add(head);
+  const head=new THREE.Group();head.position.set(0,name==="bruno"?1.82:2.12,0);root.add(head);
   box(head,[.68,.68,.60],skin,[0,0,0]);
   // Hair profiles distinguish the cast even in a medium shot.
   // Keep side locks behind the facial plane. The old coplanar boxes intersected
@@ -83,13 +84,13 @@ function makeCharacter(name: EntrePartidasCue["speaker"], x: number, z: number):
   box(head,[.07,.08,.06],skin,[0,-.055,.37],false);
   const mouth=box(head,[.17,.055,.025],mat("#743f3a"),[0,-.20,.355],false);
   const arm=(side:number)=>{
-    const pivot=new THREE.Group();pivot.position.set(side*.42,1.58,0);root.add(pivot);
+    const pivot=new THREE.Group();pivot.position.set(side*.42,name==="bruno"?1.20:1.58,0);root.add(pivot);
     box(pivot,[.22,.46,.23],shirt,[0,-.15,0]);
     box(pivot,[.18,.42,.19],skin,[0,-.56,.015]);
     box(pivot,[.18,.16,.19],skin,[0,-.78,.025]);return pivot;
   };
   const leg=(side:number)=>{
-    const pivot=new THREE.Group();pivot.position.set(side*.20,.70,0);root.add(pivot);
+    const pivot=new THREE.Group();pivot.position.set(side*.20,name==="bruno"?.58:.70,0);root.add(pivot);
     box(pivot,[.25,.58,.28],pants,[0,-.27,0]);
     box(pivot,[.30,.17,.42],shoes,[0,-.60,.07]);return pivot;
   };
@@ -266,9 +267,10 @@ export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
   box(packet,[.42,.60,.10],packetMat,[0,0,0]);
   const packet2=new THREE.Group();packet2.position.set(.34,1.80,.43);packet2.rotation.y=.12;world.add(packet2);
   box(packet2,[.38,.53,.10],packMats[2],[0,0,0]);
-  const bruno=makeCharacter("bruno",-.55,.20);
-  const martina=makeCharacter("martina",-5.25,-.10);
-  const valentina=makeCharacter("valentina",5.25,-.10);
+  const bruno=makeCharacter("bruno",0,.20);
+  // Martina and Valentina enter through the clear central aisle, never through shelving.
+  const martina=makeCharacter("martina",-.95,-12.8);
+  const valentina=makeCharacter("valentina",.95,-12.8);
   world.add(bruno.root,martina.root,valentina.root);
   // The packets are parented to Bruno’s hands so they follow his body instead of hovering in world space.
   world.remove(packet); bruno.rightArm.add(packet); packet.position.set(.12,-.76,.30);
@@ -282,10 +284,15 @@ export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
   const update=(time:number,dialogue:EntrePartidasCue[])=>{
     const cue=dialogue.find(c=>time>=c.start&&time<=c.end);
     const speaker=cue?.speaker;
-    const walkT=Math.max(0,Math.min(1,(time-10)/5));
+    const walkT=Math.max(0,Math.min(1,(time-6)/7));
     const ease=(v:number)=>v*v*(3-2*v);
-    martina.root.position.x=-5.25+3.05*ease(walkT);
-    valentina.root.position.x=5.25-3.05*ease(walkT);
+    martina.root.position.x=-1.15;
+    valentina.root.position.x=1.15;
+    martina.root.position.z=-12.8+9.6*ease(walkT);
+    valentina.root.position.z=-12.8+9.6*ease(walkT);
+    martina.root.rotation.y=.32*ease(walkT);
+    valentina.root.rotation.y=-.32*ease(walkT);
+    bruno.root.rotation.y=0;
     for(const rig of [bruno,martina,valentina]){
       const talking=rig.name===speaker;
       const lookAngle=cue?.look===rig.name?-.16:cue?.look?.length? .10:0;
@@ -304,11 +311,13 @@ export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
       rig.root.position.y=-1.975+Math.sin(time*.9+phase)*.008;
     }
     if(time<10){
-      bruno.head.rotation.x=-.12; bruno.rightArm.rotation.z=-.38;
+      bruno.head.rotation.x=-.18; bruno.rightArm.rotation.z=-.34;
       packet.rotation.z=Math.sin(time*1.5)*.018;
+      bruno.leftArm.rotation.z=.18+Math.sin(time*1.1)*.035;
+      bruno.rightArm.rotation.z=-.34+Math.sin(time*1.3)*.025;
     }
-    if(time>=10&&time<15){
-      const stride=Math.sin((time-10)*5.4)*.18*(1-ease((time-14.5)/.5));
+    if(time>=6&&time<13){
+      const stride=Math.sin((time-6)*5.4)*.18*(1-ease((time-12.5)/.5));
       for(const rig of [martina,valentina]){
         rig.leftLeg.rotation.x=stride;rig.rightLeg.rotation.x=-stride;
         rig.leftArm.rotation.x=-stride*.55;rig.rightArm.rotation.x=stride*.55;
@@ -329,6 +338,52 @@ export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
       return new THREE.Vector3(rig.root.position.x,.28,rig.root.position.z);
     }
   };
+}
+
+
+export function drawEntrePartidasBranding(ctx:CanvasRenderingContext2D,time:number,width:number,height:number){
+  const scale=width/720;
+  const rounded=(x:number,y:number,w:number,h:number,r:number)=>{
+    ctx.beginPath();ctx.roundRect(x,y,w,h,r);
+  };
+  if(time<2.05){
+    const fade=Math.min(1,time/.28,(2.05-time)/.35);
+    ctx.save();ctx.globalAlpha=Math.max(0,fade);
+    const panelW=width*.78,panelH=height*.115,x=(width-panelW)/2,y=height*.105;
+    ctx.shadowColor="rgba(0,0,0,.34)";ctx.shadowBlur=28*scale;
+    const g=ctx.createLinearGradient(x,y,x+panelW,y+panelH);
+    g.addColorStop(0,"rgba(20,48,39,.94)");g.addColorStop(1,"rgba(31,67,54,.92)");
+    ctx.fillStyle=g;rounded(x,y,panelW,panelH,22*scale);ctx.fill();
+    ctx.shadowBlur=0;ctx.textAlign="center";ctx.textBaseline="middle";
+    ctx.fillStyle="#d7e8ad";ctx.font="900 "+Math.round(20*scale)+"px Arial";
+    ctx.fillText("INGREDORA ORIGINAL",width/2,y+panelH*.25);
+    ctx.fillStyle="#fffaf0";ctx.font="900 "+Math.round(48*scale)+"px Arial Black,Arial";
+    ctx.fillText("ENTRE PARTIDAS",width/2,y+panelH*.61);
+    ctx.fillStyle="#f0d18b";ctx.font="700 "+Math.round(17*scale)+"px Arial";
+    ctx.fillText("UNA SERIE SOBRE EL DESAFÍO",width/2,y+panelH*.88);
+    ctx.restore();
+  }
+  if(time>=62){
+    const fade=Math.min(1,(time-62)/.45);
+    ctx.save();ctx.globalAlpha=fade;
+    const veil=ctx.createLinearGradient(0,0,0,height);
+    veil.addColorStop(0,"rgba(12,24,20,.45)");veil.addColorStop(.35,"rgba(12,24,20,.80)");veil.addColorStop(1,"rgba(12,24,20,.96)");
+    ctx.fillStyle=veil;ctx.fillRect(0,0,width,height);
+    ctx.textAlign="center";ctx.textBaseline="middle";
+    ctx.fillStyle="#d7e8ad";ctx.font="900 "+Math.round(25*scale)+"px Arial";
+    ctx.fillText("INGREDORA PRESENTA",width/2,height*.34);
+    ctx.fillStyle="#fffaf0";ctx.font="900 "+Math.round(58*scale)+"px Arial Black,Arial";
+    ctx.fillText("ENTRE PARTIDAS",width/2,height*.405);
+    ctx.fillStyle="#e6e0cf";ctx.font="700 "+Math.round(25*scale)+"px Arial";
+    ctx.fillText("Más capítulos en",width/2,height*.53);
+    ctx.fillStyle="#f4d58d";ctx.font="900 "+Math.round(43*scale)+"px Arial";
+    ctx.fillText("ingredora.com",width/2,height*.585);
+    ctx.fillStyle="#fffaf0";ctx.font="800 "+Math.round(23*scale)+"px Arial";
+    ctx.fillText("Jugá el desafío semanal",width/2,height*.69);
+    ctx.fillStyle="#d7e8ad";ctx.font="700 "+Math.round(21*scale)+"px Arial";
+    ctx.fillText("y competí por un lugar en el ranking",width/2,height*.735);
+    ctx.restore();
+  }
 }
 
 export function drawEntrePartidasCaptions(ctx:CanvasRenderingContext2D,time:number,width:number,height:number,dialogue:EntrePartidasCue[]){
