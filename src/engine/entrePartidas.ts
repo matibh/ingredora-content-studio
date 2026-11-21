@@ -444,13 +444,12 @@ export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
   extBox([1.22,1.18,.07],[6.32,.63,-4.86],new THREE.MeshStandardMaterial({color:"#b2c6bb",emissive:"#e2b16a",emissiveIntensity:.32,roughness:.2}));
   extBox([.07,1.22,.11],[4.35,.63,-4.78],windowFrame);
   extBox([.07,1.22,.11],[6.32,.63,-4.78],windowFrame);
-  extBox([.06,1.22,.11],[4.35,.63,-4.78],windowFrame);
   // A short garden fence, front gate and a glowing porch sconce give the house life.
   for(let i=0;i<8;i++)extBox([.10,.65,.10],[3.25+i*.60,-1.30,-3.75],extMat("#665645",.9));
   extBox([4.65,.10,.12],[5.35,-1.12,-3.75],extMat("#665645",.9));
   extBox([.22,.40,.15],[7.95,-1.46,-4.2],extMat("#5e604e",.95));
   const porchLight=new THREE.PointLight("#ffd28a",2.2,5);porchLight.position.set(5.35,1.05,-4.35);exterior.add(porchLight);
-  const streetLamp=extBox([.13,6.8,.13],[-9.4,1.45,-1.85],extMat("#333c40",.55,.3));
+  extBox([.13,6.8,.13],[-9.4,1.45,-1.85],extMat("#333c40",.55,.3));
   const streetArm=extBox([1.15,.10,.10],[-8.9,4.72,-1.85],extMat("#333c40",.55,.3));streetArm.rotation.z=-.15;
   const streetGlow=new THREE.PointLight("#ffe0a1",3.2,9);streetGlow.position.set(-8.55,4.55,-1.85);exterior.add(streetGlow);
   const streetBulb=new THREE.Mesh(new THREE.SphereGeometry(.17,10,8),new THREE.MeshBasicMaterial({color:"#fff0c2"}));
@@ -467,7 +466,6 @@ export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
     const speaker=cue?.speaker;
     const ease=(v:number)=>{const q=Math.max(0,Math.min(1,v));return q*q*(3-2*q);};
     const approach=ease((time-7.65)/2.0);
-    const walkFade=1-ease((time-10.0)/.55);
     martina.root.visible=time>=7.65;
     valentina.root.visible=time>=7.65;
     martina.root.position.x=-2.65;
