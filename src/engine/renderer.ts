@@ -1303,10 +1303,11 @@ export async function renderPackageToWebM(
         desiredTarget.set(0,.40,-5.0);
         desiredFov=mix(57,54,push);
       }else if(time<girlsReveal){
-        const push=ease((time-exteriorEnd)/(girlsReveal-exteriorEnd));
-        desiredPosition.set(mix(4.65,3.95,push),mix(.24,.12,push),mix(.60,.34,push));
-        desiredTarget.set(0,mix(-1.12,-.78,push),.20);
-        desiredFov=mix(54,48,push);
+        // Hard cut directly to a pre-framed three-quarter side profile of Bruno.
+        // The camera stays still here: no searching pan or push after the exterior cut.
+        desiredPosition.set(4.20,.12,2.50);
+        desiredTarget.set(0,-.78,.20);
+        desiredFov=48;
       }else if(time<girlsResponse){
         // Keep Martina and Valentina together while they watch Bruno for a beat.
         desiredPosition.set(-.20,2.30,6.90);
@@ -1333,7 +1334,7 @@ export async function renderPackageToWebM(
         camera.userData.entreTarget=desiredTarget.clone();
         camera.fov=desiredFov;
       }
-      const blend = time < exteriorEnd ? 0.045 : time < girlsReveal ? 0.10 : time < girlsResponse ? 0.12 : cue ? 0.18 : 0.10;
+      const blend = time < exteriorEnd ? 0.045 : time < girlsReveal ? 0.045 : time < girlsResponse ? 0.12 : cue ? 0.18 : 0.10;
       camera.position.lerp(desiredPosition,blend);
       const currentTarget=(camera.userData.entreTarget as THREE.Vector3|undefined)??desiredTarget.clone();
       currentTarget.lerp(desiredTarget,blend);
