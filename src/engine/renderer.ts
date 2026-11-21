@@ -1284,15 +1284,15 @@ export async function renderPackageToWebM(
       entrePartidasSet.update(time, entrePartidasDialogue);
       const ease = (v: number) => { const x = Math.max(0, Math.min(1, v)); return x*x*(3-2*x); };
       const mix = (a: number,b: number,t: number) => a+(b-a)*t;
-      let x=0,y=2.35,z=13.0,tx=0,ty=.35,tz=-2.0,fov=44;
-      if(time<5){const p=ease(time/5);x=mix(-.55,-.12,p);y=mix(2.8,2.45,p);z=mix(15,12.5,p);ty=.35;tz=-2.6;fov=mix(48,43,p);}
-      else if(time<10){const p=ease((time-5)/.8);x=mix(-.12,-1.05,p);y=mix(2.45,1.9,p);z=mix(12.5,7.1,p);tx=-.45;ty=1.35;tz=.35;fov=35;}
-      else if(time<17){const p=ease((time-10)/1.0);x=mix(-1.05,0,p);y=mix(1.9,2.45,p);z=mix(7.1,10.4,p);tx=0;ty=.45;tz=-.2;fov=mix(35,43,p);}
-      else if(time<26){const p=ease((time-17)/.7);x=mix(0,-1.55,p);y=2.25;z=mix(10.4,7.0,p);tx=-.55;ty=1.55;tz=.2;fov=mix(43,35,p);}
-      else if(time<34){const p=ease((time-26)/.7);x=mix(-1.55,2.25,p);y=2.25;z=mix(7,7.4,p);tx=mix(-.55,1.95,p);ty=1.5;tz=.15;fov=36;}
-      else if(time<46){const phase=Math.floor((time-34)/3)%3;x=phase===0?-1.65:phase===1?2.3:0;y=2.15;z=phase===2?9.2:6.6;tx=phase===0?-2.1:phase===1?2.05:0;ty=1.45;tz=.1;fov=phase===2?43:35;}
-      else if(time<55){x=2.35;y=2.2;z=6.2;tx=2.05;ty=1.55;tz=.1;fov=34;}
-      else {const p=ease((time-55)/2);x=mix(2.35,.15,p);y=mix(2.2,2.9,p);z=mix(6.2,12.6,p);tx=0;ty=.45;tz=-1.6;fov=mix(34,47,p);}
+      let x=0,y=2.35,z=13.0,tx=0,ty=-.45,tz=-2.0,fov=44;
+      if(time<5){const p=ease(time/5);x=mix(-.55,-.12,p);y=mix(2.8,2.45,p);z=mix(15,12.5,p);ty=-.45;tz=-2.6;fov=mix(48,43,p);}
+      else if(time<10){const p=ease((time-5)/.8);x=mix(-.12,-1.05,p);y=mix(2.45,1.9,p);z=mix(12.5,7.1,p);tx=-.45;ty=-1.0;tz=.35;fov=35;}
+      else if(time<17){const p=ease((time-10)/1.0);x=mix(-1.05,0,p);y=mix(1.9,2.45,p);z=mix(7.1,10.4,p);tx=0;ty=-.45;tz=-.2;fov=mix(35,43,p);}
+      else if(time<26){const p=ease((time-17)/.7);x=mix(0,-1.55,p);y=2.25;z=mix(10.4,7.0,p);tx=-.55;ty=.10;tz=.2;fov=mix(43,35,p);}
+      else if(time<34){const p=ease((time-26)/.7);x=mix(-1.55,2.25,p);y=2.25;z=mix(7,7.4,p);tx=mix(-.55,1.95,p);ty=.05;tz=.15;fov=36;}
+      else if(time<46){const phase=Math.floor((time-34)/3)%3;x=phase===0?-1.65:phase===1?2.3:0;y=2.15;z=phase===2?9.2:6.6;tx=phase===0?-2.1:phase===1?2.05:0;ty=.05;tz=.1;fov=phase===2?43:35;}
+      else if(time<55){x=2.35;y=2.2;z=6.2;tx=2.05;ty=.05;tz=.1;fov=34;}
+      else {const p=ease((time-55)/2);x=mix(2.35,.15,p);y=mix(2.2,2.9,p);z=mix(6.2,12.6,p);tx=0;ty=-.45;tz=-1.6;fov=mix(34,47,p);}
       x += Math.sin(time*.36)*.025;
       camera.position.set(x,y,z);camera.lookAt(tx,ty,tz);camera.fov=fov;camera.updateProjectionMatrix();
       renderer.render(world,camera);
