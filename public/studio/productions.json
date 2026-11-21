@@ -1,14 +1,14 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-21T12:00:00-03:00",
+  "updatedAt": "2026-11-21T15:59:51Z",
   "productions": [
     {
       "id": "ingredora-entre-partidas-prepilot-v1",
       "title": "Entre Partidas — Prepiloto: ¿Estamos grabando?",
       "description": "Primer encuentro animado con cinco protagonistas, diálogos en español, actuaciones y miradas entre personajes.",
-      "status": "planned",
+      "status": "rendering",
       "packageUrl": "studio/series/entre-partidas/episodes/prepiloto-v1.json",
-      "durationSeconds": 27,
+      "durationSeconds": 35.0,
       "aspectRatio": "9:16",
       "language": "Español — cinco voces diferenciadas",
       "platforms": [

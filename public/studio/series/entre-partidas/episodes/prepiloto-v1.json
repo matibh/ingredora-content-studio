@@ -8,7 +8,7 @@
   "fps": 24,
   "width": 720,
   "height": 1280,
-  "durationSeconds": 27,
+  "durationSeconds": 35.0,
   "background": "apartment-living-room",
   "characters": [
     {
@@ -48,7 +48,7 @@
       "speaker": "bruno",
       "text": "Yo nunca pierdo. El juego a veces no entiende mi estrategia.",
       "startSeconds": 0.45,
-      "endSeconds": 4.35,
+      "endSeconds": 5.274,
       "lookAt": "martina",
       "gesture": "open-hand",
       "expression": "smile"
@@ -57,8 +57,8 @@
       "id": "02-martina",
       "speaker": "martina",
       "text": "No es el juego. Es que no sabés perder.",
-      "startSeconds": 4.8,
-      "endSeconds": 7.55,
+      "startSeconds": 5.554,
+      "endSeconds": 9.85,
       "lookAt": "bruno",
       "gesture": "point",
       "expression": "skeptical"
@@ -67,8 +67,8 @@
       "id": "03-tomas",
       "speaker": "tomas",
       "text": "Pará, tengo una teoría. Capaz el juego detecta el miedo.",
-      "startSeconds": 8,
-      "endSeconds": 11.35,
+      "startSeconds": 10.2,
+      "endSeconds": 14.616,
       "lookAt": "valentina",
       "gesture": "open-hand",
       "expression": "smile"
@@ -77,8 +77,8 @@
       "id": "04-valentina",
       "speaker": "valentina",
       "text": "Entonces a vos te detecta desde la puerta.",
-      "startSeconds": 11.7,
-      "endSeconds": 14.65,
+      "startSeconds": 14.916,
+      "endSeconds": 18.324,
       "lookAt": "bruno",
       "gesture": "point",
       "expression": "skeptical"
@@ -87,8 +87,8 @@
       "id": "05-ernesto",
       "speaker": "ernesto",
       "text": "En mis tiempos, para perder así, había que salir de casa.",
-      "startSeconds": 15,
-      "endSeconds": 18.85,
+      "startSeconds": 18.744,
+      "endSeconds": 23.616,
       "lookAt": "bruno",
       "gesture": "shrug",
       "expression": "smile"
@@ -97,8 +97,8 @@
       "id": "06-bruno",
       "speaker": "bruno",
       "text": "Bueno, ¿podemos hablar de otra cosa?",
-      "startSeconds": 19.2,
-      "endSeconds": 21.55,
+      "startSeconds": 23.936,
+      "endSeconds": 26.816,
       "lookAt": "martina",
       "gesture": "shrug",
       "expression": "surprised"
@@ -107,8 +107,8 @@
       "id": "07-martina",
       "speaker": "martina",
       "text": "Tarde. Ya estamos grabando.",
-      "startSeconds": 21.9,
-      "endSeconds": 23.6,
+      "startSeconds": 27.166,
+      "endSeconds": 30.862,
       "lookAt": "camera",
       "gesture": "none",
       "expression": "smile"
@@ -117,8 +117,8 @@
       "id": "08-ernesto",
       "speaker": "ernesto",
       "text": "¿Saludamos?",
-      "startSeconds": 24,
-      "endSeconds": 25.4,
+      "startSeconds": 31.612,
+      "endSeconds": 33.556,
       "lookAt": "camera",
       "gesture": "open-hand",
       "expression": "smile"
