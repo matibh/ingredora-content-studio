@@ -10,7 +10,7 @@ from pydub import AudioSegment
 
 AudioSegment.converter = imageio_ffmpeg.get_ffmpeg_exe()
 OUTPUT_DIR = Path("public/studio/audio/entre-partidas/prepilot-v1")
-TOTAL_MS = 27_000
+TOTAL_MS = 30_000
 
 # Five separate Spanish neural voices. The two Argentine voices are
 # supplemented with Uruguayan and Chilean voices to give every character
@@ -44,21 +44,21 @@ VOICE_CAST = {
 }
 
 SEGMENTS = [
-    {"id": "01-bruno", "speaker": "bruno", "start": 0.45,
+    {"id": "01-bruno", "speaker": "bruno", "start": 0.45, "pauseAfter": 0.28,
      "text": "Yo nunca pierdo. El juego a veces no entiende mi estrategia."},
-    {"id": "02-martina", "speaker": "martina", "start": 4.80,
+    {"id": "02-martina", "speaker": "martina", "pauseAfter": 0.35,
      "text": "No es el juego. Es que no sabés perder."},
-    {"id": "03-tomas", "speaker": "tomas", "start": 8.00,
+    {"id": "03-tomas", "speaker": "tomas", "pauseAfter": 0.30,
      "text": "Pará, tengo una teoría. Capaz el juego detecta el miedo."},
-    {"id": "04-valentina", "speaker": "valentina", "start": 11.70,
+    {"id": "04-valentina", "speaker": "valentina", "pauseAfter": 0.42,
      "text": "Entonces a vos te detecta desde la puerta."},
-    {"id": "05-ernesto", "speaker": "ernesto", "start": 15.00,
+    {"id": "05-ernesto", "speaker": "ernesto", "pauseAfter": 0.32,
      "text": "En mis tiempos, para perder así, había que salir de casa."},
-    {"id": "06-bruno", "speaker": "bruno", "start": 19.20,
+    {"id": "06-bruno", "speaker": "bruno", "pauseAfter": 0.35,
      "text": "Bueno, ¿podemos hablar de otra cosa?"},
-    {"id": "07-martina", "speaker": "martina", "start": 21.90,
+    {"id": "07-martina", "speaker": "martina", "pauseAfter": 0.75,
      "text": "Tarde. Ya estamos grabando."},
-    {"id": "08-ernesto", "speaker": "ernesto", "start": 24.00,
+    {"id": "08-ernesto", "speaker": "ernesto", "pauseAfter": 1.0,
      "text": "¿Saludamos?"},
 ]
 
@@ -118,29 +118,25 @@ async def main():
     segment_manifest = []
     speaker_samples = {speaker: [] for speaker in VOICE_CAST}
 
-    for index, segment in enumerate(SEGMENTS):
+    timeline_cursor_ms = round(SEGMENTS[0]["start"] * 1000)
+    for segment in SEGMENTS:
         audio, words = await synthesize(segment)
-        start_ms = round(segment["start"] * 1000)
+        start_ms = timeline_cursor_ms
         end_ms = start_ms + len(audio)
-        next_start_ms = (
-            round(SEGMENTS[index + 1]["start"] * 1000)
-            if index + 1 < len(SEGMENTS) else TOTAL_MS
-        )
-        if end_ms > next_start_ms - 120:
-            raise RuntimeError(
-                "La voz " + segment["id"] + " dura " + str(round(len(audio) / 1000, 2))
-                + "s y se superpone con el siguiente turno. Ajustar el guion o el ritmo."
-            )
         if end_ms > TOTAL_MS:
-            raise RuntimeError("La voz excede la duración del prepiloto: " + segment["id"])
+            raise RuntimeError(
+                "El diálogo " + segment["id"] + " termina en "
+                + str(round(end_ms / 1000, 2)) + "s y supera los "
+                + str(TOTAL_MS / 1000) + "s disponibles. Aumentar la duración total."
+            )
 
         master = master.overlay(audio, position=start_ms)
         stems[segment["speaker"]] = stems[segment["speaker"]].overlay(audio, position=start_ms)
         speaker_samples[segment["speaker"]].append(audio)
         word_timings.extend({
             "text": word["text"],
-            "start": round(segment["start"] + word["start"], 4),
-            "end": round(segment["start"] + word["end"], 4),
+            "start": round(start_ms / 1000 + word["start"], 4),
+            "end": round(start_ms / 1000 + word["end"], 4),
             "speaker": segment["speaker"],
             "segmentId": segment["id"],
         } for word in words)
@@ -148,12 +144,13 @@ async def main():
             "id": segment["id"],
             "speaker": segment["speaker"],
             "text": segment["text"],
-            "start": segment["start"],
+            "start": round(start_ms / 1000, 4),
             "end": round(end_ms / 1000, 4),
             "durationSeconds": round(len(audio) / 1000, 4),
             "voice": VOICE_CAST[segment["speaker"]]["voice"],
             "wordCount": len(words),
         })
+        timeline_cursor_ms = end_ms + round(segment.get("pauseAfter", 0.35) * 1000)
 
     if master.rms < 250 or len(master) != TOTAL_MS:
         raise RuntimeError("La mezcla de voces está vacía o tiene duración incorrecta.")
@@ -209,6 +206,24 @@ def activate_series_production():
     production = next((item for item in manifest.get("productions", []) if item.get("id") == production_id), None)
     if production is None:
         raise RuntimeError("El paquete del prepiloto no está registrado en productions.json.")
+    package_path = Path("public/studio/series/entre-partidas/episodes/prepiloto-v1.json")
+    episode_package = json.loads(package_path.read_text(encoding="utf-8"))
+    cue_by_id = {cue["id"]: cue for cue in episode_package.get("dialogue", [])}
+    for segment in segment_manifest:
+        cue = cue_by_id.get(segment["id"])
+        if cue is None or cue.get("speaker") != segment["speaker"]:
+            raise RuntimeError("El paquete del episodio no coincide con el guion de voz: " + segment["id"])
+        cue["startSeconds"] = segment["start"]
+        cue["endSeconds"] = segment["end"]
+    episode_package["durationSeconds"] = TOTAL_MS / 1000
+    episode_package["voiceTrackUrl"] = "studio/audio/entre-partidas/prepilot-v1/voice-track.mp3"
+    episode_package["wordTimingsUrl"] = "studio/audio/entre-partidas/prepilot-v1/word-timings.json"
+    episode_package["voiceStems"] = {
+        speaker: "studio/audio/entre-partidas/prepilot-v1/" + speaker + ".mp3"
+        for speaker in VOICE_CAST
+    }
+    package_path.write_text(json.dumps(episode_package, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    production["durationSeconds"] = TOTAL_MS / 1000
     required_audio = [
         OUTPUT_DIR / "voice-track.mp3",
         OUTPUT_DIR / "word-timings.json",
