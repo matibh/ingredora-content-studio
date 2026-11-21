@@ -1,14 +1,35 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-21T16:01:34Z",
+  "updatedAt": "2026-11-21T17:07:50Z",
   "productions": [
+    {
+      "id": "ingredora-entre-partidas-supermarket-001",
+      "title": "Entre Partidas — El entrenamiento (motor publicitario 3D)",
+      "description": "Sitcom 3D cinematográfica en supermercado, con tres voces diferenciadas, música original, actuación y montaje de cámara.",
+      "status": "rendering",
+      "packageUrl": "studio/packages/entre-partidas-supermarket.v1.json",
+      "durationSeconds": 65,
+      "aspectRatio": "9:16",
+      "language": "Español rioplatense — tres voces diferenciadas",
+      "platforms": [
+        "TikTok",
+        "Instagram Reels",
+        "YouTube Shorts",
+        "Facebook Reels"
+      ],
+      "version": "2.1.0-ad-engine-voices",
+      "createdAt": "2026-11-21T16:45:00-03:00",
+      "collection": "series",
+      "renderEngine": "three",
+      "caption": "Bruno se está tomando el Desafío Diario demasiado en serio. #EntrePartidas #Ingredora"
+    },
     {
       "id": "ingredora-entre-partidas-prepilot-v1",
       "title": "Entre Partidas — Prepiloto: ¿Estamos grabando?",
       "description": "Primer encuentro animado con cinco protagonistas, diálogos en español, actuaciones y miradas entre personajes.",
       "status": "rendering",
       "packageUrl": "studio/series/entre-partidas/episodes/prepiloto-v1.json",
-      "durationSeconds": 35.0,
+      "durationSeconds": 35,
       "aspectRatio": "9:16",
       "language": "Español — cinco voces diferenciadas",
       "platforms": [

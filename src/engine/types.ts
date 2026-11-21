@@ -38,7 +38,8 @@ export type ProductionPackage = {
   width: number;
   height: number;
   scenes: ProductionScene[];
-  visualPreset?: "nutella-supermarket" | "coca-cola-poolside" | "oreo-family-table" | "operation-label-detective";
+  visualPreset?: "nutella-supermarket" | "coca-cola-poolside" | "oreo-family-table" | "operation-label-detective" | "entre-partidas-supermarket";
+  dialogue?: Array<{ speaker: "bruno" | "martina" | "valentina"; text: string; start: number; end: number; look?: "bruno" | "martina" | "valentina" }>;
   /** Public, pre-generated narration asset; never store provider credentials in the client. */
   voiceoverUrl?: string;
   /** Public JSON containing Edge TTS word-level boundaries for burned-in captions. */
