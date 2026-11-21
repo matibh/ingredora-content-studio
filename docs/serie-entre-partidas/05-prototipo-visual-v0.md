@@ -59,6 +59,30 @@ La siguiente iteración técnica está desarrollada en la rama `prototype/entre-
 - Mediabunny se reutiliza para crear el WebM con audio. La conversión MP4 sigue utilizando el módulo existente.
 - El renderer valida que la pista de voces exista y no esté en silencio antes de empezar el render.
 
+### Estado verificado de la generación de voces — 21/11/2026
+
+La generación de Edge TTS terminó correctamente en GitHub Actions y los siguientes archivos quedaron confirmados en la rama de prototipo:
+
+- Pista maestra de voces: `public/studio/audio/entre-partidas/prepilot-v1/voice-track.mp3`.
+- Cinco pistas separadas: `martina.mp3`, `bruno.mp3`, `tomas.mp3`, `valentina.mp3` y `ernesto.mp3`.
+- Cinco audiciones: `audition-martina.mp3`, `audition-bruno.mp3`, `audition-tomas.mp3`, `audition-valentina.mp3` y `audition-ernesto.mp3`.
+- `voice-cast.json` y `word-timings.json`.
+
+El paquete se actualizó con la duración de 35 segundos y las marcas de tiempo medidas. Los ocho diálogos quedan programados así:
+
+| Personaje | Entrada | Salida |
+|---|---:|---:|
+| Bruno | 0,45 s | 5,274 s |
+| Martina | 5,554 s | 9,850 s |
+| Tomás | 10,200 s | 14,616 s |
+| Valentina | 14,916 s | 18,324 s |
+| Ernesto | 18,744 s | 23,616 s |
+| Bruno | 23,936 s | 26,816 s |
+| Martina | 27,166 s | 30,862 s |
+| Ernesto | 31,612 s | 33,556 s |
+
+El manifiesto quedó en estado `rendering`, con `renderEngine: "pixi2d"` y `collection: "series"`. Eso significa que las dependencias de audio están generadas y listas para el render; no significa todavía que el MP4 del Studio haya sido renderizado ni aprobado.
+
 ### Casting provisional de cinco voces
 
 El paquete está preparado para cinco identidades de voz en español:
