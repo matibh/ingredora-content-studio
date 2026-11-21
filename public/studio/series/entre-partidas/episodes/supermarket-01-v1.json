@@ -1,0 +1,153 @@
+{
+  "schemaVersion": 1,
+  "engineVersion": "three-series-1.0.0",
+  "id": "ingredora-entre-partidas-supermarket-001",
+  "title": "Entre Partidas — El entrenamiento",
+  "createdAt": "2026-11-21T14:00:00-03:00",
+  "fps": 24,
+  "width": 720,
+  "height": 1280,
+  "durationSeconds": 65,
+  "dialogue": [
+    {
+      "speaker": "bruno",
+      "text": "Harina de trigo... azúcar... aceite vegetal... maltodextrina...",
+      "start": 2,
+      "end": 5.5,
+      "look": "bruno"
+    },
+    {
+      "speaker": "bruno",
+      "text": "¿Maltodextrina...? Bueno, esto también lo tengo que aprender.",
+      "start": 6,
+      "end": 9.4,
+      "look": "bruno"
+    },
+    {
+      "speaker": "valentina",
+      "text": "Bruno...",
+      "start": 12,
+      "end": 13,
+      "look": "bruno"
+    },
+    {
+      "speaker": "valentina",
+      "text": "Bruno.",
+      "start": 14,
+      "end": 14.8,
+      "look": "bruno"
+    },
+    {
+      "speaker": "bruno",
+      "text": "Un segundo...",
+      "start": 15,
+      "end": 16.2,
+      "look": "bruno"
+    },
+    {
+      "speaker": "martina",
+      "text": "¿Estás leyendo los ingredientes?",
+      "start": 17,
+      "end": 19.4,
+      "look": "bruno"
+    },
+    {
+      "speaker": "bruno",
+      "text": "Me estoy preparando.",
+      "start": 20,
+      "end": 21.8,
+      "look": "martina"
+    },
+    {
+      "speaker": "valentina",
+      "text": "¿Para qué? ¿Te toman examen?",
+      "start": 22,
+      "end": 24.6,
+      "look": "bruno"
+    },
+    {
+      "speaker": "bruno",
+      "text": "Mañana es el Desafío Diario. Esta vez lo quiero hacer bien.",
+      "start": 25,
+      "end": 28.8,
+      "look": "martina"
+    },
+    {
+      "speaker": "martina",
+      "text": "Ah... ¿y ya sabés qué producto va a salir?",
+      "start": 29,
+      "end": 31.8,
+      "look": "bruno"
+    },
+    {
+      "speaker": "bruno",
+      "text": "No.",
+      "start": 32,
+      "end": 32.8,
+      "look": "martina"
+    },
+    {
+      "speaker": "valentina",
+      "text": "Ah, bueno.",
+      "start": 33,
+      "end": 34,
+      "look": "bruno"
+    },
+    {
+      "speaker": "bruno",
+      "text": "Justamente. Por eso estoy estudiando. Puede tocar cualquier producto. Son quince segundos.",
+      "start": 35,
+      "end": 40.5,
+      "look": "martina"
+    },
+    {
+      "speaker": "martina",
+      "text": "¿Y tu plan es leer todos los productos del supermercado?",
+      "start": 41,
+      "end": 44.2,
+      "look": "bruno"
+    },
+    {
+      "speaker": "bruno",
+      "text": "No todos. Empecé por galletitas. Después sigo con lácteos, conservas y congelados.",
+      "start": 45,
+      "end": 49.5,
+      "look": "martina"
+    },
+    {
+      "speaker": "valentina",
+      "text": "¿Y cuándo pensás comprar algo?",
+      "start": 50,
+      "end": 52.2,
+      "look": "bruno"
+    },
+    {
+      "speaker": "bruno",
+      "text": "Después.",
+      "start": 52.4,
+      "end": 53.2,
+      "look": "valentina"
+    },
+    {
+      "speaker": "martina",
+      "text": "¿Viniste hasta acá solamente a estudiar?",
+      "start": 54,
+      "end": 56.5,
+      "look": "bruno"
+    },
+    {
+      "speaker": "valentina",
+      "text": "¡Y acordate de comprar comida!",
+      "start": 58,
+      "end": 60.2,
+      "look": "bruno"
+    },
+    {
+      "speaker": "bruno",
+      "text": "Sí, sí...",
+      "start": 60.4,
+      "end": 61.5,
+      "look": "valentina"
+    }
+  ]
+}

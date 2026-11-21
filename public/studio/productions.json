@@ -1,14 +1,35 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-21T16:01:34Z",
+  "updatedAt": "2026-11-21T14:20:00-03:00",
   "productions": [
+    {
+      "id": "ingredora-entre-partidas-supermarket-001",
+      "title": "Entre Partidas — El entrenamiento (3D)",
+      "description": "Escena de supermercado en Three.js con personajes blocky originales, puesta de cámara y subtítulos. Primer pase visual sin voces; audio pendiente.",
+      "status": "rendering",
+      "packageUrl": "studio/series/entre-partidas/episodes/supermarket-01-v1.json",
+      "durationSeconds": 65,
+      "aspectRatio": "9:16",
+      "language": "Español rioplatense — subtítulos; audio pendiente",
+      "platforms": [
+        "TikTok",
+        "Instagram Reels",
+        "YouTube Shorts",
+        "Facebook Reels"
+      ],
+      "version": "1.0.0-3d-preview",
+      "createdAt": "2026-11-21T14:00:00-03:00",
+      "collection": "series",
+      "renderEngine": "three-series",
+      "caption": "Bruno se está tomando el Desafío Diario demasiado en serio. #EntrePartidas #Ingredora"
+    },
     {
       "id": "ingredora-entre-partidas-prepilot-v1",
       "title": "Entre Partidas — Prepiloto: ¿Estamos grabando?",
       "description": "Primer encuentro animado con cinco protagonistas, diálogos en español, actuaciones y miradas entre personajes.",
       "status": "rendering",
       "packageUrl": "studio/series/entre-partidas/episodes/prepiloto-v1.json",
-      "durationSeconds": 35.0,
+      "durationSeconds": 35,
       "aspectRatio": "9:16",
       "language": "Español — cinco voces diferenciadas",
       "platforms": [
