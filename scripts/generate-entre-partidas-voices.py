@@ -10,7 +10,7 @@ from pydub import AudioSegment
 
 AudioSegment.converter = imageio_ffmpeg.get_ffmpeg_exe()
 OUTPUT_DIR = Path("public/studio/audio/entre-partidas/prepilot-v1")
-TOTAL_MS = 30_000
+TOTAL_MS = 35_000
 
 # Five separate Spanish neural voices. The two Argentine voices are
 # supplemented with Uruguayan and Chilean voices to give every character
