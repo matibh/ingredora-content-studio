@@ -1,7 +1,28 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-20T20:35:00-03:00",
+  "updatedAt": "2026-11-21T12:00:00-03:00",
   "productions": [
+    {
+      "id": "ingredora-entre-partidas-prepilot-v1",
+      "title": "Entre Partidas — Prepiloto: ¿Estamos grabando?",
+      "description": "Primer encuentro animado con cinco protagonistas, diálogos en español, actuaciones y miradas entre personajes.",
+      "status": "planned",
+      "packageUrl": "studio/series/entre-partidas/episodes/prepiloto-v1.json",
+      "durationSeconds": 27,
+      "aspectRatio": "9:16",
+      "language": "Español — cinco voces diferenciadas",
+      "platforms": [
+        "TikTok",
+        "Instagram Reels",
+        "YouTube Shorts",
+        "Facebook Reels"
+      ],
+      "version": "1.0.0",
+      "createdAt": "2026-11-21T12:00:00-03:00",
+      "collection": "series",
+      "renderEngine": "pixi2d",
+      "caption": "Cinco personas, una juntada y una cámara que ya estaba grabando. Esto recién empieza. #EntrePartidas #IngredoraOriginals #Ingredora"
+    },
     {
       "id": "ingredora-operation-label-detective-013",
       "title": "Operación Etiqueta — El caso Guaymallén",
