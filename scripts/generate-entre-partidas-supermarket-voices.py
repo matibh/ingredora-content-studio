@@ -134,6 +134,7 @@ async def synthesize(segment):
     return audio, words
 
 async def main():
+    global TOTAL_MS
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     master = AudioSegment.silent(duration=TOTAL_MS, frame_rate=24_000).set_channels(2)
     stems = {
@@ -171,6 +172,12 @@ async def main():
             "voice": VOICE_CAST[segment["speaker"]]["voice"], "wordCount": len(words),
         })
         cursor_ms = end_ms + round(segment.get("pauseAfter", 0.25) * 1000)
+
+    # End the episode shortly after the final response instead of leaving dead air.
+    final_end_ms = round(segment_manifest[-1]["end"] * 1000)
+    TOTAL_MS = min(TOTAL_MS, final_end_ms + 1800)
+    master = master[:TOTAL_MS]
+    stems = {speaker: stem[:TOTAL_MS] for speaker, stem in stems.items()}
 
     master_path = OUTPUT_DIR / "voice-track.mp3"
     master.export(master_path, format="mp3", bitrate="192k")
