@@ -86,7 +86,7 @@ function buildWorld(){
  const key=new THREE.DirectionalLight("#fff1d7",2.1);key.position.set(-4,8,5);key.castShadow=true;key.shadow.mapSize.set(2048,2048);key.shadow.camera.left=-9;key.shadow.camera.right=9;key.shadow.camera.top=9;key.shadow.camera.bottom=-5;scene.add(key);
  const fill=new THREE.DirectionalLight("#dce8f2",.8);fill.position.set(5,4,1);scene.add(fill);
  const ceiling=new THREE.PointLight("#fff7e8",65,18,2);ceiling.position.set(0,5,-1);scene.add(ceiling);
- const bruno=makeRig("bruno",-.55,.25),martina=makeRig("martina",-2.0,-.15),valentina=makeRig("valentina",2.0,-.15);
+ const bruno=makeRig("bruno",-.55,.25),martina=makeRig("martina",-5.2,-.15),valentina=makeRig("valentina",5.2,-.15);
  scene.add(bruno.root,martina.root,valentina.root);
  return {scene,bruno,martina,valentina,cart,packet,packet2};
 }
@@ -129,7 +129,7 @@ export async function renderSitcom3DToWebM(pkg:Package,onProgress:(p:Series3DPro
  const renderer=new THREE.WebGLRenderer({antialias:true,alpha:false,powerPreference:"high-performance"});
  renderer.setSize(pkg.width,pkg.height,false);renderer.setPixelRatio(1);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
  renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.12;
- const {scene,bruno,martina,valentina,cart,packet,packet2}=buildWorld();
+ const {scene,bruno,martina,valentina,cart,packet}=buildWorld();
  const camera=new THREE.PerspectiveCamera(39,pkg.width/pkg.height,.1,80);
  const canvas=document.createElement("canvas");canvas.width=pkg.width;canvas.height=pkg.height;const ctx=canvas.getContext("2d");if(!ctx)throw new Error("No se pudo crear el lienzo de composición.");
  const target=new BufferTarget();const output=new Output({format:new WebMOutputFormat(),target});
@@ -149,11 +149,11 @@ export async function renderSitcom3DToWebM(pkg:Package,onProgress:(p:Series3DPro
     rig.head.rotation.y=look===rig.name?-.12:look?0.1:0;
     rig.head.rotation.x=speaker===rig.name?Math.sin(t*5)*.018:0;
     rig.leftArm.rotation.z=rig.name===speaker?-.12+Math.sin(t*4)*.06:0;
-    rig.rightArm.rotation.z=rig.name===speaker?.14:0;
+    rig.rightArm.rotation.z=rig.name===speaker ? .14 : 0;
     rig.torso.rotation.z=rig.name===speaker?Math.sin(t*2.8)*.012:0;
    }
    if(t<10){bruno.head.rotation.x=-.11; bruno.rightArm.rotation.z=-.38;packet.rotation.z=Math.sin(t*1.7)*.025;}
-   if(t>=10&&t<17){martina.root.position.x=mix(-2,-1.85,ease((t-10)/4));valentina.root.position.x=mix(2,1.8,ease((t-10)/4));}
+   if(t>=10&&t<16){const walk=ease((t-10)/5.2);martina.root.position.x=mix(-5.2,-2.0,walk);valentina.root.position.x=mix(5.2,2.0,walk);const stride=Math.sin((t-10)*5.4)*.24*(1-ease((t-14.8)/1.2));for(const rig of [martina,valentina]){rig.leftLeg.rotation.x=stride;rig.rightLeg.rotation.x=-stride;rig.leftArm.rotation.x=-stride*.65;rig.rightArm.rotation.x=stride*.65;}}
    if(t>=17&&t<46){bruno.head.rotation.x=0;}
    if(t>=46&&t<55){valentina.head.rotation.y=-.12;valentina.rightArm.rotation.z=.26;}
    if(t>=55){cart.position.x=.95;}
