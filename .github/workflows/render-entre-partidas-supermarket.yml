@@ -45,19 +45,25 @@ jobs:
           done
       - name: Render the complete Three.js scene with narration
         run: node scripts/render-supermarket.mjs
+      - name: Preserve original WebM render
+        uses: actions/upload-artifact@v4
+        with:
+          name: ingredora-entre-partidas-supermercado-webm
+          path: /tmp/ingredora-entre-partidas-supermercado.webm
+          if-no-files-found: error
+          retention-days: 30
       - name: Print Vite diagnostics on failure
         if: failure()
         run: cat /tmp/vite-preview.log || true
+      - name: Install full FFmpeg
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+          ffmpeg -version
+          ffmpeg -hide_banner -encoders | grep -E 'libx264| h264 '
       - name: Convert WebM to MP4
         run: |
-          FFMPEG="$(find "$HOME/.cache/ms-playwright" -type f -name 'ffmpeg-linux' -print -quit)"
-          if [ -z "$FFMPEG" ]; then
-            echo "No se encontró el FFmpeg instalado por Playwright."
-            find "$HOME/.cache/ms-playwright" -maxdepth 3 -type f | head -80
-            exit 1
-          fi
-          chmod +x "$FFMPEG"
-          "$FFMPEG" -y -i /tmp/ingredora-entre-partidas-supermercado.webm -c:v libx264 -preset veryfast -crf 20 -pix_fmt yuv420p -c:a aac -b:a 192k -movflags +faststart /tmp/ingredora-entre-partidas-supermercado.mp4
+          ffmpeg -y -i /tmp/ingredora-entre-partidas-supermercado.webm -c:v libx264 -preset veryfast -crf 20 -pix_fmt yuv420p -c:a aac -b:a 192k -movflags +faststart /tmp/ingredora-entre-partidas-supermercado.mp4
           test -s /tmp/ingredora-entre-partidas-supermercado.mp4
       - name: Upload final MP4
         uses: actions/upload-artifact@v4
