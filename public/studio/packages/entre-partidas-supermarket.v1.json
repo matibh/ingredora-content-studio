@@ -4,7 +4,7 @@
   "id": "ingredora-entre-partidas-supermarket-001",
   "title": "Entre Partidas — El entrenamiento",
   "description": "Sitcom 3D cinematográfica en el pasillo de un supermercado. Bruno estudia etiquetas para el Desafío Diario mientras Martina y Valentina lo descubren.",
-  "createdAt": "2026-11-21T16:45:00-03:00",
+  "createdAt": "2026-11-21T22:10:00-03:00",
   "fps": 30,
   "width": 720,
   "height": 1280,
@@ -22,141 +22,134 @@
     {
       "speaker": "bruno",
       "text": "Harina de trigo... azúcar... aceite vegetal... maltodextrina...",
-      "start": 2.0,
+      "start": 2,
       "end": 5.467,
       "look": "bruno"
     },
     {
       "speaker": "bruno",
       "text": "¿Maltodextrina...? Bueno, esto también lo tengo que aprender.",
-      "start": 6.0,
+      "start": 6,
       "end": 9.653,
       "look": "bruno"
     },
     {
       "speaker": "valentina",
-      "text": "Bruno...",
-      "start": 12.0,
-      "end": 13.193,
-      "look": "bruno"
-    },
-    {
-      "speaker": "valentina",
-      "text": "Bruno.",
-      "start": 14.0,
-      "end": 15.661,
+      "text": "¡Bruno, Bruno!",
+      "start": 11,
+      "end": 12.2,
       "look": "bruno"
     },
     {
       "speaker": "bruno",
       "text": "Un segundo...",
-      "start": 15.711,
-      "end": 17.372,
+      "start": 13.1,
+      "end": 14.761,
       "look": "valentina"
     },
     {
       "speaker": "martina",
       "text": "¿Estás leyendo los ingredientes?",
-      "start": 17.422,
-      "end": 19.659,
+      "start": 14.811,
+      "end": 17.048,
       "look": "bruno"
     },
     {
       "speaker": "bruno",
       "text": "Me estoy preparando.",
-      "start": 20.0,
-      "end": 21.661,
+      "start": 17.389,
+      "end": 19.05,
       "look": "martina"
     },
     {
       "speaker": "valentina",
       "text": "¿Para qué? ¿Te toman examen?",
-      "start": 22.0,
-      "end": 24.633,
+      "start": 19.389,
+      "end": 22.022,
       "look": "bruno"
     },
     {
       "speaker": "bruno",
-      "text": "Mañana es el Desafío Diario. Esta vez lo quiero hacer bien.",
-      "start": 25.0,
-      "end": 28.773,
+      "text": "El Desafío Diario de mañana lo quiero hacer bien.",
+      "start": 22.389,
+      "end": 25.334,
       "look": "martina"
     },
     {
       "speaker": "martina",
       "text": "Ah... ¿y ya sabés qué producto va a salir?",
-      "start": 29.0,
-      "end": 31.609,
+      "start": 26.389,
+      "end": 28.998,
       "look": "bruno"
     },
     {
       "speaker": "bruno",
       "text": "No.",
-      "start": 32.0,
-      "end": 33.661,
+      "start": 29.389,
+      "end": 31.05,
       "look": "martina"
     },
     {
       "speaker": "valentina",
       "text": "Ah, bueno.",
-      "start": 33.711,
-      "end": 35.372,
+      "start": 31.1,
+      "end": 32.761,
       "look": "bruno"
     },
     {
       "speaker": "bruno",
       "text": "Justamente. Por eso estoy estudiando. Puede tocar cualquier producto. Son quince segundos.",
-      "start": 35.422,
-      "end": 41.403,
+      "start": 32.811,
+      "end": 38.792,
       "look": "martina"
     },
     {
       "speaker": "martina",
       "text": "¿Y tu plan es leer todos los productos del supermercado?",
-      "start": 41.453,
-      "end": 44.458,
+      "start": 38.842,
+      "end": 41.847,
       "look": "bruno"
     },
     {
       "speaker": "bruno",
       "text": "No todos. Empecé por galletitas. Después sigo con lácteos, conservas y congelados.",
-      "start": 45.0,
-      "end": 50.699,
+      "start": 42.389,
+      "end": 48.088,
       "look": "martina"
     },
     {
       "speaker": "valentina",
       "text": "¿Y cuándo pensás comprar algo?",
-      "start": 50.749,
-      "end": 52.71,
+      "start": 48.138,
+      "end": 50.099,
       "look": "bruno"
     },
     {
       "speaker": "bruno",
       "text": "Después.",
-      "start": 52.76,
-      "end": 54.421,
+      "start": 50.149,
+      "end": 51.81,
       "look": "valentina"
     },
     {
       "speaker": "martina",
       "text": "¿Viniste solo a estudiar?",
-      "start": 54.471,
-      "end": 56.384,
+      "start": 51.86,
+      "end": 53.773,
       "look": "bruno"
     },
     {
       "speaker": "valentina",
       "text": "¡Y acordate de comprar comida!",
-      "start": 58.0,
-      "end": 60.075,
+      "start": 55.389,
+      "end": 57.464,
       "look": "bruno"
     },
     {
       "speaker": "bruno",
       "text": "Sí, sí...",
-      "start": 60.4,
-      "end": 62.061,
+      "start": 57.789,
+      "end": 59.45,
       "look": "valentina"
     }
   ],
