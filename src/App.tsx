@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { renderPackageToWebM, type RenderProgress } from "./engine/renderer";
+import { renderSitcomPackageToWebM } from "./series2d/renderer";
+import type { SitcomProductionPackage } from "./series2d/types";
 import { convertWebMToMp4 } from "./engine/mp4Converter";
 import { getRenderedVideo, saveRenderedVideo } from "./engine/storage";
 import type { ProductionPackage } from "./engine/types";
@@ -19,6 +21,8 @@ type Production = {
   version?: string;
   createdAt?: string;
   caption?: string;
+  collection?: "advertising" | "series";
+  renderEngine?: "three" | "pixi2d";
 };
 
 type Manifest = {
@@ -47,6 +51,7 @@ function formatDate(value?: string) {
 function App() {
   const [manifest, setManifest] = useState<Manifest>(EMPTY_MANIFEST);
   const [loading, setLoading] = useState(true);
+  const [collectionFilter, setCollectionFilter] = useState<"all" | "advertising" | "series">("all");
   const [connection, setConnection] = useState<"connected" | "error">("connected");
   const [activeId, setActiveId] = useState<string | null>(null);
   const [localVideos, setLocalVideos] = useState<Record<string, string>>({});
@@ -120,9 +125,12 @@ function App() {
         if (!packageResponse.ok) throw new Error("No se pudo cargar el paquete (" + packageResponse.status + ").");
         const productionPackage = await packageResponse.json() as ProductionPackage;
         setRenderStages((current) => ({ ...current, [candidate.id]: "Renderizando cada fotograma. Puede tardar unos minutos…" }));
-        const blob = await renderPackageToWebM(productionPackage, (progress) => {
+        const onFrameProgress = (progress: RenderProgress) => {
           setRenderProgress((current) => ({ ...current, [candidate.id]: progress }));
-        });
+        };
+        const blob = candidate.renderEngine === "pixi2d"
+          ? await renderSitcomPackageToWebM(productionPackage as unknown as SitcomProductionPackage, onFrameProgress)
+          : await renderPackageToWebM(productionPackage, onFrameProgress);
         if (!blob.size) throw new Error("El render terminó sin generar un archivo de video.");
         setRenderStages((current) => ({ ...current, [candidate.id]: "Guardando el video para reproducirlo…" }));
         await saveRenderedVideo(candidate.id, blob);
@@ -141,7 +149,10 @@ function App() {
     void produce();
   }, [manifest.productions, localVideos, retryToken, forceRenderIds]);
 
-  const ready = manifest.productions.filter((item) => (item.status === "ready" && item.videoUrl) || !!localVideos[item.id]);
+  const visibleProductions = manifest.productions.filter((item) =>
+    collectionFilter === "all" || (item.collection || "advertising") === collectionFilter
+  );
+  const ready = visibleProductions.filter((item) => (item.status === "ready" && item.videoUrl) || !!localVideos[item.id]);
   const active = ready.find((item) => item.id === activeId) ?? ready[0] ?? null;
   const activeVideoUrl = active ? (localVideos[active.id] || active.videoUrl) : undefined;
   const activeIsRendering = !!active && renderingIds.current.has(active.id);
@@ -194,7 +205,7 @@ function App() {
     } finally { setMp4Busy(false); setApprovalBusy(false); }
   };
 
-  const inProgress = manifest.productions.filter((item) => !ready.some((readyItem) => readyItem.id === item.id));
+  const inProgress = visibleProductions.filter((item) => !ready.some((readyItem) => readyItem.id === item.id));
 
   return (
     <div className="studio-shell">
@@ -222,6 +233,19 @@ function App() {
           </div>
         </section>
 
+        <section className="collection-switcher" aria-label="Colecciones del estudio">
+          <div className="collection-switcher-copy">
+            <p className="eyebrow">EL ESTUDIO</p>
+            <strong>Dos formas de contar historias.</strong>
+            <span>Campañas de marca y series originales, cada una con su propio motor y biblioteca.</span>
+          </div>
+          <div className="collection-tabs" role="group" aria-label="Filtrar colecciones">
+            <button type="button" className={collectionFilter === "all" ? "collection-tab active" : "collection-tab"} aria-pressed={collectionFilter === "all"} onClick={() => setCollectionFilter("all")}>Todo</button>
+            <button type="button" className={collectionFilter === "advertising" ? "collection-tab active" : "collection-tab"} aria-pressed={collectionFilter === "advertising"} onClick={() => setCollectionFilter("advertising")}>Publicidad</button>
+            <button type="button" className={collectionFilter === "series" ? "collection-tab active" : "collection-tab"} aria-pressed={collectionFilter === "series"} onClick={() => setCollectionFilter("series")}>Series originales</button>
+          </div>
+        </section>
+
         <section className="player-section" aria-label="Última producción">
           <div className="section-topline"><div><p className="eyebrow">THE SCREENING ROOM</p><h2>Última producción</h2></div><span className="section-index">01 — PLAY</span></div>
           {active ? (
@@ -231,7 +255,7 @@ function App() {
                   <source src={activeVideoUrl} />
                   Tu navegador no puede reproducir este video.
                 </video>
-                <div className="video-corner-label">INGREDORA / ORIGINAL</div>
+                <div className="video-corner-label">{active.collection === "series" ? "INGREDORA ORIGINALS / SERIES" : "INGREDORA / PUBLICIDAD"}</div>
               </div>
               <div className="video-details">
                 <div className="ready-label"><i /> {activeIsRendering ? "REGENERANDO VIDEO" : "VIDEO LISTO"}</div>
