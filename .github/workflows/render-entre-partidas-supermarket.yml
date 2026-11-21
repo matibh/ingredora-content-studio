@@ -9,6 +9,7 @@ on:
       - "public/studio/packages/entre-partidas-supermarket.v1.json"
       - "public/studio/audio/entre-partidas/**"
       - "scripts/render-supermarket.*"
+      - "scripts/prepare-entre-partidas-audio.py"
       - "render-supermarket.html"
       - ".github/workflows/render-entre-partidas-supermarket.yml"
   workflow_dispatch:
@@ -43,6 +44,14 @@ jobs:
             curl -fsS http://127.0.0.1:4173/ >/dev/null && break
             sleep 2
           done
+      - name: Install FFmpeg for voice edits and final MP4
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+          ffmpeg -version
+          ffmpeg -hide_banner -encoders | grep -E 'libx264| h264 '
+      - name: Re-time original voice fragments for revised dialogue
+        run: python3 scripts/prepare-entre-partidas-audio.py
       - name: Render the complete Three.js scene with narration
         run: node scripts/render-supermarket.mjs
       - name: Preserve original WebM render
@@ -55,12 +64,6 @@ jobs:
       - name: Print Vite diagnostics on failure
         if: failure()
         run: cat /tmp/vite-preview.log || true
-      - name: Install full FFmpeg
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y ffmpeg
-          ffmpeg -version
-          ffmpeg -hide_banner -encoders | grep -E 'libx264| h264 '
       - name: Convert WebM to MP4
         run: |
           ffmpeg -y -i /tmp/ingredora-entre-partidas-supermercado.webm -c:v libx264 -preset veryfast -crf 20 -pix_fmt yuv420p -c:a aac -b:a 192k -movflags +faststart /tmp/ingredora-entre-partidas-supermercado.mp4
