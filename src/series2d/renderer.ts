@@ -15,7 +15,8 @@ import {
   WebMOutputFormat,
 } from "mediabunny";
 import { createCharacter, updateCharacter, type CharacterRig } from "./characters";
-import type { CharacterId, SitcomProductionPackage } from "./types";
+import { drawSupermarket } from "./supermarket";
+import type { CameraShot, CharacterId, SitcomProductionPackage } from "./types";
 
 export type Series2DRenderProgress = { frame: number; totalFrames: number; percent: number };
 
@@ -89,6 +90,43 @@ function drawLivingRoom(stage: Container) {
   stage.addChild(rec);
 }
 
+
+function updateCamera(world: Container, shots: CameraShot[] | undefined, time: number, width: number, height: number) {
+  if (!shots?.length) {
+    world.position.set(0, 0);
+    world.scale.set(1);
+    return;
+  }
+  const shot = shots.find(item => time >= item.startSeconds && time < item.endSeconds)
+    ?? (time >= shots[shots.length - 1].endSeconds ? shots[shots.length - 1] : shots[0]);
+  const raw = Math.max(0, Math.min(1, (time - shot.startSeconds) / Math.max(.001, shot.endSeconds - shot.startSeconds)));
+  const eased = raw * raw * (3 - 2 * raw);
+  const x = shot.transition === "cut" ? shot.toX : shot.fromX + (shot.toX - shot.fromX) * eased;
+  const y = shot.transition === "cut" ? shot.toY : shot.fromY + (shot.toY - shot.fromY) * eased;
+  const zoom = shot.transition === "cut" ? shot.toZoom : shot.fromZoom + (shot.toZoom - shot.fromZoom) * eased;
+  world.scale.set(zoom);
+  world.position.set(width / 2 - x * zoom, height / 2 - y * zoom);
+}
+
+function attachGroceryPackage(rig: CharacterRig) {
+  const packet = new Container();
+  packet.position.set(47, -238);
+  packet.rotation = -0.08;
+  addShape(packet, g => g.roundRect(-23, -42, 46, 84, 5), "#E9D8B8", "#756552", 2.5);
+  addShape(packet, g => g.rect(-19, -25, 38, 18), "#C9794E", "#C9794E", 0);
+  addShape(packet, g => g.rect(-18, 2, 36, 2), "#9E8B72", "#9E8B72", 0);
+  addShape(packet, g => g.rect(-18, 9, 31, 2), "#9E8B72", "#9E8B72", 0);
+  addShape(packet, g => g.rect(-18, 16, 34, 2), "#9E8B72", "#9E8B72", 0);
+  const label = new Text({
+    text: "GALLETITAS",
+    style: { fontFamily: "Arial", fontSize: 5.5, fontWeight: "800", fill: "#FFF7E8", letterSpacing: .3 }
+  });
+  label.anchor.set(.5);
+  label.position.set(0, -16);
+  packet.addChild(label);
+  rig.torso.addChild(packet);
+}
+
 function validateSitcomPackage(pkg: SitcomProductionPackage) {
   if (pkg.schemaVersion !== 1 || pkg.engineVersion !== "pixi-2d-1.0.0") {
     throw new Error("Versión de paquete 2D no compatible.");
@@ -115,6 +153,13 @@ function validateSitcomPackage(pkg: SitcomProductionPackage) {
     ids.add(character.id);
   }
   if (ids.size < 2) throw new Error("Una escena de serie necesita al menos dos personajes.");
+  for (const shot of pkg.cameraShots ?? []) {
+    if (!shot.id || ![shot.startSeconds, shot.endSeconds, shot.fromX, shot.fromY, shot.fromZoom, shot.toX, shot.toY, shot.toZoom].every(Number.isFinite)
+      || shot.startSeconds < 0 || shot.endSeconds <= shot.startSeconds || shot.endSeconds > pkg.durationSeconds
+      || shot.fromZoom <= 0 || shot.toZoom <= 0) {
+      throw new Error("Plano de cámara con tiempos, posición o zoom inválidos.");
+    }
+  }
   const dialogueIds = new Set<string>();
   let previousStart = -1;
   for (const cue of pkg.dialogue) {
@@ -160,7 +205,7 @@ export async function renderSitcomPackageToWebM(
   if (signal?.aborted) throw new Error("Render 2D cancelado.");
 
   const totalFrames = Math.round(pkg.durationSeconds * pkg.fps);
-  const cameraRevealTime = pkg.dialogue.find(cue => cue.id === "07-martina")?.startSeconds ?? 23.6;
+  const cameraRevealTime = pkg.cameraRevealSeconds ?? pkg.dialogue.find(cue => cue.lookAt === "camera")?.startSeconds;
   const totalSamples = Math.ceil(pkg.durationSeconds * 48_000);
   const codec = await selectSeriesEncoder(pkg.width, pkg.height, pkg.fps);
   const audioUrl = import.meta.env.BASE_URL + pkg.voiceTrackUrl;
@@ -224,13 +269,17 @@ export async function renderSitcomPackageToWebM(
   app.ticker.stop();
 
   const stage = app.stage;
-  drawLivingRoom(stage);
+  const world = new Container();
+  stage.addChild(world);
+  if (pkg.background === "supermarket-aisle") drawSupermarket(world);
+  else drawLivingRoom(world);
 
-  const floorY = 1077;
+  const floorY = pkg.background === "supermarket-aisle" ? 1110 : 1077;
   const characters: CharacterRig[] = [];
   for (const placement of pkg.characters) {
     const rig = createCharacter(placement.id, placement.x, placement.baselineY || floorY, placement.scale);
-    stage.addChild(rig.root);
+    if (placement.prop === "grocery-package" && placement.id === "bruno") attachGroceryPackage(rig);
+    world.addChild(rig.root);
     characters.push(rig);
   }
 
@@ -258,6 +307,25 @@ export async function renderSitcomPackageToWebM(
   caption.position.set(63, 1161);
   dialoguePanel.addChild(speaker, caption);
   stage.addChild(dialoguePanel);
+  const cinematicSubtitle = new Text({
+    text: "",
+    style: {
+      fontFamily: "Arial",
+      fontSize: 30,
+      fontWeight: "700",
+      fill: "#FFFDF8",
+      stroke: { color: "#302B27", width: 5 },
+      wordWrap: true,
+      wordWrapWidth: 620,
+      align: "center",
+      lineHeight: 36,
+    }
+  });
+  cinematicSubtitle.anchor.set(.5, 1);
+  cinematicSubtitle.position.set(pkg.width / 2, pkg.height - 76);
+  cinematicSubtitle.visible = false;
+  stage.addChild(cinematicSubtitle);
+  const cinematic = pkg.presentation === "cinematic";
 
   const target = new BufferTarget();
   const output = new Output({ format: new WebMOutputFormat(), target });
@@ -288,20 +356,23 @@ export async function renderSitcomPackageToWebM(
       if (signal?.aborted) throw new Error("Render 2D cancelado.");
       const time = frame / pkg.fps;
       const activeCue = pkg.dialogue.find(cue => time >= cue.startSeconds && time <= cue.endSeconds);
-      const cameraBeat = time >= cameraRevealTime;
+      const cameraBeat = cameraRevealTime !== undefined && time >= cameraRevealTime;
+      updateCamera(world, pkg.cameraShots, time, pkg.width, pkg.height);
 
       for (const rig of characters) {
         updateCharacter(
           rig,
           time,
           pkg.dialogue,
-          pkg.characters.map(item => ({ id: item.id, x: item.x })),
+          pkg.characters.map(item => ({ id: item.id, x: item.x, entrance: item.entrance })),
           cameraBeat
         );
       }
 
       if (activeCue) {
-        dialoguePanel.visible = true;
+        dialoguePanel.visible = !cinematic;
+        cinematicSubtitle.visible = cinematic;
+        cinematicSubtitle.text = cinematic ? activeCue.text : "";
         speaker.text = activeCue.speaker.toUpperCase();
         caption.text = activeCue.text;
         const nameColor = activeCue.speaker === "bruno" ? "#D66F5A"
@@ -328,9 +399,11 @@ export async function renderSitcomPackageToWebM(
         }
       } else {
         dialoguePanel.visible = false;
+        cinematicSubtitle.visible = false;
       }
 
-      // At the final beat, every character deliberately turns their eyes toward the lens.
+      // The camera is a screen-space director: shots, pans and pushes change the world transform,
+      // while subtitles stay locked to the frame. Existing living-room packages keep their old framing.
       app.renderer.render({ container: stage });
       await videoSource.add(time, 1 / pkg.fps);
       onProgress({
