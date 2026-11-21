@@ -9,7 +9,7 @@ try{
  const response=await fetch("/studio/packages/entre-partidas-supermarket.v1.json",{cache:"no-store"});
  if(!response.ok)throw new Error("No se pudo cargar el guion: "+response.status);
  const pkg=await response.json();
- const blob=await renderPackageToWebM(pkg,p=>{progress.value=p.percent;status.textContent="Renderizando fotograma "+p.frame+" / "+p.totalFrames+" ("+p.percent+"%)";});
+ let lastLogged=-1; const blob=await renderPackageToWebM(pkg,p=>{progress.value=p.percent;status.textContent="Renderizando fotograma "+p.frame+" / "+p.totalFrames+" ("+p.percent+"%)";if(p.percent>=lastLogged+5){lastLogged=p.percent;console.log("PROGRESS "+p.percent+"% ("+p.frame+"/"+p.totalFrames+")");}});
  status.textContent="Render terminado. Preparando descarga…";
  const url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="ingredora-entre-partidas-supermercado.webm";document.body.append(a);a.click();a.remove();
  setTimeout(()=>URL.revokeObjectURL(url),120000);status.textContent="RENDER COMPLETADO";document.title="RENDER COMPLETADO";
