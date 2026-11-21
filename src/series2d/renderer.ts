@@ -250,6 +250,36 @@ export async function renderSitcomPackageToWebM(
   compressor.release.value = 0.16;
   voiceSource.connect(voiceGain).connect(compressor).connect(offline.destination);
   voiceSource.start(0);
+
+  // Subtle deterministic room tone for the supermarket; no stock audio or paid asset.
+  if (pkg.background === "supermarket-aisle") {
+    const ambienceBuffer = offline.createBuffer(1, totalSamples, 48_000);
+    const ambienceData = ambienceBuffer.getChannelData(0);
+    let seed = 1847;
+    for (let index = 0; index < ambienceData.length; index += 1) {
+      seed = (seed * 16807) % 2147483647;
+      ambienceData[index] = ((seed / 2147483647) * 2 - 1) * 0.012;
+    }
+    const ambienceSource = offline.createBufferSource();
+    ambienceSource.buffer = ambienceBuffer;
+    const ambienceFilter = offline.createBiquadFilter();
+    ambienceFilter.type = "lowpass";
+    ambienceFilter.frequency.value = 620;
+    const ambienceGain = offline.createGain();
+    ambienceGain.gain.value = 0.34;
+    ambienceSource.connect(ambienceFilter).connect(ambienceGain).connect(offline.destination);
+    ambienceSource.start(0);
+
+    const electricalHum = offline.createOscillator();
+    const humGain = offline.createGain();
+    electricalHum.type = "sine";
+    electricalHum.frequency.value = 92;
+    humGain.gain.value = 0.0025;
+    electricalHum.connect(humGain).connect(offline.destination);
+    electricalHum.start(0);
+    electricalHum.stop(pkg.durationSeconds);
+  }
+
   const mixedAudio = await offline.startRendering();
   if (signal?.aborted) throw new Error("Render 2D cancelado.");
 
