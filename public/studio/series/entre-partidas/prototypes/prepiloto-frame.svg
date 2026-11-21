@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="1100" viewBox="0 0 720 1100">
+<defs><linearGradient id="bg" x2="0" y2="1"><stop stop-color="#F8EEDC"/><stop offset="1" stop-color="#EBD7BC"/></linearGradient></defs>
+<rect width="720" height="1100" fill="url(#bg)"/>
+<text x="44" y="64" font-family="Arial,sans-serif" font-size="20" letter-spacing="4" font-weight="700" fill="#6C5847">INGREDORA ORIGINALS</text>
+<text x="44" y="100" font-family="Arial,sans-serif" font-size="17" letter-spacing="2" fill="#94785F">ENTRE PARTIDAS · ELENCO PRELIMINAR V0</text>
+<rect x="24" y="390" width="672" height="540" rx="52" fill="#416A6B" stroke="#493A33" stroke-width="8"/>
+<rect x="42" y="434" width="636" height="476" rx="40" fill="#527D7B" stroke="#493A33" stroke-width="5"/>
+<path d="M168 440Q150 680 168 905M306 440Q288 680 306 905M444 440Q426 680 444 905M582 440Q564 680 582 905" fill="none" stroke="#34595B" stroke-width="4" opacity=".7"/>
+<g transform="translate(85 670)">
+  <path d="M-36 147L-40 270H-7L-1 160ZM4 160L9 270H42L36 147Z" fill="#315D62" stroke="#493A33" stroke-width="5"/>
+  <path d="M-45 259Q-20 250-2 261L-2 279H-49Q-58 270-45 259ZM8 261Q28 250 46 259Q58 273 47 280H8Z" fill="#F1E6D5" stroke="#493A33" stroke-width="5"/>
+  <path d="M-48 10Q-68 33-58 140Q0 166 57 140L54 20Q35-5 0-6Q-33-6-48 10Z" fill="#D9A52E" stroke="#493A33" stroke-width="6"/>
+  <path d="M-42 29Q-61 65-48 111L-30 121M42 29Q61 65 48 111L30 121" fill="none" stroke="#D9A52E" stroke-width="17" stroke-linecap="round"/>
+  <path d="M-10-18V10Q0 20 11 10V-18Z" fill="#E8B99A" stroke="#493A33" stroke-width="4"/>
+  <path d="M-44-20Q-52-88 0-94Q52-90 43-18L40 75Q22 92 25 43H-25L-31 78Q-48 86-50 61Z" fill="#33241F" stroke="#493A33" stroke-width="5"/>
+  <path d="M-34-38Q-31-89 0-87Q31-89 35-38L30 17Q22 47 0 49Q-22 47-30 17Z" fill="#E8B99A" stroke="#493A33" stroke-width="5"/>
+  <path d="M-24-16Q-14-23-5-16M7-16Q18-23 26-16" fill="none" stroke="#493A33" stroke-width="4" stroke-linecap="round"/>
+  <ellipse cx="-16" cy="-2" rx="4.5" ry="6" fill="#302A28"/><ellipse cx="17" cy="-2" rx="4.5" ry="6" fill="#302A28"/>
+  <path d="M0 5Q-4 19 2 21" fill="none" stroke="#B97D65" stroke-width="3" stroke-linecap="round"/>
+  <path d="M-10 34Q0 40 11 34" fill="none" stroke="#8F4A45" stroke-width="4" stroke-linecap="round"/>
+  
+  
+  
+  <text x="0" y="309" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" letter-spacing="1.4" font-weight="700" fill="#6C5847">MARTINA</text>
+ </g><g transform="translate(222 670)">
+  <path d="M-36 147L-40 270H-7L-1 160ZM4 160L9 270H42L36 147Z" fill="#38485D" stroke="#493A33" stroke-width="5"/>
+  <path d="M-45 259Q-20 250-2 261L-2 279H-49Q-58 270-45 259ZM8 261Q28 250 46 259Q58 273 47 280H8Z" fill="#F1E6D5" stroke="#493A33" stroke-width="5"/>
+  <path d="M-48 10Q-68 33-58 140Q0 166 57 140L54 20Q35-5 0-6Q-33-6-48 10Z" fill="#E56F59" stroke="#493A33" stroke-width="6"/>
+  <path d="M-42 29Q-61 65-48 111L-30 121M42 29Q61 65 48 111L30 121" fill="none" stroke="#E56F59" stroke-width="17" stroke-linecap="round"/>
+  <path d="M-10-18V10Q0 20 11 10V-18Z" fill="#DFAF8D" stroke="#493A33" stroke-width="4"/>
+  <path d="M-43-18L-48-55-25-47-20-75-3-52 16-78 22-49 46-58 42-15Z" fill="#33241F" stroke="#493A33" stroke-width="5"/>
+  <path d="M-34-38Q-31-89 0-87Q31-89 35-38L30 17Q22 47 0 49Q-22 47-30 17Z" fill="#DFAF8D" stroke="#493A33" stroke-width="5"/>
+  <path d="M-24-16Q-14-23-5-16M7-16Q18-23 26-16" fill="none" stroke="#493A33" stroke-width="4" stroke-linecap="round"/>
+  <ellipse cx="-16" cy="-2" rx="4.5" ry="6" fill="#302A28"/><ellipse cx="17" cy="-2" rx="4.5" ry="6" fill="#302A28"/>
+  <path d="M0 5Q-4 19 2 21" fill="none" stroke="#B97D65" stroke-width="3" stroke-linecap="round"/>
+  <path d="M-10 34Q0 40 11 34" fill="none" stroke="#8F4A45" stroke-width="4" stroke-linecap="round"/>
+  
+  
+  
+  <text x="0" y="309" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" letter-spacing="1.4" font-weight="700" fill="#6C5847">BRUNO</text>
+ </g><g transform="translate(360 670)">
+  <path d="M-36 147L-40 270H-7L-1 160ZM4 160L9 270H42L36 147Z" fill="#765743" stroke="#493A33" stroke-width="5"/>
+  <path d="M-45 259Q-20 250-2 261L-2 279H-49Q-58 270-45 259ZM8 261Q28 250 46 259Q58 273 47 280H8Z" fill="#F1E6D5" stroke="#493A33" stroke-width="5"/>
+  <path d="M-48 10Q-68 33-58 140Q0 166 57 140L54 20Q35-5 0-6Q-33-6-48 10Z" fill="#6F9B62" stroke="#493A33" stroke-width="6"/>
+  <path d="M-42 29Q-61 65-48 111L-30 121M42 29Q61 65 48 111L30 121" fill="none" stroke="#6F9B62" stroke-width="17" stroke-linecap="round"/>
+  <path d="M-10-18V10Q0 20 11 10V-18Z" fill="#E5B694" stroke="#493A33" stroke-width="4"/>
+  <path d="M-44-20Q-52-65-23-73L-32-87-7-75 3-94 17-70 43-81 35-51 48-27Z" fill="#5A3827" stroke="#493A33" stroke-width="5"/>
+  <path d="M-34-38Q-31-89 0-87Q31-89 35-38L30 17Q22 47 0 49Q-22 47-30 17Z" fill="#E5B694" stroke="#493A33" stroke-width="5"/>
+  <path d="M-24-16Q-14-23-5-16M7-16Q18-23 26-16" fill="none" stroke="#493A33" stroke-width="4" stroke-linecap="round"/>
+  <ellipse cx="-16" cy="-2" rx="4.5" ry="6" fill="#302A28"/><ellipse cx="17" cy="-2" rx="4.5" ry="6" fill="#302A28"/>
+  <path d="M0 5Q-4 19 2 21" fill="none" stroke="#B97D65" stroke-width="3" stroke-linecap="round"/>
+  <path d="M-10 34Q0 40 11 34" fill="none" stroke="#8F4A45" stroke-width="4" stroke-linecap="round"/>
+  
+  
+  
+  <text x="0" y="309" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" letter-spacing="1.4" font-weight="700" fill="#6C5847">TOMÁS</text>
+ </g><g transform="translate(498 670)">
+  <path d="M-36 147L-40 270H-7L-1 160ZM4 160L9 270H42L36 147Z" fill="#37404C" stroke="#493A33" stroke-width="5"/>
+  <path d="M-45 259Q-20 250-2 261L-2 279H-49Q-58 270-45 259ZM8 261Q28 250 46 259Q58 273 47 280H8Z" fill="#F1E6D5" stroke="#493A33" stroke-width="5"/>
+  <path d="M-48 10Q-68 33-58 140Q0 166 57 140L54 20Q35-5 0-6Q-33-6-48 10Z" fill="#376C79" stroke="#493A33" stroke-width="6"/>
+  <path d="M-42 29Q-61 65-48 111L-30 121M42 29Q61 65 48 111L30 121" fill="none" stroke="#376C79" stroke-width="17" stroke-linecap="round"/>
+  <path d="M-10-18V10Q0 20 11 10V-18Z" fill="#E9BA9E" stroke="#493A33" stroke-width="4"/>
+  <path d="M-45-20Q-55-92 0-94Q54-88 46-18L58 112Q37 126 29 71L-28 71Q-36 124-57 110Z" fill="#2C211F" stroke="#493A33" stroke-width="5"/>
+  <path d="M-34-38Q-31-89 0-87Q31-89 35-38L30 17Q22 47 0 49Q-22 47-30 17Z" fill="#E9BA9E" stroke="#493A33" stroke-width="5"/>
+  <path d="M-24-16Q-14-23-5-16M7-16Q18-23 26-16" fill="none" stroke="#493A33" stroke-width="4" stroke-linecap="round"/>
+  <ellipse cx="-16" cy="-2" rx="4.5" ry="6" fill="#302A28"/><ellipse cx="17" cy="-2" rx="4.5" ry="6" fill="#302A28"/>
+  <path d="M0 5Q-4 19 2 21" fill="none" stroke="#B97D65" stroke-width="3" stroke-linecap="round"/>
+  <path d="M-10 34Q0 40 11 34" fill="none" stroke="#8F4A45" stroke-width="4" stroke-linecap="round"/>
+  <path d="M-39-28Q-30-91 0-91Q30-89 40-32Q16-55 3-39Q-16-25-31-44Z" fill="#2C211F" stroke="#493A33" stroke-width="4"/>
+  
+  
+  <text x="0" y="309" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" letter-spacing="1.4" font-weight="700" fill="#6C5847">VALENTINA</text>
+ </g><g transform="translate(635 670)">
+  <path d="M-36 147L-40 270H-7L-1 160ZM4 160L9 270H42L36 147Z" fill="#4B4B4A" stroke="#493A33" stroke-width="5"/>
+  <path d="M-45 259Q-20 250-2 261L-2 279H-49Q-58 270-45 259ZM8 261Q28 250 46 259Q58 273 47 280H8Z" fill="#F1E6D5" stroke="#493A33" stroke-width="5"/>
+  <path d="M-48 10Q-68 33-58 140Q0 166 57 140L54 20Q35-5 0-6Q-33-6-48 10Z" fill="#B66D4D" stroke="#493A33" stroke-width="6"/>
+  <path d="M-42 29Q-61 65-48 111L-30 121M42 29Q61 65 48 111L30 121" fill="none" stroke="#B66D4D" stroke-width="17" stroke-linecap="round"/>
+  <path d="M-10-18V10Q0 20 11 10V-18Z" fill="#D8A989" stroke="#493A33" stroke-width="4"/>
+  <path d="M-44-23Q-49-90 0-94Q50-91 44-20L37-2H-39Z" fill="#777875" stroke="#493A33" stroke-width="5"/>
+  <path d="M-34-38Q-31-89 0-87Q31-89 35-38L30 17Q22 47 0 49Q-22 47-30 17Z" fill="#D8A989" stroke="#493A33" stroke-width="5"/>
+  <path d="M-24-16Q-14-23-5-16M7-16Q18-23 26-16" fill="none" stroke="#493A33" stroke-width="4" stroke-linecap="round"/>
+  <ellipse cx="-16" cy="-2" rx="4.5" ry="6" fill="#302A28"/><ellipse cx="17" cy="-2" rx="4.5" ry="6" fill="#302A28"/>
+  <path d="M0 5Q-4 19 2 21" fill="none" stroke="#B97D65" stroke-width="3" stroke-linecap="round"/>
+  <path d="M-10 34Q0 40 11 34" fill="none" stroke="#8F4A45" stroke-width="4" stroke-linecap="round"/>
+  
+  <path d="M-37-37Q-25-89 0-91Q27-89 39-36Q17-54 0-47Q-18-39-31-49Z" fill="#777875" stroke="#493A33" stroke-width="4"/>
+  <path d="M-20 35Q0 59 21 35Q16 53 0 54Q-17 52-20 35Z" fill="#77716A" stroke="#493A33" stroke-width="3"/>
+  <text x="0" y="309" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" letter-spacing="1.4" font-weight="700" fill="#6C5847">ERNESTO</text>
+ </g>
+<rect x="27" y="967" width="666" height="86" rx="18" fill="#FFF7EC" stroke="#493A33" stroke-width="5"/>
+<text x="360" y="1019" text-anchor="middle" font-family="Arial,sans-serif" font-size="21" font-weight="700" fill="#493A33">PRIMERA PROPUESTA VISUAL · NO CANÓNICA</text>
+</svg>
