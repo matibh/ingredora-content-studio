@@ -113,7 +113,7 @@ function makeCharacter(name: EntrePartidasCue["speaker"], x: number, z: number):
     }
     const forearm=new THREE.Mesh(new THREE.CylinderGeometry(.075,.095,.39,8),skin);
     forearm.position.set(0,-.57,.035);forearm.castShadow=true;pivot.add(forearm);
-    ellipsoid(pivot,[.095,.085,.07],skin,[0,-.79,.085],8);
+    ellipsoid(pivot,[.095,.085,.07],skin,[0,isBruno?-.65:-.79,isBruno?.24:.085],8);
     return pivot;
   };
   const leg=(side:number)=>{
@@ -375,62 +375,69 @@ export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
   const update=(time:number,dialogue:EntrePartidasCue[])=>{
     const cue=dialogue.find(c=>time>=c.start&&time<=c.end);
     const speaker=cue?.speaker;
-    const walkT=Math.max(0,Math.min(1,(time-6)/7));
-    const ease=(v:number)=>v*v*(3-2*v);
-    martina.root.position.x=-1.15;
-    valentina.root.position.x=1.15;
-    martina.root.position.z=-12.8+9.6*ease(walkT);
-    valentina.root.position.z=-12.8+9.6*ease(walkT);
-    martina.root.rotation.y=.32*ease(walkT);
-    valentina.root.rotation.y=-.32*ease(walkT);
+    const ease=(v:number)=>{const q=Math.max(0,Math.min(1,v));return q*q*(3-2*q);};
+    const entry=ease((time-6)/1.7);
+    const walk=ease((time-7.7)/5.3);
+    // They enter from a wide perpendicular aisle, turn into Bruno's aisle, then walk forward.
+    const entryX=7.1-3.8*entry;
+    const walkX=3.3-2.15*walk;
+    martina.root.position.x=-(time<7.7?entryX:walkX);
+    valentina.root.position.x=(time<7.7?entryX:walkX);
+    martina.root.position.z=-11.25+8.0*walk;
+    valentina.root.position.z=-11.25+8.0*walk;
+    martina.root.rotation.y=(Math.PI/2)*(1-entry)*(1-walk*.08);
+    valentina.root.rotation.y=-(Math.PI/2)*(1-entry)*(1-walk*.08);
+    if(time>=12.7){martina.root.rotation.y=.12;valentina.root.rotation.y=-.12;}
     bruno.root.rotation.y=0;
     bruno.leftLeg.rotation.x=-1.02;
     bruno.rightLeg.rotation.x=-1.16;
-    bruno.leftLeg.rotation.z=-.035;
-    bruno.rightLeg.rotation.z=.035;
+    bruno.leftLeg.rotation.z=-.025;
+    bruno.rightLeg.rotation.z=.025;
     for(const rig of [bruno,martina,valentina]){
       const talking=rig.name===speaker;
-      const lookAngle=cue?.look===rig.name?-.16:cue?.look?.length? .10:0;
+      const lookAngle=cue?.look===rig.name?-.13:cue?.look?.length?.07:0;
       const phase=rig.name==="bruno"?0:rig.name==="martina"?1.7:3.1;
-      rig.head.rotation.y=lookAngle+Math.sin(time*.7+phase)*.018;
-      rig.head.rotation.x=talking?Math.sin(time*5.5+phase)*.035:Math.sin(time*.9+phase)*.012;
-      rig.head.rotation.z=Math.sin(time*1.15+phase)*.012;
-      const mouthOpen=talking?.10+Math.pow(Math.abs(Math.sin(time*19+phase)),1.35)*1.25:.08;
-      rig.mouth.scale.set(talking?.92+.08*Math.sin(time*9+phase):1,mouthOpen,1);
-      rig.mouth.position.y=-.20-(talking?mouthOpen*.006:0);
-      rig.leftArm.rotation.z=talking?-.12+Math.sin(time*2.4+phase)*.075:Math.sin(time*.8+phase)*.025;
-      rig.rightArm.rotation.z=talking?.14+Math.sin(time*2.1+phase+1)*.085:Math.sin(time*.9+phase)*.025;
-      rig.leftArm.rotation.x=(talking?.035:0)+Math.sin(time*1.1+phase)*.018;
-      rig.rightArm.rotation.x=(talking?-.025:0)+Math.sin(time*1.0+phase+1)*.018;
-      rig.root.rotation.z=(talking?Math.sin(time*2.2+phase)*.012:Math.sin(time*.7+phase)*.006);
-      rig.root.position.y=-1.975+Math.sin(time*.9+phase)*.008;
+      rig.head.rotation.y=lookAngle+Math.sin(time*.48+phase)*.007;
+      rig.head.rotation.x=talking?Math.sin(time*2.9+phase)*.022:Math.sin(time*.55+phase)*.006;
+      rig.head.rotation.z=Math.sin(time*.62+phase)*.006;
+      // Slower, smaller jaw movement and occasional nods make the exchanges less mechanical.
+      const syllablePulse=Math.pow(Math.max(0,Math.sin(time*9.2+phase)),1.25);
+      const mouthOpen=talking?.34+syllablePulse*.72:.08;
+      rig.mouth.scale.set(1,mouthOpen,1);
+      rig.mouth.position.y=-.205-(talking?mouthOpen*.003:0);
+      const gesture=talking?1:0;
+      rig.leftArm.rotation.z=gesture?-.012+Math.sin(time*1.35+phase)*.008:0;
+      rig.rightArm.rotation.z=gesture?.014+Math.sin(time*1.25+phase+1)*.008:0;
+      rig.leftArm.rotation.x=gesture?.004:0;
+      rig.rightArm.rotation.x=gesture?-.004:0;
+      rig.root.rotation.z=talking?Math.sin(time*1.1+phase)*.004:0;
+      rig.root.position.y=-1.975;
     }
-    if(time<10){
-      // Bruno studies two packets held close together at lap height; elbows stay tucked in.
-      bruno.head.rotation.x=-.24;
-      bruno.leftArm.rotation.z=.42;
-      bruno.rightArm.rotation.z=-.48;
-      bruno.leftArm.rotation.x=-.06;
-      bruno.rightArm.rotation.x=-.04;
-      packet.rotation.set(0,.10+Math.sin(time*.55)*.012,.035);
-      packet2.rotation.set(0,-.12+Math.sin(time*.5+.7)*.012,-.025);
+    if(time<18){
+      // Bruno keeps both forearms steady and straight; each hand supports one vertical package.
+      bruno.leftArm.rotation.set(0,.015,.018);
+      bruno.rightArm.rotation.set(0,-.015,-.018);
+      bruno.head.rotation.x=-.20+Math.sin(time*1.2)*.008;
+      packet.rotation.set(0,.76+Math.sin(time*.32)*.004,.008);
+      packet2.rotation.set(0,.88+Math.sin(time*.30+.7)*.004,-.008);
     }
     if(time>=6&&time<13){
-      const walkProgress=ease((time-6)/7);
-      const stride=Math.sin((time-6)*Math.PI*1.5)*.115*(1-ease((time-12.15)/.85));
+      const fade=1-ease((time-12.1)/.9);
+      const stride=Math.sin((time-6)*Math.PI*1.22)*.026*fade;
+      const cycle=(time-6)*Math.PI*1.22;
       for(const rig of [martina,valentina]){
-        // Small alternating hip/leg swing and almost imperceptible counter-swing in the arms.
         rig.leftLeg.rotation.x=stride;
         rig.rightLeg.rotation.x=-stride;
         rig.leftLeg.rotation.z=0;
         rig.rightLeg.rotation.z=0;
-        rig.leftArm.rotation.x=-stride*.12;
-        rig.rightArm.rotation.x=stride*.12;
-        rig.leftArm.rotation.z=-.012+Math.sin((time-6)*Math.PI*1.5+Math.PI)*.008;
-        rig.rightArm.rotation.z=.012+Math.sin((time-6)*Math.PI*1.5)*.008;
-        rig.root.position.y=-1.975+Math.abs(Math.sin((time-6)*Math.PI*1.5))*.012*(1-walkProgress*.7);
+        // Arms and hands barely counter-swing; the gait is carried mostly by the legs.
+        rig.leftArm.rotation.x=-stride*.035;
+        rig.rightArm.rotation.x=stride*.035;
+        rig.leftArm.rotation.z=Math.sin(cycle+Math.PI)*.003;
+        rig.rightArm.rotation.z=Math.sin(cycle)*.003;
+        rig.root.position.y=-1.975+Math.abs(Math.sin(cycle))*.003;
       }
-    } else {
+    }else{
       for(const rig of [martina,valentina]){
         rig.leftLeg.rotation.x=0;rig.rightLeg.rotation.x=0;
         rig.leftLeg.rotation.z=0;rig.rightLeg.rotation.z=0;
@@ -438,8 +445,8 @@ export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
         rig.leftArm.rotation.z=0;rig.rightArm.rotation.z=0;
       }
     }
-    if(time>=46&&time<55){valentina.rightArm.rotation.z=.24;}
-    cart.position.x=1.25;
+    if(time>=46&&time<55)valentina.rightArm.rotation.z=.035;
+    cart.position.x=-2.75;
   };
   return {
     update,
