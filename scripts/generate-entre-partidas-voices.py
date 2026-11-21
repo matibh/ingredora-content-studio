@@ -1,5 +1,4 @@
 import asyncio
-import io
 import json
 from pathlib import Path
 from datetime import datetime, timezone
@@ -85,8 +84,25 @@ async def synthesize(segment):
             })
     if not chunks or not words:
         raise RuntimeError("No se generó audio o marcas de palabra para " + segment["id"])
-    audio = AudioSegment.from_file(io.BytesIO(b"".join(chunks)), format="mp3")
-    audio = audio.set_frame_rate(24_000).set_channels(2)
+    decoded = subprocess.run(
+        [
+            imageio_ffmpeg.get_ffmpeg_exe(),
+            "-hide_banner", "-loglevel", "error",
+            "-i", "pipe:0",
+            "-f", "s16le", "-acodec", "pcm_s16le",
+            "-ar", "24000", "-ac", "2", "pipe:1",
+        ],
+        input=b"".join(chunks),
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        check=True,
+    )
+    audio = AudioSegment(
+        data=decoded.stdout,
+        sample_width=2,
+        frame_rate=24_000,
+        channels=2,
+    )
     if len(audio) < 250:
         raise RuntimeError("El diálogo quedó vacío: " + segment["id"])
     return audio, words
