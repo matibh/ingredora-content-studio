@@ -41,6 +41,6 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add public/studio/audio/entre-partidas/prepilot-v1
+          git add public/studio/audio/entre-partidas/prepilot-v1 public/studio/series/entre-partidas/episodes/prepiloto-v1.json public/studio/productions.json
           git diff --cached --quiet || git commit -m "Add five-character Spanish voice cast for Entre Partidas"
           git push origin HEAD:${{ github.ref_name }}
