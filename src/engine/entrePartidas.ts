@@ -192,8 +192,8 @@ export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
     valentina.root.position.x=5.25-3.05*ease(walkT);
     for(const rig of [bruno,martina,valentina]){
       const talking=rig.name===speaker;
-      const target=cue?.look===rig.name?-.16:cue?.look?.length? .10:0;
-      rig.head.rotation.y=target+Math.sin(time*.7+(rig.name==="bruno"?0:rig.name==="martina"?1:2))*.018;
+      const lookAngle=cue?.look===rig.name?-.16:cue?.look?.length? .10:0;
+      rig.head.rotation.y=lookAngle+Math.sin(time*.7+(rig.name==="bruno"?0:rig.name==="martina"?1:2))*.018;
       rig.head.rotation.x=talking?Math.sin(time*7)*.025:Math.sin(time*.9)*.008;
       rig.mouth.scale.y=talking?.65+Math.abs(Math.sin(time*10))*.75:.12;
       rig.leftArm.rotation.z=talking?-.10+Math.sin(time*3.4)*.055:Math.sin(time*.8)*.018;
