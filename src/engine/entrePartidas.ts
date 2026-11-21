@@ -101,7 +101,7 @@ export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
   const floor=new THREE.Mesh(new THREE.PlaneGeometry(32,38),mat("#b8b4a9",.92));
   floor.rotation.x=-Math.PI/2;floor.position.set(0,-1.96,-4);floor.receiveShadow=true;world.add(floor);
   // Supermarket aisle: long, repeated gondolas with detailed packaging, price rails and depth.
-  const steel=mat("#34413e",.42,.48),edge=mat("#c1c4bd",.34,.62);
+  const steel=mat("#59645f",.55,.25),edge=mat("#c1c4bd",.34,.62);
   const palette=[
     ["#d5b34d","#573b22","GALLETITAS"],["#66866d","#f5e8c9","PASTA"],["#bd4e3c","#fff0d5","SALSA"],
     ["#54718a","#f7e7c5","LECHE"],["#c98c4e","#4c3021","CEREAL"],["#8a6b8d","#fff1dc","SNACK"],
