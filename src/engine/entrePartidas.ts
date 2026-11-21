@@ -37,53 +37,74 @@ function makeCharacter(name: EntrePartidasCue["speaker"], x: number, z: number):
   const isBruno=name==="bruno", isMartina=name==="martina";
   const skin=mat(isBruno?"#c98e6e":isMartina?"#d6a080":"#e0ad8b");
   const hair=mat(isBruno?"#30241f":isMartina?"#30201c":"#211b1a");
+  const hairTie=mat(isMartina?"#d8a64c":"#d5d8df");
   const shirt=mat(isBruno?"#c46a43":isMartina?"#bd7958":"#47788a");
   const pants=mat("#35414a"), shoes=mat("#222528",.56);
   const head=new THREE.Group();head.position.set(0,isBruno?1.62:2.12,0);root.add(head);
-  // Minecraft-inspired rig: hard-edged cuboids, square silhouette and pixel-game proportions.
+
+  // Minecraft-like proportions: crisp cubic head, torso and articulated block limbs.
   if(isBruno){
     box(root,[.76,.88,.48],shirt,[0,.78,0]);
     box(root,[.76,.20,.49],mat("#a95637"),[0,.31,0]);
   }else{
-    // Tank top, exposed shoulders and a subtly wider, cubic hip silhouette.
+    // Fitted tank top and narrow waist; a subtly faceted hip volume softens the silhouette
+    // without losing the voxel-game look or becoming an exaggerated hourglass.
     box(root,[.60,.58,.38],shirt,[0,1.40,0]);
     box(root,[.53,.20,.37],shirt,[0,1.08,0]);
-    box(root,[.78,.46,.44],pants,[0,.82,0]);
+    const hips=new THREE.Mesh(new THREE.SphereGeometry(1,8,6),pants);
+    hips.scale.set(.405,.255,.235);hips.position.set(0,.82,0);
+    hips.castShadow=true;hips.receiveShadow=true;root.add(hips);
     box(root,[.16,.18,.38],skin,[-.36,1.59,0]);
     box(root,[.16,.18,.38],skin,[.36,1.59,0]);
     box(root,[.30,.045,.025],mat(isMartina?"#e3b79a":"#a9cbd1"),[0,1.59,.205],false);
   }
   box(root,[.19,.25,.18],skin,[0,isBruno?1.28:1.78,0]);
   box(head,[.66,.72,.58],skin,[0,0,0]);
+
   if(isBruno){
     box(head,[.70,.22,.62],hair,[0,.27,-.015]);
     box(head,[.66,.15,.58],hair,[0,.37,-.04]);
     box(head,[.18,.20,.20],hair,[-.25,.12,.20]);
   }else{
-    // Square crown, rear hair and stepped fringe: clearly block-built, not rounded meshes.
-    box(head,[.74,.30,.62],hair,[0,.27,-.045]);
+    // Clean voxel hair: one crown, a clear stepped fringe and a tied-up silhouette.
+    // No cheek-level strands overlap the face; every piece is deliberately separated.
+    box(head,[.74,.26,.62],hair,[0,.30,-.045]);
     box(head,[.70,.43,.22],hair,[0,-.10,-.24]);
-    box(head,[.18,.62,.22],hair,[-.34,-.12,-.04]);
-    box(head,[.18,.62,.22],hair,[.34,-.12,-.04]);
-    box(head,[.24,.15,.12],hair,[-.23,.13,.32]);
-    box(head,[.24,.19,.12],hair,[0,.10,.32]);
-    box(head,[.24,.13,.12],hair,[.23,.14,.32]);
+    // Three chunky fringe sections sit just in front of the forehead, never across the eyes.
+    box(head,[.25,.13,.105],hair,[-.235,.205,.345]);
+    box(head,[.24,.17,.105],hair,[0,.185,.345]);
+    box(head,[.25,.12,.105],hair,[.235,.215,.345]);
+    if(isMartina){
+      // High ponytail tied at the crown, built from stepped square sections.
+      box(head,[.24,.15,.22],hair,[.13,.49,-.27]);
+      box(head,[.105,.10,.12],hairTie,[.13,.48,-.39]);
+      box(head,[.22,.31,.22],hair,[.17,.29,-.49]);
+      box(head,[.18,.23,.18],hair,[.21,.035,-.57]);
+    }else{
+      // Compact high half-ponytail with a visible light hair tie.
+      box(head,[.28,.20,.25],hair,[-.12,.48,-.25]);
+      box(head,[.115,.09,.13],hairTie,[-.12,.47,-.39]);
+      box(head,[.20,.27,.20],hair,[-.15,.27,-.49]);
+    }
   }
+
   const eyeWhite=mat("#fff8e9"),pupil=mat("#25201e"),brow=mat(isBruno?"#30241f":"#211b1a");
   for(const side of [-1,1]){
     box(head,[.13,.09,.035],eyeWhite,[side*.15,.04,.302],false);
     box(head,[.045,.065,.025],pupil,[side*.15,.035,.326],false);
     box(head,[.14,.025,.025],brow,[side*.15,.15,.30],false);
   }
-  box(head,[.07,.08,.07],skin,[0,-.075,.32],false);
+  // No noses on any character; keep the face clean and readable at this scale.
   const mouth=box(head,[.15,.025,.025],mat("#743f3a"),[0,-.22,.302],false);
+
   const arm=(side:number)=>{
     const pivot=new THREE.Group();
     pivot.position.set(side*(isBruno?.40:.39),isBruno?1.02:1.56,0);root.add(pivot);
     if(isBruno){
       box(pivot,[.22,.40,.25],shirt,[0,-.18,0]);
       box(pivot,[.16,.40,.18],skin,[0,-.56,.035]);
-      box(pivot,[.16,.14,.16],skin,[0,-.80,.10]);
+      // Palm extends forward to meet the rear face of each package.
+      box(pivot,[.16,.14,.16],skin,[0,-.80,.22]);
     }else{
       box(pivot,[.17,.18,.18],skin,[0,-.06,0]);
       box(pivot,[.14,.53,.15],skin,[0,-.39,.018]);
@@ -346,8 +367,8 @@ export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
   };
   const packet=makeHandPacket(packMats[0],.42,.62);
   const packet2=makeHandPacket(packMats[2],.40,.60);
-  bruno.rightArm.add(packet);packet.position.set(0,-.40,.18);packet.rotation.y=.76;
-  bruno.leftArm.add(packet2);packet2.position.set(0,-.40,.49);packet2.rotation.y=.88;
+  bruno.rightArm.add(packet);packet.position.set(0,-.83,.36);packet.rotation.set(0,0,0);
+  bruno.leftArm.add(packet2);packet2.position.set(0,-.83,.36);packet2.rotation.set(0,0,0);
   // Cinematic commercial lighting: soft overhead, warm key, cool rim, contact shadows.
   world.add(new THREE.HemisphereLight(0xf8f3e7,0x666d68,1.45));
   const key=new THREE.SpotLight(0xffe5c6,62,30,Math.PI/4,.62,1.25);
@@ -407,8 +428,8 @@ export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
       bruno.leftArm.rotation.set(0,.015,.018);
       bruno.rightArm.rotation.set(0,-.015,-.018);
       bruno.head.rotation.x=-.20+Math.sin(time*1.2)*.008;
-      packet.rotation.set(0,.76+Math.sin(time*.32)*.004,.008);
-      packet2.rotation.set(0,.88+Math.sin(time*.30+.7)*.004,-.008);
+      packet.rotation.set(0,0,0);
+      packet2.rotation.set(0,0,0);
     }
     if(time>=6&&time<13){
       const fade=1-ease((time-12.1)/.9);
