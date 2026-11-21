@@ -1295,9 +1295,10 @@ export async function renderPackageToWebM(
       // then medium singles that keep faces, torsos and meaningful body language in frame.
       if(time<6){
         // Wider profile from the opening frame: full seated posture and both packages remain visible.
-        desiredPosition.set(5.4,-.28,.42);
-        desiredTarget.set(0,-.70,.20);
-        desiredFov=44;
+        // Keep the profile camera inside the aisle so the gondola end panel cannot occlude Bruno.
+        desiredPosition.set(3.15,-.18,.48);
+        desiredTarget.set(0,-.94,.20);
+        desiredFov=48;
       }else if(time>=6&&time<12){
         // Wide master reveals the open cross-aisle as the girls enter from opposite side passages.
         desiredPosition.set(.10,3.05,12.2);
