@@ -62,24 +62,24 @@ source_clip(15.711, 25.0, "middle")
 # Rebuild: "El Desafío Diario de mañana lo quiero hacer bien."
 # Each syllable comes from the same original Bruno recording.
 phrase = [
-    (25.66, 25.80, "el"),
-    (25.77, 26.18, "desafio"),
-    (26.16, 26.56, "diario"),
+    (25.66, 25.78, "el"),
+    (25.78, 26.16, "desafio"),
+    (26.16, 26.53, "diario"),
     (2.405, 2.56, "de"),
     (25.04, 25.56, "manana"),
     (27.745, 27.93, "lo"),
-    (27.925, 28.16, "quiero"),
-    (28.10, 28.35, "hacer"),
-    (28.31, 28.64, "bien"),
+    (27.925, 28.12, "quiero"),
+    (28.12, 28.34, "hacer"),
+    (28.34, 28.64, "bien"),
 ]
 for index, (start, end, label) in enumerate(phrase):
     source_clip(start, end, f"phrase_{label}")
     if index < len(phrase) - 1:
         silence(0.04, f"phrase_gap_{index}")
 
-# The new sentence occupies 25.0–27.945s; retain the original 1.055s pause
+# The new sentence occupies 25.0–27.765s; retain the original 1.235s pause
 # before Martina's next line at 29.0s.
-silence(1.055, "after_corrected_line")
+silence(1.235, "after_corrected_line")
 source_clip(29.0, 65.0, "tail")
 # The dialogue after "Bruno, Bruno" was moved 2.611s earlier. Restore the
 # original 65-second programme duration with silence after the last line.
