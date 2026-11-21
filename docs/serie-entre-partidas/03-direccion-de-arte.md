@@ -16,6 +16,21 @@ Se generó un primer animatic vertical de 9 segundos para probar composición, p
 
 **Importante:** los cinco diseños que aparecen son exploratorios. No reemplazan las fichas de personajes ni constituyen modelos maestros aprobados. No deben copiarse automáticamente a episodios futuros. La paleta y las proporciones finales siguen pendientes de aprobación.
 
+## Lámina maestra preliminar v1
+
+El primer rediseño de siluetas ya está en el repositorio:
+
+- [Lámina maestra vectorial v1](../../public/studio/series/entre-partidas/characters/lineup-v1.svg)
+
+La hoja diferencia la silueta de cada protagonista:
+- Martina: cintura más definida y cadera suavemente más ancha; blusa prolija y pantalón recto.
+- Bruno: hombros anchos, torso deportivo y buzo con capucha.
+- Tomás: el más alto y delgado, brazos y piernas largos, camisa abierta sobre remera.
+- Valentina: chaqueta entallada, cintura marcada y pelo largo ondulado.
+- Ernesto: más bajo y robusto, cardigan, pelo gris, barba corta y anteojos.
+
+**Estado:** primer diseño de trabajo; no constituye aprobación definitiva. La cara, el pelo, el vestuario y las proporciones podrán ajustarse después de revisar la lámina y el primer render animado.
+
 ## 1. Lenguaje visual
 
 - Formas claras y simplificadas, con personalidad.
