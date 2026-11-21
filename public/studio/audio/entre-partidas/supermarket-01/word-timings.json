@@ -116,8 +116,8 @@
     },
     {
       "text": "Bruno",
-      "start": 11.6766,
-      "end": 12.0663,
+      "start": 11.5666,
+      "end": 11.9563,
       "speaker": "valentina",
       "segment": 3
     },
@@ -748,7 +748,7 @@
       "speaker": "valentina",
       "text": "¡Bruno, Bruno!",
       "start": 11,
-      "end": 12.2,
+      "end": 12.05,
       "voice": "es-UY-ValentinaNeural",
       "wordCount": 2
     },
@@ -756,8 +756,8 @@
       "id": "04-valentina-call",
       "speaker": "valentina",
       "text": "Bruno",
-      "start": 11.63,
-      "end": 12.15,
+      "start": 11.52,
+      "end": 12.05,
       "voice": "es-UY-ValentinaNeural",
       "wordCount": 1
     },
