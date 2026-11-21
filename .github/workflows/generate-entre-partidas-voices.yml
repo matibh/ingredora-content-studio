@@ -1,0 +1,46 @@
+name: Generate Entre Partidas five-character voices
+
+on:
+  push:
+    branches:
+      - prototype/entre-partidas-visual-v0
+      - main
+    paths:
+      - "scripts/generate-entre-partidas-voices.py"
+      - ".github/workflows/generate-entre-partidas-voices.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: entre-partidas-prepilot-voices
+  cancel-in-progress: false
+
+jobs:
+  synthesize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install zero-cost voice tooling
+        run: python -m pip install --disable-pip-version-check edge-tts pydub imageio-ffmpeg
+
+      - name: Generate five distinct Spanish character voices
+        run: python scripts/generate-entre-partidas-voices.py
+
+      - name: Commit voice stems and timing data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/studio/audio/entre-partidas/prepilot-v1
+          git diff --cached --quiet || git commit -m "Add five-character Spanish voice cast for Entre Partidas"
+          git push origin HEAD:${{ github.ref_name }}
