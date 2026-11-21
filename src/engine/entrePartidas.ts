@@ -177,6 +177,9 @@ export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
   const martina=makeCharacter("martina",-5.25,-.10);
   const valentina=makeCharacter("valentina",5.25,-.10);
   world.add(bruno.root,martina.root,valentina.root);
+  // The packets are parented to Bruno’s hands so they follow his body instead of hovering in world space.
+  world.remove(packet); bruno.rightArm.add(packet); packet.position.set(.12,-.76,.30);
+  world.remove(packet2); bruno.leftArm.add(packet2); packet2.position.set(-.12,-.76,.30);
   // Cinematic commercial lighting: soft overhead, warm key, cool rim, contact shadows.
   world.add(new THREE.HemisphereLight(0xf8f3e7,0x666d68,1.45));
   const key=new THREE.SpotLight(0xffe5c6,62,30,Math.PI/4,.62,1.25);
