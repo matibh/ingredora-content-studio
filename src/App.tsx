@@ -102,9 +102,9 @@ function App() {
   useEffect(() => {
     const forcedId = forceRenderIds[0];
     const candidate = forcedId
-      ? manifest.productions.find((item) => item.id === forcedId && item.packageUrl && !renderingIds.current.has(item.id))
+      ? manifest.productions.find((item) => item.id === forcedId && item.status !== "planned" && item.packageUrl && !renderingIds.current.has(item.id))
       : manifest.productions.find((item) =>
-          item.packageUrl && !item.videoUrl && !localVideos[item.id] && !renderingIds.current.has(item.id)
+          item.status !== "planned" && item.packageUrl && !item.videoUrl && !localVideos[item.id] && !renderingIds.current.has(item.id)
         );
     if (!candidate) return;
     const isForcedRender = forceRenderIds.includes(candidate.id);
