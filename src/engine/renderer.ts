@@ -1151,13 +1151,17 @@ export async function renderPackageToWebM(
   }
   if (signal?.aborted) throw new Error("Render cancelado.");
 
-  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false, powerPreference: "high-performance" });
+  const isEntrePartidas = pkg.visualPreset === "entre-partidas-supermarket";
+  // SwiftShader has no physical GPU. For this detailed supermarket set, disabling
+  // shadow-map passes keeps the same materials, lighting, framing and animation
+  // while making deterministic headless rendering substantially faster.
+  const renderer = new THREE.WebGLRenderer({ antialias: !isEntrePartidas, alpha: false, powerPreference: "high-performance" });
   renderer.setPixelRatio(1);
   renderer.setSize(pkg.width, pkg.height, false);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = pkg.visualPreset === "coca-cola-poolside" ? 1.08 : 0.92;
-  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.enabled = !isEntrePartidas;
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
   const outputCanvas = document.createElement("canvas");
