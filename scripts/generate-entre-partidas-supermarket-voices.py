@@ -43,7 +43,7 @@ async def synthesize(cue, index):
     )
     audio = AudioSegment(data=decoded.stdout, sample_width=2, frame_rate=24000, channels=2)
     # Keep the dialogue brisk and sitcom-paced without making the neural voices sound rushed.
-    audio = audio.speedup(playback_speed=1.18, chunk_size=150, crossfade=25)
+    audio = audio.speedup(playback_speed=1.22, chunk_size=150, crossfade=25)
     if len(audio) < 250:
         raise RuntimeError("El diálogo quedó vacío: " + str(index))
     return audio, words
@@ -84,7 +84,7 @@ async def main():
             "end": round(start_ms / 1000 + word["end"], 4),
             "speaker": cue["speaker"], "segment": index - 1,
         } for word in words)
-        cursor_ms = end_ms + 120
+        cursor_ms = end_ms + 50
 
     if master.rms < 250 or len(master) != total_ms:
         raise RuntimeError("La mezcla de voces está vacía o tiene duración incorrecta.")
