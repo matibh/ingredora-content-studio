@@ -273,8 +273,8 @@ export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
   const valentina=makeCharacter("valentina",.95,-12.8);
   world.add(bruno.root,martina.root,valentina.root);
   // The packets are parented to Bruno’s hands so they follow his body instead of hovering in world space.
-  world.remove(packet); bruno.rightArm.add(packet); packet.position.set(.12,-.76,.30);
-  world.remove(packet2); bruno.leftArm.add(packet2); packet2.position.set(-.12,-.76,.30);
+  world.remove(packet); bruno.rightArm.add(packet); packet.position.set(-.10,-.76,.34); packet.scale.set(1.08,1.06,1);
+  world.remove(packet2); bruno.leftArm.add(packet2); packet2.position.set(.10,-.76,.34); packet2.scale.set(1.04,1.02,1);
   // Cinematic commercial lighting: soft overhead, warm key, cool rim, contact shadows.
   world.add(new THREE.HemisphereLight(0xf8f3e7,0x666d68,1.45));
   const key=new THREE.SpotLight(0xffe5c6,62,30,Math.PI/4,.62,1.25);
@@ -293,8 +293,10 @@ export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
     martina.root.rotation.y=.32*ease(walkT);
     valentina.root.rotation.y=-.32*ease(walkT);
     bruno.root.rotation.y=0;
-    bruno.leftLeg.rotation.x=-1.08;
-    bruno.rightLeg.rotation.x=-1.08;
+    bruno.leftLeg.rotation.x=-1.02;
+    bruno.rightLeg.rotation.x=-1.16;
+    bruno.leftLeg.rotation.z=-.035;
+    bruno.rightLeg.rotation.z=.035;
     for(const rig of [bruno,martina,valentina]){
       const talking=rig.name===speaker;
       const lookAngle=cue?.look===rig.name?-.16:cue?.look?.length? .10:0;
@@ -313,21 +315,36 @@ export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
       rig.root.position.y=-1.975+Math.sin(time*.9+phase)*.008;
     }
     if(time<10){
-      bruno.head.rotation.x=-.18; bruno.rightArm.rotation.z=-.34;
-      packet.rotation.z=Math.sin(time*1.5)*.018;
-      bruno.leftArm.rotation.z=.18+Math.sin(time*1.1)*.035;
-      bruno.rightArm.rotation.z=-.34+Math.sin(time*1.3)*.025;
+      // Bruno studies two packets held close together at lap height; elbows stay tucked in.
+      bruno.head.rotation.x=-.24;
+      bruno.leftArm.rotation.z=.42;
+      bruno.rightArm.rotation.z=-.48;
+      bruno.leftArm.rotation.x=-.06;
+      bruno.rightArm.rotation.x=-.04;
+      packet.rotation.set(0,.10+Math.sin(time*.55)*.012,.035);
+      packet2.rotation.set(0,-.12+Math.sin(time*.5+.7)*.012,-.025);
     }
     if(time>=6&&time<13){
-      const stride=Math.sin((time-6)*5.4)*.18*(1-ease((time-12.5)/.5));
+      const walkProgress=ease((time-6)/7);
+      const stride=Math.sin((time-6)*Math.PI*1.5)*.115*(1-ease((time-12.15)/.85));
       for(const rig of [martina,valentina]){
-        rig.leftLeg.rotation.x=stride;rig.rightLeg.rotation.x=-stride;
-        rig.leftArm.rotation.x=-stride*.55;rig.rightArm.rotation.x=stride*.55;
+        // Small alternating hip/leg swing and almost imperceptible counter-swing in the arms.
+        rig.leftLeg.rotation.x=stride;
+        rig.rightLeg.rotation.x=-stride;
+        rig.leftLeg.rotation.z=0;
+        rig.rightLeg.rotation.z=0;
+        rig.leftArm.rotation.x=-stride*.12;
+        rig.rightArm.rotation.x=stride*.12;
+        rig.leftArm.rotation.z=-.012+Math.sin((time-6)*Math.PI*1.5+Math.PI)*.008;
+        rig.rightArm.rotation.z=.012+Math.sin((time-6)*Math.PI*1.5)*.008;
+        rig.root.position.y=-1.975+Math.abs(Math.sin((time-6)*Math.PI*1.5))*.012*(1-walkProgress*.7);
       }
     } else {
       for(const rig of [martina,valentina]){
         rig.leftLeg.rotation.x=0;rig.rightLeg.rotation.x=0;
+        rig.leftLeg.rotation.z=0;rig.rightLeg.rotation.z=0;
         rig.leftArm.rotation.x=0;rig.rightArm.rotation.x=0;
+        rig.leftArm.rotation.z=0;rig.rightArm.rotation.z=0;
       }
     }
     if(time>=46&&time<55){valentina.rightArm.rotation.z=.24;}
@@ -351,18 +368,18 @@ export function drawEntrePartidasBranding(ctx:CanvasRenderingContext2D,time:numb
   if(time<2.05){
     const fade=Math.min(1,time/.28,(2.05-time)/.35);
     ctx.save();ctx.globalAlpha=Math.max(0,fade);
-    const panelW=width*.78,panelH=height*.115,x=(width-panelW)/2,y=height*.105;
+    const panelW=width*.92,panelH=height*.205,x=(width-panelW)/2,y=height*.345;
     ctx.shadowColor="rgba(0,0,0,.34)";ctx.shadowBlur=28*scale;
     const g=ctx.createLinearGradient(x,y,x+panelW,y+panelH);
     g.addColorStop(0,"rgba(20,48,39,.94)");g.addColorStop(1,"rgba(31,67,54,.92)");
     ctx.fillStyle=g;rounded(x,y,panelW,panelH,22*scale);ctx.fill();
     ctx.shadowBlur=0;ctx.textAlign="center";ctx.textBaseline="middle";
     ctx.fillStyle="#d7e8ad";ctx.font="900 "+Math.round(20*scale)+"px Arial";
-    ctx.fillText("INGREDORA ORIGINAL",width/2,y+panelH*.25);
-    ctx.fillStyle="#fffaf0";ctx.font="900 "+Math.round(48*scale)+"px Arial Black,Arial";
-    ctx.fillText("ENTRE PARTIDAS",width/2,y+panelH*.61);
-    ctx.fillStyle="#f0d18b";ctx.font="700 "+Math.round(17*scale)+"px Arial";
-    ctx.fillText("UNA SERIE SOBRE EL DESAFÍO",width/2,y+panelH*.88);
+    ctx.fillText("INGREDORA ORIGINAL",width/2,y+panelH*.18);
+    ctx.fillStyle="#fffaf0";ctx.font="900 "+Math.round(70*scale)+"px Arial Black,Arial";
+    ctx.fillText("ENTRE PARTIDAS",width/2,y+panelH*.49);
+    ctx.fillStyle="#f0d18b";ctx.font="900 "+Math.round(28*scale)+"px Arial";
+    ctx.fillText("CAPÍTULO 1",width/2,y+panelH*.79);
     ctx.restore();
   }
   if(time>=62){
