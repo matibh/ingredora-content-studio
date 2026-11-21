@@ -1,0 +1,422 @@
+{
+  "schemaVersion": 1,
+  "engineVersion": "pixi-2d-1.0.0",
+  "id": "ingredora-entre-partidas-s01e01-supermarket-scene-01",
+  "title": "Entre Partidas — Escena 01: El entrenamiento",
+  "description": "Bruno estudia etiquetas en un supermercado para prepararse para el Desafío Diario. Martina y Valentina lo encuentran y descubren hasta dónde llega su obsesión competitiva.",
+  "createdAt": "2026-11-21T13:25:00-03:00",
+  "fps": 24,
+  "width": 720,
+  "height": 1280,
+  "durationSeconds": 68,
+  "background": "supermarket-aisle",
+  "presentation": "cinematic",
+  "characters": [
+    {
+      "id": "bruno",
+      "x": 600,
+      "baselineY": 1110,
+      "scale": 0.94,
+      "prop": "grocery-package"
+    },
+    {
+      "id": "martina",
+      "x": 900,
+      "baselineY": 1110,
+      "scale": 0.91,
+      "entrance": {
+        "startSeconds": 11.2,
+        "fromX": 1210,
+        "durationSeconds": 2.8
+      }
+    },
+    {
+      "id": "valentina",
+      "x": 1060,
+      "baselineY": 1110,
+      "scale": 0.93,
+      "entrance": {
+        "startSeconds": 11.6,
+        "fromX": 1435,
+        "durationSeconds": 3
+      }
+    }
+  ],
+  "dialogue": [
+    {
+      "id": "01-bruno",
+      "speaker": "bruno",
+      "text": "Harina de trigo... azúcar... aceite vegetal... maltodextrina.",
+      "startSeconds": 0.5,
+      "endSeconds": 4,
+      "lookAt": "bruno",
+      "gesture": "none",
+      "expression": "neutral"
+    },
+    {
+      "id": "02-martina",
+      "speaker": "martina",
+      "text": "¿Qué está haciendo?",
+      "startSeconds": 4.2,
+      "endSeconds": 5.8,
+      "lookAt": "valentina",
+      "gesture": "none",
+      "expression": "skeptical"
+    },
+    {
+      "id": "03-valentina",
+      "speaker": "valentina",
+      "text": "Mirá.",
+      "startSeconds": 6,
+      "endSeconds": 6.6,
+      "lookAt": "bruno",
+      "gesture": "none",
+      "expression": "smile"
+    },
+    {
+      "id": "04-valentina",
+      "speaker": "valentina",
+      "text": "Bruno...",
+      "startSeconds": 6.8,
+      "endSeconds": 7.7,
+      "lookAt": "bruno",
+      "gesture": "none",
+      "expression": "neutral"
+    },
+    {
+      "id": "05-valentina",
+      "speaker": "valentina",
+      "text": "Bruno.",
+      "startSeconds": 8,
+      "endSeconds": 8.7,
+      "lookAt": "bruno",
+      "gesture": "none",
+      "expression": "skeptical"
+    },
+    {
+      "id": "06-bruno",
+      "speaker": "bruno",
+      "text": "Un segundo...",
+      "startSeconds": 9,
+      "endSeconds": 10,
+      "lookAt": "bruno",
+      "gesture": "none",
+      "expression": "neutral"
+    },
+    {
+      "id": "07-martina",
+      "speaker": "martina",
+      "text": "¿Estás leyendo los ingredientes?",
+      "startSeconds": 10.3,
+      "endSeconds": 12.5,
+      "lookAt": "bruno",
+      "gesture": "none",
+      "expression": "skeptical"
+    },
+    {
+      "id": "08-bruno",
+      "speaker": "bruno",
+      "text": "Me estoy preparando.",
+      "startSeconds": 12.8,
+      "endSeconds": 14.3,
+      "lookAt": "martina",
+      "gesture": "open-hand",
+      "expression": "neutral"
+    },
+    {
+      "id": "09-valentina",
+      "speaker": "valentina",
+      "text": "¿Para qué? ¿Te toman examen?",
+      "startSeconds": 14.6,
+      "endSeconds": 17.1,
+      "lookAt": "bruno",
+      "gesture": "none",
+      "expression": "smile"
+    },
+    {
+      "id": "10-bruno",
+      "speaker": "bruno",
+      "text": "Mañana es el Desafío Diario. Esta vez lo quiero hacer bien.",
+      "startSeconds": 17.4,
+      "endSeconds": 21.2,
+      "lookAt": "martina",
+      "gesture": "open-hand",
+      "expression": "neutral"
+    },
+    {
+      "id": "11-martina",
+      "speaker": "martina",
+      "text": "¿Y ya sabés qué producto va a salir?",
+      "startSeconds": 21.5,
+      "endSeconds": 24,
+      "lookAt": "bruno",
+      "gesture": "none",
+      "expression": "skeptical"
+    },
+    {
+      "id": "12-bruno",
+      "speaker": "bruno",
+      "text": "No.",
+      "startSeconds": 24.3,
+      "endSeconds": 24.8,
+      "lookAt": "martina",
+      "gesture": "none",
+      "expression": "neutral"
+    },
+    {
+      "id": "13-valentina",
+      "speaker": "valentina",
+      "text": "Ah, bueno.",
+      "startSeconds": 25.1,
+      "endSeconds": 26,
+      "lookAt": "martina",
+      "gesture": "none",
+      "expression": "skeptical"
+    },
+    {
+      "id": "14-bruno",
+      "speaker": "bruno",
+      "text": "Justamente. Por eso estoy estudiando.",
+      "startSeconds": 26.3,
+      "endSeconds": 28.6,
+      "lookAt": "valentina",
+      "gesture": "open-hand",
+      "expression": "neutral"
+    },
+    {
+      "id": "15-bruno",
+      "speaker": "bruno",
+      "text": "Puede tocar cualquier producto. Son quince segundos. No puedo quedarme pensando qué significa cada ingrediente.",
+      "startSeconds": 28.9,
+      "endSeconds": 34,
+      "lookAt": "martina",
+      "gesture": "open-hand",
+      "expression": "neutral"
+    },
+    {
+      "id": "16-martina",
+      "speaker": "martina",
+      "text": "¿Tu plan es leer todos los productos del supermercado?",
+      "startSeconds": 34.3,
+      "endSeconds": 37,
+      "lookAt": "bruno",
+      "gesture": "none",
+      "expression": "skeptical"
+    },
+    {
+      "id": "17-bruno",
+      "speaker": "bruno",
+      "text": "No todos. Empecé por galletitas. Después sigo con lácteos, conservas y congelados.",
+      "startSeconds": 37.3,
+      "endSeconds": 41.5,
+      "lookAt": "martina",
+      "gesture": "point",
+      "expression": "neutral"
+    },
+    {
+      "id": "18-valentina",
+      "speaker": "valentina",
+      "text": "¿Y cuándo pensás comprar algo?",
+      "startSeconds": 41.8,
+      "endSeconds": 44,
+      "lookAt": "bruno",
+      "gesture": "none",
+      "expression": "smile"
+    },
+    {
+      "id": "19-bruno",
+      "speaker": "bruno",
+      "text": "Después.",
+      "startSeconds": 44.3,
+      "endSeconds": 45.1,
+      "lookAt": "valentina",
+      "gesture": "none",
+      "expression": "neutral"
+    },
+    {
+      "id": "20-valentina",
+      "speaker": "valentina",
+      "text": "¡Y acordate de comprar comida!",
+      "startSeconds": 45.5,
+      "endSeconds": 47.5,
+      "lookAt": "bruno",
+      "gesture": "none",
+      "expression": "smile"
+    },
+    {
+      "id": "21-bruno",
+      "speaker": "bruno",
+      "text": "Sí, sí...",
+      "startSeconds": 47.8,
+      "endSeconds": 48.8,
+      "lookAt": "valentina",
+      "gesture": "none",
+      "expression": "neutral"
+    }
+  ],
+  "cameraShots": [
+    {
+      "id": "01-observational-wide",
+      "startSeconds": 0,
+      "endSeconds": 4.2,
+      "fromX": 610,
+      "fromY": 920,
+      "fromZoom": 0.95,
+      "toX": 625,
+      "toY": 900,
+      "toZoom": 1.02,
+      "transition": "move",
+      "note": "Plano general de pasillo; pequeño push-in hacia Bruno."
+    },
+    {
+      "id": "02-label-insert",
+      "startSeconds": 4.2,
+      "endSeconds": 6,
+      "fromX": 650,
+      "fromY": 850,
+      "fromZoom": 1.6,
+      "toX": 650,
+      "toY": 850,
+      "toZoom": 1.6,
+      "transition": "cut",
+      "note": "Detalle de manos, envase y lectura de la etiqueta."
+    },
+    {
+      "id": "03-reveal-pan",
+      "startSeconds": 6,
+      "endSeconds": 10.3,
+      "fromX": 615,
+      "fromY": 905,
+      "fromZoom": 1.03,
+      "toX": 875,
+      "toY": 900,
+      "toZoom": 0.98,
+      "transition": "move",
+      "note": "Paneo desde Bruno hacia Martina y Valentina que entran por el pasillo."
+    },
+    {
+      "id": "04-women-two-shot",
+      "startSeconds": 10.3,
+      "endSeconds": 12.8,
+      "fromX": 980,
+      "fromY": 880,
+      "fromZoom": 1.35,
+      "toX": 980,
+      "toY": 880,
+      "toZoom": 1.35,
+      "transition": "cut",
+      "note": "Plano medio de las dos amigas mirando a Bruno."
+    },
+    {
+      "id": "05-three-shot",
+      "startSeconds": 12.8,
+      "endSeconds": 17.4,
+      "fromX": 820,
+      "fromY": 910,
+      "fromZoom": 0.92,
+      "toX": 820,
+      "toY": 910,
+      "toZoom": 0.92,
+      "transition": "cut",
+      "note": "Plano conjunto para sostener la conversación y sus reacciones."
+    },
+    {
+      "id": "06-bruno-medium",
+      "startSeconds": 17.4,
+      "endSeconds": 21.5,
+      "fromX": 605,
+      "fromY": 835,
+      "fromZoom": 1.42,
+      "toX": 605,
+      "toY": 835,
+      "toZoom": 1.42,
+      "transition": "cut",
+      "note": "Plano medio corto de Bruno justificando el entrenamiento."
+    },
+    {
+      "id": "07-martina-over-shoulder",
+      "startSeconds": 21.5,
+      "endSeconds": 24.3,
+      "fromX": 900,
+      "fromY": 840,
+      "fromZoom": 1.42,
+      "toX": 900,
+      "toY": 840,
+      "toZoom": 1.42,
+      "transition": "cut",
+      "note": "Contraplano de Martina; Bruno queda como interlocutor fuera de eje."
+    },
+    {
+      "id": "08-shared-reaction",
+      "startSeconds": 24.3,
+      "endSeconds": 26.3,
+      "fromX": 820,
+      "fromY": 900,
+      "fromZoom": 1,
+      "toX": 820,
+      "toY": 900,
+      "toZoom": 1,
+      "transition": "cut",
+      "note": "Plano de tres para dejar respirar el 'No' y la reacción de Valentina."
+    },
+    {
+      "id": "09-bruno-explanation",
+      "startSeconds": 26.3,
+      "endSeconds": 34.3,
+      "fromX": 610,
+      "fromY": 835,
+      "fromZoom": 1.34,
+      "toX": 620,
+      "toY": 835,
+      "toZoom": 1.38,
+      "transition": "move",
+      "note": "Push-in muy sutil sobre la explicación demasiado seria de Bruno."
+    },
+    {
+      "id": "10-group-question",
+      "startSeconds": 34.3,
+      "endSeconds": 41.8,
+      "fromX": 820,
+      "fromY": 905,
+      "fromZoom": 0.94,
+      "toX": 820,
+      "toY": 905,
+      "toZoom": 0.94,
+      "transition": "cut",
+      "note": "Plano conjunto; Martina cuestiona el plan y Bruno enumera categorías."
+    },
+    {
+      "id": "11-valentina-close",
+      "startSeconds": 41.8,
+      "endSeconds": 44.3,
+      "fromX": 1060,
+      "fromY": 840,
+      "fromZoom": 1.48,
+      "toX": 1060,
+      "toY": 840,
+      "toZoom": 1.48,
+      "transition": "cut",
+      "note": "Primer plano de Valentina para la pregunta del remate."
+    },
+    {
+      "id": "12-button-and-hold",
+      "startSeconds": 44.3,
+      "endSeconds": 68,
+      "fromX": 820,
+      "fromY": 900,
+      "fromZoom": 0.94,
+      "toX": 610,
+      "toY": 900,
+      "toZoom": 1.02,
+      "transition": "move",
+      "note": "Vuelve a Bruno; deja la pausa de 'Después' y sostiene el plano mientras Valentina se aleja."
+    }
+  ],
+  "voiceTrackUrl": "studio/audio/entre-partidas/supermarket-scene-v1/voice-track.mp3",
+  "wordTimingsUrl": "studio/audio/entre-partidas/supermarket-scene-v1/word-timings.json",
+  "voiceStems": {
+    "martina": "studio/audio/entre-partidas/supermarket-scene-v1/martina.mp3",
+    "bruno": "studio/audio/entre-partidas/supermarket-scene-v1/bruno.mp3",
+    "valentina": "studio/audio/entre-partidas/supermarket-scene-v1/valentina.mp3"
+  }
+}
