@@ -1,23 +1,23 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-21T16:45:00-03:00",
+  "updatedAt": "2026-11-21T17:07:50Z",
   "productions": [
     {
       "id": "ingredora-entre-partidas-supermarket-001",
       "title": "Entre Partidas — El entrenamiento (motor publicitario 3D)",
-      "description": "Escena de sitcom construida con el motor Three.js de publicidad: supermercado detallado, personajes blocky diferenciados, puesta de cámara cinematográfica y subtítulos. La mezcla de voces del elenco queda pendiente.",
+      "description": "Sitcom 3D cinematográfica en supermercado, con tres voces diferenciadas, música original, actuación y montaje de cámara.",
       "status": "rendering",
       "packageUrl": "studio/packages/entre-partidas-supermarket.v1.json",
       "durationSeconds": 65,
       "aspectRatio": "9:16",
-      "language": "Español rioplatense — subtítulos; voces pendientes",
+      "language": "Español rioplatense — tres voces diferenciadas",
       "platforms": [
         "TikTok",
         "Instagram Reels",
         "YouTube Shorts",
         "Facebook Reels"
       ],
-      "version": "2.0.0-ad-engine",
+      "version": "2.1.0-ad-engine-voices",
       "createdAt": "2026-11-21T16:45:00-03:00",
       "collection": "series",
       "renderEngine": "three",
