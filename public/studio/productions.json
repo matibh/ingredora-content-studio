@@ -1,26 +1,26 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-21T14:20:00-03:00",
+  "updatedAt": "2026-11-21T16:45:00-03:00",
   "productions": [
     {
       "id": "ingredora-entre-partidas-supermarket-001",
-      "title": "Entre Partidas — El entrenamiento (3D)",
-      "description": "Escena de supermercado en Three.js con personajes blocky originales, puesta de cámara y subtítulos. Primer pase visual sin voces; audio pendiente.",
+      "title": "Entre Partidas — El entrenamiento (motor publicitario 3D)",
+      "description": "Escena de sitcom construida con el motor Three.js de publicidad: supermercado detallado, personajes blocky diferenciados, puesta de cámara cinematográfica y subtítulos. La mezcla de voces del elenco queda pendiente.",
       "status": "rendering",
-      "packageUrl": "studio/series/entre-partidas/episodes/supermarket-01-v1.json",
+      "packageUrl": "studio/packages/entre-partidas-supermarket.v1.json",
       "durationSeconds": 65,
       "aspectRatio": "9:16",
-      "language": "Español rioplatense — subtítulos; audio pendiente",
+      "language": "Español rioplatense — subtítulos; voces pendientes",
       "platforms": [
         "TikTok",
         "Instagram Reels",
         "YouTube Shorts",
         "Facebook Reels"
       ],
-      "version": "1.0.0-3d-preview",
-      "createdAt": "2026-11-21T14:00:00-03:00",
+      "version": "2.0.0-ad-engine",
+      "createdAt": "2026-11-21T16:45:00-03:00",
       "collection": "series",
-      "renderEngine": "three-series",
+      "renderEngine": "three",
       "caption": "Bruno se está tomando el Desafío Diario demasiado en serio. #EntrePartidas #Ingredora"
     },
     {
