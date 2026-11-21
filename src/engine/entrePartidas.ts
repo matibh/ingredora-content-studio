@@ -577,17 +577,18 @@ export function drawEntrePartidasBranding(ctx:CanvasRenderingContext2D,time:numb
   if(time<2.05){
     const fade=Math.min(1,time/.28,(2.05-time)/.35);
     ctx.save();ctx.globalAlpha=Math.max(0,fade);
-    const panelW=width*.92,panelH=height*.19,x=(width-panelW)/2,y=(height-panelH)/2;
-    ctx.shadowColor="rgba(0,0,0,.34)";ctx.shadowBlur=28*scale;
+    // Top-aligned series bug: leave the nighttime storefront visible below the title.
+    const panelW=width*.90,panelH=height*.155,x=(width-panelW)/2,y=height*.045;
+    ctx.shadowColor="rgba(0,0,0,.38)";ctx.shadowBlur=24*scale;
     const g=ctx.createLinearGradient(x,y,x+panelW,y+panelH);
-    g.addColorStop(0,"rgba(20,48,39,.94)");g.addColorStop(1,"rgba(31,67,54,.92)");
-    ctx.fillStyle=g;rounded(x,y,panelW,panelH,22*scale);ctx.fill();
+    g.addColorStop(0,"rgba(20,48,39,.96)");g.addColorStop(1,"rgba(31,67,54,.94)");
+    ctx.fillStyle=g;rounded(x,y,panelW,panelH,20*scale);ctx.fill();
     ctx.shadowBlur=0;ctx.textAlign="center";ctx.textBaseline="middle";
-    ctx.fillStyle="#d7e8ad";ctx.font="900 "+Math.round(18*scale)+"px Arial";
-    ctx.fillText("INGREDORA ORIGINALS",width/2,y+panelH*.16);
-    ctx.fillStyle="#fffaf0";ctx.font="900 "+Math.round(72*scale)+"px Arial Black,Arial";
+    ctx.fillStyle="#d7e8ad";ctx.font="900 "+Math.round(16*scale)+"px Arial";
+    ctx.fillText("INGREDORA ORIGINALS",width/2,y+panelH*.17);
+    ctx.fillStyle="#fffaf0";ctx.font="900 "+Math.round(54*scale)+"px Arial Black,Arial";
     ctx.fillText("ENTRE PARTIDAS",width/2,y+panelH*.49);
-    ctx.fillStyle="#f0d18b";ctx.font="900 "+Math.round(27*scale)+"px Arial";
+    ctx.fillStyle="#f0d18b";ctx.font="900 "+Math.round(22*scale)+"px Arial";
     ctx.fillText("CAPÍTULO 1",width/2,y+panelH*.82);
     ctx.restore();
   }
