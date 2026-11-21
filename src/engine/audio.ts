@@ -1,7 +1,7 @@
 export type SoundtrackOptions = {
   durationSeconds: number;
   sampleRate?: number;
-  theme?: "summer-poolside" | "family-merienda" | "game-show" | "detective-case";
+  theme?: "summer-poolside" | "family-merienda" | "game-show" | "detective-case" | "sitcom-intro";
 };
 
 /**
@@ -25,10 +25,16 @@ export async function generateOriginalSoundtrack({
   const master = context.createGain();
   const compressor = context.createDynamicsCompressor();
   master.gain.setValueAtTime(0.0001, 0);
-  const masterLevel = theme === "detective-case" ? 0.94 : 0.72;
-  master.gain.linearRampToValueAtTime(masterLevel, Math.min(0.8, durationSeconds * 0.12));
-  master.gain.setValueAtTime(masterLevel, Math.max(0.8, durationSeconds - 0.55));
-  master.gain.linearRampToValueAtTime(0.0001, durationSeconds);
+  const masterLevel = theme === "detective-case" ? 0.94 : theme === "sitcom-intro" ? 0.84 : 0.72;
+  if (theme === "sitcom-intro") {
+    master.gain.linearRampToValueAtTime(masterLevel, 0.12);
+    master.gain.setValueAtTime(masterLevel, 3.20);
+    master.gain.linearRampToValueAtTime(0.0001, 4.15);
+  } else {
+    master.gain.linearRampToValueAtTime(masterLevel, Math.min(0.8, durationSeconds * 0.12));
+    master.gain.setValueAtTime(masterLevel, Math.max(0.8, durationSeconds - 0.55));
+    master.gain.linearRampToValueAtTime(0.0001, durationSeconds);
+  }
   compressor.threshold.value = -18;
   compressor.knee.value = 18;
   compressor.ratio.value = 3;
@@ -37,7 +43,7 @@ export async function generateOriginalSoundtrack({
   master.connect(compressor);
   compressor.connect(context.destination);
 
-  const beat = theme === "game-show" ? 60 / 140 : theme === "detective-case" ? 60 / 112 : 60 / 108;
+  const beat = theme === "game-show" ? 60 / 140 : theme === "detective-case" ? 60 / 112 : theme === "sitcom-intro" ? 60 / 132 : 60 / 108;
   const bar = beat * 4;
   const progression = [
     { bass: 65.41, chord: [261.63, 329.63, 392.0] },
@@ -81,7 +87,7 @@ export async function generateOriginalSoundtrack({
     oscillator.stop(end + 0.01);
   };
 
-  if (theme !== "game-show" && theme !== "detective-case") {
+  if (theme !== "game-show" && theme !== "detective-case" && theme !== "sitcom-intro") {
   // Soft sustained chord layers: warm, unobtrusive and loop-like.
   for (let start = 0, index = 0; start < durationSeconds; start += bar, index += 1) {
     const chord = progression[index % progression.length];
@@ -263,6 +269,67 @@ export async function generateOriginalSoundtrack({
     addTone(523.25, 16.02, 0.48, "sine", 0.07, 4_800, -0.18);
     addTone(659.25, 16.10, 0.52, "sine", 0.06, 5_200, 0.12);
     addTone(783.99, 16.18, 0.62, "triangle", 0.055, 5_600, 0.28);
+  }
+
+  if (theme === "sitcom-intro") {
+    // Original four-second comedy-sitcom sting: bright plucked mallets,
+    // springy bass, offbeat chord pops and a soft brushed/clap backbeat.
+    // It is composed entirely from oscillators and deterministic filtered noise.
+    const bpm = 132;
+    const q = 60 / bpm;
+    const hook = [
+      659.25, 783.99, 880.00, 783.99, 659.25, 587.33, 523.25, 587.33,
+      698.46, 783.99, 987.77, 880.00, 783.99, 698.46, 659.25, 523.25,
+    ];
+    for (let i = 0; i < hook.length; i += 1) {
+      const at = i * q * 0.5;
+      addTone(hook[i], at, 0.17, "triangle", i % 4 === 0 ? 0.18 : 0.125,
+        4_200, i % 2 === 0 ? -0.22 : 0.22);
+      if (i % 4 === 2) addTone(hook[i] * 0.5, at + 0.025, 0.16, "sine", 0.055, 1_500, 0);
+    }
+    const bassNotes = [130.81, 130.81, 110.00, 110.00, 87.31, 87.31, 98.00, 98.00];
+    bassNotes.forEach((hz, i) => {
+      const at = i * q * 0.5;
+      addTone(hz, at, 0.23, "triangle", 0.20, 420, 0);
+      if (i % 2 === 0) addTone(hz * 2, at + 0.035, 0.13, "sine", 0.07, 900, 0);
+    });
+    const hitLength = Math.ceil(sampleRate * 0.11);
+    const hitBuffer = context.createBuffer(1, hitLength, sampleRate);
+    const hitData = hitBuffer.getChannelData(0);
+    for (let i = 0; i < hitLength; i += 1) {
+      hitData[i] = (random() * 2 - 1) * Math.exp(-(i / sampleRate) * 38);
+    }
+    for (let beatIndex = 0, at = 0; at < 3.75; beatIndex += 1, at += q) {
+      // Small soft kick on each quarter note.
+      addTone(beatIndex % 2 === 0 ? 72 : 86, at, 0.12, "sine", 0.11, 180, 0);
+      // Brushed snare/clap on beats two and four, intentionally light and comic.
+      if (beatIndex % 2 === 1) {
+        const source = context.createBufferSource();
+        const filter = context.createBiquadFilter();
+        const gain = context.createGain();
+        source.buffer = hitBuffer;
+        filter.type = "bandpass"; filter.frequency.value = 1_650; filter.Q.value = 0.72;
+        gain.gain.setValueAtTime(0.0001, at);
+        gain.gain.linearRampToValueAtTime(0.055, at + 0.004);
+        gain.gain.exponentialRampToValueAtTime(0.0001, at + 0.11);
+        source.connect(filter); filter.connect(gain); gain.connect(master); source.start(at);
+      }
+      // Gentle shaker taps keep the pulse lively without sounding electronic.
+      for (const sub of [0.5]) {
+        const source = context.createBufferSource();
+        const filter = context.createBiquadFilter();
+        const gain = context.createGain();
+        source.buffer = hitBuffer;
+        filter.type = "highpass"; filter.frequency.value = 5_800;
+        gain.gain.setValueAtTime(0.0001, at + sub * q);
+        gain.gain.linearRampToValueAtTime(0.014, at + sub * q + 0.003);
+        gain.gain.exponentialRampToValueAtTime(0.0001, at + sub * q + 0.06);
+        source.connect(filter); filter.connect(gain); gain.connect(master); source.start(at + sub * q);
+      }
+    }
+    // A tiny rising two-note tag makes the sting land like the start of a sitcom.
+    addTone(783.99, 3.15, 0.24, "triangle", 0.14, 4_000, -0.12);
+    addTone(1_046.50, 3.38, 0.42, "triangle", 0.16, 4_800, 0.16);
   }
 
   if (theme === "game-show") {
