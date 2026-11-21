@@ -48,7 +48,7 @@ async def synthesize(cue, index):
 
 async def main():
     package = json.loads(PACKAGE_PATH.read_text(encoding="utf-8"))
-    total_ms = round(package["durationSeconds"] * 1000)
+    total_ms = round(float(package.get("durationSeconds", 65)) * 1000)
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     master = AudioSegment.silent(duration=total_ms, frame_rate=24000).set_channels(2)
     stems = {speaker: AudioSegment.silent(duration=total_ms, frame_rate=24000).set_channels(2) for speaker in VOICE_CAST}
