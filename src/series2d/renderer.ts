@@ -167,6 +167,7 @@ export async function renderSitcomPackageToWebM(
   if (signal?.aborted) throw new Error("Render 2D cancelado.");
 
   const totalFrames = Math.round(pkg.durationSeconds * pkg.fps);
+  const cameraRevealTime = pkg.dialogue.find(cue => cue.id === "07-martina")?.startSeconds ?? 23.6;
   const totalSamples = Math.ceil(pkg.durationSeconds * 48_000);
   const codec = await selectSeriesEncoder(pkg.width, pkg.height, pkg.fps);
   const audioUrl = import.meta.env.BASE_URL + pkg.voiceTrackUrl;
@@ -294,7 +295,7 @@ export async function renderSitcomPackageToWebM(
       if (signal?.aborted) throw new Error("Render 2D cancelado.");
       const time = frame / pkg.fps;
       const activeCue = pkg.dialogue.find(cue => time >= cue.startSeconds && time <= cue.endSeconds);
-      const cameraBeat = time >= 23.6;
+      const cameraBeat = time >= cameraRevealTime;
 
       for (const rig of characters) {
         updateCharacter(
