@@ -231,14 +231,47 @@ function createTorso(profile: CharacterProfile, root: Container) {
   root.addChild(torso);
 
   const body = new Graphics();
-  body.moveTo(-shoulder, y + 18)
-    .bezierCurveTo(-shoulder - 8, y + 50, -waist - 6, y + 104, -waist, y + 138)
-    .lineTo(-hips, y + 160)
-    .quadraticCurveTo(0, y + 180, hips, y + 160)
-    .lineTo(waist, y + 138)
-    .bezierCurveTo(waist + 6, y + 104, shoulder + 8, y + 50, shoulder, y + 18)
-    .quadraticCurveTo(0, y - 8, -shoulder, y + 18)
-    .closePath().fill(profile.shirt).stroke({ color: INK, width: 5, join: "round" });
+  if (profile.id === "martina") {
+    // Neat tucked blouse: balanced shoulders, narrow waist, softly wider hips.
+    body.moveTo(-shoulder, y + 18)
+      .quadraticCurveTo(-shoulder - 3, y + 66, -waist, y + 126)
+      .lineTo(-hips, y + 160).quadraticCurveTo(0, y + 171, hips, y + 160)
+      .lineTo(waist, y + 126).quadraticCurveTo(shoulder + 3, y + 66, shoulder, y + 18)
+      .quadraticCurveTo(0, y - 6, -shoulder, y + 18).closePath();
+  } else if (profile.id === "bruno") {
+    // Broad hoodie: boxier shoulders and chest, straight hem, compact waist.
+    body.moveTo(-shoulder, y + 17)
+      .quadraticCurveTo(-shoulder - 5, y + 69, -waist, y + 135)
+      .lineTo(-hips, y + 162).quadraticCurveTo(0, y + 168, hips, y + 162)
+      .lineTo(waist, y + 135).quadraticCurveTo(shoulder + 5, y + 69, shoulder, y + 17)
+      .quadraticCurveTo(0, y - 14, -shoulder, y + 17).closePath();
+  } else if (profile.id === "tomas") {
+    // Long, slim overshirt with a straight lower silhouette.
+    body.moveTo(-shoulder, y + 14)
+      .quadraticCurveTo(-shoulder - 3, y + 62, -waist, y + 132)
+      .lineTo(-hips, y + 174).lineTo(hips, y + 174).lineTo(waist, y + 132)
+      .quadraticCurveTo(shoulder + 3, y + 62, shoulder, y + 14)
+      .quadraticCurveTo(0, y - 8, -shoulder, y + 14).closePath();
+  } else if (profile.id === "valentina") {
+    // Fitted cropped jacket: distinct waist and long curved side seam.
+    body.moveTo(-shoulder, y + 16)
+      .quadraticCurveTo(-shoulder - 2, y + 56, -waist + 3, y + 112)
+      .quadraticCurveTo(-waist - 6, y + 137, -hips, y + 160)
+      .quadraticCurveTo(0, y + 174, hips, y + 160)
+      .quadraticCurveTo(waist + 6, y + 137, waist - 3, y + 112)
+      .quadraticCurveTo(shoulder + 2, y + 56, shoulder, y + 16)
+      .quadraticCurveTo(0, y - 7, -shoulder, y + 16).closePath();
+  } else {
+    // Ernesto has a shorter, broad cardigan with a soft round belly.
+    body.moveTo(-shoulder, y + 20)
+      .quadraticCurveTo(-shoulder - 8, y + 82, -waist, y + 132)
+      .quadraticCurveTo(-hips - 7, y + 159, -hips, y + 166)
+      .quadraticCurveTo(0, y + 193, hips, y + 166)
+      .quadraticCurveTo(hips + 7, y + 159, hips, y + 132)
+      .quadraticCurveTo(shoulder + 8, y + 82, shoulder, y + 20)
+      .quadraticCurveTo(0, y - 7, -shoulder, y + 20).closePath();
+  }
+  body.fill(profile.shirt).stroke({ color: INK, width: 5, join: "round" });
   torso.addChild(body);
 
   if (profile.id === "bruno") {
