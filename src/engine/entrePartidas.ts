@@ -463,7 +463,7 @@ export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
     update,
     getSpeakerPosition(speaker){
       const rig=speaker==="bruno"?bruno:speaker==="martina"?martina:valentina;
-      return new THREE.Vector3(rig.root.position.x,speaker==="bruno"?-.32:.12,rig.root.position.z);
+      return new THREE.Vector3(rig.root.position.x,speaker==="bruno"?-.88:-.82,rig.root.position.z);
     }
   };
 }
@@ -477,18 +477,18 @@ export function drawEntrePartidasBranding(ctx:CanvasRenderingContext2D,time:numb
   if(time<2.05){
     const fade=Math.min(1,time/.28,(2.05-time)/.35);
     ctx.save();ctx.globalAlpha=Math.max(0,fade);
-    const panelW=width*.92,panelH=height*.205,x=(width-panelW)/2,y=height*.345;
+    const panelW=width*.92,panelH=height*.17,x=(width-panelW)/2,y=height*.075;
     ctx.shadowColor="rgba(0,0,0,.34)";ctx.shadowBlur=28*scale;
     const g=ctx.createLinearGradient(x,y,x+panelW,y+panelH);
     g.addColorStop(0,"rgba(20,48,39,.94)");g.addColorStop(1,"rgba(31,67,54,.92)");
     ctx.fillStyle=g;rounded(x,y,panelW,panelH,22*scale);ctx.fill();
     ctx.shadowBlur=0;ctx.textAlign="center";ctx.textBaseline="middle";
-    ctx.fillStyle="#d7e8ad";ctx.font="900 "+Math.round(20*scale)+"px Arial";
-    ctx.fillText("INGREDORA ORIGINAL",width/2,y+panelH*.18);
-    ctx.fillStyle="#fffaf0";ctx.font="900 "+Math.round(70*scale)+"px Arial Black,Arial";
+    ctx.fillStyle="#d7e8ad";ctx.font="900 "+Math.round(18*scale)+"px Arial";
+    ctx.fillText("INGREDORA ORIGINAL",width/2,y+panelH*.16);
+    ctx.fillStyle="#fffaf0";ctx.font="900 "+Math.round(68*scale)+"px Arial Black,Arial";
     ctx.fillText("ENTRE PARTIDAS",width/2,y+panelH*.49);
-    ctx.fillStyle="#f0d18b";ctx.font="900 "+Math.round(28*scale)+"px Arial";
-    ctx.fillText("CAPÍTULO 1",width/2,y+panelH*.79);
+    ctx.fillStyle="#f0d18b";ctx.font="900 "+Math.round(26*scale)+"px Arial";
+    ctx.fillText("CAPÍTULO 1",width/2,y+panelH*.82);
     ctx.restore();
   }
   if(time>=62){
