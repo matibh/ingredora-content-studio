@@ -46,6 +46,7 @@ try {
   try {
     await page.waitForFunction(
       () => document.title === "RENDER COMPLETADO" || document.title === "ERROR DE RENDER",
+      undefined,
       { timeout: 90 * 60 * 1000 },
     );
   } catch (error) {
