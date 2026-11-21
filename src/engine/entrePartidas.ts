@@ -395,7 +395,7 @@ export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
     bruno.rightLeg.rotation.z=.025;
     for(const rig of [bruno,martina,valentina]){
       const talking=rig.name===speaker;
-      const lookAngle=cue?.look===rig.name?-.13:cue?.look?.length?.07:0;
+      const lookAngle=cue?.look===rig.name ? -.13 : cue?.look ? .07 : 0;
       const phase=rig.name==="bruno"?0:rig.name==="martina"?1.7:3.1;
       rig.head.rotation.y=lookAngle+Math.sin(time*.48+phase)*.007;
       rig.head.rotation.x=talking?Math.sin(time*2.9+phase)*.022:Math.sin(time*.55+phase)*.006;
@@ -406,10 +406,10 @@ export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
       rig.mouth.scale.set(1,mouthOpen,1);
       rig.mouth.position.y=-.205-(talking?mouthOpen*.003:0);
       const gesture=talking?1:0;
-      rig.leftArm.rotation.z=gesture?-.012+Math.sin(time*1.35+phase)*.008:0;
-      rig.rightArm.rotation.z=gesture?.014+Math.sin(time*1.25+phase+1)*.008:0;
-      rig.leftArm.rotation.x=gesture?.004:0;
-      rig.rightArm.rotation.x=gesture?-.004:0;
+      rig.leftArm.rotation.z=gesture ? -.012+Math.sin(time*1.35+phase)*.008 : 0;
+      rig.rightArm.rotation.z=gesture ? .014+Math.sin(time*1.25+phase+1)*.008 : 0;
+      rig.leftArm.rotation.x=gesture ? .004 : 0;
+      rig.rightArm.rotation.x=gesture ? -.004 : 0;
       rig.root.rotation.z=talking?Math.sin(time*1.1+phase)*.004:0;
       rig.root.position.y=-1.975;
     }
