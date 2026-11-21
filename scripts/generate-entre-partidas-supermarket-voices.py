@@ -12,9 +12,9 @@ AudioSegment.converter = imageio_ffmpeg.get_ffmpeg_exe()
 PACKAGE_PATH = Path("public/studio/packages/entre-partidas-supermarket.v1.json")
 OUTPUT_DIR = Path("public/studio/audio/entre-partidas/supermarket-01")
 VOICE_CAST = {
-    "martina": {"voice":"es-AR-ElenaNeural","rate":"-3%","pitch":"-2Hz","volume":"+5%"},
-    "bruno": {"voice":"es-AR-TomasNeural","rate":"+7%","pitch":"+4Hz","volume":"+7%"},
-    "valentina": {"voice":"es-UY-ValentinaNeural","rate":"-5%","pitch":"-1Hz","volume":"+5%"},
+    "martina": {"voice":"es-AR-ElenaNeural","rate":"+12%","pitch":"-2Hz","volume":"+5%"},
+    "bruno": {"voice":"es-AR-TomasNeural","rate":"+20%","pitch":"+4Hz","volume":"+7%"},
+    "valentina": {"voice":"es-UY-ValentinaNeural","rate":"+10%","pitch":"-1Hz","volume":"+5%"},
 }
 
 async def synthesize(cue, index):
