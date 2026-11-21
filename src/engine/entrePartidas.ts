@@ -374,8 +374,9 @@ export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
   };
   const packet=makeHandPacket(packMats[0],.42,.62);
   const packet2=makeHandPacket(packMats[2],.40,.60);
-  bruno.rightArm.add(packet);packet.position.set(0,-.83,.36);packet.rotation.set(0,0,0);
-  bruno.leftArm.add(packet2);packet2.position.set(0,-.83,.36);packet2.rotation.set(0,0,0);
+  // Lift both products into Bruno's hands at chest height so they clear his lap and legs.
+  bruno.rightArm.add(packet);packet.position.set(0,-.54,.36);packet.rotation.set(0,0,0);
+  bruno.leftArm.add(packet2);packet2.position.set(0,-.54,.36);packet2.rotation.set(0,0,0);
   // Cinematic commercial lighting: soft overhead, warm key, cool rim, contact shadows.
   world.add(new THREE.HemisphereLight(0xf8f3e7,0x666d68,1.45));
   const key=new THREE.SpotLight(0xffe5c6,62,30,Math.PI/4,.62,1.25);
@@ -443,22 +444,76 @@ export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
     lamp.position.set(-5.5+i*1.0,1.18,-4.72);exterior.add(lamp);
     const glow=new THREE.PointLight("#ffbf65",1.4,4.5);glow.position.copy(lamp.position);exterior.add(glow);
   }
-  // The neighbouring family house makes the shot read as a real street block.
-  const houseWall=extMat("#b8aa91",.94);
-  extBox([4.65,4.25,.78],[5.35,.12,-5.32],houseWall);
-  const roofMat=extMat("#463c3a",.86);
-  const roofLeft=extBox([2.85,.24,1.15],[4.18,2.38,-5.30],roofMat);roofLeft.rotation.z=-.48;
-  const roofRight=extBox([2.85,.24,1.15],[6.52,2.38,-5.30],roofMat);roofRight.rotation.z=.48;
-  extBox([.22,2.55,.12],[5.35,-.02,-4.88],extMat("#493b30",.82));
-  extBox([1.22,1.18,.07],[4.35,.63,-4.86],new THREE.MeshStandardMaterial({color:"#b2c6bb",emissive:"#e2b16a",emissiveIntensity:.32,roughness:.2}));
-  extBox([1.22,1.18,.07],[6.32,.63,-4.86],new THREE.MeshStandardMaterial({color:"#b2c6bb",emissive:"#e2b16a",emissiveIntensity:.32,roughness:.2}));
-  extBox([.07,1.22,.11],[4.35,.63,-4.78],windowFrame);
-  extBox([.07,1.22,.11],[6.32,.63,-4.78],windowFrame);
-  // A short garden fence, front gate and a glowing porch sconce give the house life.
-  for(let i=0;i<8;i++)extBox([.10,.65,.10],[3.25+i*.60,-1.30,-3.75],extMat("#665645",.9));
-  extBox([4.65,.10,.12],[5.35,-1.12,-3.75],extMat("#665645",.9));
-  extBox([.22,.40,.15],[7.95,-1.46,-4.2],extMat("#5e604e",.95));
-  const porchLight=new THREE.PointLight("#ffd28a",2.2,5);porchLight.position.set(5.35,1.05,-4.35);exterior.add(porchLight);
+  // Neighbouring six-storey brick apartment building: tall, flat-roofed,
+  // with a readable exposed-brick facade, repeated lit windows and balconies.
+  const brickTexture=texture((ctx,w,h)=>{
+    ctx.fillStyle="#8f4432";ctx.fillRect(0,0,w,h);
+    const brickHeight=52,brickWidth=104;
+    for(let row=0;row<Math.ceil(h/brickHeight);row++){
+      const offset=row%2?brickWidth*.5:0;
+      for(let col=-1;col<Math.ceil(w/brickWidth)+1;col++){
+        const x=col*brickWidth-offset,y=row*brickHeight;
+        const shade=(row*7+col*11+29)%5;
+        const colors=["#a9523b","#934531","#b35b40","#9b4a35","#87402f"];
+        ctx.fillStyle=colors[shade];ctx.fillRect(x+3,y+3,brickWidth-6,brickHeight-6);
+        ctx.fillStyle="rgba(255,220,185,.12)";ctx.fillRect(x+5,y+5,brickWidth-10,4);
+        ctx.fillStyle="rgba(35,18,14,.12)";ctx.fillRect(x+5,y+brickHeight-7,brickWidth-10,4);
+      }
+    }
+    // A restrained evening light gradient gives the masonry depth without
+    // making the building read as a dark silhouette.
+    const shade=ctx.createLinearGradient(0,0,w,h);
+    shade.addColorStop(0,"rgba(255,218,176,.10)");
+    shade.addColorStop(.48,"rgba(255,255,255,0)");
+    shade.addColorStop(1,"rgba(21,19,25,.24)");
+    ctx.fillStyle=shade;ctx.fillRect(0,0,w,h);
+  },512,1024);
+  const brickMaterial=new THREE.MeshStandardMaterial({map:brickTexture,roughness:.96});
+  extBox([4.85,13.15,.86],[5.35,4.66,-5.32],brickMaterial);
+  const buildingTrim=extMat("#6d382c",.88),buildingConcrete=extMat("#8e8d82",.9),buildingMetal=extMat("#343b3c",.54,.25);
+  // Flat roofline and parapet replace the pitched house roof.
+  extBox([5.05,.34,1.02],[5.35,11.34,-5.25],buildingTrim);
+  extBox([4.92,.12,.18],[5.35,11.57,-4.79],buildingConcrete);
+  // Six residential floors, two windows per floor, with a few warm lit rooms.
+  const windowFrameMat=extMat("#3a3632",.48,.2);
+  for(let floor=0;floor<6;floor++){
+    const y=-.72+floor*2.08;
+    for(let column=0;column<2;column++){
+      const x=column===0?4.25:6.38;
+      extBox([1.02,1.38,.13],[x,y,-4.79],windowFrameMat);
+      const lit=(floor*3+column*2)%4!==0;
+      const glassMat=new THREE.MeshStandardMaterial({
+        color:lit?"#c7baa0":"#81949a",
+        emissive:lit?"#d89a52":"#30404a",
+        emissiveIntensity:lit?.34:.08,
+        roughness:.22,
+        metalness:.08
+      });
+      extBox([.86,1.20,.055],[x,y,-4.70],glassMat);
+      extBox([.045,1.21,.065],[x,y,-4.66],windowFrameMat);
+      extBox([.88,.045,.065],[x,y,-4.66],windowFrameMat);
+    }
+    // Narrow continuous slab and a recessed band mark each floor.
+    extBox([4.88,.075,.20],[5.35,y-1.00,-4.78],buildingConcrete);
+    if(floor%2===0){
+      const balconyY=y-.42;
+      extBox([1.16,.065,.52],[4.25,balconyY,-4.51],buildingMetal);
+      extBox([1.16,.055,.07],[4.25,balconyY+.42,-4.42],buildingMetal);
+      for(const dx of [-.52,-.18,.18,.52]){
+        extBox([.045,.42,.045],[4.25+dx,balconyY+.20,-4.42],buildingMetal);
+      }
+    }
+  }
+  // Ground-floor entrance, intercom and small awning.
+  extBox([1.15,2.18,.15],[5.35,-.78,-4.73],buildingMetal);
+  extBox([.88,1.92,.055],[5.35,-.78,-4.62],extMat("#6d5542",.7));
+  extBox([1.45,.14,.68],[5.35,.42,-4.56],buildingConcrete);
+  extBox([.20,.46,.08],[6.18,-1.16,-4.58],extMat("#2c2d2a",.6,.15));
+  // Rooftop service room and water tank signal an actual multi-storey block.
+  extBox([1.15,1.10,.88],[6.75,12.12,-5.28],extMat("#777b78",.82));
+  extBox([.78,.62,.78],[4.05,12.02,-5.30],buildingMetal);
+  const buildingEntranceLight=new THREE.PointLight("#ffd49b",1.6,4.8);
+  buildingEntranceLight.position.set(5.35,.4,-4.15);exterior.add(buildingEntranceLight);
   extBox([.13,6.8,.13],[-9.4,1.45,-1.85],extMat("#333c40",.55,.3));
   const streetArm=extBox([1.15,.10,.10],[-8.9,4.72,-1.85],extMat("#333c40",.55,.3));streetArm.rotation.z=-.15;
   const streetGlow=new THREE.PointLight("#ffe0a1",3.2,9);streetGlow.position.set(-8.55,4.55,-1.85);exterior.add(streetGlow);
@@ -475,16 +530,16 @@ export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
     const cue=dialogue.find(c=>time>=c.start&&time<=c.end);
     const speaker=cue?.speaker;
     const ease=(v:number)=>{const q=Math.max(0,Math.min(1,v));return q*q*(3-2*q);};
-    const approach=ease((time-7.65)/2.0);
-    martina.root.visible=time>=7.65;
-    valentina.root.visible=time>=7.65;
+    const approach=ease((time-8.05)/1.05);
+    martina.root.visible=time>=8.05;
+    valentina.root.visible=time>=8.05;
     martina.root.position.x=-2.65;
     valentina.root.position.x=-1.35;
     martina.root.position.z=-4.05+1.62*approach;
     valentina.root.position.z=-4.05+1.62*approach;
-    martina.root.rotation.y=0;
-    valentina.root.rotation.y=0;
-    if(time>=11.4){martina.root.rotation.y=.10;valentina.root.rotation.y=-.10;}
+    // Both girls turn toward Bruno before the camera reveals them.
+    martina.root.rotation.y=.78;
+    valentina.root.rotation.y=.48;
     interior.visible=time>=4.15;
     exterior.visible=time<4.15;
     world.background=time<4.15?exteriorBackground:interiorBackground;
@@ -526,11 +581,12 @@ export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
     if(time<18){
       bruno.leftArm.rotation.set(0,.015,.018);
       bruno.rightArm.rotation.set(0,-.015,-.018);
-      bruno.head.rotation.x=-.20+Math.sin(time*1.2)*.008;
+      const studyNod=time>=1.8&&time<9.7?Math.sin(time*4.5)*.026+Math.sin(time*9.0)*.006:Math.sin(time*1.2)*.008;
+      bruno.head.rotation.x=-.20+studyNod;
       packet.rotation.set(0,0,0);
       packet2.rotation.set(0,0,0);
     }
-    if(time>=7.65&&time<10.8){
+    if(time>=8.05&&time<9.10){
       const fade=1-ease((time-9.95)/.75);
       // Short, gentle synchronized steps: both women approach from the same direction.
       const travelled=1.62*approach;
@@ -554,6 +610,19 @@ export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
         rig.leftLeg.rotation.z=0;rig.rightLeg.rotation.z=0;
         rig.leftArm.rotation.x=0;rig.rightArm.rotation.x=0;
         rig.leftArm.rotation.z=0;rig.rightArm.rotation.z=0;
+      }
+    }
+    // After the girls are revealed on "aprender", hold their gaze on Bruno.
+    // A second later they make a tiny, restrained hand gesture before speaking.
+    if(time>=9.10&&time<11.0){
+      const gesture=ease((time-10.05)/.55);
+      for(const rig of [martina,valentina]){
+        const phase=rig.name==="martina"?0:.7;
+        rig.head.rotation.y=Math.sin(time*.42+phase)*.008;
+        rig.leftArm.rotation.z=-.018-gesture*(.045+Math.sin(time*2.2+phase)*.012);
+        rig.rightArm.rotation.z=.018+gesture*(.045+Math.sin(time*2.0+phase+1)*.012);
+        rig.leftArm.rotation.x=.018+gesture*.025;
+        rig.rightArm.rotation.x=-.018-gesture*.025;
       }
     }
     if(time>=46&&time<55)valentina.rightArm.rotation.z=.08;
