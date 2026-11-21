@@ -11,6 +11,8 @@ El Scene Engine transforma elementos reutilizables en planos con intención narr
 
 El motor será ejecutado en el navegador y deberá poder renderizar cualquier frame solicitado de forma reproducible.
 
+> **Alcance:** este documento define el engine 3D utilizado principalmente por publicidad. Las series 2D tienen una ruta separada basada en PixiJS, documentada en `docs/serie-entre-partidas/` y `docs/10-editor-y-render-engine.md`. Mantener ambas rutas independientes.
+
 ## 2. Principios no negociables
 
 - **USD 0:** sin servicios de render pagos, APIs con facturación, assets de pago obligatorios ni fallback que pueda generar cargos.
