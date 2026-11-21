@@ -14,7 +14,7 @@ import type { ProductionPackage, ProductionScene, SceneObject } from "./types";
 import { createCocaColaPoolsideSet, drawCocaColaPoolsideOverlay } from "./cocaColaPoolside";
 import { createOreoFamilySet, drawOreoFamilyOverlay } from "./oreoFamily";
 import { createOperationLabelSet, drawOperationLabelOverlay, type OperationWord } from "./operationLabel";
-import { createEntrePartidasSet, drawEntrePartidasCaptions, type EntrePartidasCue } from "./entrePartidas";
+import { createEntrePartidasSet, drawEntrePartidasCaptions, drawEntrePartidasBranding, type EntrePartidasCue } from "./entrePartidas";
 
 export type RenderProgress = { frame: number; totalFrames: number; percent: number };
 
@@ -1292,26 +1292,28 @@ export async function renderPackageToWebM(
       let desiredPosition=new THREE.Vector3(0,2.45,13.0);
       let desiredTarget=new THREE.Vector3(0,-.35,-2.0);
       let desiredFov=45;
-      // Establish the aisle first, then keep every speaking character in the
-      // active camera's focus. This replaces fixed time-based pans that often
-      // framed a listener while someone else was delivering the line.
-      if(time<1.55){
-        const p=ease(time/1.55);
-        desiredPosition.set(mix(-.45,0,p),mix(2.9,2.5,p),mix(15,13.2,p));
-        desiredTarget.set(0,-.35,-2.2);desiredFov=mix(49,45,p);
+      // Series-style coverage: clean establishing frame, an aisle entrance
+      // master, then controlled singles at eye level for the active speaker.
+      if(time<2.05){
+        const p=ease(time/2.05);
+        desiredPosition.set(mix(-.45,0,p),mix(3.0,2.65,p),mix(16,14.0,p));
+        desiredTarget.set(0,-.25,-3.2);desiredFov=mix(51,47,p);
+      }else if(time>=6&&time<12){
+        // Keep the full aisle visible as Martina and Valentina walk down its centre.
+        desiredPosition.set(.15,2.75,9.4);
+        desiredTarget.set(0,-.30,-5.5);
+        desiredFov=49;
       }else if(cue){
         const subject=entrePartidasSet.getSpeakerPosition(cue.speaker);
-        // Keep the lens near the aisle center: placing it beside an outer
-        // character made the nearest gondola intrude into the portrait frame.
-        const inwardOffset=subject.x>1.2?-1.35:subject.x< -1.2?1.35:0;
-        desiredPosition.set(subject.x+inwardOffset,subject.y+.48,subject.z+6.65);
-        desiredTarget.set(subject.x,subject.y+.02,subject.z);
-        desiredFov=34;
+        const angle=cue.speaker==="martina"?.48:cue.speaker==="valentina"?-.48:.58;
+        desiredPosition.set(subject.x+angle,subject.y+1.12,subject.z+5.55);
+        desiredTarget.set(subject.x,subject.y,subject.z);
+        desiredFov=cue.speaker==="bruno"?38:37;
       }else{
-        // Short reaction gaps breathe on a two/three-shot before the next line.
-        desiredPosition.set(0,2.35,12.8);
-        desiredTarget.set(0,-.35,-1.5);
-        desiredFov=43;
+        // A calm three-shot for reactions; no camera teleporting between lines.
+        desiredPosition.set(0,2.65,10.8);
+        desiredTarget.set(0,-.28,-2.2);
+        desiredFov=46;
       }
       if(frame===0){
         camera.position.set(0,2.5,13.2);
@@ -1328,6 +1330,7 @@ export async function renderPackageToWebM(
       renderer.render(world,camera);
       ctx.drawImage(renderer.domElement,0,0,pkg.width,pkg.height);
       drawEntrePartidasCaptions(ctx,time,pkg.width,pkg.height,entrePartidasDialogue);
+      drawEntrePartidasBranding(ctx,time,pkg.width,pkg.height);
       return;
     }
     if (operationLabelSet) {
