@@ -41,6 +41,14 @@
 - Al terminar se muestran resultados, respuestas correctas/incorrectas, porcentaje de precisión y puntuación final.
 - No revelar en contenidos promocionales la respuesta del Desafío Diario vigente.
 
+## Referencias de producción disponibles
+
+- [Lámina maestra preliminar v1](../../public/studio/series/entre-partidas/characters/lineup-v1.svg).
+- [Paquete del prepiloto v1](../../public/studio/series/entre-partidas/episodes/prepiloto-v1.json).
+- [Registro del prototipo y estado técnico](./05-prototipo-visual-v0.md).
+
+La lámina v1 es una propuesta editable, no un diseño definitivo. El motor 2D y los paquetes de episodios viven en una rama separada hasta superar build, render y aprobación.
+
 ## Cómo usar esta carpeta
 
 Antes de producir un capítulo nuevo:
