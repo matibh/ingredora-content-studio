@@ -1294,11 +1294,12 @@ export async function renderPackageToWebM(
       // Series-style coverage: strict side profile, wide cross-aisle reveal,
       // then medium singles that keep faces, torsos and meaningful body language in frame.
       if(time<6){
-        // Wider profile from the opening frame: full seated posture and both packages remain visible.
-        // Medium-wide strict side profile, still inside the gondola edges, with Bruno seated fully in frame.
-        desiredPosition.set(4.65,.20,.48);
-        desiredTarget.set(0,-1.15,.20);
-        desiredFov=54;
+        // Strict profile opening with a restrained, continuous push-in toward Bruno studying the labels.
+        const push=Math.max(0,Math.min(1,time/4.8));
+        const ease=push*push*(3-2*push);
+        desiredPosition.set(mix(4.65,3.95,ease),mix(.20,.12,ease),mix(.48,.34,ease));
+        desiredTarget.set(0,mix(-1.15,-.78,ease),.20);
+        desiredFov=mix(54,48,ease);
       }else if(time>=6&&time<12){
         // Wide master reveals the open cross-aisle as the girls enter from opposite side passages.
         desiredPosition.set(.10,3.05,12.2);
@@ -1321,7 +1322,7 @@ export async function renderPackageToWebM(
         camera.userData.entreTarget=desiredTarget.clone();
         camera.fov=desiredFov;
       }
-      const blend = time < 6 ? 0.24 : cue ? 0.16 : 0.08;
+      const blend = time < 6 ? 0.075 : cue ? 0.16 : 0.08;
       camera.position.lerp(desiredPosition,blend);
       const currentTarget=(camera.userData.entreTarget as THREE.Vector3|undefined)??desiredTarget.clone();
       currentTarget.lerp(desiredTarget,blend);
