@@ -10,6 +10,27 @@
 
 No buscar un aspecto infantil genérico ni copiar el lenguaje visual exacto de una serie existente. Crear una identidad original para Ingredora.
 
+## Prototipo visual v0 — referencia no canónica
+
+Se generó un primer animatic vertical de 9 segundos para probar composición, paleta, lectura del elenco y ritmo de una conversación en el departamento. El prototipo y su fotograma vectorial fuente están registrados en [05 — Prototipo visual y prepiloto v0](./05-prototipo-visual-v0.md).
+
+**Importante:** los cinco diseños que aparecen son exploratorios. No reemplazan las fichas de personajes ni constituyen modelos maestros aprobados. No deben copiarse automáticamente a episodios futuros. La paleta y las proporciones finales siguen pendientes de aprobación.
+
+## Lámina maestra preliminar v1
+
+El primer rediseño de siluetas ya está en el repositorio:
+
+- [Lámina maestra vectorial v1](../../public/studio/series/entre-partidas/characters/lineup-v1.svg)
+
+La hoja diferencia la silueta de cada protagonista:
+- Martina: cintura más definida y cadera suavemente más ancha; blusa prolija y pantalón recto.
+- Bruno: hombros anchos, torso deportivo y buzo con capucha.
+- Tomás: el más alto y delgado, brazos y piernas largos, camisa abierta sobre remera.
+- Valentina: chaqueta entallada, cintura marcada y pelo largo ondulado.
+- Ernesto: más bajo y robusto, cardigan, pelo gris, barba corta y anteojos.
+
+**Estado:** primer diseño de trabajo; no constituye aprobación definitiva. La cara, el pelo, el vestuario y las proporciones podrán ajustarse después de revisar la lámina y el primer render animado.
+
 ## 1. Lenguaje visual
 
 - Formas claras y simplificadas, con personalidad.
@@ -113,6 +134,16 @@ Las articulaciones deben mantener proporciones y evitar deformaciones accidental
 - Usar un celular.
 
 No hace falta animar todo de forma continua. Cortes, poses, cambios de expresión y timing cómico pueden generar una sensación de animación más cuidada con un costo de producción menor.
+
+## 5.1 Movimiento natural y apoyo corporal
+
+- Los pies mantienen una línea base estable mientras el personaje está parado; no usar flotación ni rebote continuo del cuerpo.
+- Respiración casi imperceptible, parpadeos no sincronizados y pequeñas inclinaciones de cabeza.
+- Los gestos de brazos deben responder al diálogo: abrir una mano, señalar, encogerse de hombros o acompañar una idea.
+- El personaje que escucha mira al hablante; el hablante mira al interlocutor o al objetivo dramático.
+- La cámara solo recibe miradas cuando el guion lo indica. No poner a todo el elenco mirando al espectador de forma permanente.
+- Evitar que los cinco gesticulen simultáneamente. Las pausas y reacciones silenciosas son parte de la actuación.
+- Los cambios de pose deben conservar el peso del cuerpo y el contacto con el suelo o el asiento.
 
 ## 6. Fondos y cámara
 

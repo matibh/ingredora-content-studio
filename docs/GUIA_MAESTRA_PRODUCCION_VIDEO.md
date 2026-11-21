@@ -7,7 +7,7 @@
 - **Proyecto:** Ingredora Content Studio
 - **Repositorio:** `matibh/ingredora-content-studio`
 - **Aplicación:** https://matibh.github.io/ingredora-content-studio/
-- **Última actualización:** 19/11/2026
+- **Última actualización:** 21/11/2026
 
 ---
 
@@ -15,7 +15,7 @@
 
 1. **Presupuesto objetivo: USD 0.** Priorizar herramientas gratuitas y ejecución en el navegador. No incorporar servicios pagos ni infraestructura que genere costos sin autorización expresa.
 2. **Sin instalaciones locales obligatorias.** La producción debe poder prepararse y ejecutarse desde el navegador.
-3. **El navegador renderiza.** Three.js se usa para las escenas visuales. Supabase persiste paquetes y recursos; no es el motor de render.
+3. **El navegador renderiza.** Three.js se utiliza para publicidad 3D y PixiJS para series 2D. Ambos motores comparten el pipeline de salida Mediabunny. Supabase persiste paquetes y recursos; no es el motor de render.
 4. **ChatGPT es la dirección creativa y técnica.** No trasladar al usuario la tarea de completar briefs, prompts, storyboards o parámetros en la web.
 5. **Paquetes versionados y reproducibles.** Cada producción debe tener identidad, versión, manifiesto, guion, storyboard, escenas, recursos y metadatos.
 6. **No ejecutar código arbitrario descargado de Supabase.** Los datos persistidos deben ajustarse a un esquema validado. El motor de la aplicación interpreta estructuras conocidas; no debe evaluar JavaScript libre recibido desde la base.
@@ -55,6 +55,15 @@ Carpeta: `Contenido a subir`
   ↓
 La publicación en redes queda a cargo de una acción humana posterior
 ```
+
+### Selección de motor de render
+
+| Tipo de producción | Motor visual | Paquete | Audio/video |
+|---|---|---|---|
+| Publicidad 3D | Three.js (ruta existente) | `ProductionPackage` | Mediabunny |
+| Series animadas 2D | PixiJS (ruta independiente) | `SitcomProductionPackage` | Mediabunny |
+
+No mezclar los motores ni migrar las publicidades existentes al motor 2D. El campo `renderEngine` del manifiesto identifica el motor de cada producción. Para series, ChatGPT prepara el paquete, assets, diálogos, actuaciones y pistas de voz; el Studio interpreta únicamente los esquemas permitidos.
 
 ### Responsabilidad de cada parte
 

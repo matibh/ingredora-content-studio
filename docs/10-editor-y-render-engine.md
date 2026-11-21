@@ -1,7 +1,7 @@
 # 10 — Editor y Render Engine
 
 **Estado:** especificación funcional inicial. UI, contratos, codecs, límites de memoria y estrategia de recuperación pendientes de prototipo.  
-**Última actualización:** 2026-11-19.
+**Última actualización:** 2026-11-21.
 
 ## 1. Objetivo
 
@@ -10,6 +10,17 @@ Definir el espacio de trabajo donde se importan, organizan, editan, previsualiza
 El Editor coordina campañas, escenas, planos, personajes, productos, gráficos y audio. El Render Engine convierte la composición aprobada en archivos audiovisuales finales, ejecutándose en el navegador y guardando los entregables en Supabase Storage.
 
 No es un editor generalista para competir con herramientas profesionales. Es una interfaz especializada en producir piezas cortas y repetibles para Ingredora.
+
+## Decisión de arquitectura de render
+
+El Studio mantiene dos engines de render independientes:
+
+- **Three.js:** escenas de publicidad 3D y presets existentes. Su ruta y contratos actuales deben permanecer compatibles.
+- **PixiJS 2D:** escenas de las series animadas, con rigs vectoriales, personajes, escenarios, diálogo y actuación determinista.
+
+La exportación audiovisual común se mantiene desacoplada de la representación gráfica: ambos motores entregan un canvas por fotograma al pipeline de Mediabunny. Un paquete declara su motor mediante `renderEngine`; el renderer valida el esquema correspondiente antes de procesarlo. No se permite evaluar scripts arbitrarios procedentes de paquetes.
+
+La integración inicial de PixiJS se registra como prototipo separado en `src/series2d/`. No convertir esta especificación en afirmación de que la ruta está publicada hasta que el build, el render y el despliegue se hayan verificado.
 
 ## 2. Principios no negociables
 

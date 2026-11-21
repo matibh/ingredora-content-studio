@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { renderPackageToWebM, type RenderProgress } from "./engine/renderer";
+import { renderSitcomPackageToWebM } from "./series2d/renderer";
+import type { SitcomProductionPackage } from "./series2d/types";
 import { convertWebMToMp4 } from "./engine/mp4Converter";
 import { getRenderedVideo, saveRenderedVideo } from "./engine/storage";
 import type { ProductionPackage } from "./engine/types";
@@ -19,6 +21,8 @@ type Production = {
   version?: string;
   createdAt?: string;
   caption?: string;
+  collection?: "advertising" | "series";
+  renderEngine?: "three" | "pixi2d";
 };
 
 type Manifest = {
@@ -26,6 +30,14 @@ type Manifest = {
   updatedAt: string | null;
   productions: Production[];
 };
+
+const SERIES_VOICE_AUDITIONS = [
+  { id: "martina", name: "Martina", voice: "Elena · Argentina", direction: "Precisa y serena" },
+  { id: "bruno", name: "Bruno", voice: "Tomás · Argentina", direction: "Enérgico y competitivo" },
+  { id: "tomas", name: "Tomás", voice: "Mateo · Uruguay", direction: "Curioso e improvisado" },
+  { id: "valentina", name: "Valentina", voice: "Valentina · Uruguay", direction: "Irónica y segura" },
+  { id: "ernesto", name: "Ernesto", voice: "Lorenzo · Chile", direction: "Cálido y pausado" },
+] as const;
 
 const MANIFEST_URL = `${import.meta.env.BASE_URL}studio/productions.json`;
 const EMPTY_MANIFEST: Manifest = { schemaVersion: 1, updatedAt: null, productions: [] };
@@ -47,6 +59,8 @@ function formatDate(value?: string) {
 function App() {
   const [manifest, setManifest] = useState<Manifest>(EMPTY_MANIFEST);
   const [loading, setLoading] = useState(true);
+  const [collectionFilter, setCollectionFilter] = useState<"all" | "advertising" | "series">("all");
+  const [voiceAuditionsReady, setVoiceAuditionsReady] = useState(false);
   const [connection, setConnection] = useState<"connected" | "error">("connected");
   const [activeId, setActiveId] = useState<string | null>(null);
   const [localVideos, setLocalVideos] = useState<Record<string, string>>({});
@@ -84,6 +98,17 @@ function App() {
   }, []);
 
   useEffect(() => {
+    let cancelled = false;
+    const castUrl = import.meta.env.BASE_URL + "studio/audio/entre-partidas/prepilot-v1/voice-cast.json";
+    void fetch(castUrl, { cache: "no-store" })
+      .then((response) => {
+        if (response.ok && !cancelled) setVoiceAuditionsReady(true);
+      })
+      .catch(() => undefined);
+    return () => { cancelled = true; };
+  }, []);
+
+  useEffect(() => {
     void loadProductions();
     const timer = window.setInterval(() => void loadProductions(), 60_000);
     const onFocus = () => void loadProductions();
@@ -97,9 +122,9 @@ function App() {
   useEffect(() => {
     const forcedId = forceRenderIds[0];
     const candidate = forcedId
-      ? manifest.productions.find((item) => item.id === forcedId && item.packageUrl && !renderingIds.current.has(item.id))
+      ? manifest.productions.find((item) => item.id === forcedId && item.status !== "planned" && item.packageUrl && !renderingIds.current.has(item.id))
       : manifest.productions.find((item) =>
-          item.packageUrl && !item.videoUrl && !localVideos[item.id] && !renderingIds.current.has(item.id)
+          item.status !== "planned" && item.packageUrl && !item.videoUrl && !localVideos[item.id] && !renderingIds.current.has(item.id)
         );
     if (!candidate) return;
     const isForcedRender = forceRenderIds.includes(candidate.id);
@@ -120,9 +145,12 @@ function App() {
         if (!packageResponse.ok) throw new Error("No se pudo cargar el paquete (" + packageResponse.status + ").");
         const productionPackage = await packageResponse.json() as ProductionPackage;
         setRenderStages((current) => ({ ...current, [candidate.id]: "Renderizando cada fotograma. Puede tardar unos minutos…" }));
-        const blob = await renderPackageToWebM(productionPackage, (progress) => {
+        const onFrameProgress = (progress: RenderProgress) => {
           setRenderProgress((current) => ({ ...current, [candidate.id]: progress }));
-        });
+        };
+        const blob = candidate.renderEngine === "pixi2d"
+          ? await renderSitcomPackageToWebM(productionPackage as unknown as SitcomProductionPackage, onFrameProgress)
+          : await renderPackageToWebM(productionPackage, onFrameProgress);
         if (!blob.size) throw new Error("El render terminó sin generar un archivo de video.");
         setRenderStages((current) => ({ ...current, [candidate.id]: "Guardando el video para reproducirlo…" }));
         await saveRenderedVideo(candidate.id, blob);
@@ -141,7 +169,10 @@ function App() {
     void produce();
   }, [manifest.productions, localVideos, retryToken, forceRenderIds]);
 
-  const ready = manifest.productions.filter((item) => (item.status === "ready" && item.videoUrl) || !!localVideos[item.id]);
+  const visibleProductions = manifest.productions.filter((item) =>
+    collectionFilter === "all" || (item.collection || "advertising") === collectionFilter
+  );
+  const ready = visibleProductions.filter((item) => (item.status === "ready" && item.videoUrl) || !!localVideos[item.id]);
   const active = ready.find((item) => item.id === activeId) ?? ready[0] ?? null;
   const activeVideoUrl = active ? (localVideos[active.id] || active.videoUrl) : undefined;
   const activeIsRendering = !!active && renderingIds.current.has(active.id);
@@ -194,7 +225,7 @@ function App() {
     } finally { setMp4Busy(false); setApprovalBusy(false); }
   };
 
-  const inProgress = manifest.productions.filter((item) => !ready.some((readyItem) => readyItem.id === item.id));
+  const inProgress = visibleProductions.filter((item) => !ready.some((readyItem) => readyItem.id === item.id));
 
   return (
     <div className="studio-shell">
@@ -222,6 +253,43 @@ function App() {
           </div>
         </section>
 
+        <section className="collection-switcher" aria-label="Colecciones del estudio">
+          <div className="collection-switcher-copy">
+            <p className="eyebrow">EL ESTUDIO</p>
+            <strong>Dos formas de contar historias.</strong>
+            <span>Campañas de marca y series originales, cada una con su propio motor y biblioteca.</span>
+          </div>
+          <div className="collection-tabs" role="group" aria-label="Filtrar colecciones">
+            <button type="button" className={collectionFilter === "all" ? "collection-tab active" : "collection-tab"} aria-pressed={collectionFilter === "all"} onClick={() => setCollectionFilter("all")}>Todo</button>
+            <button type="button" className={collectionFilter === "advertising" ? "collection-tab active" : "collection-tab"} aria-pressed={collectionFilter === "advertising"} onClick={() => setCollectionFilter("advertising")}>Publicidad</button>
+            <button type="button" className={collectionFilter === "series" ? "collection-tab active" : "collection-tab"} aria-pressed={collectionFilter === "series"} onClick={() => setCollectionFilter("series")}>Series originales</button>
+          </div>
+        </section>
+
+        {collectionFilter === "series" && voiceAuditionsReady && (
+          <section className="voice-cast-section" aria-label="Audiciones del elenco">
+            <div className="section-topline">
+              <div><p className="eyebrow">CASTING PROVISIONAL</p><h2>Las cinco voces</h2></div>
+              <span className="section-index">ESPAÑOL · 5 IDENTIDADES</span>
+            </div>
+            <p className="voice-cast-intro">Escuchá cada muestra por separado. Son voces sintéticas de prueba en distintas variedades del Cono Sur; el reparto todavía no está aprobado.</p>
+            <div className="voice-audition-grid">
+              {SERIES_VOICE_AUDITIONS.map((item) => (
+                <article className="voice-audition-card" key={item.id}>
+                  <div className="voice-audition-heading">
+                    <strong>{item.name}</strong>
+                    <small>{item.voice}</small>
+                  </div>
+                  <p>{item.direction}</p>
+                  <audio controls preload="none" aria-label={`Escuchar muestra de voz de ${item.name}`}>
+                    <source src={import.meta.env.BASE_URL + "studio/audio/entre-partidas/prepilot-v1/audition-" + item.id + ".mp3"} type="audio/mpeg" />
+                  </audio>
+                </article>
+              ))}
+            </div>
+          </section>
+        )}
+
         <section className="player-section" aria-label="Última producción">
           <div className="section-topline"><div><p className="eyebrow">THE SCREENING ROOM</p><h2>Última producción</h2></div><span className="section-index">01 — PLAY</span></div>
           {active ? (
@@ -231,7 +299,7 @@ function App() {
                   <source src={activeVideoUrl} />
                   Tu navegador no puede reproducir este video.
                 </video>
-                <div className="video-corner-label">INGREDORA / ORIGINAL</div>
+                <div className="video-corner-label">{active.collection === "series" ? "INGREDORA ORIGINALS / SERIES" : "INGREDORA / PUBLICIDAD"}</div>
               </div>
               <div className="video-details">
                 <div className="ready-label"><i /> {activeIsRendering ? "REGENERANDO VIDEO" : "VIDEO LISTO"}</div>

@@ -1,0 +1,23 @@
+{
+  "title": "Entre Partidas — Prepiloto visual v0",
+  "createdAt": "2026-11-21",
+  "durationSeconds": 9,
+  "fps": 24,
+  "width": 720,
+  "height": 1280,
+  "aspectRatio": "9:16",
+  "videoCodec": "H.264",
+  "container": "MP4",
+  "audio": "none — silent visual animatic with on-screen dialogue",
+  "sourceRenderer": "SVG rendered frame-by-frame and encoded with FFmpeg",
+  "pixiJsIntegration": "not implemented or used in this prototype",
+  "status": "exploratory visual prototype; character models not approved",
+  "characters": [
+    "Martina",
+    "Bruno",
+    "Tomás",
+    "Valentina",
+    "Ernesto"
+  ],
+  "scene": "apartment living room; casual conversation; cast discovers recording camera"
+}

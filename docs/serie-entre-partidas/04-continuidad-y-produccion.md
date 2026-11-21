@@ -82,6 +82,26 @@ Una broma recurrente debe evolucionar, no repetirse exactamente hasta agotarse.
 - Revisar legibilidad en móvil y en tamaño real de publicación.
 - Comprobar que el audio y los subtítulos coincidan.
 - Usar recursos musicales originales o con licencia adecuada.
+- No imitar voces ni música de series existentes.
+
+### Actuación, apoyo y voces
+
+- Mantener los pies apoyados y una línea de suelo consistente; no usar bobbing vertical continuo.
+- Las miradas se dirigen al personaje que habla y solo pasan a cámara cuando el guion lo indica.
+- Los gestos son breves y motivados por la frase; no hacer que todos muevan los brazos al mismo tiempo.
+- Cada personaje tiene una identidad vocal y pista de audio independiente.
+- El paquete debe incluir pista maestra, stems por personaje y word timings para animar la boca.
+- Si una voz cambia, actualizar el registro de casting en `02-personajes.md` y volver a generar las pistas afectadas.
+
+La documentación del Content Studio describe un renderer y escenas específicas. No asumir que ya existe un motor genérico de sitcom 2D. La implementación debe auditarse y probarse antes de prometer capacidades.
+
+- Usar exclusivamente los diseños maestros aprobados.
+- Mantener el mismo set y distribución espacial.
+- Usar la paleta y contornos documentados.
+- Verificar escala, proporciones y articulaciones.
+- Revisar legibilidad en móvil y en tamaño real de publicación.
+- Comprobar que el audio y los subtítulos coincidan.
+- Usar recursos musicales originales o con licencia adecuada.
 - No imitar voces ni música reconocible de series existentes.
 
 La documentación del Content Studio describe un renderer y escenas específicas. No asumir que ya existe un motor genérico de sitcom 2D. La implementación debe auditarse y probarse antes de prometer capacidades.

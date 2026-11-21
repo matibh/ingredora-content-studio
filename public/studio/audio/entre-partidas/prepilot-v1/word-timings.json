@@ -1,0 +1,508 @@
+{
+  "engine": "edge-tts",
+  "durationSeconds": 35.0,
+  "words": [
+    {
+      "text": "Yo",
+      "start": 0.5475,
+      "end": 0.6994,
+      "speaker": "bruno",
+      "segmentId": "01-bruno"
+    },
+    {
+      "text": "nunca",
+      "start": 0.7345,
+      "end": 0.9564,
+      "speaker": "bruno",
+      "segmentId": "01-bruno"
+    },
+    {
+      "text": "pierdo",
+      "start": 1.0265,
+      "end": 1.3536,
+      "speaker": "bruno",
+      "segmentId": "01-bruno"
+    },
+    {
+      "text": "El",
+      "start": 2.214,
+      "end": 2.3775,
+      "speaker": "bruno",
+      "segmentId": "01-bruno"
+    },
+    {
+      "text": "juego",
+      "start": 2.4009,
+      "end": 2.6696,
+      "speaker": "bruno",
+      "segmentId": "01-bruno"
+    },
+    {
+      "text": "a",
+      "start": 2.6696,
+      "end": 2.7047,
+      "speaker": "bruno",
+      "segmentId": "01-bruno"
+    },
+    {
+      "text": "veces",
+      "start": 2.728,
+      "end": 3.0668,
+      "speaker": "bruno",
+      "segmentId": "01-bruno"
+    },
+    {
+      "text": "no",
+      "start": 3.1369,
+      "end": 3.2771,
+      "speaker": "bruno",
+      "segmentId": "01-bruno"
+    },
+    {
+      "text": "entiende",
+      "start": 3.2771,
+      "end": 3.6743,
+      "speaker": "bruno",
+      "segmentId": "01-bruno"
+    },
+    {
+      "text": "mi",
+      "start": 3.7093,
+      "end": 3.7677,
+      "speaker": "bruno",
+      "segmentId": "01-bruno"
+    },
+    {
+      "text": "estrategia",
+      "start": 3.7911,
+      "end": 4.3753,
+      "speaker": "bruno",
+      "segmentId": "01-bruno"
+    },
+    {
+      "text": "No",
+      "start": 5.6552,
+      "end": 5.8613,
+      "speaker": "martina",
+      "segmentId": "02-martina"
+    },
+    {
+      "text": "es",
+      "start": 5.8742,
+      "end": 6.0418,
+      "speaker": "martina",
+      "segmentId": "02-martina"
+    },
+    {
+      "text": "el",
+      "start": 6.0418,
+      "end": 6.132,
+      "speaker": "martina",
+      "segmentId": "02-martina"
+    },
+    {
+      "text": "juego",
+      "start": 6.1578,
+      "end": 6.583,
+      "speaker": "martina",
+      "segmentId": "02-martina"
+    },
+    {
+      "text": "Es",
+      "start": 7.5772,
+      "end": 7.7576,
+      "speaker": "martina",
+      "segmentId": "02-martina"
+    },
+    {
+      "text": "que",
+      "start": 7.7963,
+      "end": 7.8736,
+      "speaker": "martina",
+      "segmentId": "02-martina"
+    },
+    {
+      "text": "no",
+      "start": 7.9123,
+      "end": 8.0153,
+      "speaker": "martina",
+      "segmentId": "02-martina"
+    },
+    {
+      "text": "sabés",
+      "start": 8.0411,
+      "end": 8.3633,
+      "speaker": "martina",
+      "segmentId": "02-martina"
+    },
+    {
+      "text": "perder",
+      "start": 8.4406,
+      "end": 8.8272,
+      "speaker": "martina",
+      "segmentId": "02-martina"
+    },
+    {
+      "text": "Pará",
+      "start": 10.2937,
+      "end": 10.5776,
+      "speaker": "tomas",
+      "segmentId": "03-tomas"
+    },
+    {
+      "text": "tengo",
+      "start": 10.807,
+      "end": 10.9927,
+      "speaker": "tomas",
+      "segmentId": "03-tomas"
+    },
+    {
+      "text": "una",
+      "start": 11.0036,
+      "end": 11.1456,
+      "speaker": "tomas",
+      "segmentId": "03-tomas"
+    },
+    {
+      "text": "teoría",
+      "start": 11.2002,
+      "end": 11.5388,
+      "speaker": "tomas",
+      "segmentId": "03-tomas"
+    },
+    {
+      "text": "Capaz",
+      "start": 12.3516,
+      "end": 12.6792,
+      "speaker": "tomas",
+      "segmentId": "03-tomas"
+    },
+    {
+      "text": "el",
+      "start": 12.6902,
+      "end": 12.7666,
+      "speaker": "tomas",
+      "segmentId": "03-tomas"
+    },
+    {
+      "text": "juego",
+      "start": 12.7885,
+      "end": 13.0397,
+      "speaker": "tomas",
+      "segmentId": "03-tomas"
+    },
+    {
+      "text": "detecta",
+      "start": 13.0724,
+      "end": 13.4001,
+      "speaker": "tomas",
+      "segmentId": "03-tomas"
+    },
+    {
+      "text": "el",
+      "start": 13.4001,
+      "end": 13.4547,
+      "speaker": "tomas",
+      "segmentId": "03-tomas"
+    },
+    {
+      "text": "miedo",
+      "start": 13.4765,
+      "end": 13.7714,
+      "speaker": "tomas",
+      "segmentId": "03-tomas"
+    },
+    {
+      "text": "Entonces",
+      "start": 15.0161,
+      "end": 15.6302,
+      "speaker": "valentina",
+      "segmentId": "04-valentina"
+    },
+    {
+      "text": "a",
+      "start": 15.6302,
+      "end": 15.6928,
+      "speaker": "valentina",
+      "segmentId": "04-valentina"
+    },
+    {
+      "text": "vos",
+      "start": 15.7179,
+      "end": 15.8933,
+      "speaker": "valentina",
+      "segmentId": "04-valentina"
+    },
+    {
+      "text": "te",
+      "start": 15.9435,
+      "end": 15.9936,
+      "speaker": "valentina",
+      "segmentId": "04-valentina"
+    },
+    {
+      "text": "detecta",
+      "start": 16.0688,
+      "end": 16.4823,
+      "speaker": "valentina",
+      "segmentId": "04-valentina"
+    },
+    {
+      "text": "desde",
+      "start": 16.5073,
+      "end": 16.7204,
+      "speaker": "valentina",
+      "segmentId": "04-valentina"
+    },
+    {
+      "text": "la",
+      "start": 16.758,
+      "end": 16.8457,
+      "speaker": "valentina",
+      "segmentId": "04-valentina"
+    },
+    {
+      "text": "puerta",
+      "start": 16.9334,
+      "end": 17.3595,
+      "speaker": "valentina",
+      "segmentId": "04-valentina"
+    },
+    {
+      "text": "En",
+      "start": 18.8508,
+      "end": 19.0071,
+      "speaker": "ernesto",
+      "segmentId": "05-ernesto"
+    },
+    {
+      "text": "mis",
+      "start": 19.0355,
+      "end": 19.1775,
+      "speaker": "ernesto",
+      "segmentId": "05-ernesto"
+    },
+    {
+      "text": "tiempos",
+      "start": 19.2343,
+      "end": 19.7031,
+      "speaker": "ernesto",
+      "segmentId": "05-ernesto"
+    },
+    {
+      "text": "para",
+      "start": 20.044,
+      "end": 20.2003,
+      "speaker": "ernesto",
+      "segmentId": "05-ernesto"
+    },
+    {
+      "text": "perder",
+      "start": 20.2855,
+      "end": 20.5837,
+      "speaker": "ernesto",
+      "segmentId": "05-ernesto"
+    },
+    {
+      "text": "así",
+      "start": 20.5838,
+      "end": 20.9247,
+      "speaker": "ernesto",
+      "segmentId": "05-ernesto"
+    },
+    {
+      "text": "había",
+      "start": 21.1946,
+      "end": 21.5213,
+      "speaker": "ernesto",
+      "segmentId": "05-ernesto"
+    },
+    {
+      "text": "que",
+      "start": 21.5923,
+      "end": 21.6775,
+      "speaker": "ernesto",
+      "segmentId": "05-ernesto"
+    },
+    {
+      "text": "salir",
+      "start": 21.7059,
+      "end": 22.0468,
+      "speaker": "ernesto",
+      "segmentId": "05-ernesto"
+    },
+    {
+      "text": "de",
+      "start": 22.0895,
+      "end": 22.1605,
+      "speaker": "ernesto",
+      "segmentId": "05-ernesto"
+    },
+    {
+      "text": "casa",
+      "start": 22.2315,
+      "end": 22.6008,
+      "speaker": "ernesto",
+      "segmentId": "05-ernesto"
+    },
+    {
+      "text": "Bueno",
+      "start": 24.0327,
+      "end": 24.4766,
+      "speaker": "bruno",
+      "segmentId": "06-bruno"
+    },
+    {
+      "text": "podemos",
+      "start": 24.6869,
+      "end": 25.0607,
+      "speaker": "bruno",
+      "segmentId": "06-bruno"
+    },
+    {
+      "text": "hablar",
+      "start": 25.0607,
+      "end": 25.271,
+      "speaker": "bruno",
+      "segmentId": "06-bruno"
+    },
+    {
+      "text": "de",
+      "start": 25.3061,
+      "end": 25.3762,
+      "speaker": "bruno",
+      "segmentId": "06-bruno"
+    },
+    {
+      "text": "otra",
+      "start": 25.3995,
+      "end": 25.5981,
+      "speaker": "bruno",
+      "segmentId": "06-bruno"
+    },
+    {
+      "text": "cosa",
+      "start": 25.6449,
+      "end": 25.9369,
+      "speaker": "bruno",
+      "segmentId": "06-bruno"
+    },
+    {
+      "text": "Tarde",
+      "start": 27.2675,
+      "end": 27.7057,
+      "speaker": "martina",
+      "segmentId": "07-martina"
+    },
+    {
+      "text": "Ya",
+      "start": 28.6991,
+      "end": 28.8409,
+      "speaker": "martina",
+      "segmentId": "07-martina"
+    },
+    {
+      "text": "estamos",
+      "start": 28.8409,
+      "end": 29.2404,
+      "speaker": "martina",
+      "segmentId": "07-martina"
+    },
+    {
+      "text": "grabando",
+      "start": 29.2661,
+      "end": 29.8589,
+      "speaker": "martina",
+      "segmentId": "07-martina"
+    },
+    {
+      "text": "Saludamos",
+      "start": 31.7188,
+      "end": 32.5001,
+      "speaker": "ernesto",
+      "segmentId": "08-ernesto"
+    }
+  ],
+  "segments": [
+    {
+      "id": "01-bruno",
+      "speaker": "bruno",
+      "text": "Yo nunca pierdo. El juego a veces no entiende mi estrategia.",
+      "start": 0.45,
+      "end": 5.274,
+      "durationSeconds": 4.824,
+      "voice": "es-AR-TomasNeural",
+      "wordCount": 11
+    },
+    {
+      "id": "02-martina",
+      "speaker": "martina",
+      "text": "No es el juego. Es que no sabés perder.",
+      "start": 5.554,
+      "end": 9.85,
+      "durationSeconds": 4.296,
+      "voice": "es-AR-ElenaNeural",
+      "wordCount": 9
+    },
+    {
+      "id": "03-tomas",
+      "speaker": "tomas",
+      "text": "Pará, tengo una teoría. Capaz el juego detecta el miedo.",
+      "start": 10.2,
+      "end": 14.616,
+      "durationSeconds": 4.416,
+      "voice": "es-UY-MateoNeural",
+      "wordCount": 10
+    },
+    {
+      "id": "04-valentina",
+      "speaker": "valentina",
+      "text": "Entonces a vos te detecta desde la puerta.",
+      "start": 14.916,
+      "end": 18.324,
+      "durationSeconds": 3.408,
+      "voice": "es-UY-ValentinaNeural",
+      "wordCount": 8
+    },
+    {
+      "id": "05-ernesto",
+      "speaker": "ernesto",
+      "text": "En mis tiempos, para perder así, había que salir de casa.",
+      "start": 18.744,
+      "end": 23.616,
+      "durationSeconds": 4.872,
+      "voice": "es-CL-LorenzoNeural",
+      "wordCount": 11
+    },
+    {
+      "id": "06-bruno",
+      "speaker": "bruno",
+      "text": "Bueno, ¿podemos hablar de otra cosa?",
+      "start": 23.936,
+      "end": 26.816,
+      "durationSeconds": 2.88,
+      "voice": "es-AR-TomasNeural",
+      "wordCount": 6
+    },
+    {
+      "id": "07-martina",
+      "speaker": "martina",
+      "text": "Tarde. Ya estamos grabando.",
+      "start": 27.166,
+      "end": 30.862,
+      "durationSeconds": 3.696,
+      "voice": "es-AR-ElenaNeural",
+      "wordCount": 4
+    },
+    {
+      "id": "08-ernesto",
+      "speaker": "ernesto",
+      "text": "¿Saludamos?",
+      "start": 31.612,
+      "end": 33.556,
+      "durationSeconds": 1.944,
+      "voice": "es-CL-LorenzoNeural",
+      "wordCount": 1
+    }
+  ]
+}

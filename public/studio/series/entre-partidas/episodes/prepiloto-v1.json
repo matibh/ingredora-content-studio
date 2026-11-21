@@ -1,0 +1,136 @@
+{
+  "schemaVersion": 1,
+  "engineVersion": "pixi-2d-1.0.0",
+  "id": "ingredora-entre-partidas-prepilot-v1",
+  "title": "Entre Partidas — Prepiloto: ¿Estamos grabando?",
+  "description": "Primera escena del elenco reunido en el departamento. Un animatic de sitcom: competencia, teorías, ironía y un descubrimiento casual frente a cámara.",
+  "createdAt": "2026-11-21T12:00:00-03:00",
+  "fps": 24,
+  "width": 720,
+  "height": 1280,
+  "durationSeconds": 35.0,
+  "background": "apartment-living-room",
+  "characters": [
+    {
+      "id": "martina",
+      "x": 86,
+      "baselineY": 1077,
+      "scale": 0.82
+    },
+    {
+      "id": "bruno",
+      "x": 222,
+      "baselineY": 1077,
+      "scale": 0.83
+    },
+    {
+      "id": "tomas",
+      "x": 360,
+      "baselineY": 1077,
+      "scale": 0.82
+    },
+    {
+      "id": "valentina",
+      "x": 498,
+      "baselineY": 1077,
+      "scale": 0.83
+    },
+    {
+      "id": "ernesto",
+      "x": 634,
+      "baselineY": 1077,
+      "scale": 0.83
+    }
+  ],
+  "dialogue": [
+    {
+      "id": "01-bruno",
+      "speaker": "bruno",
+      "text": "Yo nunca pierdo. El juego a veces no entiende mi estrategia.",
+      "startSeconds": 0.45,
+      "endSeconds": 5.274,
+      "lookAt": "martina",
+      "gesture": "open-hand",
+      "expression": "smile"
+    },
+    {
+      "id": "02-martina",
+      "speaker": "martina",
+      "text": "No es el juego. Es que no sabés perder.",
+      "startSeconds": 5.554,
+      "endSeconds": 9.85,
+      "lookAt": "bruno",
+      "gesture": "point",
+      "expression": "skeptical"
+    },
+    {
+      "id": "03-tomas",
+      "speaker": "tomas",
+      "text": "Pará, tengo una teoría. Capaz el juego detecta el miedo.",
+      "startSeconds": 10.2,
+      "endSeconds": 14.616,
+      "lookAt": "valentina",
+      "gesture": "open-hand",
+      "expression": "smile"
+    },
+    {
+      "id": "04-valentina",
+      "speaker": "valentina",
+      "text": "Entonces a vos te detecta desde la puerta.",
+      "startSeconds": 14.916,
+      "endSeconds": 18.324,
+      "lookAt": "bruno",
+      "gesture": "point",
+      "expression": "skeptical"
+    },
+    {
+      "id": "05-ernesto",
+      "speaker": "ernesto",
+      "text": "En mis tiempos, para perder así, había que salir de casa.",
+      "startSeconds": 18.744,
+      "endSeconds": 23.616,
+      "lookAt": "bruno",
+      "gesture": "shrug",
+      "expression": "smile"
+    },
+    {
+      "id": "06-bruno",
+      "speaker": "bruno",
+      "text": "Bueno, ¿podemos hablar de otra cosa?",
+      "startSeconds": 23.936,
+      "endSeconds": 26.816,
+      "lookAt": "martina",
+      "gesture": "shrug",
+      "expression": "surprised"
+    },
+    {
+      "id": "07-martina",
+      "speaker": "martina",
+      "text": "Tarde. Ya estamos grabando.",
+      "startSeconds": 27.166,
+      "endSeconds": 30.862,
+      "lookAt": "camera",
+      "gesture": "none",
+      "expression": "smile"
+    },
+    {
+      "id": "08-ernesto",
+      "speaker": "ernesto",
+      "text": "¿Saludamos?",
+      "startSeconds": 31.612,
+      "endSeconds": 33.556,
+      "lookAt": "camera",
+      "gesture": "open-hand",
+      "expression": "smile"
+    }
+  ],
+  "voiceTrackUrl": "studio/audio/entre-partidas/prepilot-v1/voice-track.mp3",
+  "wordTimingsUrl": "studio/audio/entre-partidas/prepilot-v1/word-timings.json",
+  "voiceStems": {
+    "martina": "studio/audio/entre-partidas/prepilot-v1/martina.mp3",
+    "bruno": "studio/audio/entre-partidas/prepilot-v1/bruno.mp3",
+    "tomas": "studio/audio/entre-partidas/prepilot-v1/tomas.mp3",
+    "valentina": "studio/audio/entre-partidas/prepilot-v1/valentina.mp3",
+    "ernesto": "studio/audio/entre-partidas/prepilot-v1/ernesto.mp3"
+  }
+}
