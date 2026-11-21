@@ -1286,7 +1286,6 @@ export async function renderPackageToWebM(
     if (entrePartidasSet) {
       const time = frame / fps;
       entrePartidasSet.update(time, entrePartidasDialogue);
-      const ease = (v: number) => { const x = Math.max(0, Math.min(1, v)); return x*x*(3-2*x); };
       const mix = (a: number,b: number,t: number) => a+(b-a)*t;
       const cue=entrePartidasDialogue.find(item=>time>=item.start&&time<=item.end);
       let desiredPosition=new THREE.Vector3(0,2.45,13.0);
