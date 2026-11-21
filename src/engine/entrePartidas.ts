@@ -551,7 +551,7 @@ export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
   extBox([.18,.28,5.82],[-6.82,3.70,-7.82],roofEdge);
   extBox([.18,.28,5.82],[1.52,3.70,-7.82],roofEdge);
   for(let i=0;i<3;i++){
-    const hvac=extBox([1.05,.62,.82],[-5.25+i*2.3,3.96,-8.55],roofDark);
+    extBox([1.05,.62,.82],[-5.25+i*2.3,3.96,-8.55],roofDark);
     extBox([.78,.075,.62],[-5.25+i*2.3,4.30,-8.55],roofEdge);
     for(let vent=0;vent<4;vent++)extBox([.055,.32,.60],[-5.58+i*2.3+vent*.20,3.94,-8.55],roofEdge);
   }
@@ -662,7 +662,7 @@ export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
   // headlights, mirrors, tyres, alloy rims, door seams and a soft contact shadow.
   const car=new THREE.Group();car.position.set(-5.35,-1.975,2.65);car.rotation.y=-.025;exterior.add(car);
   const carPaint=extMat("#263d50",.30,.32),carDark=extMat("#17252e",.46,.15),carGlass=new THREE.MeshStandardMaterial({color:"#7f9ca5",roughness:.12,metalness:.25,transparent:true,opacity:.78});
-  const carMetal=extMat("#aeb9b9",.24,.82),rubber=extMat("#171b1d",.72,.02),lampMat=new THREE.MeshStandardMaterial({color:"#f7e8bd",emissive:"#f3d28d",emissiveIntensity:.48,roughness:.2});
+  const carMetal=extMat("#aeb9b9",.24,.82),carRubber=extMat("#171b1d",.72,.02),lampMat=new THREE.MeshStandardMaterial({color:"#f7e8bd",emissive:"#f3d28d",emissiveIntensity:.48,roughness:.2});
   const carBox=(size:[number,number,number],pos:[number,number,number],material:THREE.Material)=>{
     const mesh=new THREE.Mesh(new THREE.BoxGeometry(...size),material);mesh.position.set(...pos);mesh.castShadow=true;mesh.receiveShadow=true;car.add(mesh);return mesh;
   };
@@ -694,7 +694,7 @@ export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
   carBox([.12,.27,.42],[1.99,.77,.0],carMetal);
   carBox([.08,.22,.40],[-1.99,.78,0],lampMat);
   for(const x of [-1.20,1.18])for(const side of [-1,1]){
-    const tyre=new THREE.Mesh(new THREE.CylinderGeometry(.36,.36,.20,20),rubber);
+    const tyre=new THREE.Mesh(new THREE.CylinderGeometry(.36,.36,.20,20),carRubber);
     tyre.rotation.x=Math.PI/2;tyre.position.set(x,.36,side*.76);tyre.castShadow=true;car.add(tyre);
     const rim=new THREE.Mesh(new THREE.CylinderGeometry(.205,.205,.214,18),carMetal);
     rim.rotation.x=Math.PI/2;rim.position.set(x,.36,side*.77);car.add(rim);
@@ -745,8 +745,8 @@ export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
   bikeRod([.18,1.16,0],[.45,1.16,0],.035,bikeMetal);
   bikeRod([-.32,1.00,0],[-.40,1.16,0],.032,bikeDark);
   bikeRod([-.63,1.17,0],[-.20,1.17,0],.042,bikeDark);
-  const saddle=bikeRod([-.55,1.17,0],[-.20,1.17,0],.001,bikeDark);
-  saddle.scale.set(1,1,.1);
+  const saddle=new THREE.Mesh(new THREE.BoxGeometry(.38,.11,.20),bikeDark);
+  saddle.position.set(-.375,1.17,0);bike.add(saddle);
   bikeRod([-.10,.52,0],[-.10,.32,0],.035,bikeDark);
   bikeRod([-.26,.32,0],[.06,.32,0],.022,bikeMetal);
   bikeRod([-.10,.32,0],[-.23,.27,0],.028,bikeDark);
