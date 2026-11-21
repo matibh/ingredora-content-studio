@@ -32,13 +32,6 @@ function addShape(parent: Container, draw: (g: Graphics) => void, fill: string, 
   return g;
 }
 
-function addLine(parent: Container, draw: (g: Graphics) => void, color: string, width: number) {
-  const g = new Graphics();
-  draw(g);
-  g.stroke({ color, width, join: "round", cap: "round" });
-  parent.addChild(g);
-  return g;
-}
 
 function drawLivingRoom(stage: Container) {
   addShape(stage, g => g.rect(0, 0, WIDTH, HEIGHT), "#F4E8D7", "#F4E8D7", 0);
