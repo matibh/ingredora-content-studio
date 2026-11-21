@@ -663,63 +663,63 @@
     {
       "text": "El",
       "start": 22.389,
-      "end": 22.529,
+      "end": 22.509,
       "speaker": "bruno",
       "segment": 8
     },
     {
       "text": "Desafío",
-      "start": 22.569,
-      "end": 22.979,
+      "start": 22.549,
+      "end": 22.929,
       "speaker": "bruno",
       "segment": 8
     },
     {
       "text": "Diario",
-      "start": 23.019,
-      "end": 23.419,
+      "start": 22.969,
+      "end": 23.339,
       "speaker": "bruno",
       "segment": 8
     },
     {
       "text": "de",
-      "start": 23.459,
-      "end": 23.614,
+      "start": 23.379,
+      "end": 23.534,
       "speaker": "bruno",
       "segment": 8
     },
     {
       "text": "mañana",
-      "start": 23.654,
-      "end": 24.174,
+      "start": 23.574,
+      "end": 24.094,
       "speaker": "bruno",
       "segment": 8
     },
     {
       "text": "lo",
-      "start": 24.214,
-      "end": 24.399,
+      "start": 24.134,
+      "end": 24.319,
       "speaker": "bruno",
       "segment": 8
     },
     {
       "text": "quiero",
-      "start": 24.439,
-      "end": 24.674,
+      "start": 24.359,
+      "end": 24.554,
       "speaker": "bruno",
       "segment": 8
     },
     {
       "text": "hacer",
-      "start": 24.714,
-      "end": 24.964,
+      "start": 24.594,
+      "end": 24.814,
       "speaker": "bruno",
       "segment": 8
     },
     {
       "text": "bien",
-      "start": 25.004,
-      "end": 25.334,
+      "start": 24.854,
+      "end": 25.154,
       "speaker": "bruno",
       "segment": 8
     }
@@ -802,7 +802,7 @@
       "speaker": "bruno",
       "text": "El Desafío Diario de mañana lo quiero hacer bien.",
       "start": 22.389,
-      "end": 25.334,
+      "end": 25.154,
       "voice": "es-AR-TomasNeural",
       "wordCount": 9
     },
