@@ -1299,10 +1299,16 @@ export async function renderPackageToWebM(
         desiredPosition.set(mix(-.45,0,p),mix(3.0,2.65,p),mix(16,14.0,p));
         desiredTarget.set(0,-.25,-3.2);desiredFov=mix(51,47,p);
       }else if(time>=6&&time<12){
-        // Keep the full aisle visible as Martina and Valentina walk down its centre.
-        desiredPosition.set(.15,2.75,9.4);
-        desiredTarget.set(0,-.30,-5.5);
-        desiredFov=49;
+        // A clean master shot follows the girls' measured approach down the aisle.
+        desiredPosition.set(.15,2.55,9.4);
+        desiredTarget.set(0,-.35,-5.5);
+        desiredFov=48;
+      }else if(time>=2.05&&time<6){
+        // Early Bruno coverage: a close three-quarter side angle, framing his face and the packets.
+        // The narrow composition keeps the girls out of the background while he studies the labels.
+        desiredPosition.set(2.35,.72,4.25);
+        desiredTarget.set(0,-.88,.18);
+        desiredFov=34;
       }else if(cue){
         const subject=entrePartidasSet.getSpeakerPosition(cue.speaker);
         const angle=cue.speaker==="martina"?.48:cue.speaker==="valentina"?-.48:.58;
