@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Render supermercado</title></head>
+<body style="margin:0;background:#101512;color:#fff;font:16px system-ui;padding:24px">
+<h1>Ingredora · Entre Partidas</h1><p id="status">Preparando render…</p><progress id="progress" max="100" value="0" style="width:100%"></progress>
+<script type="module">
+import { renderPackageToWebM } from "../src/engine/renderer.ts";
+const status=document.querySelector("#status"), progress=document.querySelector("#progress");
+try {
+ const response=await fetch("/studio/packages/entre-partidas-supermarket.v1.json",{cache:"no-store"});
+ if(!response.ok) throw new Error("No se pudo cargar el guion: "+response.status);
+ const pkg=await response.json();
+ const blob=await renderPackageToWebM(pkg,p=>{
+   progress.value=p.percent;
+   status.textContent="Renderizando fotograma "+p.frame+" / "+p.totalFrames+" ("+p.percent+"%)";
+ });
+ status.textContent="Render terminado. Preparando descarga…";
+ const url=URL.createObjectURL(blob),a=document.createElement("a");
+ a.href=url;a.download="ingredora-entre-partidas-supermercado.webm";document.body.append(a);a.click();a.remove();
+ setTimeout(()=>URL.revokeObjectURL(url),120000);
+ status.textContent="RENDER COMPLETADO";
+ document.title="RENDER COMPLETADO";
+} catch(error) {
+ status.textContent="ERROR: "+(error?.stack||error?.message||String(error));
+ document.title="ERROR DE RENDER";
+}
+</script></body></html>
