@@ -1315,7 +1315,7 @@ export async function renderPackageToWebM(
         desiredFov=42.5;
       }else if(cue){
         const subject=entrePartidasSet.getSpeakerPosition(cue.speaker);
-        const angle=cue.speaker==="martina"?.42:cue.speaker==="valentina"?-.42:.50;
+        const angle=cue.speaker==="martina"?.42:cue.speaker==="valentina"?-.42:2.45;
         desiredPosition.set(subject.x+angle,subject.y+1.05,subject.z+5.8);
         desiredTarget.set(subject.x,subject.y,subject.z);
         desiredFov=cue.speaker==="bruno"?41:40;

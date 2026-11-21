@@ -99,9 +99,11 @@ function makeCharacter(name: EntrePartidasCue["speaker"], x: number, z: number):
     // and the forearms extend along the character's forward axis instead of hanging down.
     pivot.position.set(side*(isBruno?.43:.39),isBruno?1.08:1.56,.02);root.add(pivot);
     if(isBruno){
-      box(pivot,[.25,.22,.36],shirt,[0,0,.18]);
-      box(pivot,[.19,.19,.40],skin,[0,-.025,.56]);
-      box(pivot,[.20,.16,.18],skin,[0,-.04,.92]);
+      // The sleeve angles slightly outward from the shoulder; the forearm stays straight
+      // and reaches forward along +Z into the outside edge of the package.
+      box(pivot,[.27,.23,.38],shirt,[side*.08,0,.18]);
+      box(pivot,[.19,.19,.46],skin,[side*.18,-.025,.56]);
+      box(pivot,[.20,.16,.18],skin,[side*.20,-.04,.92]);
     }else{
       box(pivot,[.17,.18,.18],skin,[0,-.06,0]);
       box(pivot,[.14,.53,.15],skin,[0,-.39,.018]);
@@ -376,8 +378,8 @@ export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
   const packet=makeHandPacket(packMats[0],.42,.62);
   const packet2=makeHandPacket(packMats[2],.40,.60);
   // Lift both products into Bruno's hands at chest height so they clear his lap and legs.
-  bruno.rightArm.add(packet);packet.position.set(0,-.025,1.065);packet.rotation.set(0,0,0);
-  bruno.leftArm.add(packet2);packet2.position.set(0,-.025,1.065);packet2.rotation.set(0,0,0);
+  bruno.rightArm.add(packet);packet.position.set(.20,-.025,1.065);packet.rotation.set(0,0,0);
+  bruno.leftArm.add(packet2);packet2.position.set(-.20,-.025,1.065);packet2.rotation.set(0,0,0);
   // Cinematic commercial lighting: soft overhead, warm key, cool rim, contact shadows.
   world.add(new THREE.HemisphereLight(0xf8f3e7,0x666d68,1.45));
   const key=new THREE.SpotLight(0xffe5c6,62,30,Math.PI/4,.62,1.25);
