@@ -34,65 +34,94 @@ const texture = (draw: (ctx: CanvasRenderingContext2D,w:number,h:number)=>void,w
 
 function makeCharacter(name: EntrePartidasCue["speaker"], x: number, z: number): CharacterRig {
   const root=new THREE.Group();root.position.set(x,-1.975,z);
-  const skin=mat(name==="bruno"?"#c98e6e":name==="martina"?"#d6a080":"#e0ad8b");
-  const hair=mat(name==="bruno"?"#30241f":name==="martina"?"#30201c":"#211b1a");
-  const shirt=mat(name==="bruno"?"#c46a43":name==="martina"?"#b5a06c":"#416c80");
-  const pants=mat(name==="bruno"?"#34404c":name==="martina"?"#4b4948":"#343b43");
+  const isBruno=name==="bruno";
+  const isMartina=name==="martina";
+  const skin=mat(isBruno?"#c98e6e":isMartina?"#d6a080":"#e0ad8b");
+  const hair=mat(isBruno?"#30241f":isMartina?"#30201c":"#211b1a");
+  const shirt=mat(isBruno?"#c46a43":isMartina?"#c17c58":"#47788a");
+  const pants=mat(isBruno?"#34404c":isMartina?"#41454a":"#35414a");
   const shoes=mat("#222528",.56);
-  // Individual silhouettes and wardrobe, not three recolours of one model.
-  if(name==="bruno"){
-    // Bruno is sitting cross-legged/legs-forward on the floor, absorbed in the labels.
+  const ellipsoid=(parent:THREE.Object3D,scale:[number,number,number],material:THREE.Material,pos:[number,number,number],segments=12)=>{
+    const mesh=new THREE.Mesh(new THREE.SphereGeometry(1,segments,Math.max(6,Math.floor(segments*.72))),material);
+    mesh.scale.set(...scale);mesh.position.set(...pos);mesh.castShadow=true;mesh.receiveShadow=true;parent.add(mesh);return mesh;
+  };
+  if(isBruno){
+    // Compact seated silhouette; the torso remains upright while the legs rest forward.
     box(root,[.76,.88,.43],shirt,[0,.72,0]);
     box(root,[.68,.34,.39],mat("#a95637"),[0,1.12,0]);
-  } else if(name==="martina"){
-    box(root,[.70,.86,.40],shirt,[0,1.26,0]);
-    box(root,[.82,.38,.44],mat("#8d805c"),[0,.86,0]);
-    box(root,[.18,.60,.12],mat("#d8c99c"),[0,1.27,.22]);
-  } else {
-    box(root,[.72,.88,.42],shirt,[0,1.26,0]);
-    box(root,[.78,.20,.44],mat("#294b5c"),[0,1.62,0]);
-    box(root,[.12,.68,.10],mat("#d9e1df"),[0,1.25,.23]);
+  }else{
+    // Natural, gently tapered torso and wider hips create a feminine silhouette without exaggeration.
+    ellipsoid(root,[.34,.43,.22],shirt,[0,1.34,0],12);
+    ellipsoid(root,[.29,.25,.205],shirt,[0,1.05,0],12);
+    ellipsoid(root,[.425,.265,.245],pants,[0,.83,0],12);
+    box(root,[.78,.105,.43],mat(isMartina?"#353d43":"#283a45"),[0,.96,0]);
+    // Off-shoulder tank: the neckline sits below the shoulder line, leaving the shoulders visible.
+    ellipsoid(root,[.375,.205,.225],shirt,[0,1.48,0],12);
+    ellipsoid(root,[.105,.105,.12],skin,[-.355,1.62,0],10);
+    ellipsoid(root,[.105,.105,.12],skin,[.355,1.62,0],10);
+    box(root,[.30,.045,.018],mat(isMartina?"#e3b79a":"#a9cbd1"),[0,1.55,.218],false);
   }
-  box(root,[.22,.20,.22],skin,[0,name==="bruno"?1.34:1.77,0],false);
-  const head=new THREE.Group();head.position.set(0,name==="bruno"?1.62:2.12,0);root.add(head);
-  box(head,[.68,.68,.60],skin,[0,0,0]);
-  // Hair profiles distinguish the cast even in a medium shot.
-  // Keep side locks behind the facial plane. The old coplanar boxes intersected
-  // the face and produced visible z-fighting/flicker around the girls' cheeks.
-  if(name==="bruno"){
-    box(head,[.72,.18,.52],hair,[0,.32,-.055]);
-    box(head,[.22,.18,.48],hair,[-.24,.22,-.07]);
-    box(head,[.18,.11,.48],hair,[.16,.35,-.07]);
-  } else if(name==="martina"){
-    box(head,[.72,.16,.52],hair,[0,.33,-.055]);
-    box(head,[.15,.64,.42],hair,[-.30,-.08,-.075]);
-    box(head,[.15,.58,.42],hair,[.30,-.10,-.075]);
-    // Fringe is deliberately in front of the forehead, with a clean depth gap.
-    box(head,[.38,.12,.12],hair,[-.08,.22,.365]);
-  } else {
-    box(head,[.72,.17,.52],hair,[0,.33,-.055]);
-    box(head,[.17,.66,.42],hair,[-.29,-.09,-.075]);
-    box(head,[.17,.66,.42],hair,[.29,-.09,-.075]);
-    box(head,[.42,.13,.12],hair,[.05,.23,.365]);
+  box(root,[.20,.20,.20],skin,[0,isBruno?1.34:1.76,0],false);
+  const head=new THREE.Group();head.position.set(0,isBruno?1.62:2.12,0);root.add(head);
+  ellipsoid(head,[.335,.37,.295],skin,[0,0,0],14);
+  if(isBruno){
+    ellipsoid(head,[.365,.22,.30],hair,[0,.245,-.035],12);
+    ellipsoid(head,[.34,.22,.25],hair,[0,.30,-.10],10);
+    ellipsoid(head,[.12,.16,.13],hair,[-.27,.09,-.04],8);
+  }else{
+    // A soft low-poly cap and separate tapered side locks replace the old flat fringe patch.
+    const cap=new THREE.Mesh(new THREE.SphereGeometry(1,14,10,0,Math.PI*2,0,Math.PI*.64),hair);
+    cap.scale.set(.37,.40,.31);cap.position.set(0,.08,-.025);cap.castShadow=true;head.add(cap);
+    ellipsoid(head,[.34,.34,.22],hair,[0,-.10,-.16],10);
+    ellipsoid(head,[.125,.43,.15],hair,[-.285,-.12,-.015],10);
+    ellipsoid(head,[.125,isMartina?.46:.40,.15],hair,[.285,-.12,-.02],10);
+    const addFringe=(points:[number,number][])=>{
+      const shape=new THREE.Shape();shape.moveTo(points[0][0],points[0][1]);
+      for(let i=1;i<points.length;i++)shape.lineTo(points[i][0],points[i][1]);
+      shape.closePath();
+      const mesh=new THREE.Mesh(new THREE.ShapeGeometry(shape,3),hair);
+      mesh.position.z=.286;mesh.castShadow=true;head.add(mesh);
+    };
+    if(isMartina){
+      addFringe([[-.25,.245],[-.13,.285],[-.015,.255],[-.085,.10],[-.13,.17],[-.20,.095]]);
+      addFringe([[-.05,.265],[.075,.285],[.20,.23],[.115,.12],[.06,.18],[.01,.13]]);
+      addFringe([[.16,.245],[.27,.22],[.25,.095],[.19,.15]]);
+    }else{
+      addFringe([[-.26,.245],[-.13,.29],[-.035,.26],[-.15,.10],[-.19,.17]]);
+      addFringe([[-.02,.27],[.11,.285],[.25,.235],[.10,.12],[.055,.19]]);
+      addFringe([[.18,.24],[.29,.22],[.25,.10],[.21,.16]]);
+    }
   }
-  const eyeWhite=mat("#fff8e9"), pupil=mat("#25201e"), brow=mat(name==="bruno"?"#30241f":"#211b1a");
+  const eyeWhite=mat("#fff8e9"),pupil=mat("#25201e"),brow=mat(isBruno?"#30241f":"#211b1a");
   for(const side of [-1,1]){
-    box(head,[.13,.10,.025],eyeWhite,[side*.16,.045,.337],false);
-    box(head,[.052,.075,.02],pupil,[side*.16,.035,.36],false);
-    box(head,[.15,.04,.025],brow,[side*.16,.16,.34],false);
+    ellipsoid(head,[.073,.052,.025],eyeWhite,[side*.145,.035,.268],8);
+    ellipsoid(head,[.027,.037,.018],pupil,[side*.145,.03,.291],8);
+    box(head,[.13,.026,.022],brow,[side*.145,.135,.267],false);
   }
-  box(head,[.07,.08,.06],skin,[0,-.055,.37],false);
-  const mouth=box(head,[.17,.055,.025],mat("#743f3a"),[0,-.20,.355],false);
+  ellipsoid(head,[.045,.065,.045],skin,[0,-.045,.29],8);
+  const mouth=box(head,[.145,.035,.025],mat("#743f3a"),[0,-.205,.286],false);
+
   const arm=(side:number)=>{
-    const pivot=new THREE.Group();pivot.position.set(side*.42,name==="bruno"?1.02:1.58,0);root.add(pivot);
-    box(pivot,[.22,.46,.23],shirt,[0,-.15,0]);
-    box(pivot,[.18,.42,.19],skin,[0,-.56,.015]);
-    box(pivot,[.18,.16,.19],skin,[0,-.78,.025]);return pivot;
+    const pivot=new THREE.Group();
+    pivot.position.set(side*(isBruno?.42:.385),isBruno?1.02:1.58,0);root.add(pivot);
+    if(isBruno){
+      box(pivot,[.22,.39,.22],shirt,[0,-.15,0]);
+    }else{
+      ellipsoid(pivot,[.125,.135,.13],skin,[0,-.04,.015],8);
+      const upper=new THREE.Mesh(new THREE.CylinderGeometry(.092,.115,.37,8),skin);
+      upper.position.set(0,-.245,.015);upper.castShadow=true;pivot.add(upper);
+    }
+    const forearm=new THREE.Mesh(new THREE.CylinderGeometry(.075,.095,.39,8),skin);
+    forearm.position.set(0,-.57,.035);forearm.castShadow=true;pivot.add(forearm);
+    ellipsoid(pivot,[.095,.085,.07],skin,[0,-.79,.085],8);
+    return pivot;
   };
   const leg=(side:number)=>{
-    const pivot=new THREE.Group();pivot.position.set(side*.20,name==="bruno"?.36:.70,0);root.add(pivot);
-    box(pivot,[.25,.58,.28],pants,[0,-.27,0]);
-    box(pivot,[.30,.17,.42],shoes,[0,-.60,.07]);return pivot;
+    const pivot=new THREE.Group();pivot.position.set(side*.20,isBruno?.36:.70,0);root.add(pivot);
+    const thigh=new THREE.Mesh(new THREE.CylinderGeometry(.13,.115,.58,8),pants);
+    thigh.position.set(0,-.27,0);thigh.castShadow=true;pivot.add(thigh);
+    box(pivot,[.30,.17,.42],shoes,[0,-.60,.07]);
+    return pivot;
   };
   return {root,head,mouth,leftArm:arm(-1),rightArm:arm(1),leftLeg:leg(-1),rightLeg:leg(1),name};
 }
