@@ -337,7 +337,7 @@ export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
     update,
     getSpeakerPosition(speaker){
       const rig=speaker==="bruno"?bruno:speaker==="martina"?martina:valentina;
-      return new THREE.Vector3(rig.root.position.x,.28,rig.root.position.z);
+      return new THREE.Vector3(rig.root.position.x,speaker==="bruno"?-.32:.12,rig.root.position.z);
     }
   };
 }
