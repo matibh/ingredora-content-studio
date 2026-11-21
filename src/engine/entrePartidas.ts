@@ -231,7 +231,7 @@ export function drawEntrePartidasCaptions(ctx:CanvasRenderingContext2D,time:numb
   ctx.fillStyle="#d5e8b2";ctx.font=`900 ${Math.round(22*scale)}px Arial`;ctx.textAlign="left";ctx.textBaseline="middle";
   ctx.fillText(names[cue.speaker],x+24*scale,y+boxH*.30);
   ctx.fillStyle="#fffaf0";ctx.font=`700 ${Math.round(29*scale)}px Arial`;
-  const words=cue.text.split(/\\s+/);let line="",lines:string[]=[];
+  const words=cue.text.split(" ").filter(Boolean);let line="",lines:string[]=[];
   for(const word of words){const candidate=line?line+" "+word:word;if(ctx.measureText(candidate).width>boxW-48*scale&&line){lines.push(line);line=word;}else line=candidate;}
   if(line)lines.push(line);const lineH=34*scale;
   lines.slice(0,2).forEach((value,i)=>ctx.fillText(value,x+24*scale,y+boxH*.65+i*lineH));
