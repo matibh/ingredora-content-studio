@@ -86,11 +86,11 @@ function makeBillboard(brand:"JORGITO"|"OREO",side:number){
   const backing=addBox(group,[3.72,2.25,.18],edge,[0,1.40,0],.62);backing.rotation.y=turn;
   const face=new THREE.Mesh(new THREE.PlaneGeometry(3.48,1.98),new THREE.MeshStandardMaterial({map:makeAdTexture(brand),roughness:.68,metalness:.02,side:THREE.DoubleSide}));
   face.position.set(0,1.40,side>0?.105:-.105);face.rotation.y=turn;face.castShadow=true;group.add(face);
-  // Dos postes rectos independientes. No hay diagonales ni cruces en X.
-  for(const z of [-1.54,1.54]){
-    addBox(group,[.19,4.55,.19],metal,[0,.04,z],.55);
-    addBox(group,[.44,.12,.44],"#555b57",[0,-2.18,z],.72);
-    addBox(group,[.24,.12,.24],"#747a75",[0,2.34,z],.58);
+  // Dos postes rectos en el mismo plano del cartel, uno a cada lado. Sin diagonales ni cruces.
+  for(const x of [-1.54,1.54]){
+    addBox(group,[.19,4.55,.19],metal,[x,.04,0],.55);
+    addBox(group,[.44,.12,.44],"#555b57",[x,-2.18,0],.72);
+    addBox(group,[.24,.12,.24],"#747a75",[x,2.34,0],.58);
   }
   const rail=addBox(group,[3.36,.13,.16],metal,[0,.22,0],.55);rail.rotation.y=turn;
   const crown=addBox(group,[3.82,.13,.19],metal,[0,2.56,0],.42);crown.rotation.y=turn;
