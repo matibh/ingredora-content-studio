@@ -1393,7 +1393,7 @@ export async function renderPackageToWebM(
       renderer.render(world,camera);
       ctx.drawImage(renderer.domElement,0,0,pkg.width,pkg.height);
       drawEntrePartidasCaptions(ctx,time,pkg.width,pkg.height,entrePartidasDialogue);
-      drawEntrePartidasBranding(ctx,time,pkg.width,pkg.height);
+      drawEntrePartidasBranding(ctx,time,pkg.width,pkg.height,pkg.id==="ingredora-entre-partidas-supermarket-002"?2:1,pkg.id==="ingredora-entre-partidas-supermarket-002"?"Tomás · Ernesto":"Bruno · Martina · Valentina",pkg.endCardStart??67.20);
       return;
     }
     if (operationLabelSet) {
