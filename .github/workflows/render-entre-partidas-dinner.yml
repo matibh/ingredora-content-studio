@@ -62,7 +62,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y ffmpeg
           python3 -m venv /tmp/entre-partidas-dinner
-          /tmp/entre-partidas-dinner/bin/python -m pip install --disable-pip-version-check --no-cache-dir edge-tts pydub
+          /tmp/entre-partidas-dinner/bin/python -m pip install --disable-pip-version-check --no-cache-dir edge-tts
       - name: Generate five distinct voices, timed laughter and supplied outro
         run: /tmp/entre-partidas-dinner/bin/python scripts/generate-entre-partidas-dinner-audio.py
       - name: Render the five-character apartment dinner
