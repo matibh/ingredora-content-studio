@@ -232,7 +232,7 @@ function createPizzaSlice(world:THREE.Scene,x:number,y:number,z:number,index:num
   const sauceMesh=new THREE.Mesh(sauceGeometry,sauce);sauceMesh.rotation.x=-Math.PI/2;sauceMesh.position.set(x,y+.105,z);world.add(sauceMesh);
   const cheeseGeometry=new THREE.ExtrudeGeometry(makeShape(radius*.86,bites),{depth:.018,bevelEnabled:false,curveSegments:12});
   const cheeseMesh=new THREE.Mesh(cheeseGeometry,cheese);cheeseMesh.rotation.x=-Math.PI/2;cheeseMesh.position.set(x,y+.117,z);world.add(cheeseMesh);
-  const toppings=[[-.28,.26],[-.03,.35],[.23,.23],[-.18,.53],[.16,.51],[.02,.18]];
+  const toppings=[[.18,.45],[.43,.58],[.70,.42],[.34,.72],[.62,.70],[.52,.25]];
   toppings.forEach(([t,r],i)=>{
     if(i>=Math.ceil(6*remaining))return;
     const angle=angleStart+(angleEnd-angleStart)*t,dist=radius*r;
@@ -243,7 +243,7 @@ function createPizzaSlice(world:THREE.Scene,x:number,y:number,z:number,index:num
   // Crumbs on the plate make the partially eaten portions read clearly.
   for(let crumb=0;crumb<bites*3;crumb++){
     const dx=.22+crumb*.055,dz=(crumb%2===0?-.17:.16);
-    sphere(world,[.022,.014,.02],crust,[x+dx,y+.035,z+dz],7);
+    sphere(world,[.022,.014,.02],crust,[x+dx,y+.02,z+dz],7);
   }
 }
 
@@ -259,7 +259,7 @@ function createTableSetting(world:THREE.Scene,diners:DinerRig[]){
     const plate=new THREE.Mesh(new THREE.CylinderGeometry(.64,.64,.07,32),ceramic);plate.position.set(x,.42,z);plate.castShadow=true;plate.receiveShadow=true;world.add(plate);
     const rim=new THREE.Mesh(new THREE.TorusGeometry(.54,.018,6,32),mat("#c5b89e",.34,.1));rim.rotation.x=Math.PI/2;rim.position.set(x,.465,z);world.add(rim);
     // A single portion per plate; portions show different amounts eaten.
-    createPizzaSlice(world,x,.535,z-.02,index);
+    createPizzaSlice(world,x,.46,z-.02,index);
     rod(world,[x-.78,.49,z-.15],[x-.78,.49,z+.43],.025,fork);for(let tine=0;tine<4;tine++)rod(world,[x-.87+tine*.06,.49,z-.12],[x-.87+tine*.06,.49,z+.02],.009,fork);
     rod(world,[x+.76,.49,z-.15],[x+.76,.49,z+.43],.022,fork);
     box(world,[.42,.028,.34],mat("#d2c2a8",.94),[x-.98,.46,z+.3],false);
