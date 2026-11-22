@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "engineVersion": "entre-partidas-roadtrip-1.0.0",
+  "id": "ingredora-entre-partidas-roadtrip-003",
+  "title": "Entre Partidas — Lo sé todo",
+  "createdAt": "2026-11-22T00:00:00Z",
+  "fps": 24,
+  "width": 720,
+  "height": 1280,
+  "durationSeconds": 95,
+  "endCardStart": 87,
+  "dialogue": [],
+  "voiceoverUrl": "studio/audio/entre-partidas/roadtrip-03/voice-track.mp3",
+  "wordTimingsUrl": "studio/audio/entre-partidas/roadtrip-03/word-timings.json"
+}
