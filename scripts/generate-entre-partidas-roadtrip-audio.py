@@ -9,6 +9,7 @@ AUDIO = Path("public/studio/audio/entre-partidas/roadtrip-03")
 PACKAGE = Path("public/studio/packages/entre-partidas-roadtrip.v1.json")
 LAUGH = AUDIO / "risa.mp3"
 OUTRO = AUDIO / "risa-y-outro.mp3"
+INTRO = AUDIO / "intro-theme.mp3"
 VOICE_TRACK = AUDIO / "voice-track.mp3"
 TIMINGS = AUDIO / "word-timings.json"
 FPS = 24
@@ -22,42 +23,29 @@ CAST = {
 # the strongest punchlines.
 SEGMENTS = [
  {"id":"01-bruno-cartel-alfajor","speaker":"bruno","text":"Mirá ese cartel. Un alfajor. Ese lo conozco de toda la vida: me sé todos los ingredientes.","look":"valentina","shot":"billboardRight","pause":0.38},
- {"id":"02-valentina-desafio","speaker":"valentina","text":"¿Ah, sí? Nombramelos.","look":"bruno","shot":"valentina","pause":0.30},
+ {"id":"02-valentina-nombramelos","speaker":"valentina","text":"¿Ah, sí? Nombramelos.","look":"bruno","shot":"valentina","pause":0.3},
  {"id":"03-bruno-lista","speaker":"bruno","text":"Chocolate, dulce de leche, harina...","look":"valentina","shot":"bruno","pause":0.28},
- {"id":"04-valentina-foto","speaker":"valentina","text":"Eso es lo que ves en la foto.","look":"bruno","shot":"valentina","pause":0.30},
- {"id":"05-bruno-arbol","speaker":"bruno","text":"¿Y qué querés? ¿Que le pida el árbol genealógico al alfajor?","look":"valentina","shot":"bruno","laugh":True,"pause":0.90},
- {"id":"06-valentina-ingredora","speaker":"valentina","text":"No. Para eso está Ingredora. A ver si sabés lo que tiene de verdad.","look":"bruno","shot":"master","pause":0.35},
- {"id":"07-bruno-taquito","speaker":"bruno","text":"Dale. Pasame. Esta la saco de taquito.","look":"valentina","shot":"phone","pause":0.32},
- {"id":"08-valentina-taquito","speaker":"valentina","text":"De taquito venís errando desde que salimos.","look":"bruno","shot":"valentina","pause":0.32},
- {"id":"09-bruno-apuro","speaker":"bruno","text":"No, pará. Yo esta la sabía. Me apuré.","look":"valentina","shot":"bruno","pause":0.25},
- {"id":"10-valentina-mitad","speaker":"valentina","text":"Te faltó más que la mitad.","look":"bruno","shot":"valentina","pause":0.25},
- {"id":"11-bruno-dedo","speaker":"bruno","text":"Me traicionó el dedo.","look":"valentina","shot":"bruno","pause":0.25},
- {"id":"12-valentina-dedo","speaker":"valentina","text":"¿Ahora la culpa es del dedo?","look":"bruno","shot":"valentina","pause":0.22},
- {"id":"13-bruno-frio","speaker":"bruno","text":"Está frío. No responde.","look":"valentina","shot":"bruno","pause":0.25},
- {"id":"14-valentina-etiqueta","speaker":"valentina","text":"¿Querés que paremos a calentarte las manos o a leer la etiqueta?","look":"bruno","shot":"valentina","laugh":True,"pause":0.90},
- {"id":"15-bruno-practica","speaker":"bruno","text":"Bueno, pasemos a práctica. Necesito recuperar mi reputación.","look":"valentina","shot":"phone","pause":0.32},
- {"id":"16-valentina-reputacion","speaker":"valentina","text":"¿Qué reputación?","look":"bruno","shot":"valentina","pause":0.22},
- {"id":"17-bruno-bueno","speaker":"bruno","text":"La de ser bueno en esto.","look":"valentina","shot":"bruno","pause":0.28},
- {"id":"18-valentina-publico","speaker":"valentina","text":"Bruno, esa reputación la tenés vos solo. Es un público bastante reducido.","look":"bruno","shot":"valentina","laugh":True,"pause":1.0},
- {"id":"19-bruno-cartel-oreo","speaker":"bruno","text":"Mirá ese tamaño. Te venden que es irresistible.","look":"valentina","shot":"billboardLeft","pause":0.35},
- {"id":"20-valentina-prueba","speaker":"valentina","text":"Y vos sos la prueba de que funciona.","look":"bruno","shot":"valentina","pause":0.25},
- {"id":"21-bruno-por","speaker":"bruno","text":"¿Por?","look":"valentina","shot":"bruno","pause":0.20},
- {"id":"22-valentina-convencido","speaker":"valentina","text":"Porque todavía no sabemos qué tiene adentro y ya te convencieron.","look":"bruno","shot":"valentina","laugh":True,"pause":0.85},
- {"id":"23-bruno-marketing","speaker":"bruno","text":"Eso es marketing. Está hecho para llamar la atención.","look":"valentina","shot":"bruno","pause":0.25},
- {"id":"24-valentina-carteles","speaker":"valentina","text":"Y mirá cómo te tiene. No podés pasar por un cartel sin querer comerte algo.","look":"bruno","shot":"valentina","pause":0.30},
- {"id":"25-bruno-mercado","speaker":"bruno","text":"Estoy haciendo un análisis de mercado.","look":"valentina","shot":"bruno","pause":0.24},
- {"id":"26-valentina-foto","speaker":"valentina","text":"Estás babeando por una foto.","look":"bruno","shot":"valentina","laugh":True,"pause":0.90},
- {"id":"27-bruno-distraccion","speaker":"bruno","text":"Estoy jugando mal porque me distraen los carteles.","look":"valentina","shot":"bruno","pause":0.30},
- {"id":"28-valentina-ruta","speaker":"valentina","text":"Estamos en una ruta. Hay carteles.","look":"bruno","shot":"valentina","pause":0.22},
- {"id":"29-bruno-provocacion","speaker":"bruno","text":"¡Bueno, pero ponen comida! Es una provocación.","look":"valentina","shot":"bruno","pause":0.25},
- {"id":"30-valentina-verduras","speaker":"valentina","text":"¿Querés que la próxima ruta venga con carteles de verduras hervidas para que no te emociones?","look":"bruno","shot":"valentina","laugh":True,"pause":0.95},
- {"id":"31-bruno-extremo","speaker":"bruno","text":"No, tampoco hay que irse al otro extremo.","look":"valentina","shot":"bruno","pause":0.42},
- {"id":"32-valentina-recuperarte","speaker":"valentina","text":"¿Seguimos o te doy cinco minutos para recuperarte?","look":"bruno","shot":"valentina","pause":0.35},
- {"id":"33-bruno-parada","speaker":"bruno","text":"En la próxima estación paramos.","look":"valentina","shot":"master","pause":0.25},
- {"id":"34-valentina-descanso","speaker":"valentina","text":"¿Para que descanses?","look":"bruno","shot":"valentina","pause":0.22},
- {"id":"35-bruno-material","speaker":"bruno","text":"No. Voy a comprar un alfajor. Necesito estudiar el material en persona.","look":"valentina","shot":"bruno","pause":0.32},
- {"id":"36-valentina-metodo","speaker":"valentina","text":"Ah, claro. Tu método científico: comértelo hasta que te dé la respuesta.","look":"bruno","shot":"valentina","laugh":True,"pause":0.85},
- {"id":"37-bruno-empieza","speaker":"bruno","text":"Por algo se empieza.","look":"valentina","shot":"bruno","pause":0.25},
+ {"id":"04-valentina-foto","speaker":"valentina","text":"Eso es lo que ves en la foto.","look":"bruno","shot":"valentina","pause":0.3},
+ {"id":"05-bruno-arbol","speaker":"bruno","text":"¿Y qué querés? ¿Que le pida el árbol genealógico al alfajor?","look":"valentina","shot":"bruno","laugh":True,"pause":0.85},
+ {"id":"06-bruno-cartel-oreo","speaker":"bruno","text":"Mirá ese tamaño. Te venden que es irresistible.","look":"valentina","shot":"billboardLeft","pause":0.35},
+ {"id":"07-valentina-prueba","speaker":"valentina","text":"Y vos sos la prueba de que funciona.","look":"bruno","shot":"valentina","pause":0.25},
+ {"id":"08-bruno-por","speaker":"bruno","text":"¿Por?","look":"valentina","shot":"bruno","pause":0.2},
+ {"id":"09-valentina-convencido","speaker":"valentina","text":"Porque todavía no sabemos qué tiene adentro y ya te convencieron.","look":"bruno","shot":"valentina","laugh":True,"pause":0.82},
+ {"id":"10-bruno-marketing","speaker":"bruno","text":"Eso es marketing. Está hecho para llamar la atención.","look":"valentina","shot":"bruno","pause":0.25},
+ {"id":"11-valentina-carteles","speaker":"valentina","text":"Y mirá cómo te tiene. No podés pasar por un cartel sin querer comerte algo.","look":"bruno","shot":"valentina","pause":0.3},
+ {"id":"12-bruno-mercado","speaker":"bruno","text":"Estoy haciendo un análisis de mercado.","look":"valentina","shot":"bruno","pause":0.24},
+ {"id":"13-valentina-foto","speaker":"valentina","text":"Estás babeando por una foto.","look":"bruno","shot":"valentina","laugh":True,"pause":0.85},
+ {"id":"14-bruno-distraccion","speaker":"bruno","text":"Estoy jugando mal porque me distraen los carteles.","look":"valentina","shot":"bruno","pause":0.3},
+ {"id":"15-valentina-ruta","speaker":"valentina","text":"Estamos en una ruta. Hay carteles.","look":"bruno","shot":"valentina","pause":0.22},
+ {"id":"16-bruno-provocacion","speaker":"bruno","text":"¡Bueno, pero ponen comida! Es una provocación.","look":"valentina","shot":"bruno","pause":0.25},
+ {"id":"17-valentina-verduras","speaker":"valentina","text":"¿Querés que la próxima ruta venga con carteles de verduras hervidas para que no te emociones?","look":"bruno","shot":"valentina","laugh":True,"pause":0.9},
+ {"id":"18-bruno-extremo","speaker":"bruno","text":"No, tampoco hay que irse al otro extremo.","look":"valentina","shot":"bruno","pause":0.42},
+ {"id":"19-valentina-recuperarte","speaker":"valentina","text":"¿Seguimos o te doy cinco minutos para recuperarte?","look":"bruno","shot":"valentina","pause":0.35},
+ {"id":"20-bruno-parada","speaker":"bruno","text":"En la próxima estación paramos.","look":"valentina","shot":"master","pause":0.25},
+ {"id":"21-valentina-descanso","speaker":"valentina","text":"¿Para que descanses?","look":"bruno","shot":"valentina","pause":0.22},
+ {"id":"22-bruno-material","speaker":"bruno","text":"No. Voy a comprar un alfajor. Necesito estudiar el material en persona.","look":"valentina","shot":"bruno","pause":0.32},
+ {"id":"23-valentina-metodo","speaker":"valentina","text":"Ah, claro. Tu método científico: comértelo hasta que te dé la respuesta.","look":"bruno","shot":"valentina","laugh":True,"pause":0.85},
+ {"id":"24-bruno-empieza","speaker":"bruno","text":"Por algo se empieza.","look":"valentina","shot":"bruno","pause":0.35}
 ]
 
 def run(cmd: list[str]) -> str:
@@ -76,8 +64,10 @@ async def main():
     AUDIO.mkdir(parents=True, exist_ok=True)
     if not LAUGH.exists() or not OUTRO.exists():
         raise FileNotFoundError("Faltan los MP3 originales de risa y outro en el paquete de audio.")
+    # Original short instrumental sting for the series opening; warm, restrained and royalty-free synthesis.
+    run(["ffmpeg","-y","-f","lavfi","-i","aevalsrc=0.10*sin(2*PI*261.63*t)+0.08*sin(2*PI*329.63*t)+0.07*sin(2*PI*392.00*t)+0.04*sin(2*PI*523.25*t):s=48000:d=3.4","-af","afade=t=out:st=2.65:d=0.75,volume=0.75","-c:a","libmp3lame","-b:a","160k",str(INTRO)])
     cues=[]
-    clips=[]
+    clips=[(INTRO,0.0,0.72)]
     cursor=3.25
     for index,segment in enumerate(SEGMENTS):
         path=AUDIO/f"line-{index+1:02d}.mp3"
@@ -94,7 +84,7 @@ async def main():
             clips.append((LAUGH,end+.12,.48))
         cursor=end+float(segment.get("pause",.3))
     billboard_right_at=next(c["start"] for c in cues if c["id"]=="01-bruno-cartel-alfajor")
-    billboard_left_at=next(c["start"] for c in cues if c["id"]=="19-bruno-cartel-oreo")
+    billboard_left_at=next(c["start"] for c in cues if c["id"]=="06-bruno-cartel-oreo")
     end_card_start=cursor+.20
     clips.append((OUTRO,end_card_start,.74))
     outro_duration=duration(OUTRO)
@@ -112,7 +102,7 @@ async def main():
     package={
       "schemaVersion":1,"engineVersion":"entre-partidas-roadtrip-1.0.0",
       "id":"ingredora-entre-partidas-roadtrip-003","title":"Entre Partidas — Lo sé todo",
-      "createdAt":"2026-11-22T18:00:00Z","fps":24,"width":720,"height":1280,
+      "createdAt":"2026-11-22T16:00:00-03:00","fps":24,"width":720,"height":1280,
       "durationSeconds":total,"endCardStart":round(end_card_start,3),
       "billboardRightAt":round(billboard_right_at,3),"billboardLeftAt":round(billboard_left_at,3),
       "dialogue":cues,
