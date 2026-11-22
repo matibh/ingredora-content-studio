@@ -27,9 +27,16 @@ export async function generateOriginalSoundtrack({
   master.gain.setValueAtTime(0.0001, 0);
   const masterLevel = theme === "detective-case" ? 0.94 : theme === "sitcom-intro" ? 0.96 : 0.72;
   if (theme === "sitcom-intro") {
+    // Short opening signature, silence under the dialogue, then a full branded
+    // closing cue for the final eight seconds of the episode.
+    const closingMusicStart = Math.max(5.8, durationSeconds - 8.0);
     master.gain.linearRampToValueAtTime(masterLevel, 0.12);
     master.gain.setValueAtTime(masterLevel, 4.78);
-    master.gain.linearRampToValueAtTime(0.0001, 5.20);
+    master.gain.linearRampToValueAtTime(0.0001, 5.35);
+    master.gain.setValueAtTime(0.0001, closingMusicStart);
+    master.gain.linearRampToValueAtTime(masterLevel, closingMusicStart + 0.28);
+    master.gain.setValueAtTime(masterLevel, Math.max(closingMusicStart + 0.29, durationSeconds - 0.65));
+    master.gain.linearRampToValueAtTime(0.0001, durationSeconds);
   } else {
     master.gain.linearRampToValueAtTime(masterLevel, Math.min(0.8, durationSeconds * 0.12));
     master.gain.setValueAtTime(masterLevel, Math.max(0.8, durationSeconds - 0.55));
@@ -333,6 +340,22 @@ export async function generateOriginalSoundtrack({
     // A tiny rising two-note tag makes the sting land like the start of a sitcom.
     addTone(783.99, 4.18, 0.26, "triangle", 0.15, 4_000, -0.12);
     addTone(1_046.50, 4.43, 0.50, "triangle", 0.18, 4_800, 0.16);
+
+    // Reprise the series hook over the closing credits, with a warm resolved chord.
+    const outroAt = Math.max(5.8, durationSeconds - 7.85);
+    const outroHook = [659.25, 783.99, 880.00, 783.99, 698.46, 783.99, 1_046.50, 987.77,
+      880.00, 783.99, 659.25, 587.33, 698.46, 783.99, 880.00, 1_046.50];
+    outroHook.forEach((hz, i) => {
+      const at = outroAt + i * q * 0.48;
+      addTone(hz, at, 0.24, "triangle", i % 4 === 3 ? 0.16 : 0.12,
+        4_600, i % 2 ? 0.20 : -0.20);
+      if (i % 4 === 0) addTone(hz * 0.5, at + 0.025, 0.20, "sine", 0.052, 1_700, 0);
+    });
+    const outroChordAt = Math.max(outroAt + 3.8, durationSeconds - 2.2);
+    [261.63, 329.63, 392.00, 523.25].forEach((hz, i) =>
+      addTone(hz, outroChordAt + i * 0.035, Math.max(0.35, durationSeconds - outroChordAt - 0.08),
+        "triangle", 0.095, 3_600, (i - 1.5) * 0.22),
+    );
   }
 
   if (theme === "game-show") {
