@@ -1,7 +1,28 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-21T19:56:13Z",
+  "updatedAt": "2026-11-22T00:00:00Z",
   "productions": [
+    {
+      "id": "ingredora-entre-partidas-dinner-002",
+      "title": "Entre Partidas — La cena de los ingredientes",
+      "description": "Los cinco comparten una cena en el departamento junto al supermercado. Bruno lee la etiqueta de la Coca y el grupo convierte cada abreviatura en una nueva broma.",
+      "status": "rendering",
+      "packageUrl": "studio/packages/entre-partidas-dinner.v1.json",
+      "durationSeconds": 85,
+      "aspectRatio": "9:16",
+      "language": "Español — cinco voces diferenciadas del elenco",
+      "platforms": [
+        "TikTok",
+        "Instagram Reels",
+        "YouTube Shorts",
+        "Facebook Reels"
+      ],
+      "version": "1.0.0",
+      "createdAt": "2026-11-22T00:00:00Z",
+      "collection": "series",
+      "renderEngine": "three",
+      "caption": "Una cena, cinco personas y una Coca que Bruno convierte en examen. #EntrePartidas #IngredoraOriginals"
+    },
     {
       "id": "ingredora-entre-partidas-supermarket-001",
       "title": "Entre Partidas — El entrenamiento (motor publicitario 3D)",

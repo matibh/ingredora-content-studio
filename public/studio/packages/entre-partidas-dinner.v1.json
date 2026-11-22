@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "engineVersion": "1.0.0",
+  "id": "ingredora-entre-partidas-dinner-002",
+  "title": "Entre Partidas — La cena de los ingredientes",
+  "description": "Los cinco comparten una cena en el departamento junto al supermercado. Bruno lee la etiqueta de la Coca y el grupo convierte cada abreviatura en una nueva broma.",
+  "createdAt": "2026-11-22T00:00:00Z",
+  "fps": 30,
+  "width": 720,
+  "height": 1280,
+  "visualPreset": "entre-partidas-dinner",
+  "scenes": [
+    {
+      "id": "apartment-dinner",
+      "startFrame": 0,
+      "durationFrames": 3000,
+      "background": "#d9cdbb",
+      "objects": []
+    }
+  ],
+  "dialogue": [],
+  "voiceoverUrl": "studio/audio/entre-partidas/dinner-02/voice-track.mp3",
+  "wordTimingsUrl": "studio/audio/entre-partidas/dinner-02/word-timings.json",
+  "voiceoverOffsetSeconds": 0,
+  "endCardStart": 0
+}

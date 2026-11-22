@@ -15,6 +15,7 @@ import { createCocaColaPoolsideSet, drawCocaColaPoolsideOverlay } from "./cocaCo
 import { createOreoFamilySet, drawOreoFamilyOverlay } from "./oreoFamily";
 import { createOperationLabelSet, drawOperationLabelOverlay, type OperationWord } from "./operationLabel";
 import { createEntrePartidasSet, drawEntrePartidasCaptions, drawEntrePartidasBranding, type EntrePartidasCue } from "./entrePartidas";
+import { createEntrePartidasDinnerSet, drawEntrePartidasDinnerCaptions, drawEntrePartidasDinnerBranding, type DinnerCue } from "./entrePartidasDinner";
 
 export type RenderProgress = { frame: number; totalFrames: number; percent: number };
 
@@ -1070,7 +1071,7 @@ export async function renderPackageToWebM(
 
   // Original music is synthesized offline. Narration, when configured, is fetched as a
   // pre-generated asset so provider credentials never enter the public browser bundle.
-  const soundtrack = await generateOriginalSoundtrack({ durationSeconds, sampleRate: 48_000, theme: pkg.id.startsWith("ingredora-cindor-game-show-") ? "game-show" : pkg.visualPreset === "operation-label-detective" ? "detective-case" : pkg.visualPreset === "coca-cola-poolside" ? "summer-poolside" : pkg.visualPreset === "oreo-family-table" ? "family-merienda" : pkg.visualPreset === "entre-partidas-supermarket" ? "sitcom-intro" : undefined });
+  const soundtrack = await generateOriginalSoundtrack({ durationSeconds, sampleRate: 48_000, theme: pkg.id.startsWith("ingredora-cindor-game-show-") ? "game-show" : pkg.visualPreset === "operation-label-detective" ? "detective-case" : pkg.visualPreset === "coca-cola-poolside" ? "summer-poolside" : pkg.visualPreset === "oreo-family-table" ? "family-merienda" : (pkg.visualPreset === "entre-partidas-supermarket" || pkg.visualPreset === "entre-partidas-dinner") ? "sitcom-intro" : undefined });
   let mixedSoundtrack = soundtrack;
   if (pkg.voiceoverUrl) {
     const voiceUrl = import.meta.env.BASE_URL + pkg.voiceoverUrl
@@ -1109,7 +1110,7 @@ export async function renderPackageToWebM(
     musicSource.buffer = soundtrack;
     const musicGain = offline.createGain();
     // The detective score must remain clearly audible beneath narration; other productions keep the quieter default.
-    musicGain.gain.value = pkg.visualPreset === "operation-label-detective" ? 0.42 : pkg.visualPreset === "entre-partidas-supermarket" ? 1.0 : 0.045;
+    musicGain.gain.value = pkg.visualPreset === "operation-label-detective" ? 0.42 : (pkg.visualPreset === "entre-partidas-supermarket" || pkg.visualPreset === "entre-partidas-dinner") ? 1.0 : 0.045;
     musicSource.connect(musicGain).connect(offline.destination);
     musicSource.start(0);
     let voiceForMix = voice;
@@ -1152,16 +1153,18 @@ export async function renderPackageToWebM(
   if (signal?.aborted) throw new Error("Render cancelado.");
 
   const isEntrePartidas = pkg.visualPreset === "entre-partidas-supermarket";
+  const isEntrePartidasDinner = pkg.visualPreset === "entre-partidas-dinner";
+  const isBlockySeriesScene = isEntrePartidas || isEntrePartidasDinner;
   // SwiftShader has no physical GPU. For this detailed supermarket set, disabling
   // shadow-map passes keeps the same materials, lighting, framing and animation
   // while making deterministic headless rendering substantially faster.
-  const renderer = new THREE.WebGLRenderer({ antialias: !isEntrePartidas, alpha: false, powerPreference: "high-performance" });
+  const renderer = new THREE.WebGLRenderer({ antialias: !isBlockySeriesScene, alpha: false, powerPreference: "high-performance" });
   renderer.setPixelRatio(1);
   renderer.setSize(pkg.width, pkg.height, false);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = pkg.visualPreset === "coca-cola-poolside" ? 1.08 : 0.92;
-  renderer.shadowMap.enabled = !isEntrePartidas;
+  renderer.toneMappingExposure = pkg.visualPreset === "coca-cola-poolside" ? 1.08 : isEntrePartidasDinner ? 1.0 : 0.92;
+  renderer.shadowMap.enabled = !isBlockySeriesScene;
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
   const outputCanvas = document.createElement("canvas");
@@ -1188,7 +1191,7 @@ export async function renderPackageToWebM(
   output.setMetadataTags({ title: pkg.title, artist: "Ingredora Content Studio", date: new Date(pkg.createdAt) });
 
   const world = new THREE.Scene();
-  if (!pkg.id.startsWith("ingredora-cindor-game-show-") && pkg.visualPreset !== "nutella-supermarket" && pkg.visualPreset !== "coca-cola-poolside" && pkg.visualPreset !== "oreo-family-table" && pkg.visualPreset !== "operation-label-detective" && pkg.visualPreset !== "entre-partidas-supermarket") {
+  if (!pkg.id.startsWith("ingredora-cindor-game-show-") && pkg.visualPreset !== "nutella-supermarket" && pkg.visualPreset !== "coca-cola-poolside" && pkg.visualPreset !== "oreo-family-table" && pkg.visualPreset !== "operation-label-detective" && pkg.visualPreset !== "entre-partidas-supermarket" && pkg.visualPreset !== "entre-partidas-dinner") {
     world.add(new THREE.HemisphereLight(0xffffff, 0x273b2c, 2.0));
     const key = new THREE.DirectionalLight(0xffffff, 3.0);
     key.position.set(-3, 5, 6);
@@ -1207,6 +1210,8 @@ export async function renderPackageToWebM(
   const operationLabelSet = pkg.visualPreset === "operation-label-detective" ? createOperationLabelSet(world) : null;
   const entrePartidasSet = pkg.visualPreset === "entre-partidas-supermarket" ? createEntrePartidasSet(world) : null;
   const entrePartidasDialogue = (pkg.dialogue ?? []) as EntrePartidasCue[];
+  const entrePartidasDinnerSet = pkg.visualPreset === "entre-partidas-dinner" ? createEntrePartidasDinnerSet(world) : null;
+  const entrePartidasDinnerDialogue = (pkg.dialogue ?? []) as DinnerCue[];
   let nutellaVoiceWords: VoiceWordTiming[] = [];
   let poolsideVoiceWords: VoiceWordTiming[] = [];
   let oreoVoiceWords: VoiceWordTiming[] = [];
@@ -1283,6 +1288,41 @@ export async function renderPackageToWebM(
   let lastSceneId = "";
 
   const drawFrame = (frame: number) => {
+    if (entrePartidasDinnerSet) {
+      const time = frame / fps;
+      entrePartidasDinnerSet.update(time, entrePartidasDinnerDialogue);
+      const cue = entrePartidasDinnerDialogue.find(item => time >= item.start && time <= item.end);
+      const shotId = cue?.id || (cue ? cue.speaker : "dinner-wide");
+      let desiredPosition = new THREE.Vector3(0, 4.85, 18.8);
+      let desiredTarget = new THREE.Vector3(0, 0.40, -0.45);
+      let desiredFov = 48;
+      if (cue) {
+        const subject = entrePartidasDinnerSet.getSpeakerPosition(cue.speaker);
+        desiredPosition.set(subject.x * 0.70, 3.08, 8.95);
+        desiredTarget.set(subject.x, subject.y + 0.06, subject.z);
+        desiredFov = cue.speaker === "ernesto" ? 35 : 34;
+      }
+      if (frame === 0 || camera.userData.dinnerShot !== shotId) {
+        camera.position.copy(desiredPosition);
+        camera.userData.dinnerTarget = desiredTarget.clone();
+        camera.userData.dinnerShot = shotId;
+        camera.fov = desiredFov;
+      }
+      const blend = cue ? 0.10 : 0.065;
+      camera.position.lerp(desiredPosition, blend);
+      const currentTarget = (camera.userData.dinnerTarget as THREE.Vector3 | undefined) ?? desiredTarget.clone();
+      currentTarget.lerp(desiredTarget, blend);
+      camera.userData.dinnerTarget = currentTarget;
+      camera.lookAt(currentTarget);
+      camera.fov = THREE.MathUtils.lerp(camera.fov || desiredFov, desiredFov, .12);
+      camera.updateProjectionMatrix();
+      renderer.render(world, camera);
+      ctx.drawImage(renderer.domElement, 0, 0, pkg.width, pkg.height);
+      drawEntrePartidasDinnerCaptions(ctx, time, pkg.width, pkg.height, entrePartidasDinnerDialogue);
+      const endCardStart = typeof pkg.endCardStart === "number" ? pkg.endCardStart : durationSeconds - 9.5;
+      drawEntrePartidasDinnerBranding(ctx, time, pkg.width, pkg.height, endCardStart);
+      return;
+    }
     if (entrePartidasSet) {
       const time = frame / fps;
       entrePartidasSet.update(time, entrePartidasDialogue);

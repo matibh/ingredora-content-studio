@@ -39,3 +39,13 @@ Antes de escribir y producir, revisar biblia, fichas de personajes, episodios an
 - [ ] Labios y subtítulos sincronizados.
 - [ ] Render 9:16 revisado en móvil.
 - [ ] Exportación final validada.
+
+
+## Registro de episodio — EP-S02 «La cena de los ingredientes»
+- Personajes: Martina, Bruno, Tomás, Valentina y Ernesto.
+- Ubicación: departamento compartido junto al supermercado de barrio; la fachada del comercio se ve desde la ventana del comedor.
+- Los cinco cenan milanesas con papas y comparten una Coca-Cola. Bruno lee en voz alta los ingredientes y las abreviaturas de la etiqueta.
+- Tomás improvisa teorías sobre JMAF y las burbujas; Martina corrige con ironía, Valentina pincha el orgullo de Bruno y Ernesto aporta humor seco.
+- Remate final: Ernesto le asigna a Bruno lavar los platos después de su análisis de la Coca.
+- Audio: cinco voces del casting provisional, risas solo tras remates y el MP3 combinado subido para el cierre de créditos.
+- Estado: paquete 3D de cinco personajes, set de departamento y renderer de episodio incorporados; render pendiente de validación.
