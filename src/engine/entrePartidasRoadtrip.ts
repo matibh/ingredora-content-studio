@@ -122,7 +122,7 @@ function addTubePath(parent:THREE.Object3D,points:[number,number,number][],color
 function buildRoadtrip(){
   const scene=new THREE.Scene();scene.background=new THREE.Color("#a9c6d6");scene.fog=new THREE.Fog("#b9c8c2",28,82);
   scene.add(new THREE.HemisphereLight("#f7f1e4","#657460",1.8));
-  const sun=new THREE.DirectionalLight("#fff0d6",2.25);sun.position.set(-7,10,5);sun.castShadow=true;sun.shadow.mapSize.set(1024,1024);scene.add(sun);
+  const sun=new THREE.DirectionalLight("#fff0d6",2.25);sun.position.set(-7,10,5);sun.castShadow=true;sun.shadow.mapSize.set(768,768);scene.add(sun);
   const fill=new THREE.DirectionalLight("#d4e3ed",.72);fill.position.set(6,4,-5);scene.add(fill);
   const ground=addBox(scene,[100,.12,110],"#79906d",[0,-2.24,-3],.98);
   // Asphalt with gravel shoulders, crisp edge lines and animated centre dashes.
@@ -396,9 +396,14 @@ export async function renderEntrePartidasRoadtripToWebM(pkg:RoadtripPackage,onPr
   if(!(await canEncodeVideo("vp9",{width:pkg.width,height:pkg.height,frameRate:pkg.fps})))throw new Error("No hay codificador VP9 disponible para el render.");
   const totalFrames=Math.round(pkg.durationSeconds*pkg.fps);
   const renderer=new THREE.WebGLRenderer({antialias:true,alpha:false,powerPreference:"high-performance"});
-  renderer.setSize(pkg.width,pkg.height,false);renderer.setPixelRatio(1);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+  renderer.setSize(pkg.width,pkg.height,false);renderer.setPixelRatio(1);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.shadowMap.autoUpdate=false;renderer.shadowMap.needsUpdate=true;
   renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.12;
   const world=buildRoadtrip(),camera=new THREE.PerspectiveCamera(62,pkg.width/pkg.height,.1,120);
+  // Mantener sombras del auto y cabina; los elementos que se desplazan no deben reconstruir el shadow map en cada frame.
+  const removeMovingCaster=(root:THREE.Object3D)=>root.traverse(o=>{if(o instanceof THREE.Mesh)o.castShadow=false;});
+  world.trees.forEach(removeMovingCaster);world.roadsidePosts.forEach(removeMovingCaster);
+  removeMovingCaster(world.billboardRight);removeMovingCaster(world.billboardLeft);
+  removeMovingCaster(world.bruno.root);removeMovingCaster(world.valentina.root);
   const canvas=document.createElement("canvas");canvas.width=pkg.width;canvas.height=pkg.height;const ctx=canvas.getContext("2d");if(!ctx)throw new Error("No se pudo crear el lienzo del capítulo.");
   const target=new BufferTarget(),output=new Output({format:new WebMOutputFormat(),target});
   const videoSource=new CanvasSource(canvas,{codec:"vp9",quality:new Quality({bitrate:8_000_000})});
