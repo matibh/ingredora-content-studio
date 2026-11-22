@@ -81,11 +81,12 @@ async def main():
         cues.append(cue)
         clips.append((path,start,1.0))
         if segment.get("laugh"):
-            # Shorten each laugh and return to dialogue after a brief natural beat.
-            laugh_start=end+.12
-            laugh_playback=min(duration(LAUGH),1.45)
+            # Reproducir el MP3 original completo; entra apenas antes de terminar el remate.
+            # No se recorta, acelera ni sustituye el archivo de risas.
+            laugh_start=max(start,end-.18)
+            laugh_playback=duration(LAUGH)
             clips.append((LAUGH,laugh_start,.48))
-            cursor=laugh_start+laugh_playback+.32
+            cursor=laugh_start+laugh_playback+.25
         else:
             cursor=end+float(segment.get("pause",.3))
     billboard_right_at=next(c["start"] for c in cues if c["id"]=="01-bruno-cartel-alfajor")
@@ -99,8 +100,7 @@ async def main():
     filters=[]
     for i,(path,start,gain) in enumerate(clips):
         delay=round(start*1000)
-        trim = "atrim=duration=1.45,asetpts=PTS-STARTPTS," if path == LAUGH else ""
-        filters.append(f"[{i}:a]{trim}aresample=48000,aformat=sample_fmts=fltp:channel_layouts=stereo,volume={gain},adelay={delay}|{delay}[a{i}]")
+        filters.append(f"[{i}:a]aresample=48000,aformat=sample_fmts=fltp:channel_layouts=stereo,volume={gain},adelay={delay}|{delay}[a{i}]")
     joined="".join(f"[a{i}]" for i in range(len(clips)))
     filters.append(f"{joined}amix=inputs={len(clips)}:duration=longest:dropout_transition=0:normalize=0,alimiter=limit=0.94,apad=pad_dur=0.35[aout]")
     cmd += ["-filter_complex",";".join(filters),"-map","[aout]","-c:a","libmp3lame","-b:a","192k","-ar","48000","-ac","2",str(VOICE_TRACK)]

@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.js";
 import { BufferTarget, CanvasSource, Output, Quality, WebMOutputFormat, canEncodeVideo } from "mediabunny";
 import { createDiner } from "./entrePartidasDinner";
 
@@ -43,58 +44,41 @@ const addCanvasTexture = (draw:(ctx:CanvasRenderingContext2D,w:number,h:number)=
 
 function makeAdTexture(brand:"JORGITO"|"OREO"){
   return addCanvasTexture((ctx,w,h)=>{
+    ctx.fillStyle=brand==="JORGITO"?"#f5e7ce":"#1e245c";ctx.fillRect(0,0,w,h);
+    ctx.fillStyle=brand==="JORGITO"?"#9e3028":"#fff";ctx.textAlign="center";ctx.textBaseline="middle";
+    ctx.font="900 68px Arial";ctx.fillText(brand,w/2,72,w*.9);
+    ctx.fillStyle=brand==="JORGITO"?"#fff8ec":"#e7d7ff";
+    ctx.font="800 31px Arial";ctx.fillText(brand==="JORGITO"?"EL ALFAJOR DE SIEMPRE":"GALLETITAS",w/2,126,w*.9);
+    // Diseño original simple: marca clara y producto grande, sin elementos decorativos nuevos.
+    const x=w/2,y=265;
     if(brand==="JORGITO"){
-      const bg=ctx.createLinearGradient(0,0,w,h);bg.addColorStop(0,"#fff7e8");bg.addColorStop(.55,"#f0dfc3");bg.addColorStop(1,"#d8bd91");ctx.fillStyle=bg;ctx.fillRect(0,0,w,h);
-      ctx.fillStyle="#b72e35";ctx.beginPath();ctx.roundRect(18,16,w-36,118,20);ctx.fill();
-      ctx.fillStyle="#fff9ee";ctx.textAlign="center";ctx.textBaseline="middle";ctx.font="900 88px Arial Black,Arial";ctx.fillText("JORGITO",w/2,76,w*.91);
-      ctx.fillStyle="#7c2d2a";ctx.font="900 29px Arial";ctx.fillText("ALFAJOR TRADICIONAL",w/2,171);
-      ctx.save();ctx.shadowColor="rgba(48,24,15,.34)";ctx.shadowBlur=22;ctx.shadowOffsetY=12;
-      const pack=ctx.createLinearGradient(0,205,0,354);pack.addColorStop(0,"#e5d5b8");pack.addColorStop(.23,"#fff5df");pack.addColorStop(.67,"#dfc59d");pack.addColorStop(1,"#ae8960");
-      ctx.fillStyle=pack;ctx.beginPath();ctx.moveTo(95,235);ctx.lineTo(145,212);ctx.lineTo(675,220);ctx.lineTo(714,250);ctx.lineTo(680,340);ctx.lineTo(145,350);ctx.lineTo(95,320);ctx.closePath();ctx.fill();ctx.restore();
-      ctx.fillStyle="#b52e34";ctx.beginPath();ctx.moveTo(163,221);ctx.lineTo(649,226);ctx.lineTo(655,331);ctx.lineTo(158,337);ctx.closePath();ctx.fill();
-      ctx.fillStyle="#f6e8ce";ctx.textAlign="center";ctx.font="900 65px Arial Black,Arial";ctx.fillText("JORGITO",w/2,278);ctx.font="800 24px Arial";ctx.fillText("ALFAJOR DE CHOCOLATE",w/2,315);
-      ctx.strokeStyle="rgba(255,255,255,.72)";ctx.lineWidth=5;for(let i=0;i<5;i++){ctx.beginPath();ctx.moveTo(111+i*9,230-i*2);ctx.lineTo(121+i*9,333+i*2);ctx.stroke();}
-      const cx=535,cy=410;ctx.save();ctx.shadowColor="rgba(53,29,17,.25)";ctx.shadowBlur=12;ctx.shadowOffsetY=8;
-      const alfajor=ctx.createLinearGradient(0,cy-55,0,cy+55);alfajor.addColorStop(0,"#e4bd7d");alfajor.addColorStop(1,"#9c6335");
-      ctx.fillStyle=alfajor;ctx.beginPath();ctx.ellipse(cx,cy,114,49,-.08,0,Math.PI*2);ctx.fill();
-      ctx.fillStyle="#4a241c";ctx.beginPath();ctx.ellipse(cx,cy-12,112,42,-.08,0,Math.PI*2);ctx.fill();
-      ctx.fillStyle="#d4a15c";ctx.beginPath();ctx.ellipse(cx,cy-17,98,33,-.08,0,Math.PI*2);ctx.fill();
-      ctx.fillStyle="#6b3825";ctx.beginPath();ctx.ellipse(cx,cy-18,63,22,-.08,0,Math.PI*2);ctx.fill();ctx.restore();
-      ctx.fillStyle="#74312c";ctx.textAlign="left";ctx.font="900 28px Arial";ctx.fillText("DULCE DE LECHE",34,414);ctx.fillStyle="#613d2a";ctx.font="700 22px Arial";ctx.fillText("EL SABOR DE SIEMPRE",34,449);
-      ctx.fillStyle="#a32b31";ctx.fillRect(0,477,w,35);ctx.fillStyle="#fff8e9";ctx.textAlign="center";ctx.font="800 18px Arial";ctx.fillText("UN CLÁSICO ARGENTINO",w/2,494);
+      ctx.fillStyle="#d9b278";ctx.beginPath();ctx.ellipse(x,y,112,78,0,0,Math.PI*2);ctx.fill();
+      ctx.fillStyle="#5c342a";ctx.beginPath();ctx.ellipse(x,y-10,105,68,0,0,Math.PI*2);ctx.fill();
+      ctx.fillStyle="#e7c18b";ctx.beginPath();ctx.ellipse(x,y-18,98,58,0,0,Math.PI*2);ctx.fill();
+      ctx.fillStyle="#743c29";ctx.beginPath();ctx.ellipse(x,y-18,55,34,0,0,Math.PI*2);ctx.fill();
     }else{
-      const bg=ctx.createLinearGradient(0,0,w,h);bg.addColorStop(0,"#111c4b");bg.addColorStop(.52,"#233b82");bg.addColorStop(1,"#101638");ctx.fillStyle=bg;ctx.fillRect(0,0,w,h);
-      ctx.strokeStyle="rgba(255,255,255,.14)";ctx.lineWidth=3;for(let r=0;r<5;r++){ctx.beginPath();ctx.arc(w*.5,h*.43,105+r*42,0,Math.PI*2);ctx.stroke();}
-      ctx.save();ctx.shadowColor="#000";ctx.shadowBlur=16;ctx.shadowOffsetY=5;ctx.textAlign="center";ctx.textBaseline="middle";ctx.lineJoin="round";ctx.font="900 120px Arial Black,Arial";ctx.lineWidth=13;ctx.strokeStyle="#4774be";ctx.strokeText("OREO",w/2,105);ctx.fillStyle="#fff";ctx.fillText("OREO",w/2,105);ctx.restore();
-      ctx.fillStyle="#eaf0ff";ctx.font="800 27px Arial";ctx.textAlign="center";ctx.fillText("GALLETITAS DE CHOCOLATE",w/2,166);
-      const cookie=(cx:number,cy:number,r:number,angle:number)=>{
-        ctx.save();ctx.translate(cx,cy);ctx.rotate(angle);const shell=ctx.createRadialGradient(-r*.25,-r*.28,r*.12,0,0,r);shell.addColorStop(0,"#5d473a");shell.addColorStop(.58,"#30241f");shell.addColorStop(1,"#130f12");
-        ctx.fillStyle=shell;ctx.beginPath();ctx.arc(0,0,r,0,Math.PI*2);ctx.fill();ctx.strokeStyle="#a18a71";ctx.lineWidth=Math.max(2,r*.055);ctx.beginPath();ctx.arc(0,0,r*.86,0,Math.PI*2);ctx.stroke();
-        ctx.strokeStyle="#8c775f";ctx.lineWidth=Math.max(1.5,r*.025);for(let i=0;i<16;i++){const q=i*Math.PI/8;ctx.beginPath();ctx.arc(Math.cos(q)*r*.72,Math.sin(q)*r*.72,r*.075,0,Math.PI*2);ctx.stroke();}
-        ctx.fillStyle="#e7d6b7";ctx.font="900 "+Math.round(r*.23)+"px Arial";ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText("OREO",0,0,r*1.1);ctx.restore();
-      };
-      ctx.save();ctx.shadowColor="rgba(0,0,0,.46)";ctx.shadowBlur=20;ctx.shadowOffsetY=12;ctx.fillStyle="#f4e9d8";ctx.beginPath();ctx.ellipse(300,347,135,37,-.08,0,Math.PI*2);ctx.fill();
-      cookie(254,300,83,-.15);cookie(354,350,78,.22);cookie(480,295,91,.12);ctx.restore();
-      ctx.fillStyle="#fff";ctx.font="900 31px Arial";ctx.fillText("CREMA ORIGINAL",w/2,455);ctx.fillStyle="#b8d1ff";ctx.font="700 21px Arial";ctx.fillText("EL CLÁSICO QUE NOS UNE",w/2,490);
+      for(const dx of [-58,0,58])for(const dy of [-22,38]){
+        ctx.fillStyle="#e8c9a5";ctx.beginPath();ctx.arc(x+dx,y+dy,42,0,Math.PI*2);ctx.fill();
+        ctx.fillStyle="#2a2455";ctx.beginPath();ctx.arc(x+dx,y+dy,32,0,Math.PI*2);ctx.fill();
+        ctx.fillStyle="#f2dfc5";ctx.beginPath();ctx.arc(x+dx,y+dy,23,0,Math.PI*2);ctx.fill();
+      }
     }
-  },896,512);
+    ctx.fillStyle=brand==="JORGITO"?"#693c2b":"#fff";
+    ctx.font="900 24px Arial";ctx.fillText("EN LA RUTA, SIEMPRE HAY UNO",w/2,378,w*.94);
+    ctx.fillStyle=brand==="JORGITO"?"#fff8ed":"#e7d7ff";ctx.font="700 18px Arial";
+    ctx.fillText("PUBLICIDAD",w/2,474);
+  },512,512);
 }
 
 function makeBillboard(brand:"JORGITO"|"OREO",side:number){
-  const group=new THREE.Group(),turn=side>0?-Math.PI/2:Math.PI/2;
-  const edge=brand==="JORGITO"?"#7c292d":"#17234d";
-  const backing=addBox(group,[3.72,2.25,.18],edge,[0,1.40,0],.62);backing.rotation.y=turn;
-  const face=new THREE.Mesh(new THREE.PlaneGeometry(3.48,1.98),new THREE.MeshStandardMaterial({map:makeAdTexture(brand),roughness:.68,metalness:.02,side:THREE.DoubleSide}));
-  face.position.set(0,1.40,side>0?.105:-.105);face.rotation.y=turn;face.castShadow=true;group.add(face);
-  // Dos postes rectos en el mismo plano del cartel, uno a cada lado. Sin diagonales ni cruces.
-  for(const x of [-1.54,1.54]){
-    addBox(group,[.19,4.55,.19],"#454a49",[x,.04,0],.55);
-    addBox(group,[.44,.12,.44],"#555b57",[x,-2.18,0],.72);
-    addBox(group,[.24,.12,.24],"#747a75",[x,2.34,0],.58);
-  }
-  const rail=addBox(group,[3.36,.13,.16],"#454a49",[0,.22,0],.55);rail.rotation.y=turn;
-  const crown=addBox(group,[3.82,.13,.19],"#454a49",[0,2.56,0],.42);crown.rotation.y=turn;
-  group.position.set(side*5.25,0,0);return group;
+  const group=new THREE.Group();
+  // Recupera la estructura de la primera versión: un único poste central y un panel limpio.
+  const post=addBox(group,[.16,2.7,.16],"#74664f",[0,-.1,0]);
+  post.position.y=-.55;
+  const board=new THREE.Mesh(new THREE.PlaneGeometry(2.8,1.85),new THREE.MeshBasicMaterial({map:makeAdTexture(brand),side:THREE.DoubleSide}));
+  board.position.set(0,1.25,0);board.rotation.y=side>0?-Math.PI/2:Math.PI/2;group.add(board);
+  group.position.set(side*5.1,0,0);
+  return group;
 }
 
 function makePhone(parent:THREE.Object3D){
@@ -120,6 +104,21 @@ function makePhone(parent:THREE.Object3D){
   return phone;
 }
 
+function addRoundedBox(parent:THREE.Object3D,size:[number,number,number],color:string,pos:[number,number,number],radius=.08,roughness=.82){
+  const r=Math.min(radius,Math.min(...size)*.46);
+  const mesh=new THREE.Mesh(new RoundedBoxGeometry(size[0],size[1],size[2],4,r),mat(color,roughness));
+  mesh.position.set(...pos);mesh.castShadow=true;mesh.receiveShadow=true;parent.add(mesh);return mesh;
+}
+function addSoftVolume(parent:THREE.Object3D,radii:[number,number,number],material:THREE.Material,pos:[number,number,number],rotation:[number,number,number]=[0,0,0]){
+  const mesh=new THREE.Mesh(new THREE.SphereGeometry(1,28,20),material);
+  mesh.scale.set(...radii);mesh.position.set(...pos);mesh.rotation.set(...rotation);mesh.castShadow=true;mesh.receiveShadow=true;parent.add(mesh);return mesh;
+}
+function addTubePath(parent:THREE.Object3D,points:[number,number,number][],color:string,radius=.012,roughness=.78){
+  const curve=new THREE.CatmullRomCurve3(points.map(p=>new THREE.Vector3(...p)));
+  const mesh=new THREE.Mesh(new THREE.TubeGeometry(curve,28,radius,6,false),mat(color,roughness));
+  mesh.castShadow=true;mesh.receiveShadow=true;parent.add(mesh);return mesh;
+}
+
 function buildRoadtrip(){
   const scene=new THREE.Scene();scene.background=new THREE.Color("#a9c6d6");scene.fog=new THREE.Fog("#b9c8c2",28,82);
   scene.add(new THREE.HemisphereLight("#f7f1e4","#657460",1.8));
@@ -139,11 +138,18 @@ function buildRoadtrip(){
     addBox(post,[.115,.12,.12],"#b44d3e",[0,.18,.01],.45);
     post.position.set(side*5.25,-1.72,-52+i*4.5);scene.add(post);roadsidePosts.push(post);
   }
-  // Low-poly rolling countryside, visible through the windows and in the opening shot.
-  const hills:THREE.Mesh[]=[];
+  // Campos ondulados y lomadas suaves; sin conos ni siluetas piramidales.
+  const hills:THREE.Group[]=[];
   for(let i=0;i<13;i++){
-    const hill=new THREE.Mesh(new THREE.ConeGeometry(3.4+(i%3)*.6,2.6+(i%4)*.35,7),mat(i%2?"#81956e":"#91a47a",.98));
-    hill.position.set((i%2?1:-1)*(8+(i%4)*2),-1.2,-38+i*6.4);hill.rotation.z=(i%2?.12:-.12);scene.add(hill);hills.push(hill);
+    const side=i%2?1:-1,hill=new THREE.Group();
+    const palette=["#82936d","#899b73","#788b67","#95a078"];
+    const base=new THREE.Mesh(new THREE.SphereGeometry(1,28,18),mat(palette[i%palette.length],.99));
+    base.scale.set(5.2,1.52,4.25);base.position.set(0,0,0);base.receiveShadow=true;hill.add(base);
+    const riseA=new THREE.Mesh(new THREE.SphereGeometry(1,24,16),mat(palette[(i+1)%palette.length],.99));
+    riseA.scale.set(3.0,1.16,3.55);riseA.position.set(side*2.55,.18,-1.25);hill.add(riseA);
+    const riseB=new THREE.Mesh(new THREE.SphereGeometry(1,24,16),mat(palette[(i+2)%palette.length],.99));
+    riseB.scale.set(3.15,1.10,3.45);riseB.position.set(-side*2.4,.12,1.55);hill.add(riseB);
+    hill.position.set(side*(9+(i%4)*2),-2.65,-38+i*6.4);scene.add(hill);hills.push(hill);
   }
   const trees:THREE.Group[]=[];
   for(let i=0;i<18;i++){
@@ -152,100 +158,173 @@ function buildRoadtrip(){
     const leaves=new THREE.Mesh(new THREE.ConeGeometry(.78,1.8,6),mat(i%3?"#557650":"#66845c",.98));leaves.position.y=.82;tree.add(leaves);
     tree.position.set(side*(5.6+(i%3)*.55),-1.15,-42+i*5.2);scene.add(tree);trees.push(tree);
   }
-  // Car exterior and cabin share one continuous model; interior coverage is cut from inside the same set.
+  // Auto de cuatro puertas con cabina cerrada, revestimientos curvos y materiales diferenciados.
   const car=new THREE.Group();scene.add(car);
-  const rubber=mat("#202322",.86),glass=new THREE.MeshPhysicalMaterial({color:"#a8c6ca",transparent:true,opacity:.13,roughness:.18,metalness:.08,side:THREE.DoubleSide,depthWrite:false});
-  addBox(car,[3.75,.76,5.65],"#536d66",[0,-1.48,0],.34);
-  addBox(car,[3.55,.44,1.52],"#668078",[0,-1.12,-2.02],.32);
-  addBox(car,[3.55,.42,1.22],"#536d66",[0,-1.18,2.12],.34);
-  addBox(car,[2.92,.24,3.62],"#394b47",[0,-.92,.12],.48);
-  // Roof, window pillars and door belt line.
-  addBox(car,[3.34,.24,4.26],"#40564f",[0,3.10,.05],.34);
-  // Techo cerrado con revestimiento interior, viseras, plafón y agarraderas.
-  addBox(car,[3.10,.10,4.02],"#c5c1b5",[0,2.94,.05],.88);
-  addBox(car,[2.88,.06,3.72],"#d7d1c4",[0,2.875,.05],.92);
-  for(const x of [-.86,.86])addBox(car,[.72,.10,.36],"#77786f",[x,2.72,-1.60],.72);
-  addBox(car,[.36,.055,.24],"#414945",[0,2.81,.20],.48);
-  addBox(car,[.23,.045,.13],"#f4e7c6",[0,2.775,.20],.3);
-  for(const x of [-1.42,1.42])for(const z of [-.35,1.48])addBox(car,[.34,.07,.10],"#525c56",[x,2.72,z],.62);
+  const rubber=mat("#202322",.86),glass=new THREE.MeshPhysicalMaterial({color:"#a8c6ca",transparent:true,opacity:.12,roughness:.16,metalness:.06,side:THREE.DoubleSide,depthWrite:false});
+  const body=mat("#536d66",.34,.12),bodyDark=mat("#354944",.42,.10),chrome=mat("#b5b8ae",.32,.62);
+  addRoundedBox(car,[3.75,.78,5.65],"#536d66",[0,-1.48,0],.24,.45);
+  addRoundedBox(car,[3.55,.43,1.52],"#668078",[0,-1.12,-2.02],.16,.40);
+  addRoundedBox(car,[3.55,.42,1.22],"#536d66",[0,-1.18,2.12],.16,.42);
+  addRoundedBox(car,[2.98,.20,3.72],"#34443e",[0,-1.00,.10],.09,.62);
+  // Umbrales interiores y alfombra con textura fina.
+  const carpetTexture=addCanvasTexture((ctx,w,h)=>{
+    ctx.fillStyle="#343a35";ctx.fillRect(0,0,w,h);
+    for(let y=0;y<h;y+=4){ctx.strokeStyle=y%8===0?"rgba(255,255,255,.055)":"rgba(0,0,0,.10)";ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(w,y);ctx.stroke();}
+  },128,128);
+  carpetTexture.wrapS=THREE.RepeatWrapping;carpetTexture.wrapT=THREE.RepeatWrapping;carpetTexture.repeat.set(4,5);
+  const carpet=new THREE.Mesh(new RoundedBoxGeometry(2.92,.055,4.05,3,.025),new THREE.MeshStandardMaterial({map:carpetTexture,roughness:1}));
+  carpet.position.set(0,-1.055,.08);carpet.receiveShadow=true;car.add(carpet);
+  // Techo rígido, tapizado interior, parasoles, plafón y pilares A/B/C.
+  addRoundedBox(car,[3.34,.24,4.26],"#40564f",[0,3.10,.05],.12,.38);
+  addRoundedBox(car,[3.10,.105,4.02],"#c8c4b8",[0,2.94,.05],.055,.92);
+  addRoundedBox(car,[2.84,.055,3.68],"#d7d1c4",[0,2.865,.05],.025,.96);
+  for(const x of [-.90,.90]){
+    addRoundedBox(car,[.76,.105,.40],"#aaa99f",[x,2.72,-1.58],.045,.92);
+    addRoundedBox(car,[.34,.07,.15],"#777b74",[x,2.66,-1.42],.035,.74);
+  }
+  addRoundedBox(car,[.42,.07,.22],"#414945",[0,2.79,.18],.035,.54);
+  addRoundedBox(car,[.25,.045,.12],"#f2e5c6",[0,2.755,.18],.02,.36);
+  for(const x of [-1.43,1.43]){
+    addTubePath(car,[[x,2.69,-.36],[x,2.78,-.23],[x,2.78,.00],[x,2.69,.14]],"#575f58",.035);
+    addRoundedBox(car,[.13,2.15,.15],"#3d514a",[x,1.82,-1.61],.045,.48);
+    addRoundedBox(car,[.13,2.08,.15],"#3d514a",[x,1.80,.12],.045,.48);
+    addRoundedBox(car,[.13,2.14,.15],"#3d514a",[x,1.80,1.67],.045,.48);
+  }
+  // Ventanillas laterales, parabrisas y luneta; dejan entrar luz y permiten ver los carteles.
   for(const x of [-1.55,1.55]){
-    addBox(car,[.13,2.18,.14],"#3b4f49",[x,1.82,-1.58],.4);
-    addBox(car,[.13,2.18,.14],"#3b4f49",[x,1.82,1.65],.4);
-    addBox(car,[.18,.72,3.6],"#455b54",[x,-.62,.12],.45);
-    const win=new THREE.Mesh(new THREE.PlaneGeometry(3.25,1.42),glass);win.rotation.y=Math.PI/2;win.position.set(x*1.005,1.84,.04);car.add(win);
+    const win=new THREE.Mesh(new THREE.PlaneGeometry(3.20,1.43),glass);win.rotation.y=Math.PI/2;win.position.set(x,1.84,.02);car.add(win);
   }
-  // Rear side quarter windows and front windshield remain clear so exterior signs read through the glass.
-  const windshield=new THREE.Mesh(new THREE.PlaneGeometry(3.0,1.42),glass);windshield.position.set(0,1.83,-2.02);windshield.rotation.x=-.10;car.add(windshield);
-  // Rear windshield/luneta: the cabin is a complete closed-roof car, not a convertible.
-  const rearGlass=new THREE.Mesh(new THREE.PlaneGeometry(2.82,1.34),glass);rearGlass.position.set(0,1.83,2.02);rearGlass.rotation.x=.10;car.add(rearGlass);
-  for(const x of [-1.55,1.55]) addBox(car,[.13,.18,.14],"#3b4f49",[x,3.02,1.65],.4);
-  // Layered dashboard: soft-touch upper pad, lower fascia, stitched trim and a proper instrument binnacle.
-  addBox(car,[3.04,.22,.78],"#393f3c",[0,.10,-1.72],.92);
-  addBox(car,[3.00,.48,.72],"#77766d",[0,-.10,-1.72],.68);
-  addBox(car,[2.92,.055,.76],"#b0a38d",[0,-.31,-1.69],.72);
-  addBox(car,[.98,.50,.76],"#4d5551",[0,-.56,-1.38],.58);
-  addBox(car,[.78,.17,.68],"#262d2a",[0,-.30,-1.24],.48);
-  // Instrument cluster glass and illuminated gauges behind the steering wheel.
+  const windshield=new THREE.Mesh(new THREE.PlaneGeometry(3.02,1.48),glass);windshield.position.set(0,1.84,-2.03);windshield.rotation.x=-.10;car.add(windshield);
+  const rearGlass=new THREE.Mesh(new THREE.PlaneGeometry(2.86,1.40),glass);rearGlass.position.set(0,1.84,2.03);rearGlass.rotation.x=.10;car.add(rearGlass);
+  // Marcos de ventanilla, marcos inferiores y espejos exteriores.
+  for(const x of [-1.55,1.55]){
+    addRoundedBox(car,[.12,.12,3.72],"#43564f",[x,1.10,.05],.045,.44);
+    addRoundedBox(car,[.14,.13,.14],"#3d514a",[x,3.00,1.66],.045,.42);
+    addRoundedBox(car,[.16,.72,.18],"#3e514b",[x,1.16,-1.73],.055,.42);
+    addRoundedBox(car,[.16,.72,.18],"#3e514b",[x,1.16,1.78],.055,.42);
+    addRoundedBox(car,[.26,.18,.54],"#43534d",[x*1.20,1.34,-1.22],.07,.40);
+    addSoftVolume(car,[.19,.14,.29],chrome,[x*1.27,1.39,-1.23]);
+    addRoundedBox(car,[.075,.10,.30],"#252b29",[x*1.06,-.38,.35],.035,.7);
+  }
+  // Tarjetas de puerta moldeadas, inserts suaves, apoyabrazos y tiradores metálicos.
+  for(const side of [-1,1]){
+    addRoundedBox(car,[.15,.74,3.16],"#59635d",[side*1.42,-.43,.08],.075,.94);
+    addRoundedBox(car,[.10,.28,1.40],"#73766d",[side*1.34,-.35,.22],.07,.90);
+    addSoftVolume(car,[.12,.10,.70],mat("#494f49",.9),[side*1.32,-.23,.32]);
+    addRoundedBox(car,[.045,.09,.43],"#303a36",[side*1.29,-.19,.18],.025,.56);
+    addTubePath(car,[[side*1.28,-.17,.00],[side*1.28,-.12,.20],[side*1.28,-.17,.42]],"#c0b9a7",.018,.38);
+    addRoundedBox(car,[.055,.12,.72],"#424b46",[side*1.30,-.70,.72],.035,.72);
+    addRoundedBox(car,[.05,.035,.34],"#b9b4a5",[side*1.27,-.69,.70],.015,.32);
+  }
+  // Consola superior del tablero, con bordes redondeados y superficies acolchadas.
+  addRoundedBox(car,[3.04,.34,.76],"#3c4440",[0,-.06,-1.72],.15,.82);
+  addSoftVolume(car,[1.49,.15,.34],mat("#454c47",.92),[0,.12,-1.75]);
+  addRoundedBox(car,[2.96,.38,.48],"#68685f",[0,-.36,-1.55],.13,.72);
+  addRoundedBox(car,[.92,.22,.12],"#77766d",[.92,-.34,-1.27],.055,.84);
+  addRoundedBox(car,[.88,.045,.025],"#373e39",[.92,-.34,-1.19],.014,.52);
+  // Instrumental digital-analógico detrás del volante.
   const gaugeTexture=addCanvasTexture((ctx,w,h)=>{
-    ctx.fillStyle="#182321";ctx.fillRect(0,0,w,h);
-    for(const x of [w*.27,w*.73]){ctx.strokeStyle="#d6d8c7";ctx.lineWidth=9;ctx.beginPath();ctx.arc(x,h*.55,h*.31,Math.PI,Math.PI*2);ctx.stroke();ctx.strokeStyle="#df7657";ctx.lineWidth=7;ctx.beginPath();ctx.moveTo(x,h*.55);ctx.lineTo(x+h*.18,h*.30);ctx.stroke();}
-    ctx.fillStyle="#a7c7a2";ctx.font="bold 28px Arial";ctx.textAlign="center";ctx.fillText("0  80  120",w/2,h*.91);
-  },512,256);
-  const gauges=new THREE.Mesh(new THREE.PlaneGeometry(.82,.36),new THREE.MeshBasicMaterial({map:gaugeTexture,toneMapped:false}));gauges.position.set(-.88,.12,-1.315);car.add(gauges);
-  // Air vents, hazard button, climate dials and infotainment screen.
-  for(const x of [-1.18,-.54,.54,1.18]){
-    addBox(car,[.28,.11,.035],"#202725",[x,-.045,-1.315],.48);
-    addBox(car,[.025,.075,.018],"#9a9e94",[x,-.045,-1.292],.42);
+    ctx.fillStyle="#17211e";ctx.fillRect(0,0,w,h);
+    for(const x of [w*.27,w*.73]){
+      ctx.strokeStyle="#d7d5c5";ctx.lineWidth=8;ctx.beginPath();ctx.arc(x,h*.58,h*.31,Math.PI,Math.PI*2);ctx.stroke();
+      ctx.strokeStyle="#df7657";ctx.lineWidth=6;ctx.beginPath();ctx.moveTo(x,h*.58);ctx.lineTo(x+h*.17,h*.30);ctx.stroke();
+    }
+    ctx.fillStyle="#a8c8a4";ctx.font="bold 24px Arial";ctx.textAlign="center";ctx.fillText("0   80   120",w/2,h*.91);
+  },384,192);
+  addRoundedBox(car,[.86,.43,.12],"#202724",[-.90,.12,-1.31],.075,.42);
+  const gauges=new THREE.Mesh(new THREE.PlaneGeometry(.72,.31),new THREE.MeshBasicMaterial({map:gaugeTexture,toneMapped:false}));
+  gauges.position.set(-.90,.12,-1.242);car.add(gauges);
+  // Salidas de aire con marco, láminas interiores y controles circulares.
+  for(const x of [-1.18,-.55,.55,1.18]){
+    addRoundedBox(car,[.27,.12,.055],"#252d29",[x,-.06,-1.285],.035,.52);
+    for(let j=0;j<3;j++)addRoundedBox(car,[.018,.075,.018],"#92968c",[x-.075+j*.075,-.06,-1.248],.008,.38);
   }
-  addBox(car,[.34,.22,.035],"#18201e",[0,-.02,-1.302],.35);
-  addBox(car,[.12,.10,.018],"#bd4f43",[0,-.02,-1.276],.4);
-  addBox(car,[.70,.31,.035],"#182320",[0,-.48,-1.305],.28);
-  addBox(car,[.62,.22,.012],"#78958b",[0,-.47,-1.282],.32);
+  addRoundedBox(car,[.25,.20,.055],"#242b27",[0,-.06,-1.277],.055,.44);
+  addRoundedBox(car,[.105,.09,.025],"#bf4c40",[0,-.06,-1.243],.025,.36);
+  // Pantalla multimedia, marco, diales de climatización y pequeñas botoneras.
+  addRoundedBox(car,[.76,.39,.10],"#1b2420",[.16,-.34,-1.275],.07,.38);
+  const infotainmentTexture=addCanvasTexture((ctx,w,h)=>{
+    ctx.fillStyle="#182522";ctx.fillRect(0,0,w,h);
+    ctx.fillStyle="#a7c3b5";ctx.textAlign="center";ctx.font="bold 24px Arial";ctx.fillText("FM  98.7",w/2,h*.39);
+    ctx.fillStyle="#e4c98e";ctx.font="16px Arial";ctx.fillText("RUTA · 09:41",w/2,h*.72);
+  },320,160);
+  const infotainment=new THREE.Mesh(new THREE.PlaneGeometry(.64,.27),new THREE.MeshBasicMaterial({map:infotainmentTexture,toneMapped:false}));
+  infotainment.position.set(.16,-.34,-1.217);car.add(infotainment);
   for(let i=0;i<3;i++){
-    const dial=new THREE.Mesh(new THREE.CylinderGeometry(.065,.065,.035,12),mat("#c2b9a5",.5,.18));dial.rotation.x=Math.PI/2;dial.position.set(-.22+i*.22,-.70,-1.29);car.add(dial);
-    addBox(car,[.08,.035,.018],i===0?"#b75d43":"#d5c7a1",[-.22+i*.22,-.70,-1.265],.4);
+    const dial=new THREE.Mesh(new THREE.CylinderGeometry(.067,.067,.045,24),mat("#c4bca9",.45,.28));
+    dial.rotation.x=Math.PI/2;dial.position.set(-.22+i*.22,-.67,-1.27);car.add(dial);
+    const mark=addRoundedBox(car,[.012,.045,.016],i===0?"#bd6b50":"#d8c8a5",[-.22+i*.22,-.67,-1.238],.006,.35);
   }
-  // Gear selector, cup holders and a textured centre tunnel.
-  addBox(car,[.54,.16,1.15],"#343c38",[0,-.83,-.34],.74);
-  const gear=new THREE.Group();gear.position.set(.20,-.65,-.82);car.add(gear);
-  const shaft=new THREE.Mesh(new THREE.CylinderGeometry(.035,.05,.28,8),mat("#8a8d86",.35,.55));shaft.position.y=.13;gear.add(shaft);
-  const knob=new THREE.Mesh(new THREE.SphereGeometry(.105,12,8),mat("#262b29",.32,.18));knob.position.y=.30;gear.add(knob);
-  for(const x of [-.22,.22]){const cup=new THREE.Mesh(new THREE.CylinderGeometry(.105,.09,.025,12),mat("#171d1b",.55));cup.position.set(x,-.73,-.18);car.add(cup);}
-  // Door cards, recessed handles and small metallic inner releases.
-  for(const side of [-1,1]){
-    addBox(car,[.13,.62,2.75],"#59635d",[side*1.48,-.55,.05],.86);
-    addBox(car,[.035,.12,.42],"#303a36",[side*1.405,-.38,.18],.45);
-    addBox(car,[.04,.045,.20],"#b9b4a5",[side*1.38,-.37,.18],.32);
-    addBox(car,[.035,.07,.55],"#424b46",[side*1.405,-.72,.70],.6);
+  // Túnel central, caja de cambios, palanca, freno de mano y posavasos.
+  addRoundedBox(car,[.70,.20,1.42],"#303934",[0,-.86,-.34],.10,.78);
+  addRoundedBox(car,[.55,.055,.62],"#68675e",[0,-.735,-.55],.06,.82);
+  const gear=new THREE.Group();gear.position.set(.20,-.67,-.80);car.add(gear);
+  const shaft=new THREE.Mesh(new THREE.CylinderGeometry(.035,.055,.25,16),chrome);shaft.position.y=.13;gear.add(shaft);
+  const knob=addSoftVolume(gear,[.11,.09,.10],mat("#242b28",.32,.2),[0,.28,0]);
+  for(const x of [-.22,.22]){
+    const cup=new THREE.Mesh(new THREE.CylinderGeometry(.115,.095,.045,24),mat("#151c19",.62));cup.position.set(x,-.72,-.18);car.add(cup);
+    const rim=new THREE.Mesh(new THREE.TorusGeometry(.105,.012,6,24),chrome);rim.rotation.x=Math.PI/2;rim.position.set(x,-.693,-.18);car.add(rim);
   }
-  // Butacas delanteras acolchadas, con panel central, laterales y apoyacabezas.
+  // Pedales de freno y acelerador bajo la columna de dirección.
+  for(const x of [-1.03,-.70]){
+    const pedal=addRoundedBox(car,[.18,.28,.065],x<-.9?"#303633":"#555d57",[x,-.83,-1.10],.035,.68);pedal.rotation.x=-.14;
+    for(let k=0;k<3;k++)addRoundedBox(car,[.12,.025,.012],"#9b9d91",[x,-.78+k*.07,-1.055],.008,.46);
+  }
+  // Volante revestido en goma, centro acolchado y tres radios visibles.
+  const wheel=new THREE.Group();wheel.position.set(-.90,.26,-1.06);wheel.rotation.y=Math.PI;car.add(wheel);
+  const wheelRing=new THREE.Mesh(new THREE.TorusGeometry(.39,.052,12,44),rubber);wheel.add(wheelRing);
+  addSoftVolume(wheel,[.16,.14,.075],mat("#444c47",.48,.12),[0,0,0]);
+  for(const angle of [0,Math.PI*.72,Math.PI*1.28]){
+    const spoke=addRoundedBox(wheel,[.07,.33,.055],"#555c57",[0,-.02,0],.025,.48);spoke.rotation.z=angle;
+  }
+  addRoundedBox(wheel,[.18,.055,.06],"#303833",[0,-.13,.012],.022,.56);
+  // Tapizado de tela con trama discreta para los asientos.
+  const fabricTexture=addCanvasTexture((ctx,w,h)=>{
+    ctx.fillStyle="#817767";ctx.fillRect(0,0,w,h);
+    for(let y=0;y<h;y+=3)for(let x=0;x<w;x+=3){
+      ctx.fillStyle=(x+y)%2?"rgba(255,255,255,.075)":"rgba(25,20,16,.055)";ctx.fillRect(x,y,1,1);
+    }
+  },128,128);
+  fabricTexture.wrapS=THREE.RepeatWrapping;fabricTexture.wrapT=THREE.RepeatWrapping;fabricTexture.repeat.set(2,2);
+  const upholstery=new THREE.MeshStandardMaterial({color:"#8c8170",map:fabricTexture,roughness:.98});
+  const upholsterySide=mat("#665e52",.98),seam="#c0b19a";
+  // Dos butacas anatómicas: cojín inferior, respaldo curvo, laterales acolchados y cabezal separado.
   for(const x of [-.82,.82]){
-    addBox(car,[.94,1.30,.20],"#746b5c",[x,-.02,.83],.96);
-    addBox(car,[.98,.20,1.0],"#8b8170",[x,-1.12,.12],.92);
-    addBox(car,[.10,1.04,.12],"#655e53",[x-.43,-.55,.83],.95);
-    addBox(car,[.10,1.04,.12],"#655e53",[x+.43,-.55,.83],.95);
-    addBox(car,[.62,1.05,.035],"#8b8170",[x,-.02,.945],.98);
-    addBox(car,[.34,.12,.20],"#6b6255",[x,.73,.84],.9);
+    addSoftVolume(car,[.55,.18,.58],upholstery,[x,-1.00,.12]);
+    addSoftVolume(car,[.53,.71,.20],upholstery,[x,-.18,.77],[-.10,0,0]);
+    addSoftVolume(car,[.12,.54,.19],upholsterySide,[x-.43,-.20,.80],[-.10,0,-.04]);
+    addSoftVolume(car,[.12,.54,.19],upholsterySide,[x+.43,-.20,.80],[-.10,0,.04]);
+    addSoftVolume(car,[.35,.51,.055],upholstery,[x,-.18,.966],[-.10,0,0]);
+    addSoftVolume(car,[.27,.19,.14],upholstery,[x,.58,1.04]);
+    for(const dx of [-.16,.16]){
+      const post=new THREE.Mesh(new THREE.CylinderGeometry(.025,.025,.22,12),chrome);post.position.set(x+dx,.73,1.03);car.add(post);
+    }
+    addTubePath(car,[[x-.29,.24,.94],[x-.30,-.12,.98],[x-.27,-.48,.94]],seam,.006);
+    addTubePath(car,[[x+.29,.24,.94],[x+.30,-.12,.98],[x+.27,-.48,.94]],seam,.006);
   }
-  // Asiento trasero completo de tres plazas, respaldo, apoyacabezas y cinturones.
-  addBox(car,[2.34,.30,.88],"#746b5c",[0,-1.18,1.50],.96);
-  addBox(car,[2.36,1.12,.25],"#817767",[0,-.47,1.84],.95);
-  for(const x of [-.72,0,.72])addBox(car,[.72,.93,.045],"#958a78",[x,-.49,1.975],.96);
-  for(const x of [-.76,0,.76])addBox(car,[.34,.64,.22],"#665e52",[x,.42,1.76],.86);
-  for(const x of [-.72,0,.72]){
-    const buckle=addBox(car,[.09,.30,.08],"#b83e36",[x,-.98,1.34],.5);buckle.rotation.z=x<0?-.08:.08;
+  // Banqueta trasera real de tres plazas, respaldos individuales y tres apoyacabezas.
+  addSoftVolume(car,[1.18,.19,.48],upholstery,[0,-1.02,1.48]);
+  addSoftVolume(car,[1.20,.57,.19],upholstery,[0,-.43,1.88],[-.08,0,0]);
+  for(const x of [-.78,0,.78]){
+    addSoftVolume(car,[.36,.43,.065],upholstery,[x,-.46,2.045],[-.08,0,0]);
+    addSoftVolume(car,[.24,.18,.13],upholstery,[x,.27,1.93]);
+    for(const dx of [-.13,.13]){
+      const post=new THREE.Mesh(new THREE.CylinderGeometry(.018,.018,.17,10),chrome);post.position.set(x+dx,.43,1.93);car.add(post);
+    }
   }
+  // Cinturones de tres puntos, hebillas y anclajes visibles.
+  for(const x of [-.78,0,.78]){
+    addTubePath(car,[[x*1.30,.42,1.74],[x*1.15,.10,1.80],[x*.94,-.72,1.52]],"#343b37",.026,.92);
+    addRoundedBox(car,[.09,.24,.055],"#ad4a3d",[x,-.82,1.30],.022,.54);
+    addRoundedBox(car,[.035,.08,.02],"#d4c8a9",[x,-.83,1.27],.008,.36);
+  }
+  // Espejo interior, luz de techo y detalles de acabado.
+  addRoundedBox(car,[.46,.10,.14],"#303b38",[0,2.63,-1.91],.045,.42);
+  addRoundedBox(car,[.35,.085,.045],"#9ba39d",[0,2.60,-1.85],.035,.22);
   for(const side of [-1,1]){
-    const belt=addBox(car,[.045,1.08,.035],"#343c3a",[side*1.05,-.30,1.62],.9);belt.rotation.z=side*.16;
+    addRoundedBox(car,[.22,.32,.18],"#3b4943",[side*1.83,1.47,-1.16],.07,.46);
+    addSoftVolume(car,[.21,.13,.28],mat("#202825",.24,.24),[side*1.91,1.51,-1.16]);
   }
-  // Steering wheel: left-hand drive, fixed in the same place for every interior angle.
-  const wheel=new THREE.Group();wheel.position.set(-.88,.38,-1.12);wheel.rotation.y=Math.PI;car.add(wheel);
-  const wheelRing=new THREE.Mesh(new THREE.TorusGeometry(.40,.055,8,32),rubber);wheel.add(wheelRing);
-  addBox(wheel,[.10,.62,.10],"#424743",[0,0,0],.42);
-  const spokes=new THREE.Mesh(new THREE.TorusGeometry(.18,.025,6,20,Math.PI),rubber);spokes.rotation.z=Math.PI;spokes.position.y=-.07;wheel.add(spokes);
-  // Interior mirror and trim.
-  addBox(car,[.48,.10,.13],"#303b38",[0,2.65,-1.94],.35);
-  addBox(car,[.36,.09,.045],"#8c9691",[0,2.62,-1.88],.24);
   const valentina=createDiner("valentina",-.82,.05,Math.PI,false);
   const bruno=createDiner("bruno",.82,.05,Math.PI,false);
   car.add(valentina.root,bruno.root);
