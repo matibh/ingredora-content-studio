@@ -390,6 +390,23 @@ export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
   bruno.root.visible=false;martina.root.visible=false;valentina.root.visible=false;
   tomas.root.visible=false;ernesto.root.visible=false;
   world.add(bruno.root,martina.root,valentina.root,tomas.root,ernesto.root);
+  // Tomás' story props: a clearly readable Nutella jar and a compact phone.
+  const nutellaLabel=texture((ctx,w,h)=>{
+    ctx.fillStyle="#f3ead7";ctx.fillRect(0,0,w,h);
+    ctx.fillStyle="#3c251b";ctx.font="900 46px Arial";ctx.textAlign="center";ctx.fillText("nut",w*.36,h*.57);
+    ctx.fillStyle="#d83c2e";ctx.fillText("ella",w*.68,h*.57);
+    ctx.fillStyle="#6d4b2f";ctx.font="700 13px Arial";ctx.fillText("HAZELNUT SPREAD",w/2,h*.82);
+  },256,160);
+  const jar=new THREE.Group();
+  const jarGlass=new THREE.Mesh(new THREE.CylinderGeometry(.22,.24,.62,20),mat("#51301e",.28,.02));jarGlass.position.y=.31;jar.add(jarGlass);
+  const jarShoulder=new THREE.Mesh(new THREE.CylinderGeometry(.17,.22,.12,20),mat("#4a2b1b",.3));jarShoulder.position.y=.66;jar.add(jarShoulder);
+  const jarLid=new THREE.Mesh(new THREE.CylinderGeometry(.205,.205,.13,20),mat("#e9e7df",.32));jarLid.position.y=.78;jar.add(jarLid);
+  const jarLabel=new THREE.Mesh(new THREE.CylinderGeometry(.224,.224,.28,24,1,true),new THREE.MeshStandardMaterial({map:nutellaLabel,roughness:.6}));
+  jarLabel.position.y=.34;jar.add(jarLabel);jar.scale.setScalar(.72);
+  tomas.rightArm.add(jar);jar.position.set(0,-.64,.18);
+  const phone=new THREE.Mesh(new THREE.BoxGeometry(.22,.36,.035),mat("#20252b",.28,.2));
+  tomas.leftArm.add(phone);phone.position.set(0,-.66,.15);
+
   const makeHandPacket=(material:THREE.Material,width:number,height:number)=>{
     const product=new THREE.Group();
     box(product,[width,height,.115],material,[0,0,0]);
@@ -847,8 +864,8 @@ export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
       tomas.leftLeg.rotation.x=0;tomas.rightLeg.rotation.x=0;
       ernesto.leftLeg.rotation.x=0;ernesto.rightLeg.rotation.x=0;
       for(const rig of [tomas,ernesto]){
-        const talking=rig.name===speaker,phase=rig.name==="tomas"?.3:1.9;
-        rig.head.rotation.y=(cue?.look===rig.name?-.12:cue?.look?.07:0)+Math.sin(time*.42+phase)*.006;
+        const talking=rig.name===speaker,phase=rig.name==="tomas" ? .3 : 1.9;
+        rig.head.rotation.y=(cue?.look===rig.name ? -.12 : cue?.look ? .07 : 0)+Math.sin(time*.42+phase)*.006;
         rig.head.rotation.x=talking?Math.sin(time*2.7+phase)*.018:Math.sin(time*.5+phase)*.005;
         let mouthOpen=.025;
         if(talking&&cue)mouthOpen=.06+Math.pow(Math.max(0,Math.sin((time-cue.start)*8.5)),.72)*.58;
