@@ -164,7 +164,7 @@ function buildRoadtrip(){
   const chrome=mat("#b5b8ae",.32,.62);
   const bodyColor="#536a73";
   // Carrocería larga y musculosa de pickup mediana, con proporción de doble cabina.
-  addRoundedBox(car,[3.90,.82,7.78],bodyColor,[0,-1.48,.30],.24,.38);
+  addRoundedBox(car,[3.62,.82,7.78],bodyColor,[0,-1.48,.30],.24,.38);
   // Capó delantero y frente escalonado; el morro apunta hacia z negativo.
   addRoundedBox(car,[3.58,.36,1.60],bodyColor,[0,-1.08,-2.55],.15,.36);
   addRoundedBox(car,[3.15,.18,5.35],"#303b40",[0,-1.00,.28],.08,.62);
@@ -183,11 +183,11 @@ function buildRoadtrip(){
   }
   // Puertas delanteras y traseras, manijas y estribos integrados a la carrocería.
   for(const side of [-1,1]){
-    addRoundedBox(car,[.12,.62,1.12],bodyColor,[side*1.94,-.50,-.70],.07,.42);
-    addRoundedBox(car,[.12,.62,1.12],bodyColor,[side*1.94,-.50,.70],.07,.42);
+    addRoundedBox(car,[.14,.62,1.12],bodyColor,[side*1.88,-.50,-.70],.07,.42);
+    addRoundedBox(car,[.14,.62,1.12],bodyColor,[side*1.88,-.50,.70],.07,.42);
     for(const z of [-.82,.58]){
-      addRoundedBox(car,[.035,.075,.25],"#242d31",[side*2.015,-.31,z],.018,.48);
-      addRoundedBox(car,[.022,.025,.17],"#a8ada7",[side*2.04,-.31,z],.012,.32);
+      addRoundedBox(car,[.035,.075,.25],"#242d31",[side*1.95,-.31,z],.018,.48);
+      addRoundedBox(car,[.022,.025,.17],"#a8ada7",[side*1.98,-.31,z],.012,.32);
     }
     addRoundedBox(car,[.18,.14,2.18],"#303a3d",[side*2.01,-1.31,.08],.055,.68);
   }
