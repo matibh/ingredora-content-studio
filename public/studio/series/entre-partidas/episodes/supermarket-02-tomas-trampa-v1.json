@@ -1,0 +1,219 @@
+{
+  "schemaVersion": 1,
+  "engineVersion": "1.0.0",
+  "id": "ingredora-entre-partidas-supermarket-002",
+  "title": "Entre Partidas — El tramposo",
+  "description": "Tomás intenta resolver el Desafío Diario mirando los ingredientes de una Nutella en otra góndola del mismo supermercado. Ernesto lo descubre y le da un sermón sobre jugar limpio.",
+  "createdAt": "2026-11-22T09:18:00-03:00",
+  "fps": 30,
+  "width": 720,
+  "height": 1280,
+  "durationSeconds": 132,
+  "productionStatus": "preproduction",
+  "continuity": {
+    "characterModels": "Reutilizar rigs maestros; no regenerar personajes.",
+    "wardrobe": "Fijar ropa, materiales y colores de los modelos existentes. Tomás #527C78; Ernesto cárdigan #718064 y pantalón #4B5148.",
+    "openingShot": "Reutilizar exactamente el plano exterior de supermercado del capítulo 1 de Bruno: misma fachada, cámara, encuadre, perspectiva y movimiento.",
+    "supermarketInterior": "Mismo supermercado; usar una góndola diferente del primer capítulo, dedicada a untables/desayuno y con frascos Nutella.",
+    "locations": "Reutilizar la calle, edificio y departamento ya establecidos."
+  },
+  "shotPlan": [
+    {
+      "id": "same-supermarket-exterior",
+      "start": 0,
+      "end": 4.15,
+      "location": "supermarket-exterior",
+      "reuse": "supermarket-01 exact opening shot",
+      "camera": "exact-match",
+      "action": "Plano exterior idéntico al primer video de Bruno. No reconstruir."
+    },
+    {
+      "id": "daily-challenge",
+      "start": 4.15,
+      "end": 19,
+      "location": "apartment",
+      "camera": "phone-closeup-and-medium",
+      "action": "Tomás mira el Desafío Diario, falla al intentar resolverlo y mira hacia el supermercado. Se le ocurre un atajo."
+    },
+    {
+      "id": "walk-to-store",
+      "start": 19,
+      "end": 29,
+      "location": "street-and-supermarket",
+      "camera": "reuse-master-set",
+      "action": "Tomás va al mismo supermercado. Mantener calle y edificio idénticos."
+    },
+    {
+      "id": "nutella-aisle",
+      "start": 29,
+      "end": 53,
+      "location": "supermarket-interior-new-aisle",
+      "camera": "new-aisle-angle",
+      "action": "Tomás recorre otra góndola del mismo supermercado, encuentra Nutella, lee la etiqueta y completa el desafío."
+    },
+    {
+      "id": "ernesto-catches-him",
+      "start": 53,
+      "end": 77,
+      "location": "supermarket-interior-new-aisle",
+      "camera": "two-shot-and-reaction",
+      "action": "Ernesto aparece detrás y lo descubre con el teléfono y el frasco."
+    },
+    {
+      "id": "sermon",
+      "start": 77,
+      "end": 112,
+      "location": "supermarket-interior-new-aisle",
+      "camera": "shot-reverse-shot",
+      "action": "Ernesto lo reta por hacer trampa. Tomás intenta justificarlo con argumentos cada vez más absurdos."
+    },
+    {
+      "id": "nutella-punchline",
+      "start": 112,
+      "end": 122,
+      "location": "supermarket-interior-new-aisle",
+      "camera": "closeup-ernesto",
+      "action": "Tomás promete jugar limpio, pero pregunta si Ernesto le compra la Nutella. Ernesto respira hondo."
+    },
+    {
+      "id": "outro",
+      "start": 122,
+      "end": 132,
+      "location": "end-card",
+      "camera": "series-end-card",
+      "action": "Disparar directamente risa y outro.mp3 después de la última frase. No agregar risa.mp3 separado."
+    }
+  ],
+  "dialogue": [
+    {
+      "speaker": "tomas",
+      "text": "Uhhh, hoy está difícil esto...",
+      "start": 5,
+      "end": 7.8,
+      "look": "tomas"
+    },
+    {
+      "speaker": "tomas",
+      "text": "No, pará... yo esto lo saco. Tengo un método.",
+      "start": 9,
+      "end": 13,
+      "look": "tomas"
+    },
+    {
+      "speaker": "tomas",
+      "text": "¡JA! ¡Era obvio!",
+      "start": 43,
+      "end": 45,
+      "look": "tomas"
+    },
+    {
+      "speaker": "tomas",
+      "text": "¡Vamos! ¡Primer puesto!",
+      "start": 47,
+      "end": 50,
+      "look": "tomas"
+    },
+    {
+      "speaker": "ernesto",
+      "text": "¿Qué estás haciendo, Tomás?",
+      "start": 54,
+      "end": 57,
+      "look": "tomas"
+    },
+    {
+      "speaker": "tomas",
+      "text": "Nada... comprando.",
+      "start": 58,
+      "end": 60,
+      "look": "ernesto"
+    },
+    {
+      "speaker": "ernesto",
+      "text": "¿Comprando? ¡Tenés el celular en una mano y la Nutella en la otra!",
+      "start": 61,
+      "end": 66,
+      "look": "tomas"
+    },
+    {
+      "speaker": "tomas",
+      "text": "Es que me dio hambre.",
+      "start": 67,
+      "end": 69,
+      "look": "ernesto"
+    },
+    {
+      "speaker": "ernesto",
+      "text": "¿Vos sabés lo que significa un desafío diario? ¡Desafío! ¡No es ir al supermercado a buscar las respuestas!",
+      "start": 72,
+      "end": 80,
+      "look": "tomas"
+    },
+    {
+      "speaker": "tomas",
+      "text": "Pero Ernesto, técnicamente no hice trampa... el producto estaba ahí.",
+      "start": 81,
+      "end": 87,
+      "look": "ernesto"
+    },
+    {
+      "speaker": "ernesto",
+      "text": "¡Claro! Y si mañana el desafío es de geografía, ¿te vas a parar al lado de un globo terráqueo?",
+      "start": 88,
+      "end": 96,
+      "look": "tomas"
+    },
+    {
+      "speaker": "tomas",
+      "text": "Y... depende de cuánto cueste.",
+      "start": 97,
+      "end": 100,
+      "look": "ernesto"
+    },
+    {
+      "speaker": "ernesto",
+      "text": "¡El juego se gana pensando! ¡No mirando las etiquetas de los productos!",
+      "start": 101,
+      "end": 107,
+      "look": "tomas"
+    },
+    {
+      "speaker": "tomas",
+      "text": "Bueno, pero gané.",
+      "start": 108,
+      "end": 110,
+      "look": "ernesto"
+    },
+    {
+      "speaker": "ernesto",
+      "text": "¡No ganaste nada! ¡Te engañaste a vos mismo!",
+      "start": 110.5,
+      "end": 114,
+      "look": "tomas"
+    },
+    {
+      "speaker": "tomas",
+      "text": "Bueno, listo. Mañana juego limpio.",
+      "start": 115,
+      "end": 118,
+      "look": "ernesto"
+    },
+    {
+      "speaker": "tomas",
+      "text": "Igual... ¿me comprás la Nutella?",
+      "start": 118.5,
+      "end": 121.5,
+      "look": "ernesto"
+    },
+    {
+      "speaker": "ernesto",
+      "text": "Dios dame paciencia...",
+      "start": 122,
+      "end": 124,
+      "look": "tomas"
+    }
+  ],
+  "audio": {
+    "ending": "Use risa y outro.mp3 directly after Ernesto's final line. Do not insert risa.mp3 separately.",
+    "music": "Retain the series' established audio identity; do not introduce unlicensed music."
+  }
+}
