@@ -19,8 +19,8 @@ CAST = {
     "valentina": {"voice": "es-UY-ValentinaNeural", "rate": "-3%", "pitch": "-1Hz", "volume": "+5%"},
 }
 # A single connected scene: the first billboard starts the game; the second
-# interrupts the practice run. Laughs are deliberately short and only after
-# the strongest punchlines.
+# interrupts the practice run. Billboard views are deliberately brief inserts.
+# Laughs are deliberately short and only after the strongest punchlines.
 SEGMENTS = [
  {"id":"01-bruno-cartel-alfajor","speaker":"bruno","text":"Mirá ese cartel. Un alfajor. Ese lo conozco de toda la vida: me sé todos los ingredientes.","look":"valentina","shot":"billboardRight","pause":0.38},
  {"id":"02-valentina-nombramelos","speaker":"valentina","text":"¿Ah, sí? Nombramelos.","look":"bruno","shot":"valentina","pause":0.3},

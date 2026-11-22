@@ -162,10 +162,72 @@ function buildRoadtrip(){
   const car=new THREE.Group();scene.add(car);
   const rubber=mat("#202322",.86),glass=new THREE.MeshPhysicalMaterial({color:"#a8c6ca",transparent:true,opacity:.12,roughness:.16,metalness:.06,side:THREE.DoubleSide,depthWrite:false});
   const chrome=mat("#b5b8ae",.32,.62);
-  addRoundedBox(car,[3.75,.78,5.65],"#536d66",[0,-1.48,0],.24,.45);
-  addRoundedBox(car,[3.55,.43,1.52],"#668078",[0,-1.12,-2.02],.16,.40);
-  addRoundedBox(car,[3.55,.42,1.22],"#536d66",[0,-1.18,2.12],.16,.42);
-  addRoundedBox(car,[2.98,.20,3.72],"#34443e",[0,-1.00,.10],.09,.62);
+  const bodyColor="#536a73";
+  // Carrocería larga y musculosa de pickup mediana, con proporción de doble cabina.
+  addRoundedBox(car,[3.90,.82,7.78],bodyColor,[0,-1.48,.30],.24,.38);
+  // Capó delantero y frente escalonado; el morro apunta hacia z negativo.
+  addRoundedBox(car,[3.58,.36,1.60],bodyColor,[0,-1.08,-2.55],.15,.36);
+  addRoundedBox(car,[3.15,.18,5.35],"#303b40",[0,-1.00,.28],.08,.62);
+  // Caja de carga abierta detrás de la doble cabina: piso, laterales, panel frontal y portón.
+  addRoundedBox(car,[3.18,.075,2.08],"#303a3e",[0,-.91,3.08],.035,.9);
+  for(const side of [-1,1]){
+    addRoundedBox(car,[.22,.80,2.18],bodyColor,[side*1.62,-.53,3.08],.09,.4);
+    addRoundedBox(car,[.25,.075,2.20],"#343f43",[side*1.62,-.105,3.08],.035,.62);
+  }
+  addRoundedBox(car,[3.40,.78,.16],bodyColor,[0,-.53,2.02],.07,.4);
+  addRoundedBox(car,[3.40,.78,.17],bodyColor,[0,-.53,4.13],.07,.4);
+  addRoundedBox(car,[3.05,.06,1.72],"#252d30",[0,-.855,3.08],.025,.98);
+  for(let i=0;i<7;i++)addRoundedBox(car,[.025,.012,1.62],"#596267",[-1.35+i*.45,-.818,3.08],.006,.92);
+  for(const side of [-1,1])for(const z of [2.20,3.96]){
+    addRoundedBox(car,[.12,.035,.10],"#b5b9b4",[side*1.45,-.105,z],.018,.36);
+  }
+  // Puertas delanteras y traseras, manijas y estribos integrados a la carrocería.
+  for(const side of [-1,1]){
+    addRoundedBox(car,[.12,.62,1.12],bodyColor,[side*1.94,-.50,-.70],.07,.42);
+    addRoundedBox(car,[.12,.62,1.12],bodyColor,[side*1.94,-.50,.70],.07,.42);
+    for(const z of [-.82,.58]){
+      addRoundedBox(car,[.035,.075,.25],"#242d31",[side*2.015,-.31,z],.018,.48);
+      addRoundedBox(car,[.022,.025,.17],"#a8ada7",[side*2.04,-.31,z],.012,.32);
+    }
+    addRoundedBox(car,[.18,.14,2.18],"#303a3d",[side*2.01,-1.31,.08],.055,.68);
+  }
+  // Ruedas reales de pickup: neumático, llanta, seis bulones y guardabarros.
+  const addPickupWheel=(side:number,z:number)=>{
+    const wheel=new THREE.Group();wheel.position.set(side*1.84,-1.53,z);car.add(wheel);
+    const tire=new THREE.Mesh(new THREE.CylinderGeometry(.62,.62,.36,36),rubber);
+    tire.rotation.z=Math.PI/2;wheel.add(tire);
+    const rim=new THREE.Mesh(new THREE.CylinderGeometry(.36,.36,.055,32),mat("#3b454a",.38,.58));
+    rim.rotation.z=Math.PI/2;rim.position.x=side*.19;wheel.add(rim);
+    const ring=new THREE.Mesh(new THREE.TorusGeometry(.30,.028,8,32),chrome);
+    ring.rotation.y=side>0?Math.PI/2:-Math.PI/2;ring.position.x=side*.225;wheel.add(ring);
+    const hub=new THREE.Mesh(new THREE.CylinderGeometry(.12,.12,.065,24),mat("#87918f",.34,.72));
+    hub.rotation.z=Math.PI/2;hub.position.x=side*.225;wheel.add(hub);
+    for(let i=0;i<6;i++){
+      const a=i*Math.PI/3;
+      const bolt=new THREE.Mesh(new THREE.SphereGeometry(.034,10,8),mat("#d0d3cc",.28,.72));
+      bolt.position.set(side*.235,Math.cos(a)*.215,Math.sin(a)*.215);wheel.add(bolt);
+    }
+    const archX=side*2.015;
+    addTubePath(car,[[archX,-1.51,z-.69],[archX,-1.16,z-.59],[archX,-.91,z],[archX,-1.16,z+.59],[archX,-1.51,z+.69]],"#30393d",.055,.7);
+  };
+  for(const side of [-1,1]){addPickupWheel(side,-2.00);addPickupWheel(side,2.55);}
+  // Parrilla, ópticas, paragolpes y patente delantera.
+  addRoundedBox(car,[1.30,.43,.14],"#20292d",[0,-.97,-3.53],.07,.42);
+  for(let i=0;i<4;i++)addRoundedBox(car,[1.08,.035,.035],"#aeb5b1",[0,-.82-i*.095,-3.61],.012,.34);
+  addRoundedBox(car,[.22,.25,.045],"#a7b2b4",[0,-.97,-3.625],.025,.3);
+  for(const side of [-1,1]){
+    addRoundedBox(car,[.56,.30,.14],"#d8d5c5",[side*1.37,-.91,-3.53],.065,.3);
+    addRoundedBox(car,[.17,.20,.045],"#d8a45a",[side*1.58,-.94,-3.61],.035,.36);
+  }
+  addRoundedBox(car,[3.98,.27,.30],"#343d41",[0,-1.47,-3.72],.09,.58);
+  addRoundedBox(car,[.62,.12,.035],"#e8e6d8",[0,-1.39,-3.88],.018,.34);
+  // Parte trasera completa: faros verticales, portón y paragolpes de pickup.
+  for(const side of [-1,1]){
+    addRoundedBox(car,[.24,.48,.08],"#8f302b",[side*1.57,-.83,4.235],.04,.38);
+    addRoundedBox(car,[.17,.15,.035],"#d5b19a",[side*1.57,-.70,4.285],.025,.32);
+  }
+  addRoundedBox(car,[3.92,.26,.28],"#343d41",[0,-1.47,4.31],.08,.58);
+  addRoundedBox(car,[.68,.10,.035],"#e5e3d8",[0,-1.40,4.455],.015,.34);
   // Umbrales interiores y alfombra con textura fina.
   const carpetTexture=addCanvasTexture((ctx,w,h)=>{
     ctx.fillStyle="#343a35";ctx.fillRect(0,0,w,h);
@@ -175,7 +237,7 @@ function buildRoadtrip(){
   const carpet=new THREE.Mesh(new RoundedBoxGeometry(2.92,.055,4.05,3,.025),new THREE.MeshStandardMaterial({map:carpetTexture,roughness:1}));
   carpet.position.set(0,-1.055,.08);carpet.receiveShadow=true;car.add(carpet);
   // Techo rígido, tapizado interior, parasoles, plafón y pilares A/B/C.
-  addRoundedBox(car,[3.34,.24,4.26],"#40564f",[0,3.10,.05],.12,.38);
+  addRoundedBox(car,[3.34,.24,4.26],bodyColor,[0,3.10,.05],.12,.38);
   addRoundedBox(car,[3.10,.105,4.02],"#c8c4b8",[0,2.94,.05],.055,.92);
   addRoundedBox(car,[2.84,.055,3.68],"#d7d1c4",[0,2.865,.05],.025,.96);
   for(const x of [-.90,.90]){
@@ -186,9 +248,9 @@ function buildRoadtrip(){
   addRoundedBox(car,[.25,.045,.12],"#f2e5c6",[0,2.755,.18],.02,.36);
   for(const x of [-1.43,1.43]){
     addTubePath(car,[[x,2.69,-.36],[x,2.78,-.23],[x,2.78,.00],[x,2.69,.14]],"#575f58",.035);
-    addRoundedBox(car,[.13,2.15,.15],"#3d514a",[x,1.82,-1.61],.045,.48);
-    addRoundedBox(car,[.13,2.08,.15],"#3d514a",[x,1.80,.12],.045,.48);
-    addRoundedBox(car,[.13,2.14,.15],"#3d514a",[x,1.80,1.67],.045,.48);
+    addRoundedBox(car,[.13,2.15,.15],bodyColor,[x,1.82,-1.61],.045,.42);
+    addRoundedBox(car,[.13,2.08,.15],bodyColor,[x,1.80,.12],.045,.42);
+    addRoundedBox(car,[.13,2.14,.15],bodyColor,[x,1.80,1.67],.045,.42);
   }
   // Ventanillas laterales, parabrisas y luneta; dejan entrar luz y permiten ver los carteles.
   for(const x of [-1.55,1.55]){
@@ -199,12 +261,7 @@ function buildRoadtrip(){
   // Marcos de ventanilla, marcos inferiores y espejos exteriores.
   for(const x of [-1.55,1.55]){
     addRoundedBox(car,[.12,.12,3.72],"#43564f",[x,1.10,.05],.045,.44);
-    addRoundedBox(car,[.14,.13,.14],"#3d514a",[x,3.00,1.66],.045,.42);
-    addRoundedBox(car,[.16,.72,.18],"#3e514b",[x,1.16,-1.73],.055,.42);
-    addRoundedBox(car,[.16,.72,.18],"#3e514b",[x,1.16,1.78],.055,.42);
-    addRoundedBox(car,[.26,.18,.54],"#43534d",[x*1.20,1.34,-1.22],.07,.40);
-    addSoftVolume(car,[.19,.14,.29],chrome,[x*1.27,1.39,-1.23]);
-    addRoundedBox(car,[.075,.10,.30],"#252b29",[x*1.06,-.38,.35],.035,.7);
+    addRoundedBox(car,[.14,.13,.14],bodyColor,[x,3.00,1.66],.045,.42);
   }
   // Tarjetas de puerta moldeadas, inserts suaves, apoyabrazos y tiradores metálicos.
   for(const side of [-1,1]){
@@ -321,9 +378,11 @@ function buildRoadtrip(){
   // Espejo interior, luz de techo y detalles de acabado.
   addRoundedBox(car,[.46,.10,.14],"#303b38",[0,2.63,-1.91],.045,.42);
   addRoundedBox(car,[.35,.085,.045],"#9ba39d",[0,2.60,-1.85],.035,.22);
+  // Retrovisores exteriores con brazo corto unido a la puerta, sin piezas suspendidas.
   for(const side of [-1,1]){
-    addRoundedBox(car,[.22,.32,.18],"#3b4943",[side*1.83,1.47,-1.16],.07,.46);
-    addSoftVolume(car,[.21,.13,.28],mat("#202825",.24,.24),[side*1.91,1.51,-1.16]);
+    addTubePath(car,[[side*1.78,1.30,-1.38],[side*1.92,1.36,-1.40],[side*2.03,1.40,-1.40]],"#283237",.045,.62);
+    addRoundedBox(car,[.18,.13,.34],"#293337",[side*2.08,1.43,-1.40],.055,.38);
+    addRoundedBox(car,[.018,.085,.25],"#aeb9b8",[side*2.175,1.445,-1.40],.022,.24);
   }
   const valentina=createDiner("valentina",-.82,.05,Math.PI,false);
   const bruno=createDiner("bruno",.82,.05,Math.PI,false);
@@ -339,13 +398,13 @@ function buildRoadtrip(){
 function shotCamera(shot:RoadtripShot,camera:THREE.PerspectiveCamera,time:number,billboardRight:THREE.Group,billboardLeft:THREE.Group){
   let p:[number,number,number]=[0,1.82,-2.62],target:[number,number,number]=[0,1.00,.12],fov=62;
   switch(shot){
-    case "exterior": p=[5.1,2.65,-6.0];target=[0,-.22,0];fov=48;break;
-    case "master": p=[0,1.92,-2.56];target=[0,1.03,.15];fov=64;break;
-    case "bruno": p=[1.05,1.72,-2.35];target=[.82,1.08,-.30];fov=53;break;
-    case "valentina": p=[-1.05,1.72,-2.35];target=[-.82,1.08,-.30];fov=53;break;
+    case "exterior": p=[10,5.4,-14];target=[0,-.62,.25];fov=44;break;
+    case "master": p=[0,2.12,-4.90];target=[0,1.00,.35];fov=60;break;
+    case "bruno": p=[.94,2.05,-4.65];target=[.82,1.00,.12];fov=56;break;
+    case "valentina": p=[-.94,2.05,-4.65];target=[-.82,1.00,.12];fov=56;break;
     case "phone": p=[.58,1.05,-1.35];target=[.38,.47,-.63];fov=31;break;
-    case "billboardRight": p=[1.18,1.60,-.45];target=[5.12,1.43,billboardRight.position.z];fov=51;break;
-    case "billboardLeft": p=[-1.18,1.60,-.45];target=[-5.12,1.43,billboardLeft.position.z];fov=51;break;
+    case "billboardRight": p=[.82,1.74,1.18];target=[5.12,1.40,billboardRight.position.z];fov=53;break;
+    case "billboardLeft": p=[-.82,1.74,1.18];target=[-5.12,1.40,billboardLeft.position.z];fov=53;break;
   }
   if(shot==="bruno"||shot==="valentina"){p[1]+=Math.sin(time*.8)*.006;target[1]+=Math.sin(time*.9)*.004;}
   camera.position.set(...p);camera.lookAt(...target);camera.fov=fov;camera.updateProjectionMatrix();
@@ -415,17 +474,20 @@ export async function renderEntrePartidasRoadtripToWebM(pkg:RoadtripPackage,onPr
       if(signal?.aborted)throw new Error("Render cancelado.");
       const t=frame/pkg.fps,cue=pkg.dialogue.find(c=>t>=c.start&&t<=c.end);
       if(cue)lastShot=cue.shot;
-      const shot=t<3.2?"exterior":lastShot;
+      let shot:RoadtripShot=t<3.2?"exterior":lastShot;
+      // El cartel se muestra como un vistazo desde la ventanilla y luego vuelve al plano de Bruno.
+      if(cue?.id==="01-bruno-cartel-alfajor")shot=t<cue.start+.82?"billboardRight":"bruno";
+      if(cue?.id==="06-bruno-cartel-oreo")shot=t<cue.start+.78?"billboardLeft":"bruno";
       // Roadside objects slide backwards while the car itself stays on the same mark.
       const scroll=t*8.2;
       world.trees.forEach((tree,i)=>{const base=-42+i*5.2;tree.position.z=((base+scroll+48)%92)-46;});
       world.hills.forEach((hill,i)=>{const base=-38+i*6.4;hill.position.z=((base+scroll*.22+48)%92)-46;});
       world.roadMarks.forEach((mark,i)=>{const base=-52+i*5.0;mark.position.z=((base+scroll+56)%108)-54;});
       world.roadsidePosts.forEach((post,i)=>{const base=-52+Math.floor(i/2)*4.5;post.position.z=((base+scroll+56)%108)-54;});
-      // Each roadside ad has one continuous far-to-near approach and a single pass; no cyclic reset.
-      // It never wraps around or pops back into view after passing the car.
-      world.billboardRight.position.z=18-(t-pkg.billboardRightAt)*8.2;
-      world.billboardLeft.position.z=18-(t-pkg.billboardLeftAt)*8.2;
+      // La camioneta avanza hacia z negativo: cada cartel viene desde delante (z<0),
+      // se acerca en sentido contrario al avance visual y pasa una sola vez junto a la ventanilla.
+      world.billboardRight.position.z=-12+(t-pkg.billboardRightAt)*8.2;
+      world.billboardLeft.position.z=-12+(t-pkg.billboardLeftAt)*8.2;
       world.billboardRight.visible=world.billboardRight.position.z>-30&&world.billboardRight.position.z<24;
       world.billboardLeft.visible=world.billboardLeft.position.z>-30&&world.billboardLeft.position.z<24;
       // The outside strip gives the opening shot a steady sense of travel.
