@@ -1292,11 +1292,19 @@ export async function renderPackageToWebM(
       const time = frame / fps;
       entrePartidasDinnerSet.update(time, entrePartidasDinnerDialogue);
       const cue = entrePartidasDinnerDialogue.find(item => time >= item.start && time <= item.end);
-      const shotId = cue?.id || (cue ? cue.speaker : "dinner-wide");
+      const exteriorEnd = 3.80;
+      const shotId = time < exteriorEnd ? "building-establishing" : cue?.id || "dinner-wide";
       let desiredPosition = new THREE.Vector3(0, 4.85, 18.8);
       let desiredTarget = new THREE.Vector3(0, 0.40, -0.45);
       let desiredFov = 48;
-      if (cue) {
+      if (time < exteriorEnd) {
+        // Low-angle exterior establishing shot: start at street level and gently tilt up the apartment facade.
+        const progress = Math.max(0, Math.min(1, time / exteriorEnd));
+        const ease = progress * progress * (3 - 2 * progress);
+        desiredPosition.set(35, -1.78, 22.0);
+        desiredTarget.set(35, 5.9 + ease * 2.0, -4.5);
+        desiredFov = 48 - ease * 2.0;
+      } else if (cue) {
         const subject = entrePartidasDinnerSet.getSpeakerPosition(cue.speaker);
         desiredPosition.set(subject.x * 0.70, 3.08, 8.95);
         desiredTarget.set(subject.x, subject.y + 0.06, subject.z);
@@ -1308,7 +1316,7 @@ export async function renderPackageToWebM(
         camera.userData.dinnerShot = shotId;
         camera.fov = desiredFov;
       }
-      const blend = cue ? 0.10 : 0.065;
+      const blend = time < exteriorEnd ? 0.075 : cue ? 0.10 : 0.065;
       camera.position.lerp(desiredPosition, blend);
       const currentTarget = (camera.userData.dinnerTarget as THREE.Vector3 | undefined) ?? desiredTarget.clone();
       currentTarget.lerp(desiredTarget, blend);
