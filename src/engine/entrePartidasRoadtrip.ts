@@ -43,46 +43,58 @@ const addCanvasTexture = (draw:(ctx:CanvasRenderingContext2D,w:number,h:number)=
 
 function makeAdTexture(brand:"JORGITO"|"OREO"){
   return addCanvasTexture((ctx,w,h)=>{
-    ctx.fillStyle=brand==="JORGITO"?"#f5e7ce":"#1e245c";ctx.fillRect(0,0,w,h);
-    ctx.fillStyle=brand==="JORGITO"?"#9e3028":"#fff";ctx.textAlign="center";ctx.textBaseline="middle";
-    ctx.font="900 68px Arial";ctx.fillText(brand,w/2,72,w*.9);
-    ctx.fillStyle=brand==="JORGITO"?"#fff8ec":"#e7d7ff";
-    ctx.font="800 31px Arial";ctx.fillText(brand==="JORGITO"?"EL ALFAJOR DE SIEMPRE":"GALLETITAS",w/2,126,w*.9);
-    // A deliberately stylised product illustration; it does not reproduce an official pack.
-    const x=w/2,y=265;
     if(brand==="JORGITO"){
-      ctx.fillStyle="#d9b278";ctx.beginPath();ctx.ellipse(x,y,112,78,0,0,Math.PI*2);ctx.fill();
-      ctx.fillStyle="#5c342a";ctx.beginPath();ctx.ellipse(x,y-10,105,68,0,0,Math.PI*2);ctx.fill();
-      ctx.fillStyle="#e7c18b";ctx.beginPath();ctx.ellipse(x,y-18,98,58,0,0,Math.PI*2);ctx.fill();
-      ctx.fillStyle="#743c29";ctx.beginPath();ctx.ellipse(x,y-18,55,34,0,0,Math.PI*2);ctx.fill();
+      const bg=ctx.createLinearGradient(0,0,w,h);bg.addColorStop(0,"#fff7e8");bg.addColorStop(.55,"#f0dfc3");bg.addColorStop(1,"#d8bd91");ctx.fillStyle=bg;ctx.fillRect(0,0,w,h);
+      ctx.fillStyle="#b72e35";ctx.beginPath();ctx.roundRect(18,16,w-36,118,20);ctx.fill();
+      ctx.fillStyle="#fff9ee";ctx.textAlign="center";ctx.textBaseline="middle";ctx.font="900 88px Arial Black,Arial";ctx.fillText("JORGITO",w/2,76,w*.91);
+      ctx.fillStyle="#7c2d2a";ctx.font="900 29px Arial";ctx.fillText("ALFAJOR TRADICIONAL",w/2,171);
+      ctx.save();ctx.shadowColor="rgba(48,24,15,.34)";ctx.shadowBlur=22;ctx.shadowOffsetY=12;
+      const pack=ctx.createLinearGradient(0,205,0,354);pack.addColorStop(0,"#e5d5b8");pack.addColorStop(.23,"#fff5df");pack.addColorStop(.67,"#dfc59d");pack.addColorStop(1,"#ae8960");
+      ctx.fillStyle=pack;ctx.beginPath();ctx.moveTo(95,235);ctx.lineTo(145,212);ctx.lineTo(675,220);ctx.lineTo(714,250);ctx.lineTo(680,340);ctx.lineTo(145,350);ctx.lineTo(95,320);ctx.closePath();ctx.fill();ctx.restore();
+      ctx.fillStyle="#b52e34";ctx.beginPath();ctx.moveTo(163,221);ctx.lineTo(649,226);ctx.lineTo(655,331);ctx.lineTo(158,337);ctx.closePath();ctx.fill();
+      ctx.fillStyle="#f6e8ce";ctx.textAlign="center";ctx.font="900 65px Arial Black,Arial";ctx.fillText("JORGITO",w/2,278);ctx.font="800 24px Arial";ctx.fillText("ALFAJOR DE CHOCOLATE",w/2,315);
+      ctx.strokeStyle="rgba(255,255,255,.72)";ctx.lineWidth=5;for(let i=0;i<5;i++){ctx.beginPath();ctx.moveTo(111+i*9,230-i*2);ctx.lineTo(121+i*9,333+i*2);ctx.stroke();}
+      const cx=535,cy=410;ctx.save();ctx.shadowColor="rgba(53,29,17,.25)";ctx.shadowBlur=12;ctx.shadowOffsetY=8;
+      const alfajor=ctx.createLinearGradient(0,cy-55,0,cy+55);alfajor.addColorStop(0,"#e4bd7d");alfajor.addColorStop(1,"#9c6335");
+      ctx.fillStyle=alfajor;ctx.beginPath();ctx.ellipse(cx,cy,114,49,-.08,0,Math.PI*2);ctx.fill();
+      ctx.fillStyle="#4a241c";ctx.beginPath();ctx.ellipse(cx,cy-12,112,42,-.08,0,Math.PI*2);ctx.fill();
+      ctx.fillStyle="#d4a15c";ctx.beginPath();ctx.ellipse(cx,cy-17,98,33,-.08,0,Math.PI*2);ctx.fill();
+      ctx.fillStyle="#6b3825";ctx.beginPath();ctx.ellipse(cx,cy-18,63,22,-.08,0,Math.PI*2);ctx.fill();ctx.restore();
+      ctx.fillStyle="#74312c";ctx.textAlign="left";ctx.font="900 28px Arial";ctx.fillText("DULCE DE LECHE",34,414);ctx.fillStyle="#613d2a";ctx.font="700 22px Arial";ctx.fillText("EL SABOR DE SIEMPRE",34,449);
+      ctx.fillStyle="#a32b31";ctx.fillRect(0,477,w,35);ctx.fillStyle="#fff8e9";ctx.textAlign="center";ctx.font="800 18px Arial";ctx.fillText("UN CLÁSICO ARGENTINO",w/2,494);
     }else{
-      for(const dx of [-58,0,58])for(const dy of [-22,38]){
-        ctx.fillStyle="#e8c9a5";ctx.beginPath();ctx.arc(x+dx,y+dy,42,0,Math.PI*2);ctx.fill();
-        ctx.fillStyle="#2a2455";ctx.beginPath();ctx.arc(x+dx,y+dy,32,0,Math.PI*2);ctx.fill();
-        ctx.fillStyle="#f2dfc5";ctx.beginPath();ctx.arc(x+dx,y+dy,23,0,Math.PI*2);ctx.fill();
-      }
+      const bg=ctx.createLinearGradient(0,0,w,h);bg.addColorStop(0,"#111c4b");bg.addColorStop(.52,"#233b82");bg.addColorStop(1,"#101638");ctx.fillStyle=bg;ctx.fillRect(0,0,w,h);
+      ctx.strokeStyle="rgba(255,255,255,.14)";ctx.lineWidth=3;for(let r=0;r<5;r++){ctx.beginPath();ctx.arc(w*.5,h*.43,105+r*42,0,Math.PI*2);ctx.stroke();}
+      ctx.save();ctx.shadowColor="#000";ctx.shadowBlur=16;ctx.shadowOffsetY=5;ctx.textAlign="center";ctx.textBaseline="middle";ctx.lineJoin="round";ctx.font="900 120px Arial Black,Arial";ctx.lineWidth=13;ctx.strokeStyle="#4774be";ctx.strokeText("OREO",w/2,105);ctx.fillStyle="#fff";ctx.fillText("OREO",w/2,105);ctx.restore();
+      ctx.fillStyle="#eaf0ff";ctx.font="800 27px Arial";ctx.textAlign="center";ctx.fillText("GALLETITAS DE CHOCOLATE",w/2,166);
+      const cookie=(cx:number,cy:number,r:number,angle:number)=>{
+        ctx.save();ctx.translate(cx,cy);ctx.rotate(angle);const shell=ctx.createRadialGradient(-r*.25,-r*.28,r*.12,0,0,r);shell.addColorStop(0,"#5d473a");shell.addColorStop(.58,"#30241f");shell.addColorStop(1,"#130f12");
+        ctx.fillStyle=shell;ctx.beginPath();ctx.arc(0,0,r,0,Math.PI*2);ctx.fill();ctx.strokeStyle="#a18a71";ctx.lineWidth=Math.max(2,r*.055);ctx.beginPath();ctx.arc(0,0,r*.86,0,Math.PI*2);ctx.stroke();
+        ctx.strokeStyle="#8c775f";ctx.lineWidth=Math.max(1.5,r*.025);for(let i=0;i<16;i++){const q=i*Math.PI/8;ctx.beginPath();ctx.arc(Math.cos(q)*r*.72,Math.sin(q)*r*.72,r*.075,0,Math.PI*2);ctx.stroke();}
+        ctx.fillStyle="#e7d6b7";ctx.font="900 "+Math.round(r*.23)+"px Arial";ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText("OREO",0,0,r*1.1);ctx.restore();
+      };
+      ctx.save();ctx.shadowColor="rgba(0,0,0,.46)";ctx.shadowBlur=20;ctx.shadowOffsetY=12;ctx.fillStyle="#f4e9d8";ctx.beginPath();ctx.ellipse(300,347,135,37,-.08,0,Math.PI*2);ctx.fill();
+      cookie(254,300,83,-.15);cookie(354,350,78,.22);cookie(480,295,91,.12);ctx.restore();
+      ctx.fillStyle="#fff";ctx.font="900 31px Arial";ctx.fillText("CREMA ORIGINAL",w/2,455);ctx.fillStyle="#b8d1ff";ctx.font="700 21px Arial";ctx.fillText("EL CLÁSICO QUE NOS UNE",w/2,490);
     }
-    ctx.fillStyle=brand==="JORGITO"?"#693c2b":"#fff";
-    ctx.font="900 24px Arial";ctx.fillText("EN LA RUTA, SIEMPRE HAY UNO",w/2,378,w*.94);
-    ctx.fillStyle=brand==="JORGITO"?"#fff8ed":"#e7d7ff";ctx.font="700 18px Arial";
-    ctx.fillText("PUBLICIDAD",w/2,474);
-  },512,512);
+  },896,512);
 }
 
 function makeBillboard(brand:"JORGITO"|"OREO",side:number){
   const group=new THREE.Group(),turn=side>0?-Math.PI/2:Math.PI/2;
-  const frame=addBox(group,[.16,2.08,3.02],brand==="JORGITO"?"#5d5144":"#343743",[0,1.25,0],.48);
-  frame.rotation.y=turn;
-  const board=new THREE.Mesh(new THREE.PlaneGeometry(2.82,1.86),new THREE.MeshStandardMaterial({map:makeAdTexture(brand),roughness:.82,side:THREE.DoubleSide}));
-  board.position.set(0,1.25,side>0?.091:-.091);board.rotation.y=turn;board.castShadow=true;group.add(board);
-  for(const z of [-1.12,1.12]){
-    const leg=addBox(group,[.19,3.45,.19],"#665b4b",[0,-.35,z],.9);
-    leg.position.y=-.25;
-    const brace=addBox(group,[.11,1.18,.11],"#756653",[0,.05,z*.72],.92);brace.rotation.z=z>0?-.34:.34;
+  const metal=mat("#454a49",.56,.38),edge=brand==="JORGITO"?"#7c292d":"#17234d";
+  const backing=addBox(group,[.18,2.25,3.72],edge,[0,1.40,0],.62);backing.rotation.y=turn;
+  const face=new THREE.Mesh(new THREE.PlaneGeometry(3.48,1.98),new THREE.MeshStandardMaterial({map:makeAdTexture(brand),roughness:.68,metalness:.02,side:THREE.DoubleSide}));
+  face.position.set(0,1.40,side>0?.105:-.105);face.rotation.y=turn;face.castShadow=true;group.add(face);
+  // Dos postes rectos independientes. No hay diagonales ni cruces en X.
+  for(const z of [-1.54,1.54]){
+    addBox(group,[.19,4.55,.19],metal,[0,.04,z],.55);
+    addBox(group,[.44,.12,.44],"#555b57",[0,-2.18,z],.72);
+    addBox(group,[.24,.12,.24],"#747a75",[0,2.34,z],.58);
   }
-  const cap=addBox(group,[.20,.12,3.10],brand==="JORGITO"?"#a83d31":"#d9d9e8",[0,2.31,0],.4);cap.rotation.y=turn;
-  group.position.set(side*5.1,0,0);
-  return group;
+  const rail=addBox(group,[.16,.13,3.36],metal,[0,.22,0],.55);rail.rotation.y=turn;
+  const crown=addBox(group,[.19,.13,3.82],metal,[0,2.56,0],.42);crown.rotation.y=turn;
+  group.position.set(side*5.25,0,0);return group;
 }
 
 function makePhone(parent:THREE.Object3D){
@@ -148,7 +160,14 @@ function buildRoadtrip(){
   addBox(car,[3.55,.42,1.22],"#536d66",[0,-1.18,2.12],.34);
   addBox(car,[2.92,.24,3.62],"#394b47",[0,-.92,.12],.48);
   // Roof, window pillars and door belt line.
-  addBox(car,[3.20,.22,3.48],"#4c615b",[0,3.10,.05],.38);
+  addBox(car,[3.34,.24,4.26],"#40564f",[0,3.10,.05],.34);
+  // Techo cerrado con revestimiento interior, viseras, plafón y agarraderas.
+  addBox(car,[3.10,.10,4.02],"#c5c1b5",[0,2.94,.05],.88);
+  addBox(car,[2.88,.06,3.72],"#d7d1c4",[0,2.875,.05],.92);
+  for(const x of [-.86,.86])addBox(car,[.72,.10,.36],"#77786f",[x,2.72,-1.60],.72);
+  addBox(car,[.36,.055,.24],"#414945",[0,2.81,.20],.48);
+  addBox(car,[.23,.045,.13],"#f4e7c6",[0,2.775,.20],.3);
+  for(const x of [-1.42,1.42])for(const z of [-.35,1.48])addBox(car,[.34,.07,.10],"#525c56",[x,2.72,z],.62);
   for(const x of [-1.55,1.55]){
     addBox(car,[.13,2.18,.14],"#3b4f49",[x,1.82,-1.58],.4);
     addBox(car,[.13,2.18,.14],"#3b4f49",[x,1.82,1.65],.4);
@@ -199,12 +218,25 @@ function buildRoadtrip(){
     addBox(car,[.04,.045,.20],"#b9b4a5",[side*1.38,-.37,.18],.32);
     addBox(car,[.035,.07,.55],"#424b46",[side*1.405,-.72,.70],.6);
   }
-  // Front seats with a warm, textured low-poly upholstery.
+  // Butacas delanteras acolchadas, con panel central, laterales y apoyacabezas.
   for(const x of [-.82,.82]){
     addBox(car,[.94,1.30,.20],"#746b5c",[x,-.02,.83],.96);
     addBox(car,[.98,.20,1.0],"#8b8170",[x,-1.12,.12],.92);
     addBox(car,[.10,1.04,.12],"#655e53",[x-.43,-.55,.83],.95);
     addBox(car,[.10,1.04,.12],"#655e53",[x+.43,-.55,.83],.95);
+    addBox(car,[.62,1.05,.035],"#8b8170",[x,-.02,.945],.98);
+    addBox(car,[.34,.12,.20],"#6b6255",[x,.73,.84],.9);
+  }
+  // Asiento trasero completo de tres plazas, respaldo, apoyacabezas y cinturones.
+  addBox(car,[2.34,.30,.88],"#746b5c",[0,-1.18,1.24],.96);
+  addBox(car,[2.36,1.12,.25],"#817767",[0,-.47,1.72],.95);
+  for(const x of [-.72,0,.72])addBox(car,[.72,.93,.045],"#958a78",[x,-.49,1.855],.96);
+  for(const x of [-.76,0,.76])addBox(car,[.34,.64,.22],"#665e52",[x,.42,1.63],.86);
+  for(const x of [-.72,0,.72]){
+    const buckle=addBox(car,[.09,.30,.08],"#b83e36",[x,-.98,1.10],.5);buckle.rotation.z=x<0?-.08:.08;
+  }
+  for(const side of [-1,1]){
+    const belt=addBox(car,[.045,1.08,.035],"#343c3a",[side*1.05,-.30,1.48],.9);belt.rotation.z=side*.16;
   }
   // Steering wheel: left-hand drive, fixed in the same place for every interior angle.
   const wheel=new THREE.Group();wheel.position.set(-.88,.38,-1.12);wheel.rotation.y=Math.PI;car.add(wheel);
