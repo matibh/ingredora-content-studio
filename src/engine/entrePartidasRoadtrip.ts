@@ -256,7 +256,7 @@ export async function renderEntrePartidasRoadtripToWebM(pkg:RoadtripPackage,onPr
       const scroll=t*8.2;
       world.trees.forEach((tree,i)=>{const base=-42+i*5.2;tree.position.z=((base+scroll+48)%92)-46;});
       world.hills.forEach((hill,i)=>{const base=-38+i*6.4;hill.position.z=((base+scroll*.22+48)%92)-46;});
-      // Each roadside ad has one continuous far-to-near approach and a single pass.
+      // Each roadside ad has one continuous far-to-near approach and a single pass; no cyclic reset.
       // It never wraps around or pops back into view after passing the car.
       world.billboardRight.position.z=18-(t-pkg.billboardRightAt)*8.2;
       world.billboardLeft.position.z=18-(t-pkg.billboardLeftAt)*8.2;
