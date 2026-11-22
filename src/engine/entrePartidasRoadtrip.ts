@@ -142,6 +142,9 @@ function buildRoadtrip(){
   }
   // Rear side quarter windows and front windshield remain clear so exterior signs read through the glass.
   const windshield=new THREE.Mesh(new THREE.PlaneGeometry(3.0,1.42),glass);windshield.position.set(0,1.83,-2.02);windshield.rotation.x=-.10;car.add(windshield);
+  // Rear windshield/luneta: the cabin is a complete closed-roof car, not a convertible.
+  const rearGlass=new THREE.Mesh(new THREE.PlaneGeometry(2.82,1.34),glass);rearGlass.position.set(0,1.83,2.02);rearGlass.rotation.x=.10;car.add(rearGlass);
+  for(const x of [-1.55,1.55]) addBox(car,[.13,.18,.14],"#3b4f49",[x,3.02,1.65],.4);
   // Dashboard, center console and front controls.
   addBox(car,[3.00,.48,.72],"#827f72",[0,-.10,-1.72],.58);
   addBox(car,[.92,.48,.74],"#5f625b",[0,-.55,-1.38],.52);
@@ -167,8 +170,7 @@ function buildRoadtrip(){
   const bruno=createDiner("bruno",.82,.05,Math.PI,false);
   car.add(valentina.root,bruno.root);
   // Valentina keeps her hands near the steering wheel; Bruno's phone stays in the passenger's hands.
-  const phone=makePhone(bruno.root);
-  const phoneGlow=new THREE.PointLight("#e6e9d5",.45,1.6);phoneGlow.position.set(.4,2.3,.45);bruno.root.add(phoneGlow);
+  const phone=makePhone(bruno.root);phone.visible=false;
   // Side advertising billboards are outside the windows; they pass alongside the car.
   const billboardRight=makeBillboard("JORGITO",1);const billboardLeft=makeBillboard("OREO",-1);
   scene.add(billboardRight,billboardLeft);
@@ -180,8 +182,8 @@ function shotCamera(shot:RoadtripShot,camera:THREE.PerspectiveCamera,time:number
   switch(shot){
     case "exterior": p=[5.1,2.65,-6.0];target=[0,-.22,0];fov=48;break;
     case "master": p=[0,1.92,-2.56];target=[0,1.03,.15];fov=64;break;
-    case "bruno": p=[.86,1.66,-1.88];target=[.82,1.08,-.34];fov=43;break;
-    case "valentina": p=[-.86,1.66,-1.88];target=[-.82,1.08,-.34];fov=43;break;
+    case "bruno": p=[1.05,1.72,-2.35];target=[.82,1.08,-.30];fov=53;break;
+    case "valentina": p=[-1.05,1.72,-2.35];target=[-.82,1.08,-.30];fov=53;break;
     case "phone": p=[.58,1.05,-1.35];target=[.38,.47,-.63];fov=31;break;
     case "billboardRight": p=[1.18,1.60,-.45];target=[5.12,1.43,billboardRight.position.z];fov=51;break;
     case "billboardLeft": p=[-1.18,1.60,-.45];target=[-5.12,1.43,billboardLeft.position.z];fov=51;break;
@@ -254,8 +256,12 @@ export async function renderEntrePartidasRoadtripToWebM(pkg:RoadtripPackage,onPr
       const scroll=t*8.2;
       world.trees.forEach((tree,i)=>{const base=-42+i*5.2;tree.position.z=((base+scroll+48)%92)-46;});
       world.hills.forEach((hill,i)=>{const base=-38+i*6.4;hill.position.z=((base+scroll*.22+48)%92)-46;});
-      world.billboardRight.position.z=((scroll-pkg.billboardRightAt*8.2+18)%36+36)%36-18;
-      world.billboardLeft.position.z=((scroll-pkg.billboardLeftAt*8.2+18)%36+36)%36-18;
+      // Each roadside ad has one continuous far-to-near approach and a single pass.
+      // It never wraps around or pops back into view after passing the car.
+      world.billboardRight.position.z=18-(t-pkg.billboardRightAt)*8.2;
+      world.billboardLeft.position.z=18-(t-pkg.billboardLeftAt)*8.2;
+      world.billboardRight.visible=world.billboardRight.position.z>-30&&world.billboardRight.position.z<24;
+      world.billboardLeft.visible=world.billboardLeft.position.z>-30&&world.billboardLeft.position.z<24;
       // The outside strip gives the opening shot a steady sense of travel.
       world.car.position.y=Math.sin(t*1.8)*.006;
       world.car.rotation.y=Math.sin(t*.12)*.006;
@@ -276,7 +282,7 @@ export async function renderEntrePartidasRoadtripToWebM(pkg:RoadtripPackage,onPr
         rig.mouth.scale.set(1,mouthOpen,1);
       }
       if(t>=3.2&&t<6.5){world.valentina.head.rotation.y=.025;}
-      if(shot==="phone"){world.phone.rotation.z=Math.sin(t*1.4)*.025;}
+      
       shotCamera(shot,camera,t,world.billboardRight,world.billboardLeft);
       renderer.render(world.scene,camera);ctx.drawImage(renderer.domElement,0,0,pkg.width,pkg.height);
       const vignette=ctx.createRadialGradient(360,550,280,360,640,930);vignette.addColorStop(0,"rgba(0,0,0,0)");vignette.addColorStop(1,"rgba(12,15,16,.19)");ctx.fillStyle=vignette;ctx.fillRect(0,0,pkg.width,pkg.height);
