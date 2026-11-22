@@ -987,7 +987,7 @@ export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
 }
 
 
-export function drawEntrePartidasBranding(ctx:CanvasRenderingContext2D,time:number,width:number,height:number){
+export function drawEntrePartidasBranding(ctx:CanvasRenderingContext2D,time:number,width:number,height:number,chapter=1,cast="Bruno · Martina · Valentina",endCardStart=67.20){
   const scale=width/720;
   const rounded=(x:number,y:number,w:number,h:number,r:number)=>{
     ctx.beginPath();ctx.roundRect(x,y,w,h,r);
@@ -1007,12 +1007,12 @@ export function drawEntrePartidasBranding(ctx:CanvasRenderingContext2D,time:numb
     ctx.fillStyle="#fffaf0";ctx.font="900 "+Math.round(54*scale)+"px Arial Black,Arial";
     ctx.fillText("ENTRE PARTIDAS",width/2,y+panelH*.49);
     ctx.fillStyle="#f0d18b";ctx.font="900 "+Math.round(22*scale)+"px Arial";
-    ctx.fillText("CAPÍTULO 1",width/2,y+panelH*.82);
+    ctx.fillText("CAPÍTULO "+chapter,width/2,y+panelH*.82);
     ctx.restore();
   }
   // Bruno's final "Sí, sí..." ends at 56.85s. Start the closing slate promptly.
-  if(time>=67.20){
-    const fade=Math.min(1,(time-67.20)/.42);
+  if(time>=endCardStart){
+    const fade=Math.min(1,(time-endCardStart)/.42);
     ctx.save();ctx.globalAlpha=fade;
     const veil=ctx.createLinearGradient(0,0,0,height);
     veil.addColorStop(0,"rgba(10,25,20,.96)");veil.addColorStop(.52,"rgba(13,35,27,.98)");veil.addColorStop(1,"rgba(7,18,15,1)");
@@ -1032,7 +1032,7 @@ export function drawEntrePartidasBranding(ctx:CanvasRenderingContext2D,time:numb
     ctx.fillStyle="#e6e0cf";ctx.font="700 "+Math.round(18*scale)+"px Arial";
     ctx.fillText("Creado y producido por Ingredora",width/2,height*.685);
     ctx.fillStyle="rgba(230,224,207,.82)";ctx.font="600 "+Math.round(16*scale)+"px Arial";
-    ctx.fillText("Bruno · Martina · Valentina",width/2,height*.735);
+    ctx.fillText(cast,width/2,height*.735);
     ctx.restore();
   }
 }
