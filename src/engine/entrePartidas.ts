@@ -52,8 +52,8 @@ function makeCharacter(name: EntrePartidasCue["speaker"], x: number, z: number):
     box(root,[.60,.58,.38],shirt,[0,1.40,0]);
     box(root,[.53,.20,.37],shirt,[0,1.08,0]);
     box(root,[.58,.25,.38],pants,[0,.82,0]);
-    box(root,[.16,.18,.38],skin,[-.36,1.59,0]);
-    box(root,[.16,.18,.38],skin,[.36,1.59,0]);
+    // Do not overlay skin-colored shoulder plates on the torso: their coplanar
+    // front/back faces caused visible z-fighting at the shirt-to-skin seam.
     box(root,[.30,.045,.025],mat(isMartina?"#e3b79a":"#a9cbd1"),[0,1.59,.205],false);
   }
   box(root,[.19,.25,.18],skin,[0,isBruno?1.28:1.78,0]);
@@ -947,8 +947,9 @@ export function drawEntrePartidasBranding(ctx:CanvasRenderingContext2D,time:numb
     ctx.fillText("CAPÍTULO 1",width/2,y+panelH*.82);
     ctx.restore();
   }
-  if(time>=62){
-    const fade=Math.min(1,(time-62)/.45);
+  // Bruno finishes "Sí, sí..." at 61.5s; reveal the end card exactly one second later.
+  if(time>=62.5){
+    const fade=Math.min(1,(time-62.5)/.45);
     ctx.save();ctx.globalAlpha=fade;
     const veil=ctx.createLinearGradient(0,0,0,height);
     veil.addColorStop(0,"rgba(12,24,20,.45)");veil.addColorStop(.35,"rgba(12,24,20,.80)");veil.addColorStop(1,"rgba(12,24,20,.96)");
