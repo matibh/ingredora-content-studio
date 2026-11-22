@@ -80,7 +80,14 @@ function createCokeBottle(world:THREE.Scene,x:number,y:number,z:number){
     ctx.font="700 18px Arial";ctx.fillText("SABOR ORIGINAL",w/2,h*.83);
   },768,220);
   const label=new THREE.Mesh(new THREE.CylinderGeometry(.386,.386,.46,32,1,true),new THREE.MeshStandardMaterial({map:labelMap,roughness:.46}));
-  label.position.y=.76;bottle.add(label);bottle.traverse(o=>{if(o instanceof THREE.Mesh)o.castShadow=true;});return bottle;
+  label.position.y=.76;bottle.add(label);
+  // A clean front-facing Coca-Cola badge keeps the product name readable in close-ups.
+  const logo=new THREE.Mesh(new THREE.PlaneGeometry(.70,.20),new THREE.MeshBasicMaterial({map:labelMap,side:THREE.DoubleSide,toneMapped:false}));
+  logo.position.set(0,.76,.405);bottle.add(logo);
+  bottle.traverse(o=>{if(o instanceof THREE.Mesh)o.castShadow=true;});
+  // A real-world 2L bottle is a table prop, not a foreground hero object.
+  bottle.scale.setScalar(.58);
+  return bottle;
 }
 
 function createDinnerRoom(world:THREE.Scene){
@@ -89,14 +96,22 @@ function createDinnerRoom(world:THREE.Scene){
   const floor=new THREE.Mesh(new THREE.PlaneGeometry(32,32),mat("#b9ad9a",.88));floor.rotation.x=-Math.PI/2;floor.position.set(0,-2,-2);world.add(floor);
   for(let x=-8;x<=8;x+=1.25)box(world,[.018,.008,20],mat("#a79b89",.96),[x,-1.993,-2],false);
   for(let z=-12;z<=8;z+=1.25)box(world,[18,.008,.018],mat("#a79b89",.96),[0,-1.992,z],false);
-  box(world,[18,8.2,.28],plaster,[0,2,-8.2],false);box(world,[18,1.05,.3],sage,[0,-1.15,-8],false);box(world,[18,.11,.34],brass,[0,-.57,-7.82],false);
+  // Leave an actual window opening in the rear wall so the neighbouring supermarket
+  // and its sign can be seen from the dining table.
+  box(world,[11.0,8.2,.28],plaster,[-3.5,2,-8.2],false);
+  box(world,[3.2,8.2,.28],plaster,[7.4,2,-8.2],false);
+  box(world,[3.8,1.8,.28],plaster,[3.9,5.2,-8.2],false);
+  box(world,[3.8,2.8,.28],plaster,[3.9,-.7,-8.2],false);
+  box(world,[18,1.05,.3],sage,[0,-1.15,-8],false);
+  box(world,[18,.11,.34],brass,[0,-.57,-7.82],false);
   // Through the apartment window, the supermarket sign is immediately outside.
   box(world,[5.7,3.5,.12],darkWood,[3.9,2.5,-7.99],false);box(world,[5.38,3.18,.07],glass,[3.9,2.5,-7.88],false);
   box(world,[.12,3.2,.13],darkWood,[2.05,2.5,-7.8],false);box(world,[.12,3.2,.13],darkWood,[5.75,2.5,-7.8],false);
   box(world,[5.45,.11,.14],darkWood,[3.9,.92,-7.79],false);box(world,[5.45,.11,.14],darkWood,[3.9,4.08,-7.79],false);box(world,[.08,3.1,.13],darkWood,[3.9,2.5,-7.75],false);
   box(world,[7,4.4,.35],mat("#62736c",.92),[3.9,1.9,-12.8],false);box(world,[5.6,.92,.16],mat("#284d3b",.45),[3.9,3.65,-12.55],false);
   const signMap=texture((ctx,w,h)=>{ctx.fillStyle="#254e3b";ctx.fillRect(0,0,w,h);ctx.fillStyle="#f8f0d7";ctx.textAlign="center";ctx.textBaseline="middle";ctx.font="900 52px Arial";ctx.fillText("SUPERMERCADO",w/2,h*.52,w*.94);},768,180);
-  const sign=new THREE.Mesh(new THREE.PlaneGeometry(5.35,.72),new THREE.MeshBasicMaterial({map:signMap}));sign.position.set(3.9,3.65,-12.44);world.add(sign);
+  const sign=new THREE.Mesh(new THREE.PlaneGeometry(5.35,.72),new THREE.MeshBasicMaterial({map:signMap,side:THREE.DoubleSide}));
+  sign.position.set(3.9,3.65,-12.44);world.add(sign);
   box(world,[2.2,2,.1],mat("#293c35",.36),[2.9,1.38,-12.48],false);box(world,[2.2,2,.1],mat("#263a36",.36),[5.1,1.38,-12.48],false);
   for(let i=0;i<6;i++)box(world,[.18,.6+(i%2)*.16,.2],mat(["#c8a04b","#6a8e72","#c85b48"][i%3]),[2.2+i*.58,.25,-12.34],false);
   // Integrated kitchen, cabinets, fridge and the apartment sofa.
