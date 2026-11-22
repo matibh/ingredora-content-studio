@@ -92,7 +92,7 @@ function createCokeBottle(world:THREE.Scene,x:number,y:number,z:number){
 
 function createDinnerRoom(world:THREE.Scene){
   const plaster=mat("#d9cdb9",.97),warm=mat("#eee3d1",.96),sage=mat("#a7b19a",.9),wood=mat("#76543a",.52),darkWood=mat("#3e3027",.56),brass=mat("#bd9858",.34,.64);
-  const glass=new THREE.MeshStandardMaterial({color:"#b9e2f5",emissive:"#77bce8",emissiveIntensity:.28,roughness:.12,metalness:.04,transparent:true,opacity:.22,side:THREE.DoubleSide});
+  const glass=mat("#d9cdb9",.97);
   const floor=new THREE.Mesh(new THREE.PlaneGeometry(32,32),mat("#b9ad9a",.88));floor.rotation.x=-Math.PI/2;floor.position.set(0,-2,-2);world.add(floor);
   for(let x=-8;x<=8;x+=1.25)box(world,[.018,.008,20],mat("#a79b89",.96),[x,-1.993,-2],false);
   for(let z=-12;z<=8;z+=1.25)box(world,[18,.008,.018],mat("#a79b89",.96),[0,-1.992,z],false);
@@ -105,17 +105,17 @@ function createDinnerRoom(world:THREE.Scene){
   box(world,[3.8,2.8,.28],plaster,[3.9,-.7,-8.2],false);
   box(world,[18,1.05,.3],sage,[0,-1.15,-8],false);
   box(world,[18,.11,.34],brass,[0,-.57,-7.82],false);
-  // The curtained window behind Ernesto shows open blue sky, not another building.
+  // The curtained window behind Ernesto is finished in the same plaster color as the apartment walls; no blue exterior color is visible in the interior shot.
   box(world,[5.7,3.5,.12],darkWood,[3.9,2.5,-7.99],false);box(world,[5.38,3.18,.07],glass,[3.9,2.5,-7.88],false);
   box(world,[.12,3.2,.13],darkWood,[2.05,2.5,-7.8],false);box(world,[.12,3.2,.13],darkWood,[5.75,2.5,-7.8],false);
   box(world,[5.45,.11,.14],darkWood,[3.9,.92,-7.79],false);box(world,[5.45,.11,.14],darkWood,[3.9,4.08,-7.79],false);box(world,[.08,3.1,.13],darkWood,[3.9,2.5,-7.75],false);
-  const outdoorSky=texture((ctx,w,h)=>{const g=ctx.createLinearGradient(0,0,0,h);g.addColorStop(0,"#54b9f4");g.addColorStop(.72,"#9cddff");g.addColorStop(1,"#d8f0ff");ctx.fillStyle=g;ctx.fillRect(0,0,w,h);ctx.fillStyle="rgba(255,255,255,.88)";for(const [x,y,r] of [[.18,.28,.075],[.68,.20,.06],[.82,.58,.085]]){ctx.beginPath();ctx.arc(w*x,h*y,h*r,0,Math.PI*2);ctx.arc(w*(x+.055),h*(y-.035),h*r*.78,0,Math.PI*2);ctx.arc(w*(x+.105),h*y,h*r*.68,0,Math.PI*2);ctx.fill();}},1024,640);
-  const skyView=new THREE.Mesh(new THREE.PlaneGeometry(8.2,5.2),new THREE.MeshBasicMaterial({map:outdoorSky,side:THREE.DoubleSide,toneMapped:false}));skyView.position.set(3.9,2.5,-12.72);world.add(skyView);
+  const wallBackdrop=texture((ctx,w,h)=>{ctx.fillStyle="#d9cdb9";ctx.fillRect(0,0,w,h);ctx.fillStyle="rgba(255,255,255,.10)";for(let y=0;y<h;y+=48)ctx.fillRect(0,y,w,2);ctx.fillStyle="rgba(117,102,82,.035)";for(let x=0;x<w;x+=64)ctx.fillRect(x,0,1,h);},1024,640);
+  const windowBackdrop=new THREE.Mesh(new THREE.PlaneGeometry(8.2,5.2),new THREE.MeshBasicMaterial({map:wallBackdrop,side:THREE.DoubleSide,toneMapped:false}));windowBackdrop.position.set(3.9,2.5,-12.72);world.add(windowBackdrop);
   // Cozy apartment details: patterned rug under the dining area and a warm framed gallery wall.
   const rug=mat("#718276",.98);box(world,[10.8,.035,5.2],rug,[0,-1.965,.65],false);
   for(let x=-5.1;x<=5.1;x+=.34){box(world,[.018,.012,4.75],mat("#aeb49b",.96),[x,-1.94,.65],false);}
   for(const z of [-1.62,2.92])box(world,[10.35,.014,.025],mat("#d6c5a6",.9),[0,-1.94,z],false);
-  // Curtain rails and soft side panels frame the supermarket-facing window.
+  // Curtain rails and soft side panels frame the apartment window.
   rod(world,[1.78,4.48,-7.52],[6.02,4.48,-7.52],.035,brass);
   for(const x of [1.92,5.88]){
     const curtain=mat("#8d9b86",.96);box(world,[.34,3.25,.12],curtain,[x,2.43,-7.56],false);
@@ -193,7 +193,7 @@ function createDinnerRoom(world:THREE.Scene){
   box(world,[1.45,.42,.08],facadeLight,[bx,1.12,frontZ-.04],false);
   const buildingNumber=texture((ctx,w,h)=>{ctx.fillStyle="#344b40";ctx.fillRect(0,0,w,h);ctx.fillStyle="#f7e9cc";ctx.textAlign="center";ctx.textBaseline="middle";ctx.font="900 92px Arial";ctx.fillText("284",w/2,h/2);},256,128);
   const numberPlate=new THREE.Mesh(new THREE.PlaneGeometry(1.35,.34),new THREE.MeshBasicMaterial({map:buildingNumber}));numberPlate.position.set(bx,1.12,frontZ+.012);world.add(numberPlate);
-  const streetGround=mat("#5a5d56",.98),sidewalk=mat("#9b978c",.96);
+  const streetGround=mat("#414344",.99),sidewalk=mat("#aaa69d",.96);
   box(world,[34,.12,40],streetGround,[bx,-2.24,-7],false);
   box(world,[18,.18,3.2],sidewalk,[bx,-2.13,2.2],false);
   for(let i=0;i<6;i++)box(world,[1.5,.025,.09],mat("#d0c8b5",.9),[bx-4.5+i*1.8,-2.035,3.05],false);
@@ -277,7 +277,7 @@ export function createEntrePartidasDinnerSet(world:THREE.Scene):EntrePartidasDin
   world.add(new THREE.HemisphereLight(0xc9eaff,0x777d6b,2.2));
   const key=new THREE.DirectionalLight(0xffe5bd,3.15);key.position.set(-5.8,10.8,7.6);world.add(key);
   const rim=new THREE.DirectionalLight(0xd8efff,1.35);rim.position.set(5,5.8,-6.6);world.add(rim);
-  const windowSun=new THREE.DirectionalLight(0xffedcf,1.65);windowSun.position.set(4.5,7.5,-13.8);world.add(windowSun);
+  const windowSun=new THREE.DirectionalLight(0xffedcf,1.05);windowSun.position.set(4.5,7.5,-13.8);world.add(windowSun);
   const fill=new THREE.PointLight(0xffd09a,18,20,1.8);fill.position.set(0,4.5,2.2);world.add(fill);
   createDinnerRoom(world);
   const placements:Array<[DinnerSpeaker,number,number,number]>=[
