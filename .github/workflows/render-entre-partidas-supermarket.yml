@@ -27,6 +27,20 @@ jobs:
     timeout-minutes: 180
     steps:
       - uses: actions/checkout@v4
+      - name: Checkout the uploaded laughter and outro assets
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: _uploaded-audio-assets
+      - name: Stage the uploaded laughter and outro
+        run: |
+          mkdir -p public/studio/audio/entre-partidas/supermarket-01
+          cp "_uploaded-audio-assets/risa.mp3" public/studio/audio/entre-partidas/supermarket-01/risa.mp3
+          cp "_uploaded-audio-assets/risa y outro.mp3" "public/studio/audio/entre-partidas/supermarket-01/risa-y-outro.mp3"
+          test -s public/studio/audio/entre-partidas/supermarket-01/risa.mp3
+          test -s public/studio/audio/entre-partidas/supermarket-01/risa-y-outro.mp3
+          echo "RISA_DURATION=$(ffprobe -v error -show_entries format=duration -of csv=p=0 public/studio/audio/entre-partidas/supermarket-01/risa.mp3)"
+          echo "OUTRO_DURATION=$(ffprobe -v error -show_entries format=duration -of csv=p=0 public/studio/audio/entre-partidas/supermarket-01/risa-y-outro.mp3)"
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -56,6 +70,8 @@ jobs:
           /tmp/edge-tts/bin/python -m pip install --disable-pip-version-check --no-cache-dir edge-tts
       - name: Prepare original voices and Bruno's complete replacement line
         run: /tmp/edge-tts/bin/python scripts/prepare-entre-partidas-audio.py
+      - name: Add laughter after punchlines and the uploaded credits outro
+        run: python3 scripts/prepare-entre-partidas-comedy-audio.py
       - name: Render the complete Three.js scene with narration
         run: node scripts/render-supermarket.mjs
       - name: Preserve original WebM render

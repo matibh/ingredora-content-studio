@@ -341,21 +341,8 @@ export async function generateOriginalSoundtrack({
     addTone(783.99, 4.18, 0.26, "triangle", 0.15, 4_000, -0.12);
     addTone(1_046.50, 4.43, 0.50, "triangle", 0.18, 4_800, 0.16);
 
-    // Reprise the series hook over the closing credits, with a warm resolved chord.
-    const outroAt = Math.max(5.8, durationSeconds - 7.85);
-    const outroHook = [659.25, 783.99, 880.00, 783.99, 698.46, 783.99, 1_046.50, 987.77,
-      880.00, 783.99, 659.25, 587.33, 698.46, 783.99, 880.00, 1_046.50];
-    outroHook.forEach((hz, i) => {
-      const at = outroAt + i * q * 0.48;
-      addTone(hz, at, 0.24, "triangle", i % 4 === 3 ? 0.16 : 0.12,
-        4_600, i % 2 ? 0.20 : -0.20);
-      if (i % 4 === 0) addTone(hz * 0.5, at + 0.025, 0.20, "sine", 0.052, 1_700, 0);
-    });
-    const outroChordAt = Math.max(outroAt + 3.8, durationSeconds - 2.2);
-    [261.63, 329.63, 392.00, 523.25].forEach((hz, i) =>
-      addTone(hz, outroChordAt + i * 0.035, Math.max(0.35, durationSeconds - outroChordAt - 0.08),
-        "triangle", 0.095, 3_600, (i - 1.5) * 0.22),
-    );
+    // The episode's uploaded outro is mixed into the narration track by the render workflow.
+
   }
 
   if (theme === "game-show") {

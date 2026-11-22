@@ -911,7 +911,7 @@ export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
         rig.rightArm.rotation.x=-.018-gesture*.025;
       }
     }
-    if(time>=46&&time<55)valentina.rightArm.rotation.z=.08;
+    if(time>=46&&time<65)valentina.rightArm.rotation.z=.08;
     cart.position.x=-2.75;
   };
   return {
@@ -948,8 +948,8 @@ export function drawEntrePartidasBranding(ctx:CanvasRenderingContext2D,time:numb
     ctx.restore();
   }
   // Bruno's final "Sí, sí..." ends at 56.85s. Start the closing slate promptly.
-  if(time>=57.20){
-    const fade=Math.min(1,(time-57.20)/.42);
+  if(time>=67.20){
+    const fade=Math.min(1,(time-67.20)/.42);
     ctx.save();ctx.globalAlpha=fade;
     const veil=ctx.createLinearGradient(0,0,0,height);
     veil.addColorStop(0,"rgba(10,25,20,.96)");veil.addColorStop(.52,"rgba(13,35,27,.98)");veil.addColorStop(1,"rgba(7,18,15,1)");
