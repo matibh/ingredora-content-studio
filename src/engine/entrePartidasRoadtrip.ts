@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import { BufferTarget, CanvasSource, Output, Quality, WebMOutputFormat, canEncodeVideo } from "mediabunny";
-import { createDiner, type DinerRig } from "./entrePartidasDinner";
+import { createDiner } from "./entrePartidasDinner";
 
 export type RoadtripShot = "exterior" | "master" | "bruno" | "valentina" | "phone" | "billboardRight" | "billboardLeft";
 export type RoadtripCue = {
@@ -30,8 +30,6 @@ type RoadtripPackage = {
 };
 export type RoadtripProgress = { frame: number; totalFrames: number; percent: number };
 
-const ease = (v:number) => { const x=Math.max(0,Math.min(1,v)); return x*x*(3-2*x); };
-const mix = (a:number,b:number,t:number) => a+(b-a)*t;
 const mat = (color:string,roughness=.78,metalness=0) => new THREE.MeshStandardMaterial({color,roughness,metalness});
 const addBox = (parent:THREE.Object3D,size:[number,number,number],color:string,pos:[number,number,number],roughness=.8) => {
   const mesh=new THREE.Mesh(new THREE.BoxGeometry(...size),mat(color,roughness));
@@ -123,7 +121,7 @@ function buildRoadtrip(){
   const trees:THREE.Group[]=[];
   for(let i=0;i<18;i++){
     const tree=new THREE.Group();const side=i%2?1:-1;
-    const trunk=addBox(tree,[.22,1.2,.22],"#795a3e",[0,-.45,0]);
+    addBox(tree,[.22,1.2,.22],"#795a3e",[0,-.45,0]);
     const leaves=new THREE.Mesh(new THREE.ConeGeometry(.78,1.8,6),mat(i%3?"#557650":"#66845c",.98));leaves.position.y=.82;tree.add(leaves);
     tree.position.set(side*(5.6+(i%3)*.55),-1.15,-42+i*5.2);scene.add(tree);trees.push(tree);
   }
