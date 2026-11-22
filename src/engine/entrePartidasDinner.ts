@@ -92,7 +92,7 @@ function createCokeBottle(world:THREE.Scene,x:number,y:number,z:number){
 
 function createDinnerRoom(world:THREE.Scene){
   const plaster=mat("#d9cdb9",.97),warm=mat("#eee3d1",.96),sage=mat("#a7b19a",.9),wood=mat("#76543a",.52),darkWood=mat("#3e3027",.56),brass=mat("#bd9858",.34,.64);
-  const glass=new THREE.MeshStandardMaterial({color:"#b9d4d0",roughness:.18,metalness:.1,transparent:true,opacity:.34,side:THREE.DoubleSide});
+  const glass=new THREE.MeshStandardMaterial({color:"#b9e2f5",emissive:"#77bce8",emissiveIntensity:.28,roughness:.12,metalness:.04,transparent:true,opacity:.22,side:THREE.DoubleSide});
   const floor=new THREE.Mesh(new THREE.PlaneGeometry(32,32),mat("#b9ad9a",.88));floor.rotation.x=-Math.PI/2;floor.position.set(0,-2,-2);world.add(floor);
   for(let x=-8;x<=8;x+=1.25)box(world,[.018,.008,20],mat("#a79b89",.96),[x,-1.993,-2],false);
   for(let z=-12;z<=8;z+=1.25)box(world,[18,.008,.018],mat("#a79b89",.96),[0,-1.992,z],false);
@@ -108,7 +108,7 @@ function createDinnerRoom(world:THREE.Scene){
   box(world,[5.7,3.5,.12],darkWood,[3.9,2.5,-7.99],false);box(world,[5.38,3.18,.07],glass,[3.9,2.5,-7.88],false);
   box(world,[.12,3.2,.13],darkWood,[2.05,2.5,-7.8],false);box(world,[.12,3.2,.13],darkWood,[5.75,2.5,-7.8],false);
   box(world,[5.45,.11,.14],darkWood,[3.9,.92,-7.79],false);box(world,[5.45,.11,.14],darkWood,[3.9,4.08,-7.79],false);box(world,[.08,3.1,.13],darkWood,[3.9,2.5,-7.75],false);
-  box(world,[7,4.4,.35],mat("#62736c",.92),[3.9,1.9,-12.8],false);box(world,[5.6,.92,.16],mat("#284d3b",.45),[3.9,3.65,-12.55],false);
+  box(world,[7,4.4,.35],mat("#a9c4ad",.92),[3.9,1.9,-12.8],false);box(world,[5.6,.92,.16],mat("#284d3b",.45),[3.9,3.65,-12.55],false);
   const signMap=texture((ctx,w,h)=>{ctx.fillStyle="#254e3b";ctx.fillRect(0,0,w,h);ctx.fillStyle="#f8f0d7";ctx.textAlign="center";ctx.textBaseline="middle";ctx.font="900 52px Arial";ctx.fillText("SUPERMERCADO",w/2,h*.52,w*.94);},768,180);
   const sign=new THREE.Mesh(new THREE.PlaneGeometry(5.35,.72),new THREE.MeshBasicMaterial({map:signMap,side:THREE.DoubleSide}));
   sign.position.set(3.9,3.65,-12.44);world.add(sign);
@@ -276,10 +276,11 @@ function createTableSetting(world:THREE.Scene,diners:DinerRig[]){
 }
 
 export function createEntrePartidasDinnerSet(world:THREE.Scene):EntrePartidasDinnerSet{
-  world.background=new THREE.Color("#d9cdbb");world.fog=new THREE.Fog("#d9cdbb",25,48);
-  world.add(new THREE.HemisphereLight(0xfff0d8,0x39483c,1.75));
-  const key=new THREE.DirectionalLight(0xffe3bd,2.7);key.position.set(-5.8,8.8,7.6);world.add(key);
-  const rim=new THREE.DirectionalLight(0xd8e8ff,1.1);rim.position.set(5,4.8,-6.6);world.add(rim);
+  world.background=new THREE.Color("#91cef4");world.fog=new THREE.Fog("#c7e7f8",32,70);
+  world.add(new THREE.HemisphereLight(0xc9eaff,0x777d6b,2.2));
+  const key=new THREE.DirectionalLight(0xffe5bd,3.15);key.position.set(-5.8,10.8,7.6);world.add(key);
+  const rim=new THREE.DirectionalLight(0xd8efff,1.35);rim.position.set(5,5.8,-6.6);world.add(rim);
+  const windowSun=new THREE.DirectionalLight(0xffedcf,1.65);windowSun.position.set(4.5,7.5,-13.8);world.add(windowSun);
   const fill=new THREE.PointLight(0xffd09a,18,20,1.8);fill.position.set(0,4.5,2.2);world.add(fill);
   createDinnerRoom(world);
   const placements:Array<[DinnerSpeaker,number,number,number]>=[
