@@ -947,26 +947,29 @@ export function drawEntrePartidasBranding(ctx:CanvasRenderingContext2D,time:numb
     ctx.fillText("CAPÍTULO 1",width/2,y+panelH*.82);
     ctx.restore();
   }
-  // Bruno finishes "Sí, sí..." at 61.5s; reveal the end card exactly one second later.
-  if(time>=62.5){
-    const fade=Math.min(1,(time-62.5)/.45);
+  // Bruno's final "Sí, sí..." ends at 56.85s. Start the closing slate promptly.
+  if(time>=57.20){
+    const fade=Math.min(1,(time-57.20)/.42);
     ctx.save();ctx.globalAlpha=fade;
     const veil=ctx.createLinearGradient(0,0,0,height);
-    veil.addColorStop(0,"rgba(12,24,20,.45)");veil.addColorStop(.35,"rgba(12,24,20,.80)");veil.addColorStop(1,"rgba(12,24,20,.96)");
+    veil.addColorStop(0,"rgba(10,25,20,.96)");veil.addColorStop(.52,"rgba(13,35,27,.98)");veil.addColorStop(1,"rgba(7,18,15,1)");
     ctx.fillStyle=veil;ctx.fillRect(0,0,width,height);
+    // Restrained gold-green frame and a small animated accent make this a reusable series end card.
+    ctx.strokeStyle="rgba(215,232,173,.62)";ctx.lineWidth=2*scale;
+    rounded(width*.105,height*.205,width*.79,height*.59,22*scale);ctx.stroke();
     ctx.textAlign="center";ctx.textBaseline="middle";
-    ctx.fillStyle="#d7e8ad";ctx.font="900 "+Math.round(25*scale)+"px Arial";
-    ctx.fillText("INGREDORA PRESENTA",width/2,height*.34);
-    ctx.fillStyle="#fffaf0";ctx.font="900 "+Math.round(58*scale)+"px Arial Black,Arial";
-    ctx.fillText("ENTRE PARTIDAS",width/2,height*.405);
-    ctx.fillStyle="#e6e0cf";ctx.font="700 "+Math.round(25*scale)+"px Arial";
-    ctx.fillText("Más capítulos en",width/2,height*.53);
-    ctx.fillStyle="#f4d58d";ctx.font="900 "+Math.round(43*scale)+"px Arial";
+    ctx.fillStyle="#d7e8ad";ctx.font="900 "+Math.round(22*scale)+"px Arial";
+    ctx.fillText("INGREDORA ORIGINALS",width/2,height*.285);
+    ctx.fillStyle="#fffaf0";ctx.font="900 "+Math.round(61*scale)+"px Arial Black,Arial";
+    ctx.fillText("ENTRE PARTIDAS",width/2,height*.395);
+    ctx.fillStyle="#f0d18b";ctx.font="800 "+Math.round(23*scale)+"px Arial";
+    ctx.fillText("Una serie de Ingredora",width/2,height*.475);
+    ctx.fillStyle="#f4d58d";ctx.font="900 "+Math.round(40*scale)+"px Arial";
     ctx.fillText("ingredora.com",width/2,height*.585);
-    ctx.fillStyle="#fffaf0";ctx.font="800 "+Math.round(23*scale)+"px Arial";
-    ctx.fillText("Jugá el desafío semanal",width/2,height*.69);
-    ctx.fillStyle="#d7e8ad";ctx.font="700 "+Math.round(21*scale)+"px Arial";
-    ctx.fillText("y competí por un lugar en el ranking",width/2,height*.735);
+    ctx.fillStyle="#e6e0cf";ctx.font="700 "+Math.round(18*scale)+"px Arial";
+    ctx.fillText("Creado y producido por Ingredora",width/2,height*.685);
+    ctx.fillStyle="rgba(230,224,207,.82)";ctx.font="600 "+Math.round(16*scale)+"px Arial";
+    ctx.fillText("Bruno · Martina · Valentina",width/2,height*.735);
     ctx.restore();
   }
 }
