@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
   "engineVersion": "1.0.0",
-  "id": "ingredora-entre-partidas-supermarket-001",
-  "title": "Entre Partidas — El entrenamiento",
-  "description": "Sitcom 3D cinematográfica en el pasillo de un supermercado. Bruno estudia etiquetas para el Desafío Diario mientras Martina y Valentina lo descubren.",
-  "createdAt": "2026-11-21T18:57:09-03:00",
+  "id": "ingredora-entre-partidas-supermarket-002",
+  "title": "Entre Partidas — El tramposo",
+  "description": "Tomás intenta resolver el Desafío Diario mirando los ingredientes de una Nutella en otra góndola del mismo supermercado. Ernesto lo descubre y le da un sermón sobre jugar limpio.",
+  "createdAt": "2026-11-22T09:18:00-03:00",
   "fps": 30,
   "width": 720,
   "height": 1280,
@@ -13,148 +13,141 @@
     {
       "id": "supermarket-aisle-story",
       "startFrame": 0,
-      "durationFrames": 1950,
+      "durationFrames": 3960,
       "background": "#d9d5ca",
       "objects": []
     }
   ],
   "dialogue": [
     {
-      "speaker": "bruno",
-      "text": "Harina de trigo... azúcar... aceite vegetal... maltodextrina...",
-      "start": 2,
-      "end": 5.467,
-      "look": "bruno"
+      "speaker": "tomas",
+      "text": "Uhhh, hoy está difícil esto...",
+      "start": 5,
+      "end": 7.8,
+      "look": "tomas"
     },
     {
-      "speaker": "bruno",
-      "text": "¿Maltodextrina...? Bueno, esto también lo tengo que aprender.",
-      "start": 6,
-      "end": 9.653,
-      "look": "bruno"
+      "speaker": "tomas",
+      "text": "No, pará... yo esto lo saco. Tengo un método.",
+      "start": 9,
+      "end": 13,
+      "look": "tomas"
     },
     {
-      "speaker": "valentina",
-      "text": "Bruno",
-      "start": 9.8,
-      "end": 10.3,
-      "look": "bruno"
+      "speaker": "tomas",
+      "text": "¡JA! ¡Era obvio!",
+      "start": 43,
+      "end": 45,
+      "look": "tomas"
     },
     {
-      "speaker": "bruno",
-      "text": "Un segundo...",
-      "start": 10.5,
-      "end": 12.161,
-      "look": "valentina"
+      "speaker": "tomas",
+      "text": "¡Vamos! ¡Primer puesto!",
+      "start": 47,
+      "end": 50,
+      "look": "tomas"
     },
     {
-      "speaker": "martina",
-      "text": "¿Estás leyendo los ingredientes?",
-      "start": 12.211,
-      "end": 14.448,
-      "look": "bruno"
+      "speaker": "ernesto",
+      "text": "¿Qué estás haciendo, Tomás?",
+      "start": 54,
+      "end": 57,
+      "look": "tomas"
     },
     {
-      "speaker": "bruno",
-      "text": "Me estoy preparando.",
-      "start": 14.789,
-      "end": 16.45,
-      "look": "martina"
+      "speaker": "tomas",
+      "text": "Nada... comprando.",
+      "start": 58,
+      "end": 60,
+      "look": "ernesto"
     },
     {
-      "speaker": "valentina",
-      "text": "¿Para qué? ¿Te toman examen?",
-      "start": 16.789,
-      "end": 19.422,
-      "look": "bruno"
+      "speaker": "ernesto",
+      "text": "¿Comprando? ¡Tenés el celular en una mano y la Nutella en la otra!",
+      "start": 61,
+      "end": 66,
+      "look": "tomas"
     },
     {
-      "speaker": "bruno",
-      "text": "El Desafío Diario de mañana lo quiero hacer bien.",
-      "start": 19.789,
-      "end": 22.989,
-      "look": "martina"
+      "speaker": "tomas",
+      "text": "Es que me dio hambre.",
+      "start": 67,
+      "end": 69,
+      "look": "ernesto"
     },
     {
-      "speaker": "martina",
-      "text": "Ah... ¿y ya sabés qué producto va a salir?",
-      "start": 23.789,
-      "end": 26.398,
-      "look": "bruno"
+      "speaker": "ernesto",
+      "text": "¿Vos sabés lo que significa un desafío diario? ¡Desafío! ¡No es ir al supermercado a buscar las respuestas!",
+      "start": 72,
+      "end": 80,
+      "look": "tomas"
     },
     {
-      "speaker": "bruno",
-      "text": "No.",
-      "start": 26.789,
-      "end": 28.45,
-      "look": "martina"
+      "speaker": "tomas",
+      "text": "Pero Ernesto, técnicamente no hice trampa... el producto estaba ahí.",
+      "start": 81,
+      "end": 87,
+      "look": "ernesto"
     },
     {
-      "speaker": "valentina",
-      "text": "Ah, bueno.",
-      "start": 28.5,
-      "end": 30.161,
-      "look": "bruno"
+      "speaker": "ernesto",
+      "text": "¡Claro! Y si mañana el desafío es de geografía, ¿te vas a parar al lado de un globo terráqueo?",
+      "start": 88,
+      "end": 96,
+      "look": "tomas"
     },
     {
-      "speaker": "bruno",
-      "text": "Justamente. Por eso estoy estudiando. Puede tocar cualquier producto. Son quince segundos.",
-      "start": 30.211,
-      "end": 36.192,
-      "look": "martina"
+      "speaker": "tomas",
+      "text": "Y... depende de cuánto cueste.",
+      "start": 97,
+      "end": 100,
+      "look": "ernesto"
     },
     {
-      "speaker": "martina",
-      "text": "¿Y tu plan es leer todos los productos del supermercado?",
-      "start": 36.242,
-      "end": 39.247,
-      "look": "bruno"
+      "speaker": "ernesto",
+      "text": "¡El juego se gana pensando! ¡No mirando las etiquetas de los productos!",
+      "start": 101,
+      "end": 107,
+      "look": "tomas"
     },
     {
-      "speaker": "bruno",
-      "text": "No todos. Empecé por galletitas. Después sigo con lácteos, conservas y congelados.",
-      "start": 39.789,
-      "end": 45.488,
-      "look": "martina"
+      "speaker": "tomas",
+      "text": "Bueno, pero gané.",
+      "start": 108,
+      "end": 110,
+      "look": "ernesto"
     },
     {
-      "speaker": "valentina",
-      "text": "¿Y cuándo pensás comprar algo?",
-      "start": 45.538,
-      "end": 47.499,
-      "look": "bruno"
+      "speaker": "ernesto",
+      "text": "¡No ganaste nada! ¡Te engañaste a vos mismo!",
+      "start": 110.5,
+      "end": 114,
+      "look": "tomas"
     },
     {
-      "speaker": "bruno",
-      "text": "Después.",
-      "start": 47.549,
-      "end": 49.21,
-      "look": "valentina"
+      "speaker": "tomas",
+      "text": "Bueno, listo. Mañana juego limpio.",
+      "start": 115,
+      "end": 118,
+      "look": "ernesto"
     },
     {
-      "speaker": "martina",
-      "text": "¿Viniste solo a estudiar?",
-      "start": 49.26,
-      "end": 51.173,
-      "look": "bruno"
+      "speaker": "tomas",
+      "text": "Igual... ¿me comprás la Nutella?",
+      "start": 118.5,
+      "end": 121.5,
+      "look": "ernesto"
     },
     {
-      "speaker": "valentina",
-      "text": "¡Y acordate de comprar comida!",
-      "start": 52.789,
-      "end": 54.864,
-      "look": "bruno"
-    },
-    {
-      "speaker": "bruno",
-      "text": "Sí, sí...",
-      "start": 55.189,
-      "end": 56.85,
-      "look": "valentina"
+      "speaker": "ernesto",
+      "text": "Dios dame paciencia...",
+      "start": 122,
+      "end": 124,
+      "look": "tomas"
     }
   ],
-  "durationSeconds": 65,
-  "voiceoverUrl": "studio/audio/entre-partidas/supermarket-01/voice-track.mp3",
-  "wordTimingsUrl": "studio/audio/entre-partidas/supermarket-01/word-timings.json",
-  "voiceoverOffsetSeconds": 0
+  "durationSeconds": 132,
+  "voiceoverUrl": "studio/audio/entre-partidas/supermarket-02/voice-track.mp3",
+  "voiceoverOffsetSeconds": 0,
+  "endCardStart": 124
 }
