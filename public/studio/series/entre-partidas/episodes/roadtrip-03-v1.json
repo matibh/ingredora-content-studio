@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "id": "EP-S03",
+  "episodeNumber": 3,
+  "title": "Lo sé todo",
+  "createdAt": "2026-11-22T12:00:00-03:00",
+  "logline": "Bruno presume que conoce los ingredientes de todos los productos que ve en la ruta. Valentina lo desafía a comprobarlo con Ingredora y descubre que sus excusas son más abundantes que sus aciertos.",
+  "characters": [
+    "bruno",
+    "valentina"
+  ],
+  "continuity": {
+    "characterModels": "Reutilizar directamente createDiner() del set del capítulo 2 con includeChair=false. No duplicar ni regenerar los rigs.",
+    "wardrobe": "Bruno remera #C46A43 y pantalón #35414A; Valentina parte superior #47788A y pantalón #35414A. Conservar tonos de piel, pelo y proporciones del capítulo 2.",
+    "driver": "Valentina conduce a la izquierda; Bruno va de acompañante y manipula el celular.",
+    "style": "Mismos personajes blocky 3D, materiales, luz suave y acabado del capítulo 2."
+  },
+  "shotPrinciples": {
+    "interiorCoverage": 0.8,
+    "exteriorCoverage": 0.2,
+    "rule": "Sitcom coverage: plano maestro de tablero, primeros planos, insert del celular, POV de carteles por ventanas y establishing exterior breve. No cortar fuera del auto en cada frase."
+  },
+  "shotPlan": [
+    {
+      "time": "00:00–00:04",
+      "camera": "Exterior 3/4",
+      "action": "El auto recorre una ruta argentina; establecer viaje y paisaje."
+    },
+    {
+      "time": "00:04–00:17",
+      "camera": "Plano maestro interior + primer plano Bruno",
+      "action": "Ven el cartel del alfajor; Bruno presume conocer todos sus ingredientes."
+    },
+    {
+      "time": "00:17–00:31",
+      "camera": "Valentina / Bruno shot-reverse-shot",
+      "action": "Valentina lo desafía con Ingredora; Bruno responde con una lista incompleta y remata con el árbol genealógico."
+    },
+    {
+      "time": "00:31–00:47",
+      "camera": "Insert celular + close-ups",
+      "action": "Bruno prueba el Desafío Diario, falla y culpa al dedo frío; Valentina lo carga."
+    },
+    {
+      "time": "00:47–01:04",
+      "camera": "Dos planos interiores + cartel por ventanilla",
+      "action": "Bruno cambia al modo Práctica para recuperar su reputación; Valentina lo remata."
+    },
+    {
+      "time": "01:04–01:23",
+      "camera": "POV cartel Oreo + interior shot-reverse-shot",
+      "action": "El siguiente cartel lo distrae; Bruno acusa a la publicidad y Valentina lo descubre babeando por una foto."
+    },
+    {
+      "time": "01:23–01:34",
+      "camera": "Plano maestro y primer plano final",
+      "action": "Bruno sigue justificándose y propone parar para comprar un alfajor y estudiarlo en persona."
+    },
+    {
+      "time": "01:34–01:41",
+      "camera": "End card",
+      "action": "Cierre de Ingredora Originals con música de la serie."
+    }
+  ],
+  "productAccuracy": "Carteles publicitarios estilizados para situar marcas/productos; no mostrar listas de ingredientes ni resultados inventados. La pantalla del celular se presenta como visual dramatizada de Ingredora, sin revelar respuestas del Desafío Diario.",
+  "productionStatus": "rendering",
+  "renderFormat": "720x1280 · 24 FPS · 9:16"
+}
