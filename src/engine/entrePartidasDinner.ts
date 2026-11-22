@@ -2,7 +2,7 @@ import * as THREE from "three";
 
 export type DinnerSpeaker = "bruno" | "martina" | "tomas" | "valentina" | "ernesto";
 export type DinnerCue = { id?: string; speaker: DinnerSpeaker; text: string; start: number; end: number; look?: DinnerSpeaker };
-type DinerRig = { name: DinnerSpeaker; root: THREE.Group; head: THREE.Group; mouth: THREE.Mesh; leftArm: THREE.Group; rightArm: THREE.Group; x: number; z: number };
+export type DinerRig = { name: DinnerSpeaker; root: THREE.Group; head: THREE.Group; mouth: THREE.Mesh; leftArm: THREE.Group; rightArm: THREE.Group; x: number; z: number };
 export type EntrePartidasDinnerSet = { update(time: number, dialogue: DinnerCue[]): void; getSpeakerPosition(speaker: DinnerSpeaker): THREE.Vector3 };
 
 const mat=(color:string,roughness=.78,metalness=0)=>new THREE.MeshStandardMaterial({color,roughness,metalness});
@@ -24,18 +24,20 @@ const texture=(draw:(ctx:CanvasRenderingContext2D,w:number,h:number)=>void,w=512
   draw(ctx,w,h);const map=new THREE.CanvasTexture(canvas);map.colorSpace=THREE.SRGBColorSpace;map.anisotropy=8;return map;
 };
 
-function createDiner(name:DinnerSpeaker,x:number,z:number,turn:number):DinerRig{
+export function createDiner(name:DinnerSpeaker,x:number,z:number,turn:number,includeChair=true):DinerRig{
   const root=new THREE.Group();root.position.set(x,-1.92,z);root.rotation.y=turn;
   const skinColors:Record<DinnerSpeaker,string>={bruno:"#c98e6e",martina:"#d6a080",tomas:"#e1b18e",valentina:"#dfaa8b",ernesto:"#c99a79"};
   const hairColors:Record<DinnerSpeaker,string>={bruno:"#30241f",martina:"#30201c",tomas:"#4b3328",valentina:"#211b1a",ernesto:"#8b8a82"};
   const shirtColors:Record<DinnerSpeaker,string>={bruno:"#c46a43",martina:"#bd7958",tomas:"#527c78",valentina:"#47788a",ernesto:"#718064"};
   const skin=mat(skinColors[name]),hair=mat(hairColors[name],.92),shirt=mat(shirtColors[name],.88);
   const pants=mat(name==="ernesto"?"#4b5148":"#35414a"),shoes=mat("#23282a",.58),dark=mat("#25201e",.7),ivory=mat("#fff8e9",.42);
-  // Chairs, with warm timber and different fabric shades.
-  const chairWood=mat("#6e5038",.58),chairFabric=mat(name==="bruno"||name==="valentina"?"#526b69":"#7d6550",.95);
-  box(root,[.96,1.58,.16],chairWood,[0,1.40,-.72]);box(root,[.82,1.35,.08],chairFabric,[0,1.43,-.615]);
-  box(root,[1.02,.16,.96],chairWood,[0,.78,-.12]);
-  for(const side of [-1,1]){box(root,[.10,.90,.10],chairWood,[side*.41,.32,-.43]);box(root,[.10,.90,.10],chairWood,[side*.41,.32,.25]);}
+  // The same character rig can be reused in another seat without carrying its dining chair.
+  if(includeChair){
+    const chairWood=mat("#6e5038",.58),chairFabric=mat(name==="bruno"||name==="valentina"?"#526b69":"#7d6550",.95);
+    box(root,[.96,1.58,.16],chairWood,[0,1.40,-.72]);box(root,[.82,1.35,.08],chairFabric,[0,1.43,-.615]);
+    box(root,[1.02,.16,.96],chairWood,[0,.78,-.12]);
+    for(const side of [-1,1]){box(root,[.10,.90,.10],chairWood,[side*.41,.32,-.43]);box(root,[.10,.90,.10],chairWood,[side*.41,.32,.25]);}
+  }
   // Seated chest, waist and thighs.
   if(name==="bruno"){box(root,[1.04,1.34,.58],shirt,[0,2.08,-.04]);box(root,[.22,.16,.035],mat("#a95637"),[0,1.42,.262],false);}
   else if(name==="ernesto"){box(root,[1.08,1.28,.62],shirt,[0,2.05,-.04]);box(root,[.05,.80,.035],mat("#d3c7a9"),[0,2.10,.284],false);box(root,[.10,.38,.04],mat("#d3c7a9"),[0,1.80,.29],false);}
