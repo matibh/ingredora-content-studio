@@ -871,7 +871,7 @@ export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
         if(talking&&cue)mouthOpen=.06+Math.pow(Math.max(0,Math.sin((time-cue.start)*8.5)),.72)*.58;
         rig.mouth.scale.set(1,mouthOpen,1);
         rig.leftArm.rotation.z=talking?-.045+Math.sin(time*1.7+phase)*.018:0;
-        rig.rightArm.rotation.z=talking?.045+Math.sin(time*1.6+phase)*.018:0;
+        rig.rightArm.rotation.z=talking ? .045+Math.sin(time*1.6+phase)*.018 : 0;
       }
       if(time<4.15){interior.visible=false;exterior.visible=true;world.background=exteriorBackground;world.fog=exteriorFog;}
       else{interior.visible=true;exterior.visible=false;world.background=interiorBackground;world.fog=interiorFog;}
@@ -1039,7 +1039,7 @@ export function drawEntrePartidasBranding(ctx:CanvasRenderingContext2D,time:numb
 
 export function drawEntrePartidasCaptions(ctx:CanvasRenderingContext2D,time:number,width:number,height:number,dialogue:EntrePartidasCue[]){
   const cue=dialogue.find(item=>time>=item.start&&time<=item.end);if(!cue)return;
-  const names={bruno:"BRUNO",martina:"MARTINA",valentina:"VALENTINA"};
+  const names:Record<EntrePartidasSpeaker,string>={bruno:"BRUNO",martina:"MARTINA",tomas:"TOMÁS",valentina:"VALENTINA",ernesto:"ERNESTO"};
   const scale=width/720,maxTextW=width*.90;
   ctx.save();
   // Floating subtitles, with a heavy black outline instead of a background panel.
