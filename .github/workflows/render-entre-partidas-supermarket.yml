@@ -34,13 +34,14 @@ jobs:
           path: _uploaded-audio-assets
       - name: Stage the uploaded laughter and outro
         run: |
-          mkdir -p public/studio/audio/entre-partidas/supermarket-01
+          mkdir -p public/studio/audio/entre-partidas/supermarket-01 public/studio/audio/entre-partidas/supermarket-02
           cp "_uploaded-audio-assets/risa.mp3" public/studio/audio/entre-partidas/supermarket-01/risa.mp3
           cp "_uploaded-audio-assets/risa y outro.mp3" "public/studio/audio/entre-partidas/supermarket-01/risa-y-outro.mp3"
+          cp "_uploaded-audio-assets/risa y outro.mp3" "public/studio/audio/entre-partidas/supermarket-02/risa-y-outro.mp3"
           test -s public/studio/audio/entre-partidas/supermarket-01/risa.mp3
           test -s public/studio/audio/entre-partidas/supermarket-01/risa-y-outro.mp3
-          echo "RISA_DURATION=$(ffprobe -v error -show_entries format=duration -of csv=p=0 public/studio/audio/entre-partidas/supermarket-01/risa.mp3)"
-          echo "OUTRO_DURATION=$(ffprobe -v error -show_entries format=duration -of csv=p=0 public/studio/audio/entre-partidas/supermarket-01/risa-y-outro.mp3)"
+          test -s public/studio/audio/entre-partidas/supermarket-02/risa-y-outro.mp3
+          echo "OUTRO_DURATION=$(ffprobe -v error -show_entries format=duration -of csv=p=0 public/studio/audio/entre-partidas/supermarket-02/risa-y-outro.mp3)"
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -64,14 +65,12 @@ jobs:
           sudo apt-get install -y ffmpeg
           ffmpeg -version
           ffmpeg -hide_banner -encoders | grep -E 'libx264| h264 '
-      - name: Install Edge TTS for Bruno's clean retake
+      - name: Install Edge TTS for the Tomás and Ernesto dialogue
         run: |
           python3 -m venv /tmp/edge-tts
           /tmp/edge-tts/bin/python -m pip install --disable-pip-version-check --no-cache-dir edge-tts
-      - name: Prepare original voices and Bruno's complete replacement line
-        run: /tmp/edge-tts/bin/python scripts/prepare-entre-partidas-audio.py
-      - name: Add laughter after punchlines and the uploaded credits outro
-        run: python3 scripts/prepare-entre-partidas-comedy-audio.py
+      - name: Generate Tomás and Ernesto dialogue, then append the uploaded laughter outro
+        run: /tmp/edge-tts/bin/python scripts/prepare-entre-partidas-tomas-audio.py
       - name: Render the complete Three.js scene with narration
         run: node scripts/render-supermarket.mjs
       - name: Preserve original WebM render
