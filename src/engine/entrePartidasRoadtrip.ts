@@ -161,7 +161,7 @@ function buildRoadtrip(){
   // Auto de cuatro puertas con cabina cerrada, revestimientos curvos y materiales diferenciados.
   const car=new THREE.Group();scene.add(car);
   const rubber=mat("#202322",.86),glass=new THREE.MeshPhysicalMaterial({color:"#a8c6ca",transparent:true,opacity:.12,roughness:.16,metalness:.06,side:THREE.DoubleSide,depthWrite:false});
-  const body=mat("#536d66",.34,.12),bodyDark=mat("#354944",.42,.10),chrome=mat("#b5b8ae",.32,.62);
+  const chrome=mat("#b5b8ae",.32,.62);
   addRoundedBox(car,[3.75,.78,5.65],"#536d66",[0,-1.48,0],.24,.45);
   addRoundedBox(car,[3.55,.43,1.52],"#668078",[0,-1.12,-2.02],.16,.40);
   addRoundedBox(car,[3.55,.42,1.22],"#536d66",[0,-1.18,2.12],.16,.42);
@@ -253,14 +253,14 @@ function buildRoadtrip(){
   for(let i=0;i<3;i++){
     const dial=new THREE.Mesh(new THREE.CylinderGeometry(.067,.067,.045,24),mat("#c4bca9",.45,.28));
     dial.rotation.x=Math.PI/2;dial.position.set(-.22+i*.22,-.67,-1.27);car.add(dial);
-    const mark=addRoundedBox(car,[.012,.045,.016],i===0?"#bd6b50":"#d8c8a5",[-.22+i*.22,-.67,-1.238],.006,.35);
+    addRoundedBox(car,[.012,.045,.016],i===0?"#bd6b50":"#d8c8a5",[-.22+i*.22,-.67,-1.238],.006,.35);
   }
   // Túnel central, caja de cambios, palanca, freno de mano y posavasos.
   addRoundedBox(car,[.70,.20,1.42],"#303934",[0,-.86,-.34],.10,.78);
   addRoundedBox(car,[.55,.055,.62],"#68675e",[0,-.735,-.55],.06,.82);
   const gear=new THREE.Group();gear.position.set(.20,-.67,-.80);car.add(gear);
   const shaft=new THREE.Mesh(new THREE.CylinderGeometry(.035,.055,.25,16),chrome);shaft.position.y=.13;gear.add(shaft);
-  const knob=addSoftVolume(gear,[.11,.09,.10],mat("#242b28",.32,.2),[0,.28,0]);
+  addSoftVolume(gear,[.11,.09,.10],mat("#242b28",.32,.2),[0,.28,0]);
   for(const x of [-.22,.22]){
     const cup=new THREE.Mesh(new THREE.CylinderGeometry(.115,.095,.045,24),mat("#151c19",.62));cup.position.set(x,-.72,-.18);car.add(cup);
     const rim=new THREE.Mesh(new THREE.TorusGeometry(.105,.012,6,24),chrome);rim.rotation.x=Math.PI/2;rim.position.set(x,-.693,-.18);car.add(rim);
