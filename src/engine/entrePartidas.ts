@@ -1,11 +1,12 @@
 import * as THREE from "three";
 
+export type EntrePartidasSpeaker = "bruno" | "martina" | "tomas" | "valentina" | "ernesto";
 export type EntrePartidasCue = {
-  speaker: "bruno" | "martina" | "valentina";
+  speaker: EntrePartidasSpeaker;
   text: string;
   start: number;
   end: number;
-  look?: "bruno" | "martina" | "valentina";
+  look?: EntrePartidasSpeaker;
 };
 type CharacterRig = {
   root: THREE.Group; head: THREE.Group; mouth: THREE.Mesh;
@@ -34,12 +35,12 @@ const texture = (draw: (ctx: CanvasRenderingContext2D,w:number,h:number)=>void,w
 
 function makeCharacter(name: EntrePartidasCue["speaker"], x: number, z: number): CharacterRig {
   const root=new THREE.Group();root.position.set(x,-1.975,z);
-  const isBruno=name==="bruno", isMartina=name==="martina";
-  const skin=mat(isBruno?"#c98e6e":isMartina?"#d6a080":"#e0ad8b");
-  const hair=mat(isBruno?"#30241f":isMartina?"#30201c":"#211b1a");
+  const isBruno=name==="bruno", isMartina=name==="martina", isTomas=name==="tomas", isErnesto=name==="ernesto";
+  const skin=mat(isBruno?"#c98e6e":isMartina?"#d6a080":isTomas?"#e1b18e":"#c99a79");
+  const hair=mat(isBruno?"#30241f":isMartina?"#30201c":isTomas?"#4b3328":"#8b8a82");
   const hairTie=mat(isMartina?"#d8a64c":"#d5d8df");
-  const shirt=mat(isBruno?"#c46a43":isMartina?"#bd7958":"#47788a");
-  const pants=mat("#35414a"), shoes=mat("#222528",.56);
+  const shirt=mat(isBruno?"#c46a43":isMartina?"#bd7958":isTomas?"#527c78":isErnesto?"#718064":"#47788a");
+  const pants=mat(isErnesto?"#4b5148":"#35414a"), shoes=mat("#222528",.56);
   const head=new THREE.Group();head.position.set(0,isBruno?1.62:2.12,0);root.add(head);
 
   // Minecraft-like proportions: crisp cubic head, torso and articulated block limbs.
@@ -48,10 +49,15 @@ function makeCharacter(name: EntrePartidasCue["speaker"], x: number, z: number):
     // Clean shirt hem: avoid near-coplanar overlapping orange faces that shimmer at profile angles.
     box(root,[.755,.16,.475],mat("#a95637"),[0,.29,0]);
   }else{
-    // Strict Minecraft silhouette: flat cuboid torso, square waist and straight hips.
-    box(root,[.60,.58,.38],shirt,[0,1.40,0]);
-    box(root,[.53,.20,.37],shirt,[0,1.08,0]);
-    box(root,[.58,.25,.38],pants,[0,.82,0]);
+    // Canonical block silhouettes and the established wardrobe colors for the full cast.
+    box(root,[isErnesto?.72:.60,.58,.38],shirt,[0,1.40,0]);
+    box(root,[isErnesto?.62:.53,.20,.37],shirt,[0,1.08,0]);
+    box(root,[isErnesto?.66:.58,.25,.38],pants,[0,.82,0]);
+    if(isErnesto){
+      // Ernesto's olive cardigan, pale shirt opening and grey beard remain distinctive.
+      box(root,[.13,.54,.025],mat("#d3c7a9"),[0,1.42,.205],false);
+      box(root,[.08,.18,.025],mat("#d3c7a9"),[0,1.12,.205],false);
+    }
     // Do not overlay skin-colored shoulder plates on the torso: their coplanar
     // front/back faces caused visible z-fighting at the shirt-to-skin seam.
     box(root,[.30,.045,.025],mat(isMartina?"#e3b79a":"#a9cbd1"),[0,1.59,.205],false);
@@ -76,12 +82,27 @@ function makeCharacter(name: EntrePartidasCue["speaker"], x: number, z: number):
       box(head,[.10,.10,.11],hairTie,[.12,.48,-.405]);
       box(head,[.22,.32,.22],hair,[.15,.28,-.51]);
       box(head,[.18,.24,.18],hair,[.19,.025,-.59]);
+    }else if(isTomas){
+      // Tomás keeps his recognizable short brown, slightly tousled hairstyle.
+      box(head,[.70,.18,.56],hair,[-.05,.40,.015]);
+      box(head,[.26,.16,.25],hair,[.20,.34,.20]);
+      box(head,[.15,.20,.20],hair,[-.27,.20,.20]);
+      box(head,[.12,.42,.20],hair,[-.31,-.07,-.25]);
+      box(head,[.12,.42,.20],hair,[.31,-.07,-.25]);
+    }else if(isErnesto){
+      box(head,[.72,.19,.60],hair,[0,.34,-.02]);
+      box(head,[.15,.28,.18],hair,[-.30,.18,.15]);
+      box(head,[.15,.28,.18],hair,[.30,.18,.15]);
     }else{
-      // A small high half-ponytail, also fully behind the head.
+      // Valentina's established long hair silhouette.
       box(head,[.27,.18,.21],hair,[-.12,.49,-.29]);
       box(head,[.105,.095,.11],hairTie,[-.12,.48,-.405]);
       box(head,[.20,.28,.20],hair,[-.15,.27,-.52]);
     }
+  }
+  if(isErnesto){
+    box(head,[.72,.22,.12],mat("#77786e"),[0,-.34,.30],false);
+    box(head,[.56,.13,.10],mat("#88877c"),[0,-.43,.32],false);
   }
 
   const eyeWhite=mat("#fff8e9"),pupil=mat("#25201e"),brow=mat(isBruno?"#30241f":"#211b1a");
@@ -362,12 +383,13 @@ export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
   const parkedCartB=cart.clone(true);parkedCartB.position.set(6.75,-1.96,-5.7);parkedCartB.scale.setScalar(.78);parkedCartB.rotation.y=.20;world.add(parkedCartB);
   // One upright product in each hand. Each package is its own rigged prop with a sealed top and visible front label.
   const bruno=makeCharacter("bruno",0,.20);
-  // Both women enter together from the same side of the central aisle.
   const martina=makeCharacter("martina",-2.55,-4.15);
   const valentina=makeCharacter("valentina",-1.25,-4.15);
-  martina.root.visible=false;
-  valentina.root.visible=false;
-  world.add(bruno.root,martina.root,valentina.root);
+  const tomas=makeCharacter("tomas",-.85,.15);
+  const ernesto=makeCharacter("ernesto",1.05,-.35);
+  bruno.root.visible=false;martina.root.visible=false;valentina.root.visible=false;
+  tomas.root.visible=false;ernesto.root.visible=false;
+  world.add(bruno.root,martina.root,valentina.root,tomas.root,ernesto.root);
   const makeHandPacket=(material:THREE.Material,width:number,height:number)=>{
     const product=new THREE.Group();
     box(product,[width,height,.115],material,[0,0,0]);
@@ -815,6 +837,30 @@ export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
   const update=(time:number,dialogue:EntrePartidasCue[])=>{
     const cue=dialogue.find(c=>time>=c.start&&time<=c.end);
     const speaker=cue?.speaker;
+    const isTomasEpisode=dialogue.some(c=>c.speaker==="tomas"||c.speaker==="ernesto");
+    if(isTomasEpisode){
+      bruno.root.visible=false;martina.root.visible=false;valentina.root.visible=false;
+      tomas.root.visible=time>=4.15;ernesto.root.visible=time>=53;
+      tomas.root.position.set(time<29?-.85:-1.05,-1.975,.15);
+      ernesto.root.position.set(1.05,-1.975,-.35);
+      tomas.root.rotation.y=time<53?0:-.28;ernesto.root.rotation.y=-.12;
+      tomas.leftLeg.rotation.x=0;tomas.rightLeg.rotation.x=0;
+      ernesto.leftLeg.rotation.x=0;ernesto.rightLeg.rotation.x=0;
+      for(const rig of [tomas,ernesto]){
+        const talking=rig.name===speaker,phase=rig.name==="tomas"?.3:1.9;
+        rig.head.rotation.y=(cue?.look===rig.name?-.12:cue?.look?.07:0)+Math.sin(time*.42+phase)*.006;
+        rig.head.rotation.x=talking?Math.sin(time*2.7+phase)*.018:Math.sin(time*.5+phase)*.005;
+        let mouthOpen=.025;
+        if(talking&&cue)mouthOpen=.06+Math.pow(Math.max(0,Math.sin((time-cue.start)*8.5)),.72)*.58;
+        rig.mouth.scale.set(1,mouthOpen,1);
+        rig.leftArm.rotation.z=talking?-.045+Math.sin(time*1.7+phase)*.018:0;
+        rig.rightArm.rotation.z=talking?.045+Math.sin(time*1.6+phase)*.018:0;
+      }
+      if(time<4.15){interior.visible=false;exterior.visible=true;world.background=exteriorBackground;world.fog=exteriorFog;}
+      else{interior.visible=true;exterior.visible=false;world.background=interiorBackground;world.fog=interiorFog;}
+      cart.position.x=-2.75;
+      return;
+    }
     const ease=(v:number)=>{const q=Math.max(0,Math.min(1,v));return q*q*(3-2*q);};
     const approach=ease((time-8.05)/1.05);
     martina.root.visible=time>=9.0833;
@@ -917,7 +963,7 @@ export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
   return {
     update,
     getSpeakerPosition(speaker){
-      const rig=speaker==="bruno"?bruno:speaker==="martina"?martina:valentina;
+      const rig=speaker==="bruno"?bruno:speaker==="martina"?martina:speaker==="tomas"?tomas:speaker==="ernesto"?ernesto:valentina;
       return new THREE.Vector3(rig.root.position.x,speaker==="bruno"?-1.0:-.55,rig.root.position.z);
     }
   };
