@@ -96,24 +96,21 @@ function createDinnerRoom(world:THREE.Scene){
   const floor=new THREE.Mesh(new THREE.PlaneGeometry(32,32),mat("#b9ad9a",.88));floor.rotation.x=-Math.PI/2;floor.position.set(0,-2,-2);world.add(floor);
   for(let x=-8;x<=8;x+=1.25)box(world,[.018,.008,20],mat("#a79b89",.96),[x,-1.993,-2],false);
   for(let z=-12;z<=8;z+=1.25)box(world,[18,.008,.018],mat("#a79b89",.96),[0,-1.992,z],false);
-  // Leave an actual window opening in the rear wall so the neighbouring supermarket
-  // and its sign can be seen from the dining table.
+  // Interior ceiling: same plaster tone as the walls, so the blue sky stays outside.
+  box(world,[18,.18,20],plaster,[0,6.12,-2],false);
+  // Rear wall with a real window opening behind Ernesto; the window looks outdoors.
   box(world,[11.0,8.2,.28],plaster,[-3.5,2,-8.2],false);
   box(world,[3.2,8.2,.28],plaster,[7.4,2,-8.2],false);
   box(world,[3.8,1.8,.28],plaster,[3.9,5.2,-8.2],false);
   box(world,[3.8,2.8,.28],plaster,[3.9,-.7,-8.2],false);
   box(world,[18,1.05,.3],sage,[0,-1.15,-8],false);
   box(world,[18,.11,.34],brass,[0,-.57,-7.82],false);
-  // Through the apartment window, the supermarket sign is immediately outside.
+  // The curtained window behind Ernesto shows open blue sky, not another building.
   box(world,[5.7,3.5,.12],darkWood,[3.9,2.5,-7.99],false);box(world,[5.38,3.18,.07],glass,[3.9,2.5,-7.88],false);
   box(world,[.12,3.2,.13],darkWood,[2.05,2.5,-7.8],false);box(world,[.12,3.2,.13],darkWood,[5.75,2.5,-7.8],false);
   box(world,[5.45,.11,.14],darkWood,[3.9,.92,-7.79],false);box(world,[5.45,.11,.14],darkWood,[3.9,4.08,-7.79],false);box(world,[.08,3.1,.13],darkWood,[3.9,2.5,-7.75],false);
-  box(world,[7,4.4,.35],mat("#a9c4ad",.92),[3.9,1.9,-12.8],false);box(world,[5.6,.92,.16],mat("#284d3b",.45),[3.9,3.65,-12.55],false);
-  const signMap=texture((ctx,w,h)=>{ctx.fillStyle="#254e3b";ctx.fillRect(0,0,w,h);ctx.fillStyle="#f8f0d7";ctx.textAlign="center";ctx.textBaseline="middle";ctx.font="900 52px Arial";ctx.fillText("SUPERMERCADO",w/2,h*.52,w*.94);},768,180);
-  const sign=new THREE.Mesh(new THREE.PlaneGeometry(5.35,.72),new THREE.MeshBasicMaterial({map:signMap,side:THREE.DoubleSide}));
-  sign.position.set(3.9,3.65,-12.44);world.add(sign);
-  box(world,[2.2,2,.1],mat("#293c35",.36),[2.9,1.38,-12.48],false);box(world,[2.2,2,.1],mat("#263a36",.36),[5.1,1.38,-12.48],false);
-  for(let i=0;i<6;i++)box(world,[.18,.6+(i%2)*.16,.2],mat(["#c8a04b","#6a8e72","#c85b48"][i%3]),[2.2+i*.58,.25,-12.34],false);
+  const outdoorSky=texture((ctx,w,h)=>{const g=ctx.createLinearGradient(0,0,0,h);g.addColorStop(0,"#54b9f4");g.addColorStop(.72,"#9cddff");g.addColorStop(1,"#d8f0ff");ctx.fillStyle=g;ctx.fillRect(0,0,w,h);ctx.fillStyle="rgba(255,255,255,.88)";for(const [x,y,r] of [[.18,.28,.075],[.68,.20,.06],[.82,.58,.085]]){ctx.beginPath();ctx.arc(w*x,h*y,h*r,0,Math.PI*2);ctx.arc(w*(x+.055),h*(y-.035),h*r*.78,0,Math.PI*2);ctx.arc(w*(x+.105),h*y,h*r*.68,0,Math.PI*2);ctx.fill();}},1024,640);
+  const skyView=new THREE.Mesh(new THREE.PlaneGeometry(8.2,5.2),new THREE.MeshBasicMaterial({map:outdoorSky,side:THREE.DoubleSide,toneMapped:false}));skyView.position.set(3.9,2.5,-12.72);world.add(skyView);
   // Cozy apartment details: patterned rug under the dining area and a warm framed gallery wall.
   const rug=mat("#718276",.98);box(world,[10.8,.035,5.2],rug,[0,-1.965,.65],false);
   for(let x=-5.1;x<=5.1;x+=.34){box(world,[.018,.012,4.75],mat("#aeb49b",.96),[x,-1.94,.65],false);}
