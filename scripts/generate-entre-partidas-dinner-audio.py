@@ -13,6 +13,7 @@ OUTRO_PATH=AUDIO_DIR/"risa-y-outro.mp3"
 VOICE_PATH=AUDIO_DIR/"voice-track.mp3"
 TIMINGS_PATH=AUDIO_DIR/"word-timings.json"
 FPS=30
+ESTABLISHING_SECONDS=3.80
 LAUGH_SECONDS=2.20
 SAMPLE_RATE=48_000
 LAUGH_GAIN_DB=-5.5
@@ -51,7 +52,7 @@ SEGMENTS=[
     {"id":"24-martina-empty","speaker":"martina","text":"La prueba terminó. La botella está vacía.","look":"bruno","laugh":False},
     {"id":"25-ernesto-result","speaker":"ernesto","text":"¿Y qué resultado dio?","look":"bruno","laugh":False},
     {"id":"26-bruno-result","speaker":"bruno","text":"Aprobada.","look":"ernesto","laugh":False},
-    {"id":"27-ernesto-dishes","speaker":"ernesto","text":"Bueno, entonces aprobá también lavar los platos.","look":"bruno","laugh":True},
+    {"id":"27-ernesto-dishes","speaker":"ernesto","text":"Entonces aprobá también lavar los platos.","look":"bruno","laugh":False,"outro":True},
 ]
 
 def run(command: list[str]) -> str:
@@ -118,8 +119,9 @@ async def main():
         normalize_audio(OUTRO_PATH,outro_wav,
           f"volume={OUTRO_GAIN_DB}dB,afade=t=in:st=0:d=0.10,afade=t=out:st={max(0.0,outro_seconds-.65):.3f}:d=0.65,aresample={SAMPLE_RATE}")
         pause=work/"pause-240ms.wav";reaction=work/"pause-after-laugh.wav";opening=work/"opening-pad.wav"
-        create_silence(pause,.24);create_silence(reaction,.28);create_silence(opening,.32)
-        parts=[opening];cues=[];word_timings=[];segment_timings=[];laugh_marks=[];cursor=.32
+        create_silence(pause,.24);create_silence(reaction,.28);create_silence(opening,ESTABLISHING_SECONDS)
+        parts=[opening];cues=[];word_timings=[];segment_timings=[];laugh_marks=[];cursor=ESTABLISHING_SECONDS
+        outro_added=False
         for index,segment in enumerate(SEGMENTS):
             wav,words,seconds=await synthesize(segment,work,index)
             start=cursor;end=start+seconds
@@ -131,13 +133,20 @@ async def main():
                 word_timings.append({"text":word["text"],"start":round(start+word["start"],4),
                     "end":round(start+word["end"],4),"speaker":segment["speaker"],"segmentId":segment["id"]})
             parts.append(wav);cursor=end
-            if segment["laugh"]:
+            if segment.get("outro"):
+                # Final punchline: use the combined supplied "risa y outro" track directly.
+                # Do not append the standalone risa.mp3 here.
+                end_card_start=cursor
+                parts.append(outro_wav)
+                outro_added=True
+            elif segment["laugh"]:
                 laugh_marks.append({"segmentId":segment["id"],"start":round(cursor,4),"duration":LAUGH_SECONDS})
                 parts.extend([laugh_wav,reaction]);cursor+=LAUGH_SECONDS+.28
             else:
                 parts.append(pause);cursor+=.24
-        end_card_start=cursor
-        parts.append(outro_wav)
+        if not outro_added:
+            end_card_start=cursor
+            parts.append(outro_wav)
         estimated=cursor+outro_seconds
         frame_count=math.ceil(estimated*FPS);duration=frame_count/FPS
         final_pad=max(0.0,duration-estimated)
