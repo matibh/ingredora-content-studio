@@ -70,13 +70,17 @@ function makeAdTexture(brand:"JORGITO"|"OREO"){
 }
 
 function makeBillboard(brand:"JORGITO"|"OREO",side:number){
-  const group=new THREE.Group();
-  const post=addBox(group,[.16,2.7,.16],"#74664f",[0,-.1,0]);
-  post.position.y=-.55;
-  const board=new THREE.Mesh(new THREE.PlaneGeometry(2.8,1.85),new THREE.MeshBasicMaterial({map:makeAdTexture(brand),side:THREE.DoubleSide}));
-  board.position.set(0,1.25,0);board.rotation.y=side>0?-Math.PI/2:Math.PI/2;group.add(board);
-  const trim=addBox(group,[.10,1.98,2.92],"#e1d5bd",[0,1.25,0]);
-  trim.visible=false;
+  const group=new THREE.Group(),turn=side>0?-Math.PI/2:Math.PI/2;
+  const frame=addBox(group,[.16,2.08,3.02],brand==="JORGITO"?"#5d5144":"#343743",[0,1.25,0],.48);
+  frame.rotation.y=turn;
+  const board=new THREE.Mesh(new THREE.PlaneGeometry(2.82,1.86),new THREE.MeshStandardMaterial({map:makeAdTexture(brand),roughness:.82,side:THREE.DoubleSide}));
+  board.position.set(0,1.25,side>0?.091:-.091);board.rotation.y=turn;board.castShadow=true;group.add(board);
+  for(const z of [-1.12,1.12]){
+    const leg=addBox(group,[.19,3.45,.19],"#665b4b",[0,-.35,z],.9);
+    leg.position.y=-.25;
+    const brace=addBox(group,[.11,1.18,.11],"#756653",[0,.05,z*.72],.92);brace.rotation.z=z>0?-.34:.34;
+  }
+  const cap=addBox(group,[.20,.12,3.10],brand==="JORGITO"?"#a83d31":"#d9d9e8",[0,2.31,0],.4);cap.rotation.y=turn;
   group.position.set(side*5.1,0,0);
   return group;
 }
@@ -109,9 +113,20 @@ function buildRoadtrip(){
   scene.add(new THREE.HemisphereLight("#f7f1e4","#657460",1.8));
   const sun=new THREE.DirectionalLight("#fff0d6",2.25);sun.position.set(-7,10,5);sun.castShadow=true;sun.shadow.mapSize.set(1024,1024);scene.add(sun);
   const fill=new THREE.DirectionalLight("#d4e3ed",.72);fill.position.set(6,4,-5);scene.add(fill);
-  const ground=addBox(scene,[80,.12,100],"#79906d",[0,-2.24,-3],.98);
-  const road=addBox(scene,[8,.12,100],"#50514d",[0,-2.15,-3],.98);
-  for(let i=0;i<18;i++)addBox(scene,[.16,.025,2.3],"#e9e1cb",[0,-2.07,-46+i*5.3],.9);
+  const ground=addBox(scene,[100,.12,110],"#79906d",[0,-2.24,-3],.98);
+  // Asphalt with gravel shoulders, crisp edge lines and animated centre dashes.
+  const road=addBox(scene,[8,.12,110],"#454946",[0,-2.15,-3],.98);
+  addBox(scene,[1.2,.035,110],"#8b8a78",[-4.55,-2.17,-3],.98);addBox(scene,[1.2,.035,110],"#8b8a78",[4.55,-2.17,-3],.98);
+  addBox(scene,[.13,.025,110],"#e6dfc9",[-3.78,-2.06,-3],.82);addBox(scene,[.13,.025,110],"#e6dfc9",[3.78,-2.06,-3],.82);
+  const roadMarks:THREE.Mesh[]=[];
+  for(let i=0;i<22;i++){const mark=addBox(scene,[.16,.025,2.3],"#f0e8d4",[0,-2.055,-52+i*5.0],.82);roadMarks.push(mark);}
+  // Low roadside reflector posts add scale and depth without changing the existing trees.
+  const roadsidePosts:THREE.Group[]=[];
+  for(let i=0;i<24;i++)for(const side of [-1,1]){
+    const post=new THREE.Group();addBox(post,[.10,.78,.10],"#e8e4d8",[0,0,0],.7);
+    addBox(post,[.115,.12,.12],"#b44d3e",[0,.18,.01],.45);
+    post.position.set(side*5.25,-1.72,-52+i*4.5);scene.add(post);roadsidePosts.push(post);
+  }
   // Low-poly rolling countryside, visible through the windows and in the opening shot.
   const hills:THREE.Mesh[]=[];
   for(let i=0;i<13;i++){
@@ -145,12 +160,45 @@ function buildRoadtrip(){
   // Rear windshield/luneta: the cabin is a complete closed-roof car, not a convertible.
   const rearGlass=new THREE.Mesh(new THREE.PlaneGeometry(2.82,1.34),glass);rearGlass.position.set(0,1.83,2.02);rearGlass.rotation.x=.10;car.add(rearGlass);
   for(const x of [-1.55,1.55]) addBox(car,[.13,.18,.14],"#3b4f49",[x,3.02,1.65],.4);
-  // Dashboard, center console and front controls.
-  addBox(car,[3.00,.48,.72],"#827f72",[0,-.10,-1.72],.58);
-  addBox(car,[.92,.48,.74],"#5f625b",[0,-.55,-1.38],.52);
-  addBox(car,[.74,.14,.64],"#b0a990",[0,-.28,-1.22],.5);
-  addBox(car,[.72,.34,.035],"#25302e",[0,.05,-1.70],.28);
-  for(let i=0;i<3;i++)addBox(car,[.12,.12,.06],i===0?"#b75d43":"#d5c7a1",[-.2+i*.2,-.25,-1.30],.35);
+  // Layered dashboard: soft-touch upper pad, lower fascia, stitched trim and a proper instrument binnacle.
+  addBox(car,[3.04,.22,.78],"#393f3c",[0,.10,-1.72],.92);
+  addBox(car,[3.00,.48,.72],"#77766d",[0,-.10,-1.72],.68);
+  addBox(car,[2.92,.055,.76],"#b0a38d",[0,-.31,-1.69],.72);
+  addBox(car,[.98,.50,.76],"#4d5551",[0,-.56,-1.38],.58);
+  addBox(car,[.78,.17,.68],"#262d2a",[0,-.30,-1.24],.48);
+  // Instrument cluster glass and illuminated gauges behind the steering wheel.
+  const gaugeTexture=addCanvasTexture((ctx,w,h)=>{
+    ctx.fillStyle="#182321";ctx.fillRect(0,0,w,h);
+    for(const x of [w*.27,w*.73]){ctx.strokeStyle="#d6d8c7";ctx.lineWidth=9;ctx.beginPath();ctx.arc(x,h*.55,h*.31,Math.PI,Math.PI*2);ctx.stroke();ctx.strokeStyle="#df7657";ctx.lineWidth=7;ctx.beginPath();ctx.moveTo(x,h*.55);ctx.lineTo(x+h*.18,h*.30);ctx.stroke();}
+    ctx.fillStyle="#a7c7a2";ctx.font="bold 28px Arial";ctx.textAlign="center";ctx.fillText("0  80  120",w/2,h*.91);
+  },512,256);
+  const gauges=new THREE.Mesh(new THREE.PlaneGeometry(.82,.36),new THREE.MeshBasicMaterial({map:gaugeTexture,toneMapped:false}));gauges.position.set(-.88,.12,-1.315);car.add(gauges);
+  // Air vents, hazard button, climate dials and infotainment screen.
+  for(const x of [-1.18,-.54,.54,1.18]){
+    addBox(car,[.28,.11,.035],"#202725",[x,-.045,-1.315],.48);
+    addBox(car,[.025,.075,.018],"#9a9e94",[x,-.045,-1.292],.42);
+  }
+  addBox(car,[.34,.22,.035],"#18201e",[0,-.02,-1.302],.35);
+  addBox(car,[.12,.10,.018],"#bd4f43",[0,-.02,-1.276],.4);
+  addBox(car,[.70,.31,.035],"#182320",[0,-.48,-1.305],.28);
+  addBox(car,[.62,.22,.012],"#78958b",[0,-.47,-1.282],.32);
+  for(let i=0;i<3;i++){
+    const dial=new THREE.Mesh(new THREE.CylinderGeometry(.065,.065,.035,12),mat("#c2b9a5",.5,.18));dial.rotation.x=Math.PI/2;dial.position.set(-.22+i*.22,-.70,-1.29);car.add(dial);
+    addBox(car,[.08,.035,.018],i===0?"#b75d43":"#d5c7a1",[-.22+i*.22,-.70,-1.265],.4);
+  }
+  // Gear selector, cup holders and a textured centre tunnel.
+  addBox(car,[.54,.16,1.15],"#343c38",[0,-.83,-.34],.74);
+  const gear=new THREE.Group();gear.position.set(.20,-.65,-.82);car.add(gear);
+  const shaft=new THREE.Mesh(new THREE.CylinderGeometry(.035,.05,.28,8),mat("#8a8d86",.35,.55));shaft.position.y=.13;gear.add(shaft);
+  const knob=new THREE.Mesh(new THREE.SphereGeometry(.105,12,8),mat("#262b29",.32,.18));knob.position.y=.30;gear.add(knob);
+  for(const x of [-.22,.22]){const cup=new THREE.Mesh(new THREE.CylinderGeometry(.105,.09,.025,12),mat("#171d1b",.55));cup.position.set(x,-.73,-.18);car.add(cup);}
+  // Door cards, recessed handles and small metallic inner releases.
+  for(const side of [-1,1]){
+    addBox(car,[.13,.62,2.75],"#59635d",[side*1.48,-.55,.05],.86);
+    addBox(car,[.035,.12,.42],"#303a36",[side*1.405,-.38,.18],.45);
+    addBox(car,[.04,.045,.20],"#b9b4a5",[side*1.38,-.37,.18],.32);
+    addBox(car,[.035,.07,.55],"#424b46",[side*1.405,-.72,.70],.6);
+  }
   // Front seats with a warm, textured low-poly upholstery.
   for(const x of [-.82,.82]){
     addBox(car,[.94,1.30,.20],"#746b5c",[x,-.02,.83],.96);
@@ -174,7 +222,7 @@ function buildRoadtrip(){
   // Side advertising billboards are outside the windows; they pass alongside the car.
   const billboardRight=makeBillboard("JORGITO",1);const billboardLeft=makeBillboard("OREO",-1);
   scene.add(billboardRight,billboardLeft);
-  return {scene,car,valentina,bruno,wheel,phone,billboardRight,billboardLeft,trees,hills,road,ground};
+  return {scene,car,valentina,bruno,wheel,phone,billboardRight,billboardLeft,trees,hills,road,ground,roadMarks,roadsidePosts};
 }
 
 function shotCamera(shot:RoadtripShot,camera:THREE.PerspectiveCamera,time:number,billboardRight:THREE.Group,billboardLeft:THREE.Group){
@@ -256,6 +304,8 @@ export async function renderEntrePartidasRoadtripToWebM(pkg:RoadtripPackage,onPr
       const scroll=t*8.2;
       world.trees.forEach((tree,i)=>{const base=-42+i*5.2;tree.position.z=((base+scroll+48)%92)-46;});
       world.hills.forEach((hill,i)=>{const base=-38+i*6.4;hill.position.z=((base+scroll*.22+48)%92)-46;});
+      world.roadMarks.forEach((mark,i)=>{const base=-52+i*5.0;mark.position.z=((base+scroll+56)%108)-54;});
+      world.roadsidePosts.forEach((post,i)=>{const base=-52+Math.floor(i/2)*4.5;post.position.z=((base+scroll+56)%108)-54;});
       // Each roadside ad has one continuous far-to-near approach and a single pass; no cyclic reset.
       // It never wraps around or pops back into view after passing the car.
       world.billboardRight.position.z=18-(t-pkg.billboardRightAt)*8.2;
