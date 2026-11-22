@@ -138,17 +138,29 @@ function createDinnerRoom(world:THREE.Scene){
   for(let i=0;i<3;i++)box(world,[.35,.018,.34],mat("#f0e9db",.98),[1.15+i*.3,-.85,-5.8],false);
 }
 
+function createMiniPizza(world:THREE.Scene,x:number,y:number,z:number,index:number){
+  const crust=mat("#bd8245",.82),cheese=mat("#e8bd62",.72),sauce=mat("#a83e2d",.82),pepperoni=mat("#a9362c",.66),herb=mat("#587344",.92);
+  const base=new THREE.Mesh(new THREE.CylinderGeometry(.43,.43,.075,32),crust);base.position.set(x,y,z);base.castShadow=true;base.receiveShadow=true;world.add(base);
+  const top=new THREE.Mesh(new THREE.CylinderGeometry(.385,.385,.018,32),sauce);top.position.set(x,y+.043,z);world.add(top);
+  const cheeseTop=new THREE.Mesh(new THREE.CylinderGeometry(.36,.36,.022,32),cheese);cheeseTop.position.set(x,y+.058,z);world.add(cheeseTop);
+  const rim=new THREE.Mesh(new THREE.TorusGeometry(.395,.043,8,36),crust);rim.rotation.x=Math.PI/2;rim.position.set(x,y+.065,z);world.add(rim);
+  for(let i=0;i<7;i++){const a=i*2.399+index*.31,r=.10+(i%3)*.065;const p=sphere(world,[.09,.025,.09],pepperoni,[x+Math.cos(a)*r,y+.078,z+Math.sin(a)*r],10);p.rotation.y=a;}
+  for(let i=0;i<10;i++){const a=i*2.17+index; sphere(world,[.025,.012,.025],herb,[x+Math.cos(a)*(.12+(i%4)*.055),y+.09,z+Math.sin(a)*(.12+(i%4)*.055)],7);}
+}
+
 function createTableSetting(world:THREE.Scene,diners:DinerRig[]){
-  const tabletop=mat("#876342",.38),edge=mat("#5e3e2a",.48),ceramic=mat("#f1eee4",.27),food=mat("#d6a24d",.58),fries=mat("#e4bb65",.52),fork=mat("#b7b9b3",.22,.82);
+  const tabletop=mat("#876342",.38),edge=mat("#5e3e2a",.48),ceramic=mat("#f1eee4",.27),fork=mat("#b7b9b3",.22,.82);
   box(world,[10.3,.23,4.15],tabletop,[0,.25,.82]);box(world,[10.34,.1,4.2],edge,[0,.09,.82]);
+  // A woven runner and beveled table trim make the shared dining table feel lived-in.
+  box(world,[9.7,.025,1.05],mat("#b7a17e",.96),[0,.375,.82],false);
+  box(world,[9.55,.018,.08],mat("#e1d2b5",.9),[0,.394,.34],false);box(world,[9.55,.018,.08],mat("#e1d2b5",.9),[0,.394,1.30],false);
   for(const x of [-4.25,4.25])for(const z of [-.65,2.3])box(world,[.2,2,.2],edge,[x,-.94,z]);
   diners.forEach((diner,index)=>{
     const x=diner.x,z=-.18+(index%2)*.12;
     const plate=new THREE.Mesh(new THREE.CylinderGeometry(.64,.64,.07,32),ceramic);plate.position.set(x,.42,z);plate.castShadow=true;plate.receiveShadow=true;world.add(plate);
     const rim=new THREE.Mesh(new THREE.TorusGeometry(.54,.018,6,32),mat("#c5b89e",.34,.1));rim.rotation.x=Math.PI/2;rim.position.set(x,.465,z);world.add(rim);
-    const schnitzel=sphere(world,[.8,.13,.46],food,[x-.05,.53,z-.03],16);schnitzel.rotation.y=-.1+index*.035;
-    for(let fry=0;fry<7;fry++){const angle=fry*.62;const piece=box(world,[.1,.1,.38],fries,[x+.29+Math.cos(angle)*.18,.57,z+.08+Math.sin(angle)*.18]);piece.rotation.y=angle;piece.rotation.z=-.05+(fry%3)*.035;}
-    sphere(world,[.24,.12,.18],mat("#79905f",.95),[x-.43,.55,z+.16],10);
+    // Each guest has an individual pizza, with visible golden crust, tomato, cheese and pepperoni.
+    createMiniPizza(world,x,.535,z-.02,index);
     rod(world,[x-.78,.49,z-.15],[x-.78,.49,z+.43],.025,fork);for(let tine=0;tine<4;tine++)rod(world,[x-.87+tine*.06,.49,z-.12],[x-.87+tine*.06,.49,z+.02],.009,fork);
     rod(world,[x+.76,.49,z-.15],[x+.76,.49,z+.43],.022,fork);
     box(world,[.42,.028,.34],mat("#d2c2a8",.94),[x-.98,.46,z+.3],false);
