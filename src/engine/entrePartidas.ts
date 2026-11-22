@@ -434,31 +434,33 @@ export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
   world.add(interior);
   const exterior=new THREE.Group();
   world.add(exterior);
-  // Clear sunny daytime exterior: bright blue sky, warm high sun and soft sky fill.
-  exterior.add(new THREE.HemisphereLight(0xc9eaff,0x8a806c,2.15));
-  const exteriorKey=new THREE.DirectionalLight(0xffe2b5,3.25);
-  exteriorKey.position.set(-5.5,10.5,7.0);
+  // Dedicated low-key exterior illumination: the street remains nighttime-blue,
+  // but the shopfront, house facade and roof stay readable instead of collapsing
+  // into silhouettes against the sky.
+  exterior.add(new THREE.HemisphereLight(0x9db5d4,0x35404a,1.65));
+  const exteriorKey=new THREE.DirectionalLight(0xffd5a5,2.25);
+  exteriorKey.position.set(-5.5,8.5,7.0);
   exterior.add(exteriorKey);
-  const exteriorCoolFill=new THREE.DirectionalLight(0xb9ddf5,1.15);
-  exteriorCoolFill.position.set(7.0,5.0,-1.5);
+  const exteriorCoolFill=new THREE.DirectionalLight(0x86a8d4,0.85);
+  exteriorCoolFill.position.set(7.0,4.0,-1.5);
   exterior.add(exteriorCoolFill);
   const extMat=(color:string,roughness=.86,metalness=0)=>new THREE.MeshStandardMaterial({color,roughness,metalness});
   const extBox=(size:[number,number,number],position:[number,number,number],material:THREE.Material)=>{
     const mesh=new THREE.Mesh(new THREE.BoxGeometry(...size),material);
     mesh.position.set(...position);mesh.castShadow=true;mesh.receiveShadow=true;exterior.add(mesh);return mesh;
   };
-  const extGround=new THREE.Mesh(new THREE.PlaneGeometry(48,48),extMat("#8b9087",.98));
+  const extGround=new THREE.Mesh(new THREE.PlaneGeometry(48,48),extMat("#232b32",.98));
   extGround.rotation.x=-Math.PI/2;extGround.position.set(0,-1.99,-4);extGround.receiveShadow=true;exterior.add(extGround);
   const asphaltTexture=texture((ctx,w,h)=>{
-    ctx.fillStyle="#555c5b";ctx.fillRect(0,0,w,h);
+    ctx.fillStyle="#252c33";ctx.fillRect(0,0,w,h);
     for(let i=0;i<1450;i++){
       const x=(i*97)%w,y=(i*193)%h;
-      const shade= i%3===0 ? "rgba(218,222,214,.13)" : "rgba(20,27,28,.10)";
+      const shade= i%3===0 ? "rgba(164,174,178,.10)" : "rgba(8,13,17,.12)";
       ctx.fillStyle=shade;ctx.fillRect(x,y,1+(i%4),1+(i%2));
     }
     for(let i=0;i<18;i++){
       const x=(i*137)%w,y=(i*83)%h;
-      ctx.strokeStyle="rgba(25,31,30,.20)";ctx.lineWidth=2+(i%3);
+      ctx.strokeStyle="rgba(9,13,17,.28)";ctx.lineWidth=2+(i%3);
       ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+18+(i%4)*11,y+3+(i%3)*5);ctx.lineTo(x+25+(i%5)*12,y+1);ctx.stroke();
     }
   },512,512);
@@ -466,13 +468,13 @@ export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
   const asphaltMat=new THREE.MeshStandardMaterial({map:asphaltTexture,roughness:.98,color:"#b5bdc1"});
   const asphalt=new THREE.Mesh(new THREE.PlaneGeometry(48,12),asphaltMat);
   asphalt.rotation.x=-Math.PI/2;asphalt.position.set(0,-1.975,5.3);asphalt.receiveShadow=true;exterior.add(asphalt);
-  const sidewalk=extMat("#b8b6aa",.94),curb=extMat("#b7b7ad",.85),roadLine=extMat("#d5c58f",.92);
+  const sidewalk=extMat("#777a78",.94),curb=extMat("#b7b7ad",.85),roadLine=extMat("#d5c58f",.92);
   extBox([26,.16,2.5],[0,-1.88,-1.95],sidewalk);
   extBox([26,.24,.22],[0,-1.82,-3.16],curb);
   for(let i=-2;i<=2;i++)extBox([2.6,.012,.10],[i*4,-1.955,5.6],roadLine);
 
   // Supermarket facade: broad lit windows, glass entrance, fascia and a readable sign.
-  const storeWall=extMat("#668273",.9),storeTrim=extMat("#304d42",.7),windowFrame=extMat("#b9c2ba",.38,.32);
+  const storeWall=extMat("#3d514b",.9),storeTrim=extMat("#172a27",.7),windowFrame=extMat("#b9c2ba",.38,.32);
   extBox([8.2,5.35,5.8],[-2.65,.70,-7.75],storeWall);
   extBox([8.45,.48,.90],[-2.65,3.38,-5.15],storeTrim);
   extBox([8.35,.16,.96],[-2.65,-1.91,-5.15],extMat("#263a34",.8));
@@ -842,10 +844,10 @@ export function createEntrePartidasSet(world: THREE.Scene): EntrePartidasSet {
     const cap=new THREE.Mesh(new THREE.SphereGeometry(.08,8,6),carMetal);cap.position.set(x,-1.22,-3.48);exterior.add(cap);
   }
 
-  // Sunny blue sky and a pale atmospheric distance; daylight remains dominant over shop lighting.
+  // A deep navy night sky; all emissive shop and house windows stay warm by contrast.
   exterior.traverse(object=>{if(object instanceof THREE.Mesh){object.castShadow=false;object.receiveShadow=false;}});
-  const exteriorBackground=new THREE.Color("#8fcdf4");
-  const exteriorFog=new THREE.Fog("#c6e6f7",38,88);
+  const exteriorBackground=new THREE.Color("#0a1424");
+  const exteriorFog=new THREE.Fog("#0a1424",34,78);
   const interiorBackground=new THREE.Color("#d9d5ca");
   const interiorFog=new THREE.Fog("#d9d5ca",22,48);
 
