@@ -81,8 +81,13 @@ async def main():
         cues.append(cue)
         clips.append((path,start,1.0))
         if segment.get("laugh"):
-            clips.append((LAUGH,end+.12,.48))
-        cursor=end+float(segment.get("pause",.3))
+            # Let the line breathe, play the complete original laugh, then leave
+            # a full second of clean silence before the next spoken cue.
+            laugh_start=end+.18
+            clips.append((LAUGH,laugh_start,.48))
+            cursor=laugh_start+duration(LAUGH)+1.0
+        else:
+            cursor=end+float(segment.get("pause",.3))
     billboard_right_at=next(c["start"] for c in cues if c["id"]=="01-bruno-cartel-alfajor")
     billboard_left_at=next(c["start"] for c in cues if c["id"]=="06-bruno-cartel-oreo")
     end_card_start=cursor+.20
