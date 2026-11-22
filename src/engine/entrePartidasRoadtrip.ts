@@ -83,7 +83,7 @@ function makeAdTexture(brand:"JORGITO"|"OREO"){
 function makeBillboard(brand:"JORGITO"|"OREO",side:number){
   const group=new THREE.Group(),turn=side>0?-Math.PI/2:Math.PI/2;
   const metal=mat("#454a49",.56,.38),edge=brand==="JORGITO"?"#7c292d":"#17234d";
-  const backing=addBox(group,[.18,2.25,3.72],edge,[0,1.40,0],.62);backing.rotation.y=turn;
+  const backing=addBox(group,[3.72,2.25,.18],edge,[0,1.40,0],.62);backing.rotation.y=turn;
   const face=new THREE.Mesh(new THREE.PlaneGeometry(3.48,1.98),new THREE.MeshStandardMaterial({map:makeAdTexture(brand),roughness:.68,metalness:.02,side:THREE.DoubleSide}));
   face.position.set(0,1.40,side>0?.105:-.105);face.rotation.y=turn;face.castShadow=true;group.add(face);
   // Dos postes rectos independientes. No hay diagonales ni cruces en X.
@@ -92,8 +92,8 @@ function makeBillboard(brand:"JORGITO"|"OREO",side:number){
     addBox(group,[.44,.12,.44],"#555b57",[0,-2.18,z],.72);
     addBox(group,[.24,.12,.24],"#747a75",[0,2.34,z],.58);
   }
-  const rail=addBox(group,[.16,.13,3.36],metal,[0,.22,0],.55);rail.rotation.y=turn;
-  const crown=addBox(group,[.19,.13,3.82],metal,[0,2.56,0],.42);crown.rotation.y=turn;
+  const rail=addBox(group,[3.36,.13,.16],metal,[0,.22,0],.55);rail.rotation.y=turn;
+  const crown=addBox(group,[3.82,.13,.19],metal,[0,2.56,0],.42);crown.rotation.y=turn;
   group.position.set(side*5.25,0,0);return group;
 }
 
@@ -228,15 +228,15 @@ function buildRoadtrip(){
     addBox(car,[.34,.12,.20],"#6b6255",[x,.73,.84],.9);
   }
   // Asiento trasero completo de tres plazas, respaldo, apoyacabezas y cinturones.
-  addBox(car,[2.34,.30,.88],"#746b5c",[0,-1.18,1.24],.96);
-  addBox(car,[2.36,1.12,.25],"#817767",[0,-.47,1.72],.95);
-  for(const x of [-.72,0,.72])addBox(car,[.72,.93,.045],"#958a78",[x,-.49,1.855],.96);
-  for(const x of [-.76,0,.76])addBox(car,[.34,.64,.22],"#665e52",[x,.42,1.63],.86);
+  addBox(car,[2.34,.30,.88],"#746b5c",[0,-1.18,1.50],.96);
+  addBox(car,[2.36,1.12,.25],"#817767",[0,-.47,1.84],.95);
+  for(const x of [-.72,0,.72])addBox(car,[.72,.93,.045],"#958a78",[x,-.49,1.975],.96);
+  for(const x of [-.76,0,.76])addBox(car,[.34,.64,.22],"#665e52",[x,.42,1.76],.86);
   for(const x of [-.72,0,.72]){
-    const buckle=addBox(car,[.09,.30,.08],"#b83e36",[x,-.98,1.10],.5);buckle.rotation.z=x<0?-.08:.08;
+    const buckle=addBox(car,[.09,.30,.08],"#b83e36",[x,-.98,1.34],.5);buckle.rotation.z=x<0?-.08:.08;
   }
   for(const side of [-1,1]){
-    const belt=addBox(car,[.045,1.08,.035],"#343c3a",[side*1.05,-.30,1.48],.9);belt.rotation.z=side*.16;
+    const belt=addBox(car,[.045,1.08,.035],"#343c3a",[side*1.05,-.30,1.62],.9);belt.rotation.z=side*.16;
   }
   // Steering wheel: left-hand drive, fixed in the same place for every interior angle.
   const wheel=new THREE.Group();wheel.position.set(-.88,.38,-1.12);wheel.rotation.y=Math.PI;car.add(wheel);
