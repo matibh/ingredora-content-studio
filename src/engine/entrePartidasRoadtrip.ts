@@ -24,6 +24,8 @@ type RoadtripPackage = {
   height: number;
   durationSeconds: number;
   endCardStart: number;
+  billboardRightAt: number;
+  billboardLeftAt: number;
   dialogue: RoadtripCue[];
 };
 export type RoadtripProgress = { frame: number; totalFrames: number; percent: number };
@@ -127,7 +129,7 @@ function buildRoadtrip(){
   }
   // Car exterior and cabin share one continuous model; interior coverage is cut from inside the same set.
   const car=new THREE.Group();scene.add(car);
-  const paint=mat("#536d66",.38,.17),paintDark=mat("#32443f",.42,.16),rubber=mat("#202322",.86),glass=new THREE.MeshPhysicalMaterial({color:"#a8c6ca",transparent:true,opacity:.13,roughness:.18,metalness:.08,side:THREE.DoubleSide,depthWrite:false});
+  const rubber=mat("#202322",.86),glass=new THREE.MeshPhysicalMaterial({color:"#a8c6ca",transparent:true,opacity:.13,roughness:.18,metalness:.08,side:THREE.DoubleSide,depthWrite:false});
   addBox(car,[3.75,.76,5.65],"#536d66",[0,-1.48,0],.34);
   addBox(car,[3.55,.44,1.52],"#668078",[0,-1.12,-2.02],.32);
   addBox(car,[3.55,.42,1.22],"#536d66",[0,-1.18,2.12],.34);
@@ -254,9 +256,8 @@ export async function renderEntrePartidasRoadtripToWebM(pkg:RoadtripPackage,onPr
       const scroll=t*8.2;
       world.trees.forEach((tree,i)=>{const base=-42+i*5.2;tree.position.z=((base+scroll+48)%92)-46;});
       world.hills.forEach((hill,i)=>{const base=-38+i*6.4;hill.position.z=((base+scroll*.22+48)%92)-46;});
-      world.billboardRight.position.z=((scroll-76+18)%36+36)%36-18;
-      world.billboardLeft.position.z=((scroll-360+18)%36+36)%36-18;
-      const roadDashes=world.road.children;
+      world.billboardRight.position.z=((scroll-pkg.billboardRightAt*8.2+18)%36+36)%36-18;
+      world.billboardLeft.position.z=((scroll-pkg.billboardLeftAt*8.2+18)%36+36)%36-18;
       // The outside strip gives the opening shot a steady sense of travel.
       world.car.position.y=Math.sin(t*1.8)*.006;
       world.car.rotation.y=Math.sin(t*.12)*.006;
@@ -273,7 +274,7 @@ export async function renderEntrePartidasRoadtripToWebM(pkg:RoadtripPackage,onPr
         const turn=cue?.look===rig.name?0:cue?.look?.length? (rig.name==="bruno"?-.10:.10):0;
         rig.head.rotation.y=turn;
         rig.head.rotation.x=active?Math.sin(t*3.4)*.018:Math.sin(t*.55)*.006;
-        const mouthOpen=active?.04+Math.pow(Math.max(0,Math.sin(((t-cue!.start)/Math.max(.1,cue!.end-cue!.start))*Math.max(2,(cue!.text.match(/[aeiouáéíóúü]/gi)||[]).length)*Math.PI*2)),.8)*.55:.026;
+        const mouthOpen=active ? 0.04+Math.pow(Math.max(0,Math.sin(((t-cue!.start)/Math.max(.1,cue!.end-cue!.start))*Math.max(2,(cue!.text.match(/[aeiouáéíóúü]/gi)||[]).length)*Math.PI*2)),.8)*.55 : 0.026;
         rig.mouth.scale.set(1,mouthOpen,1);
       }
       if(t>=3.2&&t<6.5){world.valentina.head.rotation.y=.025;}
