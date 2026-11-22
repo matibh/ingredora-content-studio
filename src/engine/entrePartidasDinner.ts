@@ -114,6 +114,21 @@ function createDinnerRoom(world:THREE.Scene){
   sign.position.set(3.9,3.65,-12.44);world.add(sign);
   box(world,[2.2,2,.1],mat("#293c35",.36),[2.9,1.38,-12.48],false);box(world,[2.2,2,.1],mat("#263a36",.36),[5.1,1.38,-12.48],false);
   for(let i=0;i<6;i++)box(world,[.18,.6+(i%2)*.16,.2],mat(["#c8a04b","#6a8e72","#c85b48"][i%3]),[2.2+i*.58,.25,-12.34],false);
+  // Cozy apartment details: patterned rug under the dining area and a warm framed gallery wall.
+  const rug=mat("#718276",.98);box(world,[10.8,.035,5.2],rug,[0,-1.965,.65],false);
+  for(let x=-5.1;x<=5.1;x+=.34){box(world,[.018,.012,4.75],mat("#aeb49b",.96),[x,-1.94,.65],false);}
+  for(const z of [-1.62,2.92])box(world,[10.35,.014,.025],mat("#d6c5a6",.9),[0,-1.94,z],false);
+  // Curtain rails and soft side panels frame the supermarket-facing window.
+  rod(world,[1.78,4.48,-7.52],[6.02,4.48,-7.52],.035,brass);
+  for(const x of [1.92,5.88]){
+    const curtain=mat("#8d9b86",.96);box(world,[.34,3.25,.12],curtain,[x,2.43,-7.56],false);
+    for(let fold=0;fold<3;fold++)box(world,[.035,3.12,.13],mat("#aab39d",.96),[x-.10+fold*.10,2.43,-7.48],false);
+  }
+  // A floating shelf, books and small framed art make the apartment feel inhabited.
+  box(world,[2.9,.12,.42],wood,[-2.7,3.45,-7.78],false);
+  for(let i=0;i<5;i++)box(world,[.16,.52,.22],mat(["#b66c4d","#d0ad70","#627d70","#9b7657","#c5b99f"][i],.9),[-3.75+i*.28,3.76,-7.72],false);
+  box(world,[1.05,.78,.08],darkWood,[-.42,3.25,-7.78],false);
+  box(world,[.91,.64,.035],mat("#d8b77e",.9),[-.42,3.25,-7.72],false);
   // Integrated kitchen, cabinets, fridge and the apartment sofa.
   box(world,[5.2,2.9,.35],warm,[-6.15,1.5,-7.9],false);box(world,[5.4,.58,1],wood,[-6,-.55,-5.65],false);box(world,[5.5,.12,1.08],mat("#d7d4c9",.28),[-6,-.18,-5.65],false);
   for(let i=0;i<4;i++){box(world,[1.18,.72,.3],wood,[-7.9+i*1.34,1.55,-7.38],false);box(world,[.04,.35,.035],brass,[-7.9+i*1.34+.42,1.55,-7.2],false);box(world,[.04,.35,.035],brass,[-7.9+i*1.34-.42,1.55,-7.2],false);box(world,[1.18,.72,.3],mat("#8a6949",.74),[-7.9+i*1.34,-.97,-7.35],false);}
