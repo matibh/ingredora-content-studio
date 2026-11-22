@@ -76,7 +76,7 @@ function makeBillboard(brand:"JORGITO"|"OREO",side:number){
   const post=addBox(group,[.16,2.7,.16],"#74664f",[0,-.1,0]);
   post.position.y=-.55;
   const board=new THREE.Mesh(new THREE.PlaneGeometry(2.8,1.85),new THREE.MeshBasicMaterial({map:makeAdTexture(brand),side:THREE.DoubleSide}));
-  board.position.set(0,1.25,0);board.rotation.y=side>0?-Math.PI/2:Math.PI/2;group.add(board);
+  board.position.set(0,1.25,0);board.rotation.y=side>0?-.32:.32;group.add(board);
   group.position.set(side*5.1,0,0);
   return group;
 }
@@ -488,8 +488,8 @@ export async function renderEntrePartidasRoadtripToWebM(pkg:RoadtripPackage,onPr
       // se acerca en sentido contrario al avance visual y pasa una sola vez junto a la ventanilla.
       world.billboardRight.position.z=-12+(t-pkg.billboardRightAt)*8.2;
       world.billboardLeft.position.z=-12+(t-pkg.billboardLeftAt)*8.2;
-      world.billboardRight.visible=world.billboardRight.position.z>-30&&world.billboardRight.position.z<24;
-      world.billboardLeft.visible=world.billboardLeft.position.z>-30&&world.billboardLeft.position.z<24;
+      world.billboardRight.visible=t>=pkg.billboardRightAt-.65&&world.billboardRight.position.z>-30&&world.billboardRight.position.z<24;
+      world.billboardLeft.visible=t>=pkg.billboardLeftAt-.65&&world.billboardLeft.position.z>-30&&world.billboardLeft.position.z<24;
       // The outside strip gives the opening shot a steady sense of travel.
       world.car.position.y=Math.sin(t*1.8)*.006;
       world.car.rotation.y=Math.sin(t*.12)*.006;
