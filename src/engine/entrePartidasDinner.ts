@@ -151,6 +151,59 @@ function createDinnerRoom(world:THREE.Scene){
   box(world,[3.1,.62,.72],wood,[1,-1.3,-6],false);box(world,[3.2,.09,.78],darkWood,[1,-.95,-6],false);
   const bowl=new THREE.Mesh(new THREE.CylinderGeometry(.32,.22,.18,18,1,true),mat("#d5c6a8",.32));bowl.position.set(.15,-.78,-5.86);world.add(bowl);
   for(let i=0;i<3;i++)box(world,[.35,.018,.34],mat("#f0e9db",.98),[1.15+i*.3,-.85,-5.8],false);
+  // Exterior establishing-shot location, kept off-camera from the apartment set.
+  // Camera begins at street level and tilts upward to reveal the apartment building.
+  const bx=35,frontZ=-4.2;
+  const facade=mat("#c9bca8",.94),facadeLight=mat("#e1d4c0",.92),concrete=mat("#8d887e",.86),frame=mat("#554f49",.62),windowGlass=new THREE.MeshStandardMaterial({color:"#263b4b",roughness:.22,metalness:.18,emissive:"#182a35",emissiveIntensity:.18});
+  box(world,[13.2,19,.95],facade,[bx,7.45,-4.72],false);
+  box(world,[13.45,.42,1.08],concrete,[bx,17.15,-4.72],false);
+  box(world,[13.35,.22,1.02],facadeLight,[bx,-2.05,-4.72],false);
+  box(world,[.34,18.2,1.04],facadeLight,[bx-6.35,7.45,-4.72],false);
+  box(world,[.34,18.2,1.04],facadeLight,[bx+6.35,7.45,-4.72],false);
+  for(let floor=0;floor<6;floor++){
+    const y=-.35+floor*2.82;
+    for(let column=0;column<3;column++){
+      const x=bx+(column-1)*3.85;
+      box(world,[1.82,1.62,.075],frame,[x,y,frontZ],false);
+      box(world,[1.64,1.44,.035],windowGlass,[x,y,frontZ+.045],false);
+      box(world,[.055,1.48,.055],facadeLight,[x,y,frontZ+.08],false);
+      box(world,[1.70,.055,.055],facadeLight,[x,y+.72,frontZ+.08],false);
+      box(world,[1.70,.055,.055],facadeLight,[x,y-.72,frontZ+.08],false);
+      box(world,[.045,1.42,.045],frame,[x,y,frontZ+.085],false);
+      if((floor+column)%2===0&&floor<5){
+        const balconyY=y-.98;
+        box(world,[2.75,.14,.92],concrete,[x,balconyY,frontZ-.48],false);
+        box(world,[2.78,.07,.07],frame,[x,balconyY+.68,frontZ-.86],false);
+        for(let rail=0;rail<9;rail++)box(world,[.035,.66,.035],frame,[x-1.34+rail*.335,balconyY+.34,frontZ-.86],false);
+        box(world,[.08,.62,.08],facadeLight,[x-1.35,balconyY+.34,frontZ-.48],false);
+        box(world,[.08,.62,.08],facadeLight,[x+1.35,balconyY+.34,frontZ-.48],false);
+        if(column===0){
+          const pot=new THREE.Mesh(new THREE.BoxGeometry(.34,.28,.30),mat("#9a634a",.95));pot.position.set(x+.72,balconyY+.18,frontZ-.58);world.add(pot);
+          sphere(world,[.46,.38,.34],mat("#5d8055",.95),[x+.72,balconyY+.50,frontZ-.58],9);
+        }
+      }
+    }
+    // Continuous floor bands and a subtle lit corridor strip.
+    box(world,[12.8,.10,.18],facadeLight,[bx,y-1.28,frontZ+.04],false);
+    box(world,[12.8,.035,.035],brass,[bx,y+1.02,frontZ+.02],false);
+  }
+  // Recessed main entrance, canopy, stair lights and building number plaque.
+  box(world,[2.15,2.55,.12],frame,[bx,-.72,frontZ-.02],false);
+  box(world,[1.82,2.26,.05],mat("#243640",.32,.2),[bx,-.78,frontZ+.06],false);
+  box(world,[.09,2.25,.08],brass,[bx-.91,-.78,frontZ+.11],false);
+  box(world,[.09,2.25,.08],brass,[bx+.91,-.78,frontZ+.11],false);
+  box(world,[2.8,.18,1.05],darkWood,[bx,-2.12,frontZ-.35],false);
+  box(world,[1.45,.42,.08],facadeLight,[bx,1.12,frontZ-.04],false);
+  const buildingNumber=texture((ctx,w,h)=>{ctx.fillStyle="#344b40";ctx.fillRect(0,0,w,h);ctx.fillStyle="#f7e9cc";ctx.textAlign="center";ctx.textBaseline="middle";ctx.font="900 92px Arial";ctx.fillText("284",w/2,h/2);},256,128);
+  const numberPlate=new THREE.Mesh(new THREE.PlaneGeometry(1.35,.34),new THREE.MeshBasicMaterial({map:buildingNumber}));numberPlate.position.set(bx,1.12,frontZ+.012);world.add(numberPlate);
+  const streetGround=mat("#5a5d56",.98),sidewalk=mat("#9b978c",.96);
+  box(world,[34,.12,40],streetGround,[bx,-2.24,-7],false);
+  box(world,[18,.18,3.2],sidewalk,[bx,-2.13,2.2],false);
+  for(let i=0;i<6;i++)box(world,[1.5,.025,.09],mat("#d0c8b5",.9),[bx-4.5+i*1.8,-2.035,3.05],false);
+  // Warm interior windows and discreet wall sconces bring the facade to life.
+  for(const [x,y] of [[bx-3.85,2.47],[bx+3.85,5.29],[bx,11.0],[bx-3.85,13.82]] as Array<[number,number]>){
+    sphere(world,[.16,.18,.06],new THREE.MeshStandardMaterial({color:"#ffd48b",emissive:"#ffbb65",emissiveIntensity:1.4}),[x,y,frontZ-.02],10);
+  }
 }
 
 function createPizzaSlice(world:THREE.Scene,x:number,y:number,z:number,index:number){
