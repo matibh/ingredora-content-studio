@@ -36,8 +36,8 @@ const texture = (draw: (ctx: CanvasRenderingContext2D,w:number,h:number)=>void,w
 export function makeCharacter(name: EntrePartidasCue["speaker"], x: number, z: number): CharacterRig {
   const root=new THREE.Group();root.position.set(x,-1.975,z);
   const isBruno=name==="bruno", isMartina=name==="martina", isTomas=name==="tomas", isErnesto=name==="ernesto";
-  const skin=mat(isBruno?"#c98e6e":isMartina?"#d6a080":isTomas?"#e1b18e":"#c99a79");
-  const hair=mat(isBruno?"#30241f":isMartina?"#30201c":isTomas?"#4b3328":"#8b8a82");
+  const skin=mat(isBruno?"#c98e6e":isMartina||name==="valentina"?"#d6a080":isTomas?"#e1b18e":"#c99a79");
+  const hair=mat(isBruno?"#30241f":isMartina||name==="valentina"?"#30201c":isTomas?"#4b3328":"#8b8a82");
   const hairTie=mat(isMartina||name==="valentina"?"#d8a64c":"#d5d8df");
   const shirt=mat(isBruno?"#c46a43":isMartina?"#bd7958":isTomas?"#527c78":isErnesto?"#718064":"#47788a");
   const pants=mat(isErnesto?"#4b5148":"#35414a"), shoes=mat("#222528",.56);
@@ -60,7 +60,7 @@ export function makeCharacter(name: EntrePartidasCue["speaker"], x: number, z: n
     }
     // Do not overlay skin-colored shoulder plates on the torso: their coplanar
     // front/back faces caused visible z-fighting at the shirt-to-skin seam.
-    box(root,[.30,.045,.025],mat(isMartina?"#e3b79a":"#a9cbd1"),[0,1.59,.205],false);
+    box(root,[.30,.045,.025],mat(isMartina||name==="valentina"?"#e3b79a":"#a9cbd1"),[0,1.59,.205],false);
   }
   box(root,[.19,.25,.18],skin,[0,isBruno?1.28:1.78,0]);
   box(head,[.66,.72,.58],skin,[0,0,0]);
