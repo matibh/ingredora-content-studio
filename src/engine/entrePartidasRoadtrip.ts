@@ -152,6 +152,7 @@ function buildRoadtrip(){
   }
 
   // Pickup doble cabina reconstruida con geometría mínima: caja, cabina cerrada y cuatro ruedas.
+  // QA pass: keep every shot readable at phone-screen size.
   // El frente apunta hacia z negativo. Sin jaula, toldo ni piezas decorativas innecesarias.
   const car=new THREE.Group();car.position.x=3.5;scene.add(car);
   const paint=mat("#536a73",.42,.08),dark=mat("#273136",.78),rubber=mat("#202322",.9);
