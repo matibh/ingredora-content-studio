@@ -75,7 +75,7 @@ async def main():
  with tempfile.TemporaryDirectory(prefix="arcade-04-",dir=AUDIO) as td:
   work=Path(td);parts=[];cues=[];words=[];cursor=INTRO_SECONDS
   intro=work/"intro.wav"
-  normalize(INTRO,intro,f"atrim=start=0:end={INTRO_SECONDS:.3f},volume=-4dB,afade=t=in:st=0:d=0.12,afade=t=out:st={INTRO_SECONDS-.35:.3f}:d=0.35")
+  normalize(INTRO,intro,f"atrim=start=0:end={INTRO_SECONDS:.3f},volume=0dB,afade=t=in:st=0:d=0.12,afade=t=out:st={INTRO_SECONDS-.35:.3f}:d=0.35")
   parts.append(intro)
   laugh=work/"laugh.wav";normalize(LAUGH,laugh,"atrim=start=0:end=1.65,volume=-5dB,afade=t=in:st=0:d=0.04,afade=t=out:st=1.35:d=0.30")
   final_laugh=work/"final-laugh.wav"
