@@ -176,7 +176,7 @@ function createArcade(world:THREE.Scene){
   const cablePoints=[
     new THREE.Vector3(5.80,-1.34,-1.72),new THREE.Vector3(5.78,-1.93,-1.72),
     new THREE.Vector3(5.62,-2.025,-1.62),new THREE.Vector3(5.36,-2.025,-1.55),
-    new THREE.Vector3(5.12,-2.025,-1.52),new THREE.Vector3(4.91,-2.01,-1.53)
+    new THREE.Vector3(5.55,-2.025,-1.78),new THREE.Vector3(5.48,-2.01,-1.82)
   ];
   const cableCurve=new THREE.CatmullRomCurve3(cablePoints);
   const cable=new THREE.Mesh(new THREE.TubeGeometry(cableCurve,48,.026,8,false),mat("#202321",.48,.08));
@@ -203,9 +203,9 @@ function makeScene(){
   const fill=new THREE.DirectionalLight("#d7e5eb",.78);fill.position.set(7,5,-7);scene.add(fill);
   createFacade(scene);createApartment(scene);
   const cast:CharacterRig[]=[
-    makeCharacter("bruno",-1.55,-2.05,true),makeCharacter("valentina",4.00,.35),
+    makeCharacter("bruno",-1.55,-2.05,true),makeCharacter("valentina",1.70,.35),
     // Martina is moved well to Bruno's right so she cannot cover him in the master shot.
-    makeCharacter("martina",-2.45,.15),makeCharacter("tomas",1.25,-.70),makeCharacter("ernesto",2.55,.15)
+    makeCharacter("martina",-2.45,.15),makeCharacter("tomas",.45,-.70),makeCharacter("ernesto",2.75,.15)
   ];
   cast.forEach(r=>{scene.add(r.root);r.root.position.y=r.name==="bruno"?-1.795:-2.135;r.root.rotation.y=0;r.leftArm.rotation.x=0;r.rightArm.rotation.x=0;});
   const arcade=createArcade(scene);
@@ -219,10 +219,10 @@ function cameraFor(shot:ArcadeShot,camera:THREE.PerspectiveCamera){
     case "master":p=[0,2.55,10.8];target=[0,-.15,-2.45];fov=76;break;
     case "bruno":p=[-1.55,1.25,.65];target=[-1.55,-.25,-2.05];fov=50;break;
     case "martina":p=[-2.95,1.25,2.70];target=[-2.45,-.30,.15];fov=48;break;
-    case "tomas":p=[2.9,1.25,2.35];target=[1.25,-.35,-.70];fov=44;break;
-    case "valentina":p=[5.10,1.30,2.85];target=[4.00,-.30,.35];fov=50;break;
-    case "ernesto":p=[4.25,1.25,3.2];target=[2.55,-.35,.15];fov=43;break;
-    case "arcade":p=[.15,1.35,1.25];target=[0,-.55,-3.05];fov=38;break;
+    case "tomas":p=[2.1,1.25,2.35];target=[.45,-.35,-.70];fov=44;break;
+    case "valentina":p=[2.80,1.30,2.85];target=[1.70,-.30,.35];fov=50;break;
+    case "ernesto":p=[4.45,1.25,3.2];target=[2.75,-.35,.15];fov=43;break;
+    case "arcade":p=[5.25,1.35,1.25];target=[4.65,-.55,-1.45];fov=38;break;
     case "reaction":p=[0,1.6,3.4];target=[0,-.15,-1.3];fov=54;break;
   }
   camera.position.set(...p);camera.lookAt(...target);camera.fov=fov;camera.updateProjectionMatrix();
