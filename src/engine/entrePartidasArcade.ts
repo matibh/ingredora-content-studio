@@ -66,7 +66,7 @@ function createApartment(world:THREE.Scene){
   // Pasillo común del edificio: ya estamos afuera del departamento.
   // No hay cuadros ni muebles de interior; solo puerta, ascensor, matafuego y escalera.
   const floor=mat("#77796f",.94),wall=mat("#ded4c5",.94),stone=mat("#c8b8a8",.96);
-  const darkTrim=mat("#6b4a35",.68),wood=mat("#65442f",.62);
+  const darkTrim=mat("#6b4a35",.68),doorFrame=mat("#b99669",.72);
   const metal=mat("#8e9798",.34,.68),metalDark=mat("#42494b",.42,.42);
   const carpet=mat("#24463d",.98),stepStone=mat("#8c8981",.9);
 
@@ -98,11 +98,11 @@ function createApartment(world:THREE.Scene){
     }
   }
 
-  // UN SOLO marco: dos jambas y un dintel, integrados en la abertura.
-  // Su profundidad hace que siga leyéndose por delante del arcade atascado.
-  for(const x of [-.82,.82])
-    box(world,[.28,2.58,1.0],wood,[x,-.83,-3.0],false);
-  box(world,[2.00,.20,1.0],wood,[0,.36,-3.0],false);
+  // UN SOLO marco claro, fino y pegado a la pared: dos jambas y un dintel.
+  // El hueco mide 1.42 m; el arcade mide 1.73 m y sobresale por ambos lados.
+  for(const x of [-.89,.89])
+    box(world,[.36,2.75,.16],doorFrame,[x,-.745,-3.43],false);
+  box(world,[2.14,.20,.16],doorFrame,[0,.53,-3.43],false);
 
   // Placa del departamento, por encima del único marco.
   const doorNumber=texture((ctx,w,h)=>{
@@ -113,7 +113,7 @@ function createApartment(world:THREE.Scene){
   },256,128);
   const numberPlate=new THREE.Mesh(new THREE.PlaneGeometry(.94,.34),
     new THREE.MeshBasicMaterial({map:doorNumber,toneMapped:false}));
-  numberPlate.position.set(0,.72,-2.47);world.add(numberPlate);
+  numberPlate.position.set(0,.86,-3.34);world.add(numberPlate);
 
   // Ascensor al lado de la puerta: hojas metálicas, guía central e indicador de piso.
   const liftX=2.88;
@@ -220,8 +220,8 @@ function createArcade(world:THREE.Scene){
   const cabinet=new THREE.Group();cabinet.position.set(0,-2.12,-3.08);cabinet.rotation.y=.34;
   world.add(cabinet);
   const black=mat("#171b1c",.38,.18),side=mat("#253c35",.42,.12),metal=mat("#9ca49b",.32,.72),red=mat("#d94b38",.34,.2);
-  // 2.02 m wide x 2.33 m high: wider than the 1.42 m door, but lower than its 2.55 m opening.
-  cabinet.scale.set(1.42,1.12,1.0);
+  // 1.73 m wide x 2.33 m high: wider than the 1.42 m door, lower than its 2.55 m opening.
+  cabinet.scale.set(1.22,1.12,1.0);
   box(cabinet,[1.42,2.08,.88],side,[0,1.04,0]);
   box(cabinet,[1.32,1.90,.08],black,[0,1.03,.47]);
   // Bright marquee: large, readable INGREDORA branding.
@@ -277,10 +277,10 @@ function makeScene(){
 }
 
 function cameraFor(shot:ArcadeShot,camera:THREE.PerspectiveCamera){
-  let p:[number,number,number]=[0,2.35,10.6],target:[number,number,number]=[0,-.15,-2.45],fov=70;
+  let p:[number,number,number]=[0,2.35,10.6],target:[number,number,number]=[0,-.15,-2.45],fov=76;
   switch(shot){
     case "exterior":p=[35,7.5,23.6];target=[35,7.5,-4.4];fov=50;break;
-    case "master":p=[0,2.55,10.8];target=[0,-.15,-2.45];fov=70;break;
+    case "master":p=[0,2.55,10.8];target=[0,-.15,-2.45];fov=76;break;
     case "bruno":p=[-2.75,1.25,1.30];target=[-2.75,-.25,-1.35];fov=50;break;
     case "martina":p=[-.75,1.25,2.70];target=[-.35,-.30,.15];fov=48;break;
     case "tomas":p=[2.9,1.25,2.35];target=[1.25,-.35,-.70];fov=44;break;
