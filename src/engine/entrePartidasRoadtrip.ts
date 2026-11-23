@@ -183,7 +183,7 @@ function buildRoadtrip(){
     body([.14,.12,3.85],[side*1.55,1.83,0],paint,.035);
     // Dos paños de vidrio grandes por lado.
     for(const z of [-1.25,.63]){
-      const pane=new THREE.Mesh(new PlaneGeometry(1.64,1.47),glass);
+      const pane=new THREE.Mesh(new THREE.PlaneGeometry(1.64,1.47),glass);
       pane.rotation.y=Math.PI/2;pane.position.set(side*1.565,1.00,z);car.add(pane);
     }
     // Manijas y espejo compacto.
@@ -195,9 +195,9 @@ function buildRoadtrip(){
     body([.18,.13,2.25],[side*1.68,-1.10,.05],dark,.035);
   }
   // Parabrisas y luneta, montados en el plano de la cabina y ligeramente inclinados.
-  const windshield=new THREE.Mesh(new PlaneGeometry(2.86,1.48),glass);
+  const windshield=new THREE.Mesh(new THREE.PlaneGeometry(2.86,1.48),glass);
   windshield.position.set(0,1.02,-1.91);windshield.rotation.x=-.10;car.add(windshield);
-  const rearWindow=new THREE.Mesh(new PlaneGeometry(2.75,1.35),glass);
+  const rearWindow=new THREE.Mesh(new THREE.PlaneGeometry(2.75,1.35),glass);
   rearWindow.position.set(0,1.02,1.91);rearWindow.rotation.x=.10;car.add(rearWindow);
   // Molduras visibles del parabrisas y luneta.
   body([.09,1.78,.12],[-1.49,1.02,-1.90],paint,.025);
@@ -244,12 +244,12 @@ function shotCamera(shot:RoadtripShot,camera:THREE.PerspectiveCamera,time:number
   let p:[number,number,number]=[0,1.82,-2.62],target:[number,number,number]=[0,1.00,.12],fov=62;
   switch(shot){
     case "exterior": p=[13.5,5.4,-14];target=[3.5,-.62,.25];fov=44;break;
-    case "master": p=[3.5,1.58,-1.66];target=[3.5,1.04,.28];fov=65;break;
-    case "bruno": p=[4.44,1.45,-1.66];target=[4.32,1.08,.10];fov=54;break;
-    case "valentina": p=[2.56,1.45,-1.66];target=[2.68,1.08,.10];fov=54;break;
+    case "master": p=[3.5,2.05,-5.35];target=[3.5,1.05,.38];fov=62;break;
+    case "bruno": p=[4.55,2.02,-5.25];target=[4.30,1.02,.42];fov=63;break;
+    case "valentina": p=[2.45,2.02,-5.25];target=[2.70,1.02,.42];fov=63;break;
     case "phone": p=[4.08,1.05,-1.35];target=[3.88,.47,-.63];fov=31;break;
     case "billboardRight": p=[4.32,1.48,1.18];target=[8.2,1.40,billboardRight.position.z];fov=53;break;
-    case "billboardLeft": p=[-5.30,2.18,billboardLeft.position.z+3.10];target=[-8.2,1.38,billboardLeft.position.z];fov=48;break;
+    case "billboardLeft": p=[-5.30,2.18,billboardLeft.position.z+3.10];target=[-8.2,1.38,billboardLeft.position.z];fov=53;break;
   }
   if(shot==="bruno"||shot==="valentina"){p[1]+=Math.sin(time*.8)*.006;target[1]+=Math.sin(time*.9)*.004;}
   camera.position.set(...p);camera.lookAt(...target);camera.fov=fov;camera.updateProjectionMatrix();
