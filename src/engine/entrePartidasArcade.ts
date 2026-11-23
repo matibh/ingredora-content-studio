@@ -64,11 +64,10 @@ function createFacade(world:THREE.Scene){
 
 function createApartment(world:THREE.Scene){
   // Pasillo común del edificio: ya estamos afuera del departamento.
-  // No hay cuadros ni muebles de interior; solo puerta, ascensor, matafuego y escalera.
+  // Pasillo despejado: puerta y matafuego, sin ascensor ni escalera.
   const floor=mat("#77796f",.94),wall=mat("#ded4c5",.94),stone=mat("#c8b8a8",.96);
   const darkTrim=mat("#6b4a35",.68),doorFrame=mat("#7c5b3e",.58);
-  const metal=mat("#8e9798",.34,.68),metalDark=mat("#42494b",.42,.42);
-  const carpet=mat("#24463d",.98),stepStone=mat("#8c8981",.9);
+  const metalDark=mat("#42494b",.42,.42);
 
   // Piso amplio de rellano, con juntas discretas y zócalos de piedra.
   box(world,[15,.18,16],floor,[0,-2.12,1.0],false);
@@ -115,29 +114,6 @@ function createApartment(world:THREE.Scene){
     new THREE.MeshBasicMaterial({map:doorNumber,toneMapped:false}));
   numberPlate.position.set(0,.86,-3.34);world.add(numberPlate);
 
-  // Ascensor al lado de la puerta: hojas metálicas, guía central e indicador de piso.
-  const liftX=2.88;
-  box(world,[2.16,2.88,.20],metalDark,[liftX,-.68,-3.39],false);
-  box(world,[1.00,2.58,.075],metal,[liftX-.51,-.80,-3.245],false);
-  box(world,[1.00,2.58,.075],metal,[liftX+.51,-.80,-3.245],false);
-  box(world,[.025,2.50,.025],metalDark,[liftX,-.80,-3.19],false);
-  box(world,[2.10,.10,.20],metalDark,[liftX,.77,-3.31],false);
-  box(world,[2.10,.10,.20],metalDark,[liftX,-2.05,-3.31],false);
-  for(const x of [liftX-.47,liftX+.47])
-    box(world,[.018,2.42,.018],mat("#c5cbca",.3,.8),[x,-.80,-3.19],false);
-  const floorIndicator=texture((ctx,w,h)=>{
-    ctx.fillStyle="#18231f";ctx.fillRect(0,0,w,h);
-    ctx.strokeStyle="#788b7d";ctx.lineWidth=5;ctx.strokeRect(3,3,w-6,h-6);
-    ctx.fillStyle="#b9e6a7";ctx.textAlign="center";ctx.textBaseline="middle";
-    ctx.font="900 92px Arial";ctx.fillText("4",w/2,h/2);
-  },128,96);
-  const indicator=new THREE.Mesh(new THREE.PlaneGeometry(.42,.30),
-    new THREE.MeshBasicMaterial({map:floorIndicator,toneMapped:false}));
-  indicator.position.set(liftX,.99,-3.18);world.add(indicator);
-  box(world,[.24,.50,.07],metalDark,[4.18,-.72,-3.30],false);
-  for(const y of [-.57,-.86])
-    sphere(world,[.075,.075,.045],mat("#d8d5c8",.3,.5),[4.18,y,-3.245],12);
-
   // Matafuego rojo claramente visible entre la puerta y el ascensor.
   box(world,[.42,.72,.08],mat("#eee5d4",.9),[1.28,-1.30,-3.37],false);
   const extinguisherMat=mat("#c72f27",.48,.12);
@@ -157,57 +133,6 @@ function createApartment(world:THREE.Scene){
   const extLabel=new THREE.Mesh(new THREE.PlaneGeometry(.44,.18),
     new THREE.MeshBasicMaterial({map:extinguisherLabel,toneMapped:false}));
   extLabel.position.set(1.28,-.77,-3.30);world.add(extLabel);
-
-  // Pared de ladrillo en el sector de escalera, sin decoración de departamento.
-  const brickTexture=texture((ctx,w,h)=>{
-    ctx.fillStyle="#87503e";ctx.fillRect(0,0,w,h);
-    const brickH=32,brickW=86;
-    for(let row=0;row<Math.ceil(h/brickH);row++){
-      const offset=row%2?brickW/2:0;
-      for(let col=-1;col<Math.ceil(w/brickW)+1;col++){
-        const x=col*brickW+offset,y=row*brickH;
-        ctx.fillStyle=["#985b45","#a4644b","#87503e","#915740"][(row*7+col+20)%4];
-        ctx.fillRect(x+2,y+2,brickW-4,brickH-4);
-        ctx.strokeStyle="#d4c1ae";ctx.lineWidth=4;ctx.strokeRect(x+2,y+2,brickW-4,brickH-4);
-      }
-    }
-  },512,256);
-  const brickMat=new THREE.MeshStandardMaterial({map:brickTexture,roughness:.96});
-  box(world,[2.18,5.4,.045],brickMat,[4.92,.65,-3.405],false);
-
-  // Escalera visible para subir y bajar: peldaños revestidos en verde oscuro y barandas.
-  for(let i=0;i<8;i++){
-    const y=-1.97+i*.30,z=1.80-i*.48;
-    box(world,[1.55,.30,.57],stepStone,[5.08,y,z],false);
-    box(world,[1.50,.035,.51],carpet,[5.08,y+.168,z],false);
-    box(world,[1.54,.045,.055],darkTrim,[5.08,y+.145,z+.275],false);
-  }
-  box(world,[1.82,.16,1.18],stepStone,[5.08,.32,-2.36],false);
-  box(world,[1.78,.035,1.12],carpet,[5.08,.418,-2.36],false);
-
-  // Barandas inclinadas siguiendo el vuelo de la escalera.
-  const railMat=mat("#6b716b",.38,.68);
-  for(const x of [4.23,5.93]){
-    const dy=2.20,dz=-3.55,length=Math.sqrt(dy*dy+dz*dz);
-    const rail=box(world,[.075,length,.075],railMat,[x,-.60,.15],false);
-    rail.rotation.x=Math.atan2(dz,dy);
-    for(let i=0;i<8;i++){
-      const y=-1.47+i*.30,z=1.90-i*.48;
-      box(world,[.055,.78,.055],railMat,[x,y,z],false);
-    }
-  }
-
-  // Señalética pequeña de escalera y luz de pasillo.
-  const stairsSign=texture((ctx,w,h)=>{
-    ctx.fillStyle="#e8e1d2";ctx.fillRect(0,0,w,h);
-    ctx.strokeStyle="#7a6b58";ctx.lineWidth=5;ctx.strokeRect(4,4,w-8,h-8);
-    ctx.fillStyle="#3c5148";ctx.textAlign="center";ctx.textBaseline="middle";
-    ctx.font="900 35px Arial";ctx.fillText("ESCALERA",w/2,h*.38);
-    ctx.font="800 25px Arial";ctx.fillText("SUBIR  /  BAJAR",w/2,h*.72);
-  },320,112);
-  const stairPlate=new THREE.Mesh(new THREE.PlaneGeometry(.88,.30),
-    new THREE.MeshBasicMaterial({map:stairsSign,toneMapped:false}));
-  stairPlate.position.set(4.90,1.62,-3.30);world.add(stairPlate);
 
   const sconceMat=mat("#ddd2b8",.55,.18);
   for(const x of [-4.9,.2]){
