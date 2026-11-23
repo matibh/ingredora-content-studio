@@ -239,9 +239,9 @@ export async function renderEntrePartidasArcadeToWebM(pkg:ArcadePackage,onProgre
         rig.head.rotation.x=active?Math.sin(t*3.1+phase)*.022:Math.sin(t*.5+phase)*.006;
         const vowels=(cue?.text.match(/[aeiouáéíóúü]/gi)||[]).length;
         const progress=cue?Math.max(0,Math.min(.999,(t-cue.start)/Math.max(.1,cue.end-cue.start))):0;
-        const mouthOpen=active?.04+Math.pow(Math.max(0,Math.sin(progress*Math.max(2,vowels)*Math.PI*2)),.8)*.55:.025;
+        const mouthOpen=active ? .04+Math.pow(Math.max(0,Math.sin(progress*Math.max(2,vowels)*Math.PI*2)),.8)*.55 : .025;
         rig.mouth.scale.set(1,mouthOpen,1);
-        const push=shot==="master"&&t>3.1&&t<cue?.end! ? .12:0;
+        const push=shot==="master"&&!!cue&&t<cue.end ? .12 : 0;
         rig.leftArm.rotation.z=active?-.08-Math.sin(t*2+phase)*.045:-.025;
         rig.rightArm.rotation.z=active?.08+Math.sin(t*1.8+phase)*.04:.025;
         if(rig.name==="bruno"){rig.leftArm.rotation.x=1.15+(active?.06:0);rig.rightArm.rotation.x=1.15+(active?.06:0);}
