@@ -85,8 +85,8 @@ function createApartment(world:THREE.Scene){
   box(world,[.20,6,13],wall,[6,.92,1.4],false);
 
   // Revestimiento bajo tipo mármol, típico de un pasillo de edificio.
-  const leftStone=box(world,[5.29,1.05,.055],stone,[-3.355,-1.49,-3.405],false);
-  const rightStone=box(world,[5.29,1.05,.055],stone,[3.355,-1.49,-3.405],false);
+  box(world,[5.29,1.05,.055],stone,[-3.355,-1.49,-3.405],false);
+  box(world,[5.29,1.05,.055],stone,[3.355,-1.49,-3.405],false);
   for(const x of [-3.355,3.355]){
     box(world,[5.32,.07,.10],darkTrim,[x,-.94,-3.36],false);
     box(world,[5.32,.07,.10],darkTrim,[x,-2.0,-3.36],false);
