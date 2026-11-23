@@ -104,27 +104,13 @@ function makePhone(parent:THREE.Object3D){
   return phone;
 }
 
-function addRoundedBox(parent:THREE.Object3D,size:[number,number,number],color:string,pos:[number,number,number],radius=.08,roughness=.82){
-  const r=Math.min(radius,Math.min(...size)*.46);
-  const mesh=new THREE.Mesh(new RoundedBoxGeometry(size[0],size[1],size[2],4,r),mat(color,roughness));
-  mesh.position.set(...pos);mesh.castShadow=true;mesh.receiveShadow=true;parent.add(mesh);return mesh;
-}
-function addSoftVolume(parent:THREE.Object3D,radii:[number,number,number],material:THREE.Material,pos:[number,number,number],rotation:[number,number,number]=[0,0,0]){
-  const mesh=new THREE.Mesh(new THREE.SphereGeometry(1,28,20),material);
-  mesh.scale.set(...radii);mesh.position.set(...pos);mesh.rotation.set(...rotation);mesh.castShadow=true;mesh.receiveShadow=true;parent.add(mesh);return mesh;
-}
-function addTubePath(parent:THREE.Object3D,points:[number,number,number][],color:string,radius=.012,roughness=.78){
-  const curve=new THREE.CatmullRomCurve3(points.map(p=>new THREE.Vector3(...p)));
-  const mesh=new THREE.Mesh(new THREE.TubeGeometry(curve,28,radius,6,false),mat(color,roughness));
-  mesh.castShadow=true;mesh.receiveShadow=true;parent.add(mesh);return mesh;
-}
 
 function buildRoadtrip(){
   const scene=new THREE.Scene();scene.background=new THREE.Color("#a9c6d6");scene.fog=new THREE.Fog("#b9c8c2",28,82);
   scene.add(new THREE.HemisphereLight("#f7f1e4","#657460",1.8));
   const sun=new THREE.DirectionalLight("#fff0d6",2.1);sun.position.set(-7,10,5);sun.castShadow=true;sun.shadow.mapSize.set(768,768);scene.add(sun);
   const fill=new THREE.DirectionalLight("#d4e3ed",.72);fill.position.set(6,4,-5);scene.add(fill);
-  const ground=addBox(scene,[100,.12,110],"#79906d",[0,-2.24,-3],.98);
+  addBox(scene,[100,.12,110],"#79906d",[0,-2.24,-3],.98);
   addBox(scene,[14,.12,110],"#454946",[0,-2.15,-3],.98);
   for(const side of [-1,1]){
     addBox(scene,[1.2,.035,110],"#8b8a78",[side*7.55,-2.17,-3],.98);
