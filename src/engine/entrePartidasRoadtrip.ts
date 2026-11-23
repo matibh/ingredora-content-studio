@@ -402,13 +402,13 @@ function buildRoadtrip(){
 function shotCamera(shot:RoadtripShot,camera:THREE.PerspectiveCamera,time:number,billboardRight:THREE.Group,billboardLeft:THREE.Group){
   let p:[number,number,number]=[0,1.82,-2.62],target:[number,number,number]=[0,1.00,.12],fov=62;
   switch(shot){
-    case "exterior": p=[10,5.4,-14];target=[0,-.62,.25];fov=44;break;
-    case "master": p=[0,2.12,-4.90];target=[0,1.00,.35];fov=60;break;
-    case "bruno": p=[.94,2.05,-4.65];target=[.82,1.00,.12];fov=56;break;
-    case "valentina": p=[-.94,2.05,-4.65];target=[-.82,1.00,.12];fov=56;break;
-    case "phone": p=[.58,1.05,-1.35];target=[.38,.47,-.63];fov=31;break;
-    case "billboardRight": p=[.82,1.74,1.18];target=[5.12,1.40,billboardRight.position.z];fov=53;break;
-    case "billboardLeft": p=[-.82,1.74,1.18];target=[-5.12,1.40,billboardLeft.position.z];fov=53;break;
+    case "exterior": p=[13.5,5.4,-14];target=[3.5,-.62,.25];fov=44;break;
+    case "master": p=[3.5,1.58,-1.66];target=[3.5,1.04,.28];fov=65;break;
+    case "bruno": p=[4.44,1.45,-1.66];target=[4.32,1.08,.10];fov=54;break;
+    case "valentina": p=[2.56,1.45,-1.66];target=[2.68,1.08,.10];fov=54;break;
+    case "phone": p=[4.08,1.05,-1.35];target=[3.88,.47,-.63];fov=31;break;
+    case "billboardRight": p=[4.32,1.48,1.18];target=[8.2,1.40,billboardRight.position.z];fov=53;break;
+    case "billboardLeft": p=[-5.30,2.18,billboardLeft.position.z+3.10];target=[-8.2,1.38,billboardLeft.position.z];fov=48;break;
   }
   if(shot==="bruno"||shot==="valentina"){p[1]+=Math.sin(time*.8)*.006;target[1]+=Math.sin(time*.9)*.004;}
   camera.position.set(...p);camera.lookAt(...target);camera.fov=fov;camera.updateProjectionMatrix();
