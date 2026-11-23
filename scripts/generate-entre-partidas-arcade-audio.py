@@ -69,7 +69,7 @@ async def main():
  with tempfile.TemporaryDirectory(prefix="arcade-04-",dir=AUDIO) as td:
   work=Path(td);parts=[];cues=[];words=[];cursor=3.15
   intro=work/"intro.wav";silence(intro,cursor);parts.append(intro)
-  laugh=work/"laugh.wav";normalize(LAUGH,laugh,"atrim=0:1.65,volume=-5dB,afade=t=in:st=0:d=.04,afade=t=out:st=1.35:d=.30")
+  laugh=work/"laugh.wav";normalize(LAUGH,laugh,"atrim=start=0:end=1.65,volume=-5dB,afade=t=in:st=0:d=0.04,afade=t=out:st=1.35:d=0.30")
   pad=work/"pad.wav"
   for i,seg in enumerate(SEGMENTS):
    clip,clip_words,seconds=await synthesize(seg,work,i)
@@ -80,7 +80,7 @@ async def main():
    if seg.get("laugh"):parts.append(laugh);cursor+=1.65
    pause=work/f"pause-{i:02d}.wav";silence(pause,seg.get("pause",.25));parts.append(pause);cursor+=seg.get("pause",.25)
   end_card=cursor
-  outro_wav=work/"outro.wav";normalize(OUTRO,outro_wav,"volume=-1.2dB,afade=t=in:st=0:d=.12")
+  outro_wav=work/"outro.wav";normalize(OUTRO,outro_wav,"volume=-1.2dB,afade=t=in:st=0:d=0.12")
   parts.append(outro_wav);total=cursor+duration(OUTRO)
   combined=work/"combined.wav";concat(parts,combined,work)
   run(["ffmpeg","-hide_banner","-loglevel","error","-y","-i",str(combined),"-c:a","libmp3lame","-b:a","192k",str(VOICE)])
