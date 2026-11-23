@@ -4,7 +4,7 @@ import { makeCharacter, type CharacterRig, type EntrePartidasSpeaker } from "./e
 
 export type ArcadeShot = "exterior" | "master" | "bruno" | "martina" | "tomas" | "valentina" | "ernesto" | "arcade" | "reaction";
 export type ArcadeCue = { id:string; speaker:EntrePartidasSpeaker; text:string; start:number; end:number; look?:EntrePartidasSpeaker; shot:ArcadeShot; laugh?:boolean };
-export type ArcadePackage = { schemaVersion:1; engineVersion:"entre-partidas-arcade-1.0.0"; id:string; title:string; createdAt:string; fps:number; width:number; height:number; durationSeconds:number; endCardStart:number; dialogue:ArcadeCue[] };
+export type ArcadePackage = { schemaVersion:1; engineVersion:"entre-partidas-arcade-1.0.0"; id:string; title:string; createdAt:string; fps:number; width:number; height:number; durationSeconds:number; endCardStart:number; chapterNumber?:number; dialogue:ArcadeCue[] };
 export type ArcadeProgress = { frame:number; totalFrames:number; percent:number };
 
 const mat=(color:string,roughness=.78,metalness=0)=>new THREE.MeshStandardMaterial({color,roughness,metalness});
@@ -139,7 +139,7 @@ function createApartment(world:THREE.Scene){
 }
 
 function createArcade(world:THREE.Scene){
-  const cabinet=new THREE.Group();cabinet.position.set(0,-2.12,-3.08);cabinet.rotation.y=.34;
+  const cabinet=new THREE.Group();cabinet.position.set(4.65,-2.12,-1.45);cabinet.rotation.y=-.10;
   world.add(cabinet);
   const black=mat("#171b1c",.38,.18),side=mat("#253c35",.42,.12),metal=mat("#9ca49b",.32,.72),red=mat("#d94b38",.34,.2);
   // 1.73 m wide x 2.33 m high: wider than the 1.42 m door, lower than its 2.55 m opening.
@@ -239,7 +239,7 @@ function drawBranding(ctx:CanvasRenderingContext2D,pkg:ArcadePackage,time:number
     ctx.textAlign="center";ctx.textBaseline="middle";
     ctx.fillStyle="#d7e8ad";ctx.font="900 "+Math.round(16*s)+"px Arial";ctx.fillText("INGREDORA ORIGINALS",w/2,y+panelH*.17);
     ctx.fillStyle="#fffaf0";ctx.font="900 "+Math.round(54*s)+"px Arial Black,Arial";ctx.fillText("ENTRE PARTIDAS",w/2,y+panelH*.49);
-    ctx.fillStyle="#f0d18b";ctx.font="900 "+Math.round(22*s)+"px Arial";ctx.fillText("CAPÍTULO 4",w/2,y+panelH*.82);ctx.restore();
+    ctx.fillStyle="#f0d18b";ctx.font="900 "+Math.round(22*s)+"px Arial";ctx.fillText("CAPÍTULO "+(pkg.chapterNumber??4),w/2,y+panelH*.82);ctx.restore();
   }
   if(time>=pkg.endCardStart){
     const alpha=Math.min(1,(time-pkg.endCardStart)/.5);ctx.save();ctx.globalAlpha=alpha;
@@ -276,8 +276,8 @@ export async function renderEntrePartidasArcadeToWebM(pkg:ArcadePackage,onProgre
       const shot:ArcadeShot=t<3.2?"exterior":cue?.shot??"master";
       world.scene.background=t<3.2?exteriorBackground:interiorBackground;
       world.scene.fog=t<3.2?exteriorFog:interiorFog;
-      world.arcade.cabinet.position.set(0,-2.12,-2.85);
-      world.arcade.cabinet.rotation.y=.34;
+      world.arcade.cabinet.position.set(4.65,-2.12,-1.45);
+      world.arcade.cabinet.rotation.y=-.10;
       drawArcadeScreen(world.arcade.sctx,t);world.arcade.screenTexture.needsUpdate=true;
       const speakerRig=cue?world.cast.find(r=>r.name===cue.speaker):undefined;
       world.cast.forEach((rig,index)=>{
