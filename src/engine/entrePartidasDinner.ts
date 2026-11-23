@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { makeCharacter } from "./entrePartidas";
 
 export type DinnerSpeaker = "bruno" | "martina" | "tomas" | "valentina" | "ernesto";
 export type DinnerCue = { id?: string; speaker: DinnerSpeaker; text: string; start: number; end: number; look?: DinnerSpeaker };
@@ -246,7 +247,7 @@ function createPizzaSlice(world:THREE.Scene,x:number,y:number,z:number,index:num
   }
 }
 
-function createTableSetting(world:THREE.Scene,diners:DinerRig[]){
+function createTableSetting(world:THREE.Scene,diners:DinerRig[],finished=false){
   const tabletop=mat("#876342",.38),edge=mat("#5e3e2a",.48),ceramic=mat("#f1eee4",.27),fork=mat("#b7b9b3",.22,.82);
   box(world,[10.3,.23,4.15],tabletop,[0,.25,.82]);box(world,[10.34,.1,4.2],edge,[0,.09,.82]);
   // A woven runner and beveled table trim make the shared dining table feel lived-in.
@@ -258,7 +259,8 @@ function createTableSetting(world:THREE.Scene,diners:DinerRig[]){
     const plate=new THREE.Mesh(new THREE.CylinderGeometry(.64,.64,.07,32),ceramic);plate.position.set(x,.42,z);plate.castShadow=true;plate.receiveShadow=true;world.add(plate);
     const rim=new THREE.Mesh(new THREE.TorusGeometry(.54,.018,6,32),mat("#c5b89e",.34,.1));rim.rotation.x=Math.PI/2;rim.position.set(x,.465,z);world.add(rim);
     // A single portion per plate; portions show different amounts eaten.
-    createPizzaSlice(world,x,.46,z-.02,index);
+    if(!finished)createPizzaSlice(world,x,.46,z-.02,index);
+    else for(let crumb=0;crumb<3;crumb++)sphere(world,[.045,.018,.035],mat("#c9a46f",.92),[x-.16+crumb*.12,.51,z+.02+(crumb%2)*.08],8);
     rod(world,[x-.78,.49,z-.15],[x-.78,.49,z+.43],.025,fork);for(let tine=0;tine<4;tine++)rod(world,[x-.87+tine*.06,.49,z-.12],[x-.87+tine*.06,.49,z+.02],.009,fork);
     rod(world,[x+.76,.49,z-.15],[x+.76,.49,z+.43],.022,fork);
     box(world,[.42,.028,.34],mat("#d2c2a8",.94),[x-.98,.46,z+.3],false);
@@ -272,6 +274,50 @@ function createTableSetting(world:THREE.Scene,diners:DinerRig[]){
   const bottle=createCokeBottle(world,.05,.4,1.23);bottle.rotation.y=-.07;
   const spareCap=new THREE.Mesh(new THREE.CylinderGeometry(.13,.13,.045,18),mat("#d3222d",.25,.15));spareCap.position.set(1.05,.43,1.35);world.add(spareCap);
   return bottle;
+}
+
+
+export function createEntrePartidasFeedbackSet(world:THREE.Scene){
+  world.background=new THREE.Color("#91cef4");world.fog=new THREE.Fog("#c7e7f8",32,70);
+  world.add(new THREE.HemisphereLight(0xc9eaff,0x777d6b,2.2));
+  const key=new THREE.DirectionalLight(0xffe5bd,3.15);key.position.set(-5.8,10.8,7.6);key.castShadow=true;world.add(key);
+  const rim=new THREE.DirectionalLight(0xd8efff,1.35);rim.position.set(5,5.8,-6.6);world.add(rim);
+  const windowSun=new THREE.DirectionalLight(0xffedcf,1.05);windowSun.position.set(4.5,7.5,-13.8);world.add(windowSun);
+  const fill=new THREE.PointLight(0xffd09a,18,20,1.8);fill.position.set(0,4.5,2.2);world.add(fill);
+  createDinnerRoom(world);
+  const placements:Array<[DinnerSpeaker,number,number,number]>=[
+    ["martina",-3.82,-1.64,.12],["tomas",-1.28,-1.78,0],["valentina",1.28,-1.78,-.05],["ernesto",3.82,-1.64,-.12]
+  ];
+  const diners=placements.map(([name,x,z,turn])=>createDiner(name,x,z,turn));diners.forEach(d=>world.add(d.root));
+  createTableSetting(world,diners,true);
+  const bruno=makeCharacter("bruno",0,3.35,true);bruno.root.rotation.y=Math.PI;
+  const apron=mat("#eee4d1",.94),apronEdge=mat("#b9a98f",.88);
+  box(bruno.root,[.72,.86,.045],apron,[0,1.02,.247],false);
+  box(bruno.root,[.72,.09,.055],apronEdge,[0,1.46,.255],false);
+  box(bruno.root,[.32,.22,.035],apronEdge,[0,.82,.274],false);
+  box(bruno.root,[.12,.42,.035],apronEdge,[-.30,1.55,.245],false);
+  box(bruno.root,[.12,.42,.035],apronEdge,[.30,1.55,.245],false);
+  world.add(bruno.root);
+  const all=[...diners,bruno];
+  const update=(time:number,dialogue:DinnerCue[])=>{
+    const cue=dialogue.find(item=>time>=item.start&&time<=item.end);
+    all.forEach((rig,index)=>{
+      const talking=rig.name===cue?.speaker,phase=index*.91;
+      const lookAt=cue?.look===rig.name;
+      rig.head.rotation.y=THREE.MathUtils.lerp(rig.head.rotation.y,lookAt?(rig.name==="bruno"?0:0):Math.sin(time*.35+phase)*.012,.10);
+      rig.head.rotation.x=talking?Math.sin(time*3.0+phase)*.028:Math.sin(time*.55+phase)*.009;
+      const syllables=cue?.text.match(/[aeiouáéíóúü]/gi)?.length??2;
+      const progress=cue?Math.max(0,Math.min(.999,(time-cue.start)/Math.max(.1,cue.end-cue.start))):0;
+      rig.mouth.scale.set(1,talking?.04+Math.pow(Math.max(0,Math.sin(progress*Math.max(2,syllables)*Math.PI*2)),.8)*.62:.026,1);
+      const gesture=talking?1:0;
+      rig.leftArm.rotation.z=gesture?-.055-Math.sin(time*2.0+phase)*.045:-.018-Math.sin(time*.7+phase)*.012;
+      rig.rightArm.rotation.z=gesture?.055+Math.sin(time*1.8+phase)*.045:.018+Math.sin(time*.7+phase)*.012;
+      rig.leftArm.rotation.x=gesture?.035:0;rig.rightArm.rotation.x=gesture?-.035:0;
+      if(rig.name!=="bruno")rig.root.position.y=-1.92+Math.sin(time*.72+phase)*.004;
+      else rig.root.position.y=-1.975+Math.sin(time*.72+phase)*.004;
+    });
+  };
+  return {update,cast:all};
 }
 
 export function createEntrePartidasDinnerSet(world:THREE.Scene):EntrePartidasDinnerSet{
