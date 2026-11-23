@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""Genera voces rioplatenses, risas y tiempos exactos para Entre Partidas EP-S05."""
+"""Genera voces rioplatenses, risas y tiempos exactos para Entre Partidas EP-S06."""
 # FFmpeg uses the runner image package cache when the binary is absent.
 from __future__ import annotations
 import asyncio, json, math, shutil, subprocess, tempfile
 from pathlib import Path
 import edge_tts
 
-AUDIO=Path("public/studio/audio/entre-partidas/arcade-05")
+AUDIO=Path("public/studio/audio/entre-partidas/arcade-06")
 PACKAGE=Path("public/studio/packages/entre-partidas-arcade.v1.json")
 INTRO=AUDIO/"chapter-2-intro-music.wav"
 LAUGH=AUDIO/"risa.mp3"
@@ -24,32 +24,35 @@ CAST={
  "ernesto":{"voice":"es-CL-LorenzoNeural","rate":"-10%","pitch":"-5Hz","volume":"+6%"},
 }
 SEGMENTS=[
- {"id":"01-martina-gano","speaker":"martina","text":"Bueno, ¿ya podemos decir que gané?","look":"bruno","shot":"martina","pause":.3},
- {"id":"02-tomas-confirmacion","speaker":"tomas","text":"Ganaste. Diez a dos. No hay mucha discusión.","look":"bruno","shot":"tomas","pause":.3},
- {"id":"03-bruno-no-perdi","speaker":"bruno","text":"Pará, pará. Yo no perdí. La máquina contó mal.","look":"martina","shot":"bruno","pause":.25},
- {"id":"04-ernesto-contadora","speaker":"ernesto","text":"¿También cuenta mal cuando ganás vos?","look":"bruno","shot":"ernesto","laugh":True,"pause":.35},
- {"id":"05-bruno-joystick","speaker":"bruno","text":"El joystick tenía un problema. Se me iba para la izquierda.","look":"martina","shot":"bruno","pause":.25},
- {"id":"06-martina-mano","speaker":"martina","text":"¡Pero estabas jugando con la derecha!","look":"bruno","shot":"martina","laugh":True,"pause":.35},
- {"id":"07-bruno-lag","speaker":"bruno","text":"Bueno, era un problema de conexión. Había lag.","look":"tomas","shot":"bruno","pause":.25},
- {"id":"08-valentina-cable","speaker":"valentina","text":"Está enchufado a la pared, Bruno.","look":"bruno","shot":"valentina","pause":.25},
- {"id":"09-bruno-internet","speaker":"bruno","text":"¡Y bueno! ¿Quién sabe cómo está el internet de la pared?","look":"valentina","shot":"bruno","laugh":True,"pause":.4},
- {"id":"10-ernesto-entrenamiento","speaker":"ernesto","text":"Martina te ganó sin despeinarse.","look":"bruno","shot":"ernesto","pause":.25},
- {"id":"11-bruno-calor","speaker":"bruno","text":"Yo estaba cuidando energía. Hacía mucho calor.","look":"ernesto","shot":"bruno","pause":.25},
- {"id":"12-tomas-pasillo","speaker":"tomas","text":"Estamos en un pasillo, Bruno. Hay corriente de aire.","look":"bruno","shot":"tomas","laugh":True,"pause":.35},
- {"id":"13-bruno-presion","speaker":"bruno","text":"Además, tenía mucha presión. Todos mirándome...","look":"martina","shot":"bruno","pause":.25},
- {"id":"14-martina-mirada","speaker":"martina","text":"Yo también tenía a todos mirando y gané igual.","look":"bruno","shot":"martina","pause":.3},
- {"id":"15-bruno-organizador","speaker":"bruno","text":"Es distinto. Yo soy el organizador. No puedo concentrarme y organizar al mismo tiempo.","look":"martina","shot":"bruno","laugh":True,"pause":.4},
- {"id":"16-ernesto-trabajo","speaker":"ernesto","text":"¿Y qué organizaste? ¿Que Martina te gane?","look":"bruno","shot":"ernesto","laugh":True,"pause":.35},
- {"id":"17-bruno-revancha","speaker":"bruno","text":"Quiero la revancha. Una partida más y les cierro la boca.","look":"martina","shot":"bruno","pause":.25},
- {"id":"18-martina-ya-gano","speaker":"martina","text":"Dale. Pero si vuelvo a ganar, admitís que soy mejor.","look":"bruno","shot":"martina","pause":.3},
- {"id":"19-bruno-condiciones","speaker":"bruno","text":"Acepto. Pero cambiamos de máquina, esta ya me conoce.","look":"martina","shot":"bruno","laugh":True,"pause":.4},
- {"id":"20-valentina-otra","speaker":"valentina","text":"¡Es la única máquina que tenemos!","look":"bruno","shot":"valentina","pause":.25},
- {"id":"21-bruno-retiro","speaker":"bruno","text":"Entonces queda suspendida la revancha por cuestiones técnicas.","look":"valentina","shot":"bruno","laugh":True,"pause":.4},
- {"id":"22-martina-acepta","speaker":"martina","text":"Bueno, campeón. ¿Me felicitás o no?","look":"bruno","shot":"martina","pause":.3},
- {"id":"23-bruno-felicitacion","speaker":"bruno","text":"Felicitaciones. Jugaste muy bien... para alguien que tuvo suerte.","look":"martina","shot":"bruno","laugh":True,"pause":.4},
- {"id":"24-ernesto-final","speaker":"ernesto","text":"Bruno, el cartel de la máquina dice MARTINA CAMPEONA. Y abajo dice BRUNO: GAME OVER.","look":"bruno","shot":"ernesto","pause":.35},
- {"id":"25-bruno-remate","speaker":"bruno","text":"Bueno, por lo menos yo sigo teniendo el récord de excusas.","look":"ernesto","shot":"bruno","laugh":True,"pause":.45},
- {"id":"26-tomas-cierre","speaker":"tomas","text":"Ese sí que no te lo gana nadie.","look":"bruno","shot":"tomas","laugh":True,"pause":.45}
+ {"id":"01-martina-devolucion","speaker":"martina","text":"Bueno, Bruno. Ya terminamos. ¿Querés la devolución?","look":"bruno","shot":"martina","pause":.28},
+ {"id":"02-bruno-sincera","speaker":"bruno","text":"Sí, pero sean justos. Es mi primera vez.","look":"martina","shot":"bruno","pause":.25},
+ {"id":"03-tomas-sincera","speaker":"tomas","text":"¿Sincera o para que no te enojes?","look":"bruno","shot":"tomas","laugh":True,"pause":.32},
+ {"id":"04-bruno-obvio","speaker":"bruno","text":"Sincera, obvio.","look":"tomas","shot":"bruno","pause":.22},
+ {"id":"05-ernesto-supervivencia","speaker":"ernesto","text":"Entonces tengo una pregunta: ¿la receta era para cinco o para sobrevivir cinco?","look":"bruno","shot":"ernesto","laugh":True,"pause":.36},
+ {"id":"06-martina-delivery","speaker":"martina","text":"A mí me gustó. Especialmente cuando llegó el delivery.","look":"bruno","shot":"martina","pause":.25},
+ {"id":"07-bruno-comida","speaker":"bruno","text":"¡Pero mi comida estaba bastante bien!","look":"martina","shot":"bruno","pause":.22},
+ {"id":"08-valentina-ingredientes","speaker":"valentina","text":"Bruno, el queso estaba frío, el huevo crudo y había una cáscara entera.","look":"bruno","shot":"valentina","pause":.28},
+ {"id":"09-bruno-texturas","speaker":"bruno","text":"Era una experiencia gastronómica de texturas.","look":"valentina","shot":"bruno","pause":.24},
+ {"id":"10-tomas-adivinar","speaker":"tomas","text":"Sí. Había que adivinar cuál textura te iba a tocar.","look":"bruno","shot":"tomas","laugh":True,"pause":.35},
+ {"id":"11-ernesto-principal","speaker":"ernesto","text":"Yo todavía estoy buscando el ingrediente principal.","look":"bruno","shot":"ernesto","pause":.24},
+ {"id":"12-bruno-experimental","speaker":"bruno","text":"¡Era una receta experimental!","look":"ernesto","shot":"bruno","pause":.22},
+ {"id":"13-ernesto-hospital","speaker":"ernesto","text":"¿Experimental para quién? ¿Para nosotros o para el hospital?","look":"bruno","shot":"ernesto","laugh":True,"pause":.38},
+ {"id":"14-bruno-primera-prueba","speaker":"bruno","text":"Bueno, acepto las críticas. Esto fue una primera prueba.","look":"valentina","shot":"bruno","pause":.25},
+ {"id":"15-valentina-volver","speaker":"valentina","text":"¿Vas a volver a cocinar?","look":"bruno","shot":"valentina","pause":.22},
+ {"id":"16-bruno-mejor","speaker":"bruno","text":"Por supuesto. La próxima vez voy a preparar algo mucho mejor.","look":"valentina","shot":"bruno","pause":.25},
+ {"id":"17-tomas-cambiar","speaker":"tomas","text":"¿Y qué vas a cambiar?","look":"bruno","shot":"tomas","pause":.22},
+ {"id":"18-bruno-todo","speaker":"bruno","text":"Todo.","look":"tomas","shot":"bruno","pause":.20},
+ {"id":"19-ernesto-receta","speaker":"ernesto","text":"¿La receta?","look":"bruno","shot":"ernesto","pause":.22},
+ {"id":"20-bruno-publico","speaker":"bruno","text":"No. El público.","look":"ernesto","shot":"bruno","laugh":True,"pause":.38},
+ {"id":"21-martina-para-vos","speaker":"martina","text":"La próxima vez cocinás para vos.","look":"bruno","shot":"martina","pause":.24},
+ {"id":"22-bruno-sin-criticas","speaker":"bruno","text":"Perfecto. ¡Así no tengo críticas!","look":"martina","shot":"bruno","pause":.24},
+ {"id":"23-ernesto-sin-testigos","speaker":"ernesto","text":"Ni testigos.","look":"bruno","shot":"ernesto","laugh":True,"pause":.40},
+ {"id":"24-tomas-delantal","speaker":"tomas","text":"¿Y el delantal? ¿Lo vas a guardar?","look":"bruno","shot":"tomas","pause":.24},
+ {"id":"25-bruno-restaurante","speaker":"bruno","text":"No. Lo reservo para mi próximo restaurante.","look":"tomas","shot":"bruno","pause":.24},
+ {"id":"26-valentina-nombre","speaker":"valentina","text":"¿Cómo se va a llamar?","look":"bruno","shot":"valentina","pause":.22},
+ {"id":"27-bruno-brunos","speaker":"bruno","text":"Bruno's.","look":"valentina","shot":"bruno","pause":.24},
+ {"id":"28-ernesto-que-sirven","speaker":"ernesto","text":"¿Y qué sirven?","look":"bruno","shot":"ernesto","pause":.22},
+ {"id":"29-bruno-delivery","speaker":"bruno","text":"Delivery.","look":"ernesto","shot":"bruno","laugh":True,"pause":.50}
 ]
 def run(cmd:list[str])->str:
  p=subprocess.run(cmd,check=True,capture_output=True,text=True);return p.stdout.strip()
