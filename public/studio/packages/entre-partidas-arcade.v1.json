@@ -1,16 +1,16 @@
 {
   "schemaVersion": 1,
   "engineVersion": "entre-partidas-arcade-1.0.0",
-  "id": "ingredora-entre-partidas-arcade-005",
-  "title": "Entre Partidas — La derrota de Bruno",
+  "id": "ingredora-entre-partidas-arcade-006",
+  "title": "Entre Partidas — De Ingredora a chef",
   "createdAt": "2026-11-23T00:00:00-03:00",
   "fps": 24,
   "width": 720,
   "height": 1280,
-  "durationSeconds": 90,
-  "endCardStart": 80,
+  "durationSeconds": 100,
+  "endCardStart": 90,
   "dialogue": [],
-  "voiceoverUrl": "studio/audio/entre-partidas/arcade-05/voice-track.mp3",
-  "wordTimingsUrl": "studio/audio/entre-partidas/arcade-05/word-timings.json",
-  "chapterNumber": 5
+  "voiceoverUrl": "studio/audio/entre-partidas/arcade-06/voice-track.mp3",
+  "wordTimingsUrl": "studio/audio/entre-partidas/arcade-06/word-timings.json",
+  "chapterNumber": 6
 }
