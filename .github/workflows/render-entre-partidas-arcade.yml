@@ -82,8 +82,8 @@ jobs:
       - name: Preserve original WebM render
         uses: actions/upload-artifact@v4
         with:
-          name: ingredora-entre-partidas-el-torneo-del-pasillo-webm
-          path: /tmp/ingredora-entre-partidas-el-torneo-del-pasillo.webm
+          name: ingredora-entre-partidas-la-derrota-de-bruno-webm
+          path: /tmp/ingredora-entre-partidas-la-derrota-de-bruno.webm
           if-no-files-found: error
           retention-days: 30
       - name: Print Vite diagnostics on failure
@@ -91,12 +91,12 @@ jobs:
         run: cat /tmp/vite-arcade.log || true
       - name: Mux Spanish dialogue, laughter and outro into MP4
         run: |
-          ffmpeg -y -i /tmp/ingredora-entre-partidas-el-torneo-del-pasillo.webm -i public/studio/audio/entre-partidas/arcade-05/voice-track.mp3 -map 0:v:0 -map 1:a:0 -c:v libx264 -preset veryfast -crf 20 -pix_fmt yuv420p -c:a aac -b:a 192k -shortest -movflags +faststart /tmp/ingredora-entre-partidas-el-torneo-del-pasillo.mp4
-          test -s /tmp/ingredora-entre-partidas-el-torneo-del-pasillo.mp4
+          ffmpeg -y -i /tmp/ingredora-entre-partidas-la-derrota-de-bruno.webm -i public/studio/audio/entre-partidas/arcade-05/voice-track.mp3 -map 0:v:0 -map 1:a:0 -c:v libx264 -preset veryfast -crf 20 -pix_fmt yuv420p -c:a aac -b:a 192k -shortest -movflags +faststart /tmp/ingredora-entre-partidas-la-derrota-de-bruno.mp4
+          test -s /tmp/ingredora-entre-partidas-la-derrota-de-bruno.mp4
       - name: Upload final MP4
         uses: actions/upload-artifact@v4
         with:
-          name: ingredora-entre-partidas-el-torneo-del-pasillo-mp4
-          path: /tmp/ingredora-entre-partidas-el-torneo-del-pasillo.mp4
+          name: ingredora-entre-partidas-la-derrota-de-bruno-mp4
+          path: /tmp/ingredora-entre-partidas-la-derrota-de-bruno.mp4
           if-no-files-found: error
           retention-days: 30
