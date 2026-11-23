@@ -122,283 +122,124 @@ function addTubePath(parent:THREE.Object3D,points:[number,number,number][],color
 function buildRoadtrip(){
   const scene=new THREE.Scene();scene.background=new THREE.Color("#a9c6d6");scene.fog=new THREE.Fog("#b9c8c2",28,82);
   scene.add(new THREE.HemisphereLight("#f7f1e4","#657460",1.8));
-  const sun=new THREE.DirectionalLight("#fff0d6",2.25);sun.position.set(-7,10,5);sun.castShadow=true;sun.shadow.mapSize.set(768,768);scene.add(sun);
+  const sun=new THREE.DirectionalLight("#fff0d6",2.1);sun.position.set(-7,10,5);sun.castShadow=true;sun.shadow.mapSize.set(768,768);scene.add(sun);
   const fill=new THREE.DirectionalLight("#d4e3ed",.72);fill.position.set(6,4,-5);scene.add(fill);
   const ground=addBox(scene,[100,.12,110],"#79906d",[0,-2.24,-3],.98);
-  // Asphalt with gravel shoulders, crisp edge lines and animated centre dashes.
-  const road=addBox(scene,[14,.12,110],"#454946",[0,-2.15,-3],.98);
-  addBox(scene,[1.2,.035,110],"#8b8a78",[-7.55,-2.17,-3],.98);addBox(scene,[1.2,.035,110],"#8b8a78",[7.55,-2.17,-3],.98);
-  addBox(scene,[.13,.025,110],"#e6dfc9",[-6.78,-2.06,-3],.82);addBox(scene,[.13,.025,110],"#e6dfc9",[6.78,-2.06,-3],.82);
+  addBox(scene,[14,.12,110],"#454946",[0,-2.15,-3],.98);
+  for(const side of [-1,1]){
+    addBox(scene,[1.2,.035,110],"#8b8a78",[side*7.55,-2.17,-3],.98);
+    addBox(scene,[.13,.025,110],"#e6dfc9",[side*6.78,-2.06,-3],.82);
+  }
   const roadMarks:THREE.Mesh[]=[];
-  for(let i=0;i<22;i++){const mark=addBox(scene,[.16,.025,2.3],"#f0e8d4",[0,-2.055,-52+i*5.0],.82);roadMarks.push(mark);}
-  // Low roadside reflector posts add scale and depth without changing the existing trees.
+  for(let i=0;i<22;i++)roadMarks.push(addBox(scene,[.16,.025,2.3],"#f0e8d4",[0,-2.055,-52+i*5],.82));
   const roadsidePosts:THREE.Group[]=[];
   for(let i=0;i<24;i++)for(const side of [-1,1]){
-    const post=new THREE.Group();addBox(post,[.10,.78,.10],"#e8e4d8",[0,0,0],.7);
-    addBox(post,[.115,.12,.12],"#b44d3e",[0,.18,.01],.45);
+    const post=new THREE.Group();addBox(post,[.10,.78,.10],"#e8e4d8",[0,0,0],.7);addBox(post,[.115,.12,.12],"#b44d3e",[0,.18,.01],.45);
     post.position.set(side*8.35,-1.72,-52+i*4.5);scene.add(post);roadsidePosts.push(post);
   }
-  // Campos ondulados y lomadas suaves; sin conos ni siluetas piramidales.
   const hills:THREE.Group[]=[];
   for(let i=0;i<13;i++){
     const side=i%2?1:-1,hill=new THREE.Group();
     const palette=["#82936d","#899b73","#788b67","#95a078"];
-    const base=new THREE.Mesh(new THREE.SphereGeometry(1,28,18),mat(palette[i%palette.length],.99));
-    base.scale.set(5.2,1.52,4.25);base.position.set(0,0,0);base.receiveShadow=true;hill.add(base);
-    const riseA=new THREE.Mesh(new THREE.SphereGeometry(1,24,16),mat(palette[(i+1)%palette.length],.99));
-    riseA.scale.set(3.0,1.16,3.55);riseA.position.set(side*2.55,.18,-1.25);hill.add(riseA);
-    const riseB=new THREE.Mesh(new THREE.SphereGeometry(1,24,16),mat(palette[(i+2)%palette.length],.99));
-    riseB.scale.set(3.15,1.10,3.45);riseB.position.set(-side*2.4,.12,1.55);hill.add(riseB);
+    const base=new THREE.Mesh(new THREE.SphereGeometry(1,24,16),mat(palette[i%4],.99));base.scale.set(5.2,1.5,4.25);hill.add(base);
     hill.position.set(side*(12+(i%4)*2),-2.65,-38+i*6.4);scene.add(hill);hills.push(hill);
   }
   const trees:THREE.Group[]=[];
   for(let i=0;i<18;i++){
-    const tree=new THREE.Group();const side=i%2?1:-1;
-    addBox(tree,[.22,1.2,.22],"#795a3e",[0,-.45,0]);
+    const tree=new THREE.Group(),side=i%2?1:-1;addBox(tree,[.22,1.2,.22],"#795a3e",[0,-.45,0]);
     const leaves=new THREE.Mesh(new THREE.ConeGeometry(.78,1.8,6),mat(i%3?"#557650":"#66845c",.98));leaves.position.y=.82;tree.add(leaves);
     tree.position.set(side*(8.7+(i%3)*.55),-1.15,-42+i*5.2);scene.add(tree);trees.push(tree);
   }
-  // Auto de cuatro puertas con cabina cerrada, revestimientos curvos y materiales diferenciados.
+
+  // Pickup doble cabina reconstruida con geometría mínima: caja, cabina cerrada y cuatro ruedas.
+  // El frente apunta hacia z negativo. Sin jaula, toldo ni piezas decorativas innecesarias.
   const car=new THREE.Group();car.position.x=3.5;scene.add(car);
-  const rubber=mat("#202322",.86),glass=new THREE.MeshPhysicalMaterial({color:"#91aeb6",transparent:true,opacity:.23,roughness:.20,metalness:.04,side:THREE.DoubleSide,depthWrite:false});
-  const chrome=mat("#b5b8ae",.32,.62);
-  const bodyColor="#536a73";
-  // Carrocería larga y musculosa de pickup mediana, con proporción de doble cabina.
-  addRoundedBox(car,[3.62,.82,7.78],bodyColor,[0,-1.48,.30],.24,.38);
-  // Capó delantero y frente escalonado; el morro apunta hacia z negativo.
-  addRoundedBox(car,[3.58,.36,1.60],bodyColor,[0,-1.08,-2.55],.15,.36);
-  addRoundedBox(car,[3.15,.18,5.35],"#303b40",[0,-1.00,.28],.08,.62);
-  // Caja de carga abierta detrás de la doble cabina: piso, laterales, panel frontal y portón.
-  addRoundedBox(car,[3.18,.075,2.08],"#303a3e",[0,-.91,3.08],.035,.9);
-  for(const side of [-1,1]){
-    addRoundedBox(car,[.22,.80,2.18],bodyColor,[side*1.62,-.53,3.08],.09,.4);
-    addRoundedBox(car,[.25,.075,2.20],"#343f43",[side*1.62,-.105,3.08],.035,.62);
-  }
-  addRoundedBox(car,[3.40,.78,.16],bodyColor,[0,-.53,2.02],.07,.4);
-  addRoundedBox(car,[3.40,.78,.17],bodyColor,[0,-.53,4.13],.07,.4);
-  addRoundedBox(car,[3.05,.06,1.72],"#252d30",[0,-.855,3.08],.025,.98);
-  for(let i=0;i<7;i++)addRoundedBox(car,[.025,.012,1.62],"#596267",[-1.35+i*.45,-.818,3.08],.006,.92);
-  for(const side of [-1,1])for(const z of [2.20,3.96]){
-    addRoundedBox(car,[.12,.035,.10],"#b5b9b4",[side*1.45,-.105,z],.018,.36);
-  }
-  // Puertas delanteras y traseras, panel superior unido a las ventanillas, manijas y estribos.
-  for(const side of [-1,1]){
-    addRoundedBox(car,[.12,.66,3.12],bodyColor,[side*1.79,.28,.08],.055,.42);
-    addRoundedBox(car,[.14,.62,1.12],bodyColor,[side*1.88,-.50,-.70],.07,.42);
-    addRoundedBox(car,[.14,.62,1.12],bodyColor,[side*1.88,-.50,.70],.07,.42);
-    for(const z of [-.82,.58]){
-      addRoundedBox(car,[.035,.075,.25],"#242d31",[side*1.95,-.31,z],.018,.48);
-      addRoundedBox(car,[.022,.025,.17],"#a8ada7",[side*1.98,-.31,z],.012,.32);
-    }
-    addRoundedBox(car,[.18,.14,2.18],"#303a3d",[side*2.01,-1.31,.08],.055,.68);
-  }
-  // Ruedas reales de pickup: neumático, llanta, seis bulones y guardabarros.
-  const addPickupWheel=(side:number,z:number)=>{
-    const wheel=new THREE.Group();wheel.position.set(side*1.84,-1.53,z);car.add(wheel);
-    const tire=new THREE.Mesh(new THREE.CylinderGeometry(.62,.62,.36,36),rubber);
-    tire.rotation.z=Math.PI/2;wheel.add(tire);
-    const rim=new THREE.Mesh(new THREE.CylinderGeometry(.36,.36,.055,32),mat("#3b454a",.38,.58));
-    rim.rotation.z=Math.PI/2;rim.position.x=side*.19;wheel.add(rim);
-    const ring=new THREE.Mesh(new THREE.TorusGeometry(.30,.028,8,32),chrome);
-    ring.rotation.y=side>0?Math.PI/2:-Math.PI/2;ring.position.x=side*.225;wheel.add(ring);
-    const hub=new THREE.Mesh(new THREE.CylinderGeometry(.12,.12,.065,24),mat("#87918f",.34,.72));
-    hub.rotation.z=Math.PI/2;hub.position.x=side*.225;wheel.add(hub);
-    for(let i=0;i<6;i++){
-      const a=i*Math.PI/3;
-      const bolt=new THREE.Mesh(new THREE.SphereGeometry(.034,10,8),mat("#d0d3cc",.28,.72));
-      bolt.position.set(side*.235,Math.cos(a)*.215,Math.sin(a)*.215);wheel.add(bolt);
-    }
-    const archX=side*2.015;
-    addTubePath(car,[[archX,-1.51,z-.69],[archX,-1.16,z-.59],[archX,-.91,z],[archX,-1.16,z+.59],[archX,-1.51,z+.69]],"#30393d",.055,.7);
+  const paint=mat("#536a73",.42,.08),dark=mat("#273136",.78),rubber=mat("#202322",.9);
+  const trim=mat("#aeb8b8",.3,.55);
+  const glass=new THREE.MeshPhysicalMaterial({color:"#91b4c1",transparent:true,opacity:.27,roughness:.18,metalness:.02,side:THREE.DoubleSide,depthWrite:false});
+  const body=(size:[number,number,number],pos:[number,number,number],material:THREE.Material=paint,r=.07)=>{
+    const mesh=new THREE.Mesh(new RoundedBoxGeometry(...size,3,r),material);mesh.position.set(...pos);mesh.castShadow=true;mesh.receiveShadow=true;car.add(mesh);return mesh;
   };
-  for(const side of [-1,1]){addPickupWheel(side,-2.00);addPickupWheel(side,2.55);}
-  // Parrilla, ópticas, paragolpes y patente delantera.
-  addRoundedBox(car,[1.30,.43,.14],"#20292d",[0,-.97,-3.53],.07,.42);
-  for(let i=0;i<4;i++)addRoundedBox(car,[1.08,.035,.035],"#aeb5b1",[0,-.82-i*.095,-3.61],.012,.34);
-  addRoundedBox(car,[.22,.25,.045],"#a7b2b4",[0,-.97,-3.625],.025,.3);
+  // Chasis y carrocería inferior.
+  body([3.45,.88,7.65],[0,-1.42,.25],paint,.20);
+  body([3.42,.30,1.65],[0,-1.02,-2.55],paint,.10);
+  body([3.18,.12,5.15],[0,-.96,.20],dark,.04);
+  // Caja de carga abierta, separada de la cabina.
+  body([3.05,.08,2.05],[0,-.91,3.10],dark,.025);
+  for(const side of [-1,1])body([.18,.73,2.16],[side*1.57,-.53,3.10],paint,.045);
+  body([3.18,.72,.15],[0,-.53,2.03],paint,.04);
+  body([3.18,.72,.15],[0,-.53,4.17],paint,.04);
+  // Cabina de cuatro puertas: techo recto, laterales sólidos, cuatro cristales y parabrisas.
+  body([3.12,.18,4.05],[0,1.99,.00],paint,.10);
+  body([3.02,.08,3.88],[0,1.87,.00],dark,.055);
+  // Paneles de puerta inferiores, dejan la superficie de vidrio completamente delimitada.
   for(const side of [-1,1]){
-    addRoundedBox(car,[.56,.30,.14],"#d8d5c5",[side*1.37,-.91,-3.53],.065,.3);
-    addRoundedBox(car,[.17,.20,.045],"#d8a45a",[side*1.58,-.94,-3.61],.035,.36);
-  }
-  addRoundedBox(car,[3.98,.27,.30],"#343d41",[0,-1.47,-3.72],.09,.58);
-  addRoundedBox(car,[.62,.12,.035],"#e8e6d8",[0,-1.39,-3.88],.018,.34);
-  // Parte trasera completa: faros verticales, portón y paragolpes de pickup.
-  for(const side of [-1,1]){
-    addRoundedBox(car,[.24,.48,.08],"#8f302b",[side*1.57,-.83,4.235],.04,.38);
-    addRoundedBox(car,[.17,.15,.035],"#d5b19a",[side*1.57,-.70,4.285],.025,.32);
-  }
-  addRoundedBox(car,[3.92,.26,.28],"#343d41",[0,-1.47,4.31],.08,.58);
-  addRoundedBox(car,[.68,.10,.035],"#e5e3d8",[0,-1.40,4.455],.015,.34);
-  // Umbrales interiores y alfombra con textura fina.
-  const carpetTexture=addCanvasTexture((ctx,w,h)=>{
-    ctx.fillStyle="#343a35";ctx.fillRect(0,0,w,h);
-    for(let y=0;y<h;y+=4){ctx.strokeStyle=y%8===0?"rgba(255,255,255,.055)":"rgba(0,0,0,.10)";ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(w,y);ctx.stroke();}
-  },128,128);
-  carpetTexture.wrapS=THREE.RepeatWrapping;carpetTexture.wrapT=THREE.RepeatWrapping;carpetTexture.repeat.set(4,5);
-  const carpet=new THREE.Mesh(new RoundedBoxGeometry(2.92,.055,4.05,3,.025),new THREE.MeshStandardMaterial({map:carpetTexture,roughness:1}));
-  carpet.position.set(0,-1.055,.08);carpet.receiveShadow=true;car.add(carpet);
-  // Techo de cabina doble: perfil bajo, bordes redondeados y sin el aspecto de toldo.
-  addRoundedBox(car,[3.22,.18,4.08],bodyColor,[0,2.08,.02],.10,.38);
-  addRoundedBox(car,[3.02,.065,3.86],"#c8c4b8",[0,1.975,.02],.045,.92);
-  addRoundedBox(car,[2.82,.035,3.64],"#d7d1c4",[0,1.925,.02],.02,.96);
-  for(const x of [-.90,.90]){
-    addRoundedBox(car,[.72,.075,.34],"#aaa99f",[x,1.82,-1.54],.035,.92);
-    addRoundedBox(car,[.32,.055,.13],"#777b74",[x,1.77,-1.40],.025,.74);
-  }
-  addRoundedBox(car,[.42,.06,.18],"#414945",[0,1.86,.18],.03,.54);
-  addRoundedBox(car,[.25,.04,.10],"#f2e5c6",[0,1.83,.18],.02,.36);
-  // Pilares A inclinados, B rectos y C traseros, todos unidos a la carrocería y al techo.
-  for(const side of [-1,1]){
-    addTubePath(car,[[side*1.48,.48,-2.02],[side*1.53,1.10,-2.00],[side*1.61,1.96,-1.84]],bodyColor,.072,.42);
-    addRoundedBox(car,[.13,1.48,.15],bodyColor,[side*1.54,1.23,.02],.045,.42);
-    addTubePath(car,[[side*1.49,.50,2.04],[side*1.54,1.12,2.01],[side*1.61,1.96,1.86]],bodyColor,.072,.42);
-    addTubePath(car,[[side*1.60,1.88,-1.84],[side*1.58,1.92,-.92],[side*1.58,1.92,.05],[side*1.58,1.92,.98],[side*1.60,1.88,1.86]],bodyColor,.048,.42);
-  }
-  // Dos cristales por lado, con marcos, y luneta trasera integrada a la doble cabina.
-  for(const side of [-1,1]){
-    for(const z of [-.98,.98]){
-      const win=new THREE.Mesh(new THREE.PlaneGeometry(1.70,1.18),glass);
-      win.rotation.y=Math.PI/2;win.position.set(side*1.525,1.22,z);car.add(win);
+    body([.16,.92,3.72],[side*1.57,-.48,.00],paint,.055);
+    body([.12,.12,3.82],[side*1.59,.06,.00],paint,.04);
+    // Marcos de ventana: pilares A/B/C y travesaños.
+    for(const z of [-1.88,-.62,.64,1.82]){
+      body([.14,1.80,.14],[side*1.55,1.00,z],paint,.035);
     }
-    addTubePath(car,[[side*1.52,.62,-1.82],[side*1.52,.62,-.95],[side*1.52,.62,.02],[side*1.52,.62,.98],[side*1.52,.62,1.82]],"#303a3e",.045,.62);
+    body([.14,.12,3.85],[side*1.55,1.83,0],paint,.035);
+    // Dos paños de vidrio grandes por lado.
+    for(const z of [-1.25,.63]){
+      const pane=new THREE.Mesh(new PlaneGeometry(1.64,1.47),glass);
+      pane.rotation.y=Math.PI/2;pane.position.set(side*1.565,1.00,z);car.add(pane);
+    }
+    // Manijas y espejo compacto.
+    body([.035,.065,.22],[side*1.67,-.30,-.76],dark,.018);
+    body([.04,.035,.15],[side*1.69,-.30,-.76],trim,.012);
+    body([.16,.12,.28],[side*1.78,1.22,-1.55],dark,.035);
+    body([.018,.075,.20],[side*1.87,1.23,-1.55],trim,.012);
+    // Estribo sencillo.
+    body([.18,.13,2.25],[side*1.68,-1.10,.05],dark,.035);
   }
-  const windshield=new THREE.Mesh(new THREE.PlaneGeometry(2.88,1.18),glass);
-  windshield.position.set(0,1.24,-1.91);windshield.rotation.x=-.12;car.add(windshield);
-  const rearGlass=new THREE.Mesh(new THREE.PlaneGeometry(2.72,.96),glass);
-  rearGlass.position.set(0,1.23,1.91);rearGlass.rotation.x=.10;car.add(rearGlass);
-  // Marcos y remates integrados a la cabina, sin pilares duplicados.
-  // Tarjetas de puerta moldeadas, inserts suaves, apoyabrazos y tiradores metálicos.
+  // Parabrisas y luneta, montados en el plano de la cabina y ligeramente inclinados.
+  const windshield=new THREE.Mesh(new PlaneGeometry(2.86,1.48),glass);
+  windshield.position.set(0,1.02,-1.91);windshield.rotation.x=-.10;car.add(windshield);
+  const rearWindow=new THREE.Mesh(new PlaneGeometry(2.75,1.35),glass);
+  rearWindow.position.set(0,1.02,1.91);rearWindow.rotation.x=.10;car.add(rearWindow);
+  // Molduras visibles del parabrisas y luneta.
+  body([.09,1.78,.12],[-1.49,1.02,-1.90],paint,.025);
+  body([.09,1.78,.12],[1.49,1.02,-1.90],paint,.025);
+  body([3.02,.12,.12],[0,1.91,-1.90],paint,.025);
+  body([3.02,.12,.12],[0,.14,-1.90],paint,.025);
+  body([3.02,.12,.12],[0,1.91,1.90],paint,.025);
+  body([3.02,.12,.12],[0,.14,1.90],paint,.025);
+  // Asientos muy simples y oscuros, visibles a través del vidrio.
+  for(const x of [-.78,.78]){
+    body([.72,.20,.72],[x,-.83,.08],dark,.10);
+    body([.72,1.05,.22],[x,-.25,.72],dark,.10);
+    body([.48,.28,.20],[x,.39,.83],dark,.08);
+  }
+  body([2.05,.20,.62],[0,-.86,1.45],dark,.10);
+  body([2.05,.82,.22],[0,-.30,1.80],dark,.10);
+  // Frente reconocible: parrilla horizontal, dos faros y paragolpes.
+  body([1.35,.43,.12],[0,-.97,-3.53],dark,.035);
+  for(let i=0;i<3;i++)body([1.10,.035,.025],[0,-.82-i*.105,-3.60],trim,.01);
   for(const side of [-1,1]){
-    addRoundedBox(car,[.15,.74,3.16],"#59635d",[side*1.42,-.43,.08],.075,.94);
-    addRoundedBox(car,[.10,.28,1.40],"#73766d",[side*1.34,-.35,.22],.07,.90);
-    addSoftVolume(car,[.12,.10,.70],mat("#494f49",.9),[side*1.32,-.23,.32]);
-    addRoundedBox(car,[.045,.09,.43],"#303a36",[side*1.29,-.19,.18],.025,.56);
-    addTubePath(car,[[side*1.28,-.17,.00],[side*1.28,-.12,.20],[side*1.28,-.17,.42]],"#c0b9a7",.018,.38);
-    addRoundedBox(car,[.055,.12,.72],"#424b46",[side*1.30,-.70,.72],.035,.72);
-    addRoundedBox(car,[.05,.035,.34],"#b9b4a5",[side*1.27,-.69,.70],.015,.32);
+    body([.56,.30,.12],[side*1.34,-.91,-3.53],trim,.045);
+    body([.22,.18,.05],[side*1.58,-.94,-3.60],mat("#d6a45e",.35),.02);
+    body([.22,.48,.08],[side*1.54,-.82,4.22],mat("#9b3932",.42),.025);
   }
-  // Consola superior del tablero, con bordes redondeados y superficies acolchadas.
-  addRoundedBox(car,[3.04,.34,.76],"#3c4440",[0,-.06,-1.72],.15,.82);
-  addSoftVolume(car,[1.49,.15,.34],mat("#454c47",.92),[0,.12,-1.75]);
-  addRoundedBox(car,[2.96,.38,.48],"#68685f",[0,-.36,-1.55],.13,.72);
-  addRoundedBox(car,[.92,.22,.12],"#77766d",[.92,-.34,-1.27],.055,.84);
-  addRoundedBox(car,[.88,.045,.025],"#373e39",[.92,-.34,-1.19],.014,.52);
-  // Instrumental digital-analógico detrás del volante.
-  const gaugeTexture=addCanvasTexture((ctx,w,h)=>{
-    ctx.fillStyle="#17211e";ctx.fillRect(0,0,w,h);
-    for(const x of [w*.27,w*.73]){
-      ctx.strokeStyle="#d7d5c5";ctx.lineWidth=8;ctx.beginPath();ctx.arc(x,h*.58,h*.31,Math.PI,Math.PI*2);ctx.stroke();
-      ctx.strokeStyle="#df7657";ctx.lineWidth=6;ctx.beginPath();ctx.moveTo(x,h*.58);ctx.lineTo(x+h*.17,h*.30);ctx.stroke();
-    }
-    ctx.fillStyle="#a8c8a4";ctx.font="bold 24px Arial";ctx.textAlign="center";ctx.fillText("0   80   120",w/2,h*.91);
-  },384,192);
-  addRoundedBox(car,[.86,.43,.12],"#202724",[-.90,.12,-1.31],.075,.42);
-  const gauges=new THREE.Mesh(new THREE.PlaneGeometry(.72,.31),new THREE.MeshBasicMaterial({map:gaugeTexture,toneMapped:false}));
-  gauges.position.set(-.90,.12,-1.242);car.add(gauges);
-  // Salidas de aire con marco, láminas interiores y controles circulares.
-  for(const x of [-1.18,-.55,.55,1.18]){
-    addRoundedBox(car,[.27,.12,.055],"#252d29",[x,-.06,-1.285],.035,.52);
-    for(let j=0;j<3;j++)addRoundedBox(car,[.018,.075,.018],"#92968c",[x-.075+j*.075,-.06,-1.248],.008,.38);
+  body([3.72,.25,.25],[0,-1.47,-3.72],dark,.06);
+  body([3.72,.25,.25],[0,-1.47,4.30],dark,.06);
+  // Cuatro ruedas iguales, con neumático y llanta simple.
+  for(const side of [-1,1])for(const z of [-2.02,2.55]){
+    const wheel=new THREE.Group();wheel.position.set(side*1.78,-1.53,z);car.add(wheel);
+    const tire=new THREE.Mesh(new THREE.CylinderGeometry(.61,.61,.34,28),rubber);tire.rotation.z=Math.PI/2;wheel.add(tire);
+    const rim=new THREE.Mesh(new THREE.CylinderGeometry(.34,.34,.05,24),mat("#68747a",.34,.52));rim.rotation.z=Math.PI/2;rim.position.x=side*.18;wheel.add(rim);
+    const hub=new THREE.Mesh(new THREE.CylinderGeometry(.12,.12,.06,20),trim);hub.rotation.z=Math.PI/2;hub.position.x=side*.21;wheel.add(hub);
   }
-  addRoundedBox(car,[.25,.20,.055],"#242b27",[0,-.06,-1.277],.055,.44);
-  addRoundedBox(car,[.105,.09,.025],"#bf4c40",[0,-.06,-1.243],.025,.36);
-  // Pantalla multimedia, marco, diales de climatización y pequeñas botoneras.
-  addRoundedBox(car,[.76,.39,.10],"#1b2420",[.16,-.34,-1.275],.07,.38);
-  const infotainmentTexture=addCanvasTexture((ctx,w,h)=>{
-    ctx.fillStyle="#182522";ctx.fillRect(0,0,w,h);
-    ctx.fillStyle="#a7c3b5";ctx.textAlign="center";ctx.font="bold 24px Arial";ctx.fillText("FM  98.7",w/2,h*.39);
-    ctx.fillStyle="#e4c98e";ctx.font="16px Arial";ctx.fillText("RUTA · 09:41",w/2,h*.72);
-  },320,160);
-  const infotainment=new THREE.Mesh(new THREE.PlaneGeometry(.64,.27),new THREE.MeshBasicMaterial({map:infotainmentTexture,toneMapped:false}));
-  infotainment.position.set(.16,-.34,-1.217);car.add(infotainment);
-  for(let i=0;i<3;i++){
-    const dial=new THREE.Mesh(new THREE.CylinderGeometry(.067,.067,.045,24),mat("#c4bca9",.45,.28));
-    dial.rotation.x=Math.PI/2;dial.position.set(-.22+i*.22,-.67,-1.27);car.add(dial);
-    addRoundedBox(car,[.012,.045,.016],i===0?"#bd6b50":"#d8c8a5",[-.22+i*.22,-.67,-1.238],.006,.35);
-  }
-  // Túnel central, caja de cambios, palanca, freno de mano y posavasos.
-  addRoundedBox(car,[.70,.20,1.42],"#303934",[0,-.86,-.34],.10,.78);
-  addRoundedBox(car,[.55,.055,.62],"#68675e",[0,-.735,-.55],.06,.82);
-  const gear=new THREE.Group();gear.position.set(.20,-.67,-.80);car.add(gear);
-  const shaft=new THREE.Mesh(new THREE.CylinderGeometry(.035,.055,.25,16),chrome);shaft.position.y=.13;gear.add(shaft);
-  addSoftVolume(gear,[.11,.09,.10],mat("#242b28",.32,.2),[0,.28,0]);
-  for(const x of [-.22,.22]){
-    const cup=new THREE.Mesh(new THREE.CylinderGeometry(.115,.095,.045,24),mat("#151c19",.62));cup.position.set(x,-.72,-.18);car.add(cup);
-    const rim=new THREE.Mesh(new THREE.TorusGeometry(.105,.012,6,24),chrome);rim.rotation.x=Math.PI/2;rim.position.set(x,-.693,-.18);car.add(rim);
-  }
-  // Pedales de freno y acelerador bajo la columna de dirección.
-  for(const x of [-1.03,-.70]){
-    const pedal=addRoundedBox(car,[.18,.28,.065],x<-.9?"#303633":"#555d57",[x,-.83,-1.10],.035,.68);pedal.rotation.x=-.14;
-    for(let k=0;k<3;k++)addRoundedBox(car,[.12,.025,.012],"#9b9d91",[x,-.78+k*.07,-1.055],.008,.46);
-  }
-  // Volante revestido en goma, centro acolchado y tres radios visibles.
-  const wheel=new THREE.Group();wheel.position.set(-.90,.26,-1.06);wheel.rotation.y=Math.PI;car.add(wheel);
-  const wheelRing=new THREE.Mesh(new THREE.TorusGeometry(.39,.052,12,44),rubber);wheel.add(wheelRing);
-  addSoftVolume(wheel,[.16,.14,.075],mat("#444c47",.48,.12),[0,0,0]);
-  for(const angle of [0,Math.PI*.72,Math.PI*1.28]){
-    const spoke=addRoundedBox(wheel,[.07,.33,.055],"#555c57",[0,-.02,0],.025,.48);spoke.rotation.z=angle;
-  }
-  addRoundedBox(wheel,[.18,.055,.06],"#303833",[0,-.13,.012],.022,.56);
-  // Tapizado de tela con trama discreta para los asientos.
-  const fabricTexture=addCanvasTexture((ctx,w,h)=>{
-    ctx.fillStyle="#817767";ctx.fillRect(0,0,w,h);
-    for(let y=0;y<h;y+=3)for(let x=0;x<w;x+=3){
-      ctx.fillStyle=(x+y)%2?"rgba(255,255,255,.075)":"rgba(25,20,16,.055)";ctx.fillRect(x,y,1,1);
-    }
-  },128,128);
-  fabricTexture.wrapS=THREE.RepeatWrapping;fabricTexture.wrapT=THREE.RepeatWrapping;fabricTexture.repeat.set(2,2);
-  const upholstery=new THREE.MeshStandardMaterial({color:"#8c8170",map:fabricTexture,roughness:.98});
-  const upholsterySide=mat("#665e52",.98),seam="#c0b19a";
-  // Dos butacas anatómicas: cojín inferior, respaldo curvo, laterales acolchados y cabezal separado.
-  for(const x of [-.82,.82]){
-    addSoftVolume(car,[.55,.18,.58],upholstery,[x,-1.00,.12]);
-    addSoftVolume(car,[.53,.71,.20],upholstery,[x,-.18,.77],[-.10,0,0]);
-    addSoftVolume(car,[.12,.54,.19],upholsterySide,[x-.43,-.20,.80],[-.10,0,-.04]);
-    addSoftVolume(car,[.12,.54,.19],upholsterySide,[x+.43,-.20,.80],[-.10,0,.04]);
-    addSoftVolume(car,[.35,.51,.055],upholstery,[x,-.18,.966],[-.10,0,0]);
-    addSoftVolume(car,[.27,.19,.14],upholstery,[x,.58,1.04]);
-    for(const dx of [-.16,.16]){
-      const post=new THREE.Mesh(new THREE.CylinderGeometry(.025,.025,.22,12),chrome);post.position.set(x+dx,.73,1.03);car.add(post);
-    }
-    addTubePath(car,[[x-.29,.24,.94],[x-.30,-.12,.98],[x-.27,-.48,.94]],seam,.006);
-    addTubePath(car,[[x+.29,.24,.94],[x+.30,-.12,.98],[x+.27,-.48,.94]],seam,.006);
-  }
-  // Banqueta trasera real de tres plazas, respaldos individuales y tres apoyacabezas.
-  addSoftVolume(car,[1.18,.19,.48],upholstery,[0,-1.02,1.48]);
-  addSoftVolume(car,[1.20,.57,.19],upholstery,[0,-.43,1.88],[-.08,0,0]);
-  for(const x of [-.78,0,.78]){
-    addSoftVolume(car,[.36,.43,.065],upholstery,[x,-.46,2.045],[-.08,0,0]);
-    addSoftVolume(car,[.24,.18,.13],upholstery,[x,.27,1.93]);
-    for(const dx of [-.13,.13]){
-      const post=new THREE.Mesh(new THREE.CylinderGeometry(.018,.018,.17,10),chrome);post.position.set(x+dx,.43,1.93);car.add(post);
-    }
-  }
-  // Cinturones de tres puntos, hebillas y anclajes visibles.
-  for(const x of [-.78,0,.78]){
-    addTubePath(car,[[x*1.30,.42,1.74],[x*1.15,.10,1.80],[x*.94,-.72,1.52]],"#343b37",.026,.92);
-    addRoundedBox(car,[.09,.24,.055],"#ad4a3d",[x,-.82,1.30],.022,.54);
-    addRoundedBox(car,[.035,.08,.02],"#d4c8a9",[x,-.83,1.27],.008,.36);
-  }
-  // Espejo interior, luz de techo y detalles de acabado.
-  addRoundedBox(car,[.46,.10,.14],"#303b38",[0,1.84,-1.78],.045,.42);
-  addRoundedBox(car,[.35,.085,.045],"#9ba39d",[0,1.81,-1.72],.035,.22);
-  // Retrovisores exteriores con brazo corto unido a la puerta, sin piezas suspendidas.
-  for(const side of [-1,1]){
-    addTubePath(car,[[side*1.78,1.30,-1.38],[side*1.92,1.36,-1.40],[side*2.03,1.40,-1.40]],"#283237",.045,.62);
-    addRoundedBox(car,[.18,.13,.34],"#293337",[side*2.08,1.43,-1.40],.055,.38);
-    addRoundedBox(car,[.018,.085,.25],"#aeb9b8",[side*2.175,1.445,-1.40],.022,.24);
-  }
+  // Cabina despejada: sin accesorios de tablero que tapen a los personajes.
   const valentina=createDiner("valentina",-.82,.05,Math.PI,false);
   const bruno=createDiner("bruno",.82,.05,Math.PI,false);
   car.add(valentina.root,bruno.root);
-  // Valentina keeps her hands near the steering wheel; Bruno's phone stays in the passenger's hands.
   const phone=makePhone(bruno.root);phone.visible=false;
-  // Side advertising billboards are outside the windows; they pass alongside the car.
-  const billboardRight=makeBillboard("JORGITO",1);const billboardLeft=makeBillboard("OREO",-1);
+  const billboardRight=makeBillboard("JORGITO",1),billboardLeft=makeBillboard("OREO",-1);
   scene.add(billboardRight,billboardLeft);
-  return {scene,car,valentina,bruno,wheel,phone,billboardRight,billboardLeft,trees,hills,road,ground,roadMarks,roadsidePosts};
+  return {scene,car,valentina,bruno,wheel:{rotation:{z:0}},phone,billboardRight,billboardLeft,trees,hills,road:null,ground:null,roadMarks,roadsidePosts};
 }
-
 function shotCamera(shot:RoadtripShot,camera:THREE.PerspectiveCamera,time:number,billboardRight:THREE.Group,billboardLeft:THREE.Group){
   let p:[number,number,number]=[0,1.82,-2.62],target:[number,number,number]=[0,1.00,.12],fov=62;
   switch(shot){
