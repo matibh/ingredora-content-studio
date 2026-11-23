@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Genera voces rioplatenses, risas y tiempos exactos para Entre Partidas EP-S04."""
+# FFmpeg is supplied by the runner image whenever available.
 from __future__ import annotations
 import asyncio, json, math, shutil, subprocess, tempfile
 from pathlib import Path
