@@ -68,15 +68,14 @@ function createApartment(world:THREE.Scene){
   box(world,[12,6,.20],wall,[0,.92,-3.2],false);
   box(world,[.20,6,14],wall,[-5.9,.92,1.4],false);
   box(world,[.20,6,14],wall,[5.9,.92,1.4],false);
-  // Door opening is 1.05 m wide; arcade is 1.42 m wide and remains wedged diagonally.
-  box(world,[2.35,.16,.30],wall,[-1.78,2.10,-3.2],false);
-  box(world,[2.35,.16,.30],wall,[1.78,2.10,-3.2],false);
-  box(world,[1.21,1.76,.20],wall,[0,1.14,-3.2],false);
-  for(const x of [-.62,.62])box(world,[.12,2.2,.18],trim,[x,-.96,-3.12],false);
-  box(world,[1.36,.12,.20],trim,[0,.20,-3.12],false);
-  box(world,[.08,2.28,.08],wood,[-.52,-.95,-3.02],false);
-  box(world,[.08,2.28,.08],wood,[.52,-.95,-3.02],false);
-  box(world,[1.12,.08,.08],wood,[0,.18,-3.02],false);
+  // A properly floor-aligned 1.61 × 2.50 m opening; the enlarged arcade is visibly too large to pass.
+  box(world,[1.98,.18,.30],wall,[0,.62,-3.2],false);
+  box(world,[1.62,2.50,.20],wall,[0,-.72,-3.2],false);
+  for(const x of [-.88,.88])box(world,[.15,2.62,.18],trim,[x,-.75,-3.12],false);
+  box(world,[1.90,.12,.20],trim,[0,-2.02,-3.12],false);
+  box(world,[.09,2.52,.08],wood,[-.78,-.75,-3.02],false);
+  box(world,[.09,2.52,.08],wood,[.78,-.75,-3.02],false);
+  box(world,[1.52,.08,.08],wood,[0,.44,-3.02],false);
   // Side wall details, framed pictures, coat hooks and a console make this read as the same lived-in home.
   box(world,[2.2,1.05,.10],wood,[-4.4,1.05,-1.4],false);
   box(world,[1.95,.82,.035],mat("#c6b28f",.9),[-4.4,1.05,-1.33],false);
@@ -97,7 +96,9 @@ function createApartment(world:THREE.Scene){
 }
 
 function createArcade(world:THREE.Scene){
-  const cabinet=new THREE.Group();cabinet.position.set(0,-2.12,-2.85);cabinet.rotation.y=.34;world.add(cabinet);
+  const cabinet=new THREE.Group();cabinet.position.set(0,-2.12,-2.85);cabinet.rotation.y=.34;
+  // Oversized 2.02 m wide, 2.81 m tall cabinet: larger than the 1.61 × 2.50 m doorway.
+  cabinet.scale.set(1.42,1.35,1.18);world.add(cabinet);
   const black=mat("#171b1c",.38,.18),side=mat("#253c35",.42,.12),metal=mat("#9ca49b",.32,.72),red=mat("#d94b38",.34,.2);
   box(cabinet,[1.42,2.08,.88],side,[0,1.04,0]);
   box(cabinet,[1.32,1.90,.08],black,[0,1.03,.47]);
@@ -144,7 +145,7 @@ function makeScene(){
   const fill=new THREE.DirectionalLight("#d7e5eb",.78);fill.position.set(7,5,-7);scene.add(fill);
   createFacade(scene);createApartment(scene);
   const cast:CharacterRig[]=[
-    makeCharacter("bruno",-1.30,-2.95),makeCharacter("valentina",2.50,.70),
+    makeCharacter("bruno",-1.30,-2.95,true),makeCharacter("valentina",4.00,.35),
     makeCharacter("martina",-2.15,.15),makeCharacter("tomas",1.25,-.70),makeCharacter("ernesto",2.55,.15)
   ];
   cast.forEach(r=>{scene.add(r.root);r.root.position.y=r.name==="bruno"?-1.795:-2.135;r.root.rotation.y=0;r.leftArm.rotation.x=0;r.rightArm.rotation.x=0;});
@@ -156,11 +157,11 @@ function cameraFor(shot:ArcadeShot,camera:THREE.PerspectiveCamera){
   let p:[number,number,number]=[0,2.2,9.0],target:[number,number,number]=[0,-.2,-2.4],fov=64;
   switch(shot){
     case "exterior":p=[35,7.5,23.6];target=[35,7.5,-4.4];fov=50;break;
-    case "master":p=[0,2.25,9.0];target=[0,-.2,-2.4];fov=68;break;
+    case "master":p=[0,2.25,9.0];target=[0,-.2,-2.4];fov=72;break;
     case "bruno":p=[-1.15,1.20,-.25];target=[-1.30,.05,-2.95];fov=55;break;
     case "martina":p=[-3.80,1.25,2.7];target=[-2.15,-.30,.15];fov=48;break;
     case "tomas":p=[2.9,1.25,2.35];target=[1.25,-.35,-.70];fov=44;break;
-    case "valentina":p=[3.60,1.30,2.85];target=[2.50,-.30,.70];fov=50;break;
+    case "valentina":p=[5.10,1.30,2.85];target=[4.00,-.30,.35];fov=50;break;
     case "ernesto":p=[4.25,1.25,3.2];target=[2.55,-.35,.15];fov=43;break;
     case "arcade":p=[.15,1.3,1.4];target=[0,-.55,-2.85];fov=38;break;
     case "reaction":p=[0,1.6,3.4];target=[0,-.15,-1.3];fov=54;break;
@@ -245,12 +246,13 @@ export async function renderEntrePartidasArcadeToWebM(pkg:ArcadePackage,onProgre
         const mouthOpen=active ? .04+Math.pow(Math.max(0,Math.sin(progress*Math.max(2,vowels)*Math.PI*2)),.8)*.55 : .025;
         rig.mouth.scale.set(1,mouthOpen,1);
         const idle=Math.sin(t*.72+phase)*.018;
-        const gesture=Math.sin(t*2.0+phase)*.055;
-        rig.leftArm.rotation.z=active?-.045-gesture:-.018-idle;
-        rig.rightArm.rotation.z=active?.045+gesture*.8:.018+idle;
+        const gesture=active&&rig.name!=="bruno"?Math.sin(t*2.0+phase)*.055:0;
+        rig.leftArm.rotation.z=active?(rig.name==="bruno"?-.018:-.045-gesture):(rig.name==="bruno"?-.004:-.018-idle);
+        rig.rightArm.rotation.z=active?(rig.name==="bruno"?.018:.045+gesture*.8):(rig.name==="bruno"?.004:.018+idle);
         if(rig.name==="bruno"){
-          rig.leftArm.rotation.x=active?Math.sin(t*1.7)*.045:0;
-          rig.rightArm.rotation.x=active?-Math.sin(t*1.7)*.045:0;
+          // Bruno keeps his arms lowered even while speaking; only a tiny relaxed sway remains.
+          rig.leftArm.rotation.x=0;
+          rig.rightArm.rotation.x=0;
         }
         rig.root.position.y=rig.name==="bruno"?-1.795:-2.135;
       });
