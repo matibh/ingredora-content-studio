@@ -67,7 +67,6 @@ function createApartment(world:THREE.Scene){
   // Pasillo despejado: puerta y matafuego, sin ascensor ni escalera.
   const floor=mat("#77796f",.94),wall=mat("#ded4c5",.94),stone=mat("#c8b8a8",.96);
   const darkTrim=mat("#6b4a35",.68),doorFrame=mat("#7c5b3e",.58);
-  const metalDark=mat("#42494b",.42,.42);
 
   // Piso amplio de rellano, con juntas discretas y zócalos de piedra.
   box(world,[15,.18,16],floor,[0,-2.12,1.0],false);
@@ -114,31 +113,29 @@ function createApartment(world:THREE.Scene){
     new THREE.MeshBasicMaterial({map:doorNumber,toneMapped:false}));
   numberPlate.position.set(0,.86,-3.34);world.add(numberPlate);
 
-  // Matafuego rojo claramente visible entre la puerta y el ascensor.
-  box(world,[.42,.72,.08],mat("#eee5d4",.9),[1.28,-1.30,-3.37],false);
-  const extinguisherMat=mat("#c72f27",.48,.12);
-  const extinguisher=new THREE.Mesh(new THREE.CylinderGeometry(.14,.16,.62,14),extinguisherMat);
-  extinguisher.position.set(1.28,-1.30,-3.20);extinguisher.castShadow=true;world.add(extinguisher);
-  const neck=new THREE.Mesh(new THREE.CylinderGeometry(.055,.07,.13,12),metalDark);
-  neck.position.set(1.28,-.925,-3.20);world.add(neck);
-  box(world,[.18,.035,.07],mat("#242b2b",.5),[1.28,-.84,-3.20],false);
-  const hose=new THREE.Mesh(new THREE.CylinderGeometry(.018,.018,.34,8),metalDark);
-  hose.position.set(1.43,-1.18,-3.18);hose.rotation.z=-.38;world.add(hose);
-  const extinguisherLabel=texture((ctx,w,h)=>{
-    ctx.fillStyle="#f7f0df";ctx.fillRect(0,0,w,h);
-    ctx.fillStyle="#b72620";ctx.textAlign="center";ctx.textBaseline="middle";
-    ctx.font="900 30px Arial";ctx.fillText("MATAFUEGO",w/2,h*.35);
-    ctx.font="800 24px Arial";ctx.fillText("ABC",w/2,h*.72);
-  },256,96);
-  const extLabel=new THREE.Mesh(new THREE.PlaneGeometry(.44,.18),
-    new THREE.MeshBasicMaterial({map:extinguisherLabel,toneMapped:false}));
-  extLabel.position.set(1.28,-.77,-3.30);world.add(extLabel);
+  // Hoja de puerta abierta hacia el interior del departamento, con bisagras en la jamba izquierda.
+  const openDoor=new THREE.Group();
+  openDoor.position.set(-.70,-.80,-3.53);
+  openDoor.rotation.y=.88;
+  world.add(openDoor);
+  const doorWood=mat("#59402f",.62);
+  const doorInset=mat("#76563c",.72);
+  box(openDoor,[1.34,2.42,.085],doorWood,[.66,0,0],true);
+  // Paneles moldurados y travesaños visibles en la cara de la hoja abierta.
+  for(const y of [-.69,.66]){
+    box(openDoor,[.91,.045,.025],doorInset,[.66,y,.055],false);
+    box(openDoor,[.045,.66,.025],doorInset,[.225,y>0?.99:-.99,.055],false);
+    box(openDoor,[.045,.66,.025],doorInset,[1.095,y>0?.99:-.99,.055],false);
+  }
+  box(openDoor,[.91,.045,.025],doorInset,[.66,0,.055],false);
+  // Picaporte de bronce, visible en el canto libre de la puerta.
+  sphere(openDoor,[.075,.075,.075],mat("#c39b53",.28,.72),[1.16,-.12,.095],12);
+  box(openDoor,[.18,.025,.025],mat("#c39b53",.28,.72),[1.06,-.12,.095],false);
 
   const sconceMat=mat("#ddd2b8",.55,.18);
-  for(const x of [-4.9,.2]){
-    box(world,[.28,.62,.16],sconceMat,[x,1.18,-3.34],false);
-    sphere(world,[.12,.25,.08],mat("#fff1c8",.25,.05),[x,1.18,-3.23],12);
-  }
+  // Se conserva una única luz lejos del número 284 para que no tape la placa.
+  box(world,[.28,.62,.16],sconceMat,[-4.9,1.18,-3.34],false);
+  sphere(world,[.12,.25,.08],mat("#fff1c8",.25,.05),[-4.9,1.18,-3.23],12);
 }
 
 function createArcade(world:THREE.Scene){
@@ -192,9 +189,9 @@ function makeScene(){
   const fill=new THREE.DirectionalLight("#d7e5eb",.78);fill.position.set(7,5,-7);scene.add(fill);
   createFacade(scene);createApartment(scene);
   const cast:CharacterRig[]=[
-    makeCharacter("bruno",-2.75,-1.35,true),makeCharacter("valentina",4.00,.35),
+    makeCharacter("bruno",-1.55,-2.05,true),makeCharacter("valentina",4.00,.35),
     // Martina is moved well to Bruno's right so she cannot cover him in the master shot.
-    makeCharacter("martina",-.35,.15),makeCharacter("tomas",1.25,-.70),makeCharacter("ernesto",2.55,.15)
+    makeCharacter("martina",-2.45,.15),makeCharacter("tomas",1.25,-.70),makeCharacter("ernesto",2.55,.15)
   ];
   cast.forEach(r=>{scene.add(r.root);r.root.position.y=r.name==="bruno"?-1.795:-2.135;r.root.rotation.y=0;r.leftArm.rotation.x=0;r.rightArm.rotation.x=0;});
   const arcade=createArcade(scene);
@@ -206,8 +203,8 @@ function cameraFor(shot:ArcadeShot,camera:THREE.PerspectiveCamera){
   switch(shot){
     case "exterior":p=[35,7.5,23.6];target=[35,7.5,-4.4];fov=50;break;
     case "master":p=[0,2.55,10.8];target=[0,-.15,-2.45];fov=76;break;
-    case "bruno":p=[-2.75,1.25,1.30];target=[-2.75,-.25,-1.35];fov=50;break;
-    case "martina":p=[-.75,1.25,2.70];target=[-.35,-.30,.15];fov=48;break;
+    case "bruno":p=[-1.55,1.25,.65];target=[-1.55,-.25,-2.05];fov=50;break;
+    case "martina":p=[-2.95,1.25,2.70];target=[-2.45,-.30,.15];fov=48;break;
     case "tomas":p=[2.9,1.25,2.35];target=[1.25,-.35,-.70];fov=44;break;
     case "valentina":p=[5.10,1.30,2.85];target=[4.00,-.30,.35];fov=50;break;
     case "ernesto":p=[4.25,1.25,3.2];target=[2.55,-.35,.15];fov=43;break;
