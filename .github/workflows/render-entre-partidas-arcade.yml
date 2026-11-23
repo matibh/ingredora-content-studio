@@ -57,8 +57,11 @@ jobs:
           done
       - name: Install FFmpeg and free voice synthesis tool
         run: |
-          sudo apt-get update
-          sudo apt-get install -y ffmpeg
+          if ! command -v ffmpeg >/dev/null 2>&1; then
+            sudo apt-get update
+            sudo apt-get install -y ffmpeg
+          fi
+          ffmpeg -version
           python3 -m venv /tmp/entre-partidas-arcade
           /tmp/entre-partidas-arcade/bin/python -m pip install --disable-pip-version-check --no-cache-dir edge-tts
       - name: Generate timed dialogue, laughter and outro audio
