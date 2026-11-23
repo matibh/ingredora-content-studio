@@ -78,6 +78,7 @@ function createApartment(world:THREE.Scene){
   // Door opening is 1.05 m wide; arcade is 1.42 m wide and remains wedged diagonally.
   box(world,[2.35,.16,.30],wall,[-1.78,2.10,-3.2],false);
   box(world,[2.35,.16,.30],wall,[1.78,2.10,-3.2],false);
+  box(world,[1.21,1.76,.20],wall,[0,1.14,-3.2],false);
   for(const x of [-.62,.62])box(world,[.12,2.2,.18],trim,[x,-.96,-3.12],false);
   box(world,[1.36,.12,.20],trim,[0,.20,-3.12],false);
   box(world,[.08,2.28,.08],wood,[-.52,-.95,-3.02],false);
@@ -103,7 +104,7 @@ function createApartment(world:THREE.Scene){
 }
 
 function createArcade(world:THREE.Scene){
-  const cabinet=new THREE.Group();cabinet.position.set(0,-2.04,-2.85);cabinet.rotation.y=.34;world.add(cabinet);
+  const cabinet=new THREE.Group();cabinet.position.set(0,-2.12,-2.85);cabinet.rotation.y=.34;world.add(cabinet);
   const black=mat("#171b1c",.38,.18),side=mat("#253c35",.42,.12),metal=mat("#9ca49b",.32,.72),red=mat("#d94b38",.34,.2);
   box(cabinet,[1.42,2.08,.88],side,[0,1.04,0]);
   box(cabinet,[1.32,1.90,.08],black,[0,1.03,.47]);
@@ -153,23 +154,23 @@ function makeScene(){
     makeCharacter("bruno",-.95,-4.15),makeCharacter("valentina",.98,-4.0),
     makeCharacter("martina",-1.55,-.72),makeCharacter("tomas",1.25,-.70),makeCharacter("ernesto",2.55,.15)
   ];
-  cast.forEach(r=>{scene.add(r.root);r.root.rotation.y=0;r.leftArm.rotation.x= r.name==="bruno"?Math.PI/2:0;r.rightArm.rotation.x=r.name==="bruno"?Math.PI/2:0;});
+  cast.forEach(r=>{scene.add(r.root);r.root.position.y=-2.135;r.root.rotation.y=0;r.leftArm.rotation.x=r.name==="bruno"?Math.PI/2:0;r.rightArm.rotation.x=r.name==="bruno"?Math.PI/2:0;});
   const arcade=createArcade(scene);
   return {scene,cast,arcade};
 }
 
 function cameraFor(shot:ArcadeShot,camera:THREE.PerspectiveCamera){
-  let p:[number,number,number]=[0,1.45,7.2],target:[number,number,number]=[0,.5,-2.35],fov=48;
+  let p:[number,number,number]=[0,2.2,9.0],target:[number,number,number]=[0,-.2,-2.4],fov=64;
   switch(shot){
     case "exterior":p=[35,8.6,14.8];target=[35,7.1,-4.4];fov=39;break;
-    case "master":p=[0,1.55,7.5];target=[0,.35,-2.4];fov=49;break;
-    case "bruno":p=[-2.0,2.05,1.25];target=[-.95,1.55,-3.7];fov=43;break;
-    case "martina":p=[-3.2,2.1,2.4];target=[-1.55,1.35,-.75];fov=44;break;
-    case "tomas":p=[2.9,2.05,2.35];target=[1.25,1.35,-.7];fov=44;break;
-    case "valentina":p=[2.05,2.15,-5.8];target=[.98,1.5,-4.0];fov=44;break;
-    case "ernesto":p=[4.25,1.95,3.2];target=[2.55,1.25,.15];fov=43;break;
-    case "arcade":p=[.15,2.1,1.4];target=[0,1.15,-2.85];fov=38;break;
-    case "reaction":p=[0,2.25,3.4];target=[0,1.35,-1.3];fov=54;break;
+    case "master":p=[0,2.25,9.0];target=[0,-.2,-2.4];fov=64;break;
+    case "bruno":p=[-2.0,1.35,-.15];target=[-.95,-.35,-4.0];fov=43;break;
+    case "martina":p=[-3.2,1.25,2.4];target=[-1.55,-.35,-.72];fov=44;break;
+    case "tomas":p=[2.9,1.25,2.35];target=[1.25,-.35,-.70];fov=44;break;
+    case "valentina":p=[2.05,1.35,-5.8];target=[.98,-.35,-4.0];fov=44;break;
+    case "ernesto":p=[4.25,1.25,3.2];target=[2.55,-.35,.15];fov=43;break;
+    case "arcade":p=[.15,1.3,1.4];target=[0,-.55,-2.85];fov=38;break;
+    case "reaction":p=[0,1.6,3.4];target=[0,-.15,-1.3];fov=54;break;
   }
   camera.position.set(...p);camera.lookAt(...target);camera.fov=fov;camera.updateProjectionMatrix();
 }
