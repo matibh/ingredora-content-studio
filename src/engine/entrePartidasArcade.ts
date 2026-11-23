@@ -65,14 +65,21 @@ function createFacade(world:THREE.Scene){
 function createApartment(world:THREE.Scene){
   const floor=mat("#b9b2a4",.9),wall=mat("#d9cdbb",.94),trim=mat("#8a7965",.7),wood=mat("#75583e",.66);
   box(world,[12,.14,14],floor,[0,-2.12,1.4],false);
-  box(world,[12,6,.20],wall,[0,.92,-3.2],false);
+  // Build the wall around a real opening; never place a solid wall behind the doorway.
+  box(world,[5.0,6,.20],wall,[-3.5,.92,-3.2],false);
+  box(world,[5.0,6,.20],wall,[3.5,.92,-3.2],false);
+  box(world,[2.0,3.5,.20],wall,[0,2.17,-3.2],false);
   box(world,[.20,6,14],wall,[-5.9,.92,1.4],false);
   box(world,[.20,6,14],wall,[5.9,.92,1.4],false);
   // A properly floor-aligned 1.61 × 2.50 m opening; the enlarged arcade is visibly too large to pass.
   box(world,[1.98,.18,.30],wall,[0,.62,-3.2],false);
-  box(world,[1.62,2.50,.20],wall,[0,-.72,-3.2],false);
+
   for(const x of [-.88,.88])box(world,[.15,2.62,.18],trim,[x,-.75,-3.12],false);
   box(world,[1.90,.12,.20],trim,[0,-2.02,-3.12],false);
+  // Foreground jambs and lintel keep the narrow opening legible even when the
+  // wider arcade is directly in front of it. The overlap communicates width.
+  for(const x of [-.88,.88])box(world,[.13,2.62,.10],trim,[x,-.75,-2.04],false);
+  box(world,[1.90,.13,.10],trim,[0,.56,-2.04],false);
   box(world,[.09,2.52,.08],wood,[-.78,-.75,-3.02],false);
   box(world,[.09,2.52,.08],wood,[.78,-.75,-3.02],false);
   box(world,[1.52,.08,.08],wood,[0,.44,-3.02],false);
@@ -97,8 +104,9 @@ function createApartment(world:THREE.Scene){
 
 function createArcade(world:THREE.Scene){
   const cabinet=new THREE.Group();cabinet.position.set(0,-2.12,-2.85);cabinet.rotation.y=.34;
-  // Oversized 2.02 m wide, 2.81 m tall cabinet: larger than the 1.61 × 2.50 m doorway.
-  cabinet.scale.set(1.42,1.35,1.18);world.add(cabinet);
+  // 2.02 m wide but only 2.33 m tall: it clears the 2.50 m height,
+  // yet cannot pass through the 1.61 m doorway because it is too wide.
+  cabinet.scale.set(1.42,1.12,1.18);world.add(cabinet);
   const black=mat("#171b1c",.38,.18),side=mat("#253c35",.42,.12),metal=mat("#9ca49b",.32,.72),red=mat("#d94b38",.34,.2);
   box(cabinet,[1.42,2.08,.88],side,[0,1.04,0]);
   box(cabinet,[1.32,1.90,.08],black,[0,1.03,.47]);
@@ -145,7 +153,7 @@ function makeScene(){
   const fill=new THREE.DirectionalLight("#d7e5eb",.78);fill.position.set(7,5,-7);scene.add(fill);
   createFacade(scene);createApartment(scene);
   const cast:CharacterRig[]=[
-    makeCharacter("bruno",-1.30,-2.95,true),makeCharacter("valentina",4.00,.35),
+    makeCharacter("bruno",-2.45,-1.35,true),makeCharacter("valentina",4.00,.35),
     makeCharacter("martina",-2.15,.15),makeCharacter("tomas",1.25,-.70),makeCharacter("ernesto",2.55,.15)
   ];
   cast.forEach(r=>{scene.add(r.root);r.root.position.y=r.name==="bruno"?-1.795:-2.135;r.root.rotation.y=0;r.leftArm.rotation.x=0;r.rightArm.rotation.x=0;});
@@ -158,7 +166,7 @@ function cameraFor(shot:ArcadeShot,camera:THREE.PerspectiveCamera){
   switch(shot){
     case "exterior":p=[35,7.5,23.6];target=[35,7.5,-4.4];fov=50;break;
     case "master":p=[0,2.25,9.0];target=[0,-.2,-2.4];fov=72;break;
-    case "bruno":p=[-1.15,1.20,-.25];target=[-1.30,.05,-2.95];fov=55;break;
+    case "bruno":p=[-2.30,1.20,1.25];target=[-2.45,.05,-1.35];fov=55;break;
     case "martina":p=[-3.80,1.25,2.7];target=[-2.15,-.30,.15];fov=48;break;
     case "tomas":p=[2.9,1.25,2.35];target=[1.25,-.35,-.70];fov=44;break;
     case "valentina":p=[5.10,1.30,2.85];target=[4.00,-.30,.35];fov=50;break;
