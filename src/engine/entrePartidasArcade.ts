@@ -144,7 +144,7 @@ function makeScene(){
   const fill=new THREE.DirectionalLight("#d7e5eb",.78);fill.position.set(7,5,-7);scene.add(fill);
   createFacade(scene);createApartment(scene);
   const cast:CharacterRig[]=[
-    makeCharacter("bruno",-1.20,-4.15),makeCharacter("valentina",2.95,.90),
+    makeCharacter("bruno",-1.30,-2.95),makeCharacter("valentina",2.50,.70),
     makeCharacter("martina",-2.15,.15),makeCharacter("tomas",1.25,-.70),makeCharacter("ernesto",2.55,.15)
   ];
   cast.forEach(r=>{scene.add(r.root);r.root.position.y=r.name==="bruno"?-1.795:-2.135;r.root.rotation.y=0;r.leftArm.rotation.x=0;r.rightArm.rotation.x=0;});
@@ -156,11 +156,11 @@ function cameraFor(shot:ArcadeShot,camera:THREE.PerspectiveCamera){
   let p:[number,number,number]=[0,2.2,9.0],target:[number,number,number]=[0,-.2,-2.4],fov=64;
   switch(shot){
     case "exterior":p=[35,7.5,23.6];target=[35,7.5,-4.4];fov=50;break;
-    case "master":p=[0,2.25,9.0];target=[0,-.2,-2.4];fov=64;break;
-    case "bruno":p=[-1.35,1.05,-1.40];target=[-1.20,.02,-4.15];fov=52;break;
+    case "master":p=[0,2.25,9.0];target=[0,-.2,-2.4];fov=68;break;
+    case "bruno":p=[-1.15,1.20,-.25];target=[-1.30,.05,-2.95];fov=55;break;
     case "martina":p=[-3.80,1.25,2.7];target=[-2.15,-.30,.15];fov=48;break;
     case "tomas":p=[2.9,1.25,2.35];target=[1.25,-.35,-.70];fov=44;break;
-    case "valentina":p=[4.05,1.30,3.05];target=[2.95,-.30,.90];fov=50;break;
+    case "valentina":p=[3.60,1.30,2.85];target=[2.50,-.30,.70];fov=50;break;
     case "ernesto":p=[4.25,1.25,3.2];target=[2.55,-.35,.15];fov=43;break;
     case "arcade":p=[.15,1.3,1.4];target=[0,-.55,-2.85];fov=38;break;
     case "reaction":p=[0,1.6,3.4];target=[0,-.15,-1.3];fov=54;break;
