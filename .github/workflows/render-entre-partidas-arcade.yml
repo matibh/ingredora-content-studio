@@ -34,11 +34,11 @@ jobs:
           path: _uploaded-audio-assets
       - name: Stage original audio assets
         run: |
-          mkdir -p public/studio/audio/entre-partidas/arcade-05
-          cp "_uploaded-audio-assets/risa.mp3" public/studio/audio/entre-partidas/arcade-05/risa.mp3
-          cp "_uploaded-audio-assets/risa y outro.mp3" public/studio/audio/entre-partidas/arcade-05/risa-y-outro.mp3
-          test -s public/studio/audio/entre-partidas/arcade-05/risa.mp3
-          test -s public/studio/audio/entre-partidas/arcade-05/risa-y-outro.mp3
+          mkdir -p public/studio/audio/entre-partidas/arcade-06
+          cp "_uploaded-audio-assets/risa.mp3" public/studio/audio/entre-partidas/arcade-06/risa.mp3
+          cp "_uploaded-audio-assets/risa y outro.mp3" public/studio/audio/entre-partidas/arcade-06/risa-y-outro.mp3
+          test -s public/studio/audio/entre-partidas/arcade-06/risa.mp3
+          test -s public/studio/audio/entre-partidas/arcade-06/risa-y-outro.mp3
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -68,13 +68,13 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          mkdir -p /tmp/episode-2-source public/studio/audio/entre-partidas/arcade-05
+          mkdir -p /tmp/episode-2-source public/studio/audio/entre-partidas/arcade-06
           gh run download 45046758167 --repo "$GITHUB_REPOSITORY" --name ingredora-entre-partidas-cena-mp4 --dir /tmp/episode-2-source
           source="/tmp/episode-2-source/ingredora-entre-partidas-cena.mp4"
           test -s "$source"
           # Chapter 2 has a clean 3.8 s opening before the first dialogue cue.
-          ffmpeg -hide_banner -loglevel error -y -i "$source" -t 3.15 -vn -af "volume=+6dB,afade=t=in:st=0:d=0.12,afade=t=out:st=2.80:d=0.35" -ar 48000 -ac 2 -c:a pcm_s16le public/studio/audio/entre-partidas/arcade-05/chapter-2-intro-music.wav
-          test -s public/studio/audio/entre-partidas/arcade-05/chapter-2-intro-music.wav
+          ffmpeg -hide_banner -loglevel error -y -i "$source" -t 3.15 -vn -af "volume=+6dB,afade=t=in:st=0:d=0.12,afade=t=out:st=2.80:d=0.35" -ar 48000 -ac 2 -c:a pcm_s16le public/studio/audio/entre-partidas/arcade-06/chapter-2-intro-music.wav
+          test -s public/studio/audio/entre-partidas/arcade-06/chapter-2-intro-music.wav
       - name: Generate timed dialogue, laughter and outro audio
         run: /tmp/entre-partidas-arcade/bin/python scripts/generate-entre-partidas-arcade-audio.py
       - name: Render the arcade episode in Three.js
@@ -82,8 +82,8 @@ jobs:
       - name: Preserve original WebM render
         uses: actions/upload-artifact@v4
         with:
-          name: ingredora-entre-partidas-la-derrota-de-bruno-webm
-          path: /tmp/ingredora-entre-partidas-la-derrota-de-bruno.webm
+          name: ingredora-entre-partidas-de-ingredora-a-chef-webm
+          path: /tmp/ingredora-entre-partidas-de-ingredora-a-chef.webm
           if-no-files-found: error
           retention-days: 30
       - name: Print Vite diagnostics on failure
@@ -91,14 +91,14 @@ jobs:
         run: cat /tmp/vite-arcade.log || true
       - name: Mux Spanish dialogue, laughter and outro into MP4
         run: |
-          ffmpeg -y -i /tmp/ingredora-entre-partidas-la-derrota-de-bruno.webm -i public/studio/audio/entre-partidas/arcade-05/voice-track.mp3 -map 0:v:0 -map 1:a:0 -c:v libx264 -preset veryfast -crf 20 -pix_fmt yuv420p -c:a aac -b:a 192k -shortest -movflags +faststart /tmp/ingredora-entre-partidas-la-derrota-de-bruno.mp4
-          test -s /tmp/ingredora-entre-partidas-la-derrota-de-bruno.mp4
+          ffmpeg -y -i /tmp/ingredora-entre-partidas-de-ingredora-a-chef.webm -i public/studio/audio/entre-partidas/arcade-06/voice-track.mp3 -map 0:v:0 -map 1:a:0 -c:v libx264 -preset veryfast -crf 20 -pix_fmt yuv420p -c:a aac -b:a 192k -shortest -movflags +faststart /tmp/ingredora-entre-partidas-de-ingredora-a-chef.mp4
+          test -s /tmp/ingredora-entre-partidas-de-ingredora-a-chef.mp4
       - name: Upload final MP4
         uses: actions/upload-artifact@v4
         with:
-          name: ingredora-entre-partidas-la-derrota-de-bruno-mp4
-          path: /tmp/ingredora-entre-partidas-la-derrota-de-bruno.mp4
+          name: ingredora-entre-partidas-de-ingredora-a-chef-mp4
+          path: /tmp/ingredora-entre-partidas-de-ingredora-a-chef.mp4
           if-no-files-found: error
           retention-days: 30
 
-# Chapter 5 revised post-tournament story: La derrota de Bruno.
+# Chapter 6: post-meal feedback after Bruno's first cooking attempt.
