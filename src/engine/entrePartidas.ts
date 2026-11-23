@@ -8,7 +8,7 @@ export type EntrePartidasCue = {
   end: number;
   look?: EntrePartidasSpeaker;
 };
-type CharacterRig = {
+export type CharacterRig = {
   root: THREE.Group; head: THREE.Group; mouth: THREE.Mesh;
   leftArm: THREE.Group; rightArm: THREE.Group;
   leftLeg: THREE.Group; rightLeg: THREE.Group;
@@ -33,7 +33,7 @@ const texture = (draw: (ctx: CanvasRenderingContext2D,w:number,h:number)=>void,w
   draw(ctx,w,h);const map=new THREE.CanvasTexture(canvas);map.colorSpace=THREE.SRGBColorSpace;map.anisotropy=8;return map;
 };
 
-function makeCharacter(name: EntrePartidasCue["speaker"], x: number, z: number): CharacterRig {
+export function makeCharacter(name: EntrePartidasCue["speaker"], x: number, z: number): CharacterRig {
   const root=new THREE.Group();root.position.set(x,-1.975,z);
   const isBruno=name==="bruno", isMartina=name==="martina", isTomas=name==="tomas", isErnesto=name==="ernesto";
   const skin=mat(isBruno?"#c98e6e":isMartina?"#d6a080":isTomas?"#e1b18e":"#c99a79");
