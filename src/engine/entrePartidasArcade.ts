@@ -190,11 +190,12 @@ function drawArcadeScreen(ctx:CanvasRenderingContext2D,time:number){
   ctx.fillStyle="#0e382c";ctx.fillRect(16,18,480,476);
   ctx.strokeStyle="#e6c86e";ctx.lineWidth=7;ctx.strokeRect(23,25,466,462);
   ctx.textAlign="center";ctx.textBaseline="middle";
-  ctx.fillStyle="#fff4d5";ctx.font="900 42px monospace";ctx.fillText("INGREDORA",256,112);
-  ctx.fillStyle="#f6d34f";ctx.font="900 54px monospace";ctx.fillText("INSERT COIN",256,252);
-  ctx.fillStyle="#c7e6c8";ctx.font="700 20px monospace";ctx.fillText("1 PLAYER   HIGH SCORE 000000",256,355);
-  ctx.fillStyle="#f5e6bf";ctx.font="700 16px monospace";ctx.fillText("PRESS START",256,418);
-  if(Math.floor(time*2)%2===0){ctx.fillStyle="#f6d34f";ctx.fillRect(124,450,264,5);}
+  ctx.fillStyle="#fff4d5";ctx.font="900 42px monospace";ctx.fillText("RESULTADO FINAL",256,105);
+  ctx.fillStyle="#f6d34f";ctx.font="900 38px monospace";ctx.fillText("MARTINA",256,205);
+  ctx.fillStyle="#c7e6c8";ctx.font="900 34px monospace";ctx.fillText("CAMPEONA 10-2",256,260);
+  ctx.fillStyle="#fff4d5";ctx.font="900 26px monospace";ctx.fillText("BRUNO: GAME OVER",256,345);
+  ctx.fillStyle="#f5e6bf";ctx.font="700 17px monospace";ctx.fillText("NUEVO RECORD DE EXCUSAS",256,420);
+  if(Math.floor(time*2)%2===0){ctx.fillStyle="#f6d34f";ctx.fillRect(92,458,328,5);}
 }
 
 function makeScene(){
