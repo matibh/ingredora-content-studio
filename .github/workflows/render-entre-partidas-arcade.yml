@@ -73,7 +73,7 @@ jobs:
           source="/tmp/episode-2-source/ingredora-entre-partidas-cena.mp4"
           test -s "$source"
           # Chapter 2 has a clean 3.8 s opening before the first dialogue cue.
-          ffmpeg -hide_banner -loglevel error -y -i "$source" -t 3.15 -vn -af "volume=-4dB,afade=t=in:st=0:d=0.12,afade=t=out:st=2.80:d=0.35" -ar 48000 -ac 2 -c:a pcm_s16le public/studio/audio/entre-partidas/arcade-04/chapter-2-intro-music.wav
+          ffmpeg -hide_banner -loglevel error -y -i "$source" -t 3.15 -vn -af "volume=+6dB,afade=t=in:st=0:d=0.12,afade=t=out:st=2.80:d=0.35" -ar 48000 -ac 2 -c:a pcm_s16le public/studio/audio/entre-partidas/arcade-04/chapter-2-intro-music.wav
           test -s public/studio/audio/entre-partidas/arcade-04/chapter-2-intro-music.wav
       - name: Generate timed dialogue, laughter and outro audio
         run: /tmp/entre-partidas-arcade/bin/python scripts/generate-entre-partidas-arcade-audio.py
