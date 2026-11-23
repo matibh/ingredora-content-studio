@@ -102,11 +102,11 @@ function createApartment(world:THREE.Scene){
     box(world,[.36,2.75,.16],doorFrame,[x,-.745,-3.43],false);
   box(world,[2.14,.26,.18],doorFrame,[0,.56,-3.43],false);
 
-  // Enchufe visible en la pared lateral derecha, a la altura del zócalo.
+  // Toma corriente dentro del departamento, junto a la puerta abierta.
   const socketBase=mat("#e9e3d7",.72),socketInset=mat("#b7b1a6",.6),socketDark=mat("#292d2b",.5);
-  box(world,[.075,.34,.27],socketBase,[5.865,-1.18,-1.72],false);
-  box(world,[.025,.22,.16],socketInset,[5.818,-1.18,-1.72],false);
-  for(const z of [-1.765,-1.675]) sphere(world,[.025,.055,.035],socketDark,[5.797,-1.18,z],8);
+  box(world,[.27,.34,.075],socketBase,[.56,-1.18,-3.405],false);
+  box(world,[.16,.22,.025],socketInset,[.56,-1.18,-3.355],false);
+  for(const x of [.515,.605]) sphere(world,[.035,.055,.025],socketDark,[x,-1.18,-3.335],8);
   // Placa del departamento, por encima del único marco.
   const doorNumber=texture((ctx,w,h)=>{
     ctx.fillStyle="#3f3028";ctx.fillRect(0,0,w,h);
@@ -174,9 +174,10 @@ function createArcade(world:THREE.Scene){
   const glow=new THREE.PointLight(0x9be5b4,4,4,2);glow.position.set(0,2.25,.5);cabinet.add(glow);
   // Cable negro grueso, visible sobre el suelo y conectado al enchufe de pared.
   const cablePoints=[
-    new THREE.Vector3(5.80,-1.34,-1.72),new THREE.Vector3(5.78,-1.93,-1.72),
-    new THREE.Vector3(5.62,-2.025,-1.62),new THREE.Vector3(5.36,-2.025,-1.55),
-    new THREE.Vector3(5.55,-2.025,-1.78),new THREE.Vector3(5.48,-2.01,-1.82)
+    new THREE.Vector3(.56,-1.34,-3.32),new THREE.Vector3(.56,-1.94,-3.20),
+    new THREE.Vector3(1.12,-2.025,-2.82),new THREE.Vector3(2.25,-2.025,-2.42),
+    new THREE.Vector3(3.62,-2.025,-2.02),new THREE.Vector3(4.72,-2.01,-1.88),
+    new THREE.Vector3(5.48,-2.01,-1.82)
   ];
   const cableCurve=new THREE.CatmullRomCurve3(cablePoints);
   const cable=new THREE.Mesh(new THREE.TubeGeometry(cableCurve,48,.026,8,false),mat("#202321",.48,.08));
