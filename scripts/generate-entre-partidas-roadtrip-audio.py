@@ -27,7 +27,7 @@ SEGMENTS = [
  {"id":"03-bruno-lista","speaker":"bruno","text":"Chocolate, dulce de leche, harina...","look":"valentina","shot":"bruno","pause":0.28},
  {"id":"04-valentina-foto","speaker":"valentina","text":"Eso es lo que ves en la foto.","look":"bruno","shot":"valentina","pause":0.3},
  {"id":"05-bruno-arbol","speaker":"bruno","text":"¿Y qué querés? ¿Que le pida el árbol genealógico al alfajor?","look":"valentina","shot":"bruno","laugh":True,"pause":0.85},
- {"id":"06-bruno-cartel-oreo","speaker":"bruno","text":"Mirá ese tamaño. Te venden que es irresistible.","look":"valentina","shot":"billboardLeft","pause":0.35},
+ {"id":"06-bruno-cartel-oreo","speaker":"bruno","text":"Qué ricas unas Oreo. Ahora quiero un paquete.","look":"valentina","shot":"billboardLeft","pause":0.35},
  {"id":"07-valentina-prueba","speaker":"valentina","text":"Y vos sos la prueba de que funciona.","look":"bruno","shot":"valentina","pause":0.25},
  {"id":"08-bruno-por","speaker":"bruno","text":"¿Por?","look":"valentina","shot":"bruno","pause":0.2},
  {"id":"09-valentina-convencido","speaker":"valentina","text":"Porque todavía no sabemos qué tiene adentro y ya te convencieron.","look":"bruno","shot":"valentina","laugh":True,"pause":0.82},
