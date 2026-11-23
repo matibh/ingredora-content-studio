@@ -99,7 +99,7 @@ function createApartment(world:THREE.Scene){
   for(const x of [3.15,4.05])box(world,[.13,.35,.13],wood,[x,-1.78,2.72],false);
   // A small plant and rug soften the room without distracting from the doorway gag.
   box(world,[2.6,.025,2.2],mat("#9d8065",.98),[-1.1,-2.02,2.3],false);
-  const pot=box(world,[.42,.42,.42],mat("#a66c4f",.9),[-4.4,-1.75,2.6],false);
+  box(world,[.42,.42,.42],mat("#a66c4f",.9),[-4.4,-1.75,2.6],false);
   for(let i=0;i<5;i++)sphere(world,[.18,.58,.18],mat("#557b55",.95),[-4.4+Math.cos(i*1.25)*.23,-1.2,2.6+Math.sin(i*1.25)*.2],9);
 }
 
