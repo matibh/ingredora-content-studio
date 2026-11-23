@@ -1,7 +1,28 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-22T00:00:00Z",
+  "updatedAt": "2026-11-23T11:35:00-03:00",
   "productions": [
+    {
+      "id": "ingredora-entre-partidas-arcade-004",
+      "title": "Entre Partidas — No entra ni a palos",
+      "description": "Bruno y Valentina regresan del viaje con una arcade de Ingredora. La máquina queda trabada en la puerta del departamento y los cinco intentan resolverlo; Bruno termina proponiendo mudarse.",
+      "status": "rendering",
+      "packageUrl": "studio/packages/entre-partidas-arcade.v1.json",
+      "durationSeconds": 75,
+      "aspectRatio": "9:16",
+      "language": "Español rioplatense — cinco voces diferenciadas",
+      "platforms": [
+        "TikTok",
+        "Instagram Reels",
+        "YouTube Shorts",
+        "Facebook Reels"
+      ],
+      "version": "1.0.0",
+      "createdAt": "2026-11-23T11:35:00-03:00",
+      "collection": "series",
+      "renderEngine": "three",
+      "caption": "Bruno volvió del viaje con una arcade de Ingredora. Solo hay un pequeño problema: no entra por la puerta. #EntrePartidas #IngredoraOriginals"
+    },
     {
       "id": "ingredora-entre-partidas-dinner-002",
       "title": "Entre Partidas — La cena de los ingredientes",
