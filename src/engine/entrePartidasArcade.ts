@@ -66,7 +66,7 @@ function createApartment(world:THREE.Scene){
   // Pasillo común del edificio: ya estamos afuera del departamento.
   // No hay cuadros ni muebles de interior; solo puerta, ascensor, matafuego y escalera.
   const floor=mat("#77796f",.94),wall=mat("#ded4c5",.94),stone=mat("#c8b8a8",.96);
-  const darkTrim=mat("#6b4a35",.68),doorFrame=mat("#b99669",.72);
+  const darkTrim=mat("#6b4a35",.68),doorFrame=mat("#7c5b3e",.58);
   const metal=mat("#8e9798",.34,.68),metalDark=mat("#42494b",.42,.42);
   const carpet=mat("#24463d",.98),stepStone=mat("#8c8981",.9);
 
@@ -102,7 +102,7 @@ function createApartment(world:THREE.Scene){
   // El hueco mide 1.42 m; el arcade mide 1.73 m y sobresale por ambos lados.
   for(const x of [-.89,.89])
     box(world,[.36,2.75,.16],doorFrame,[x,-.745,-3.43],false);
-  box(world,[2.14,.20,.16],doorFrame,[0,.53,-3.43],false);
+  box(world,[2.14,.26,.18],doorFrame,[0,.56,-3.43],false);
 
   // Placa del departamento, por encima del único marco.
   const doorNumber=texture((ctx,w,h)=>{
