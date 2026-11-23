@@ -1,8 +1,9 @@
 import * as THREE from "three";
 import { BufferTarget, CanvasSource, Output, Quality, WebMOutputFormat, canEncodeVideo } from "mediabunny";
-import { makeCharacter, type CharacterRig, type EntrePartidasSpeaker } from "./entrePartidas";
+import { type CharacterRig, type EntrePartidasSpeaker } from "./entrePartidas";
+import { createEntrePartidasFeedbackSet } from "./entrePartidasDinner";
 
-export type ArcadeShot = "exterior" | "master" | "bruno" | "martina" | "tomas" | "valentina" | "ernesto" | "arcade" | "reaction";
+export type ArcadeShot = "exterior" | "master" | "bruno" | "martina" | "tomas" | "valentina" | "ernesto" | "reaction";
 export type ArcadeCue = { id:string; speaker:EntrePartidasSpeaker; text:string; start:number; end:number; look?:EntrePartidasSpeaker; shot:ArcadeShot; laugh?:boolean };
 export type ArcadePackage = { schemaVersion:1; engineVersion:"entre-partidas-arcade-1.0.0"; id:string; title:string; createdAt:string; fps:number; width:number; height:number; durationSeconds:number; endCardStart:number; chapterNumber?:number; dialogue:ArcadeCue[] };
 export type ArcadeProgress = { frame:number; totalFrames:number; percent:number };
@@ -199,33 +200,22 @@ function drawArcadeScreen(ctx:CanvasRenderingContext2D,time:number){
 }
 
 function makeScene(){
-  const scene=new THREE.Scene();scene.background=new THREE.Color("#b8cbd2");scene.fog=new THREE.Fog("#c8c8bb",38,95);
-  scene.add(new THREE.HemisphereLight("#fff4df","#646d60",1.9));
-  const sun=new THREE.DirectionalLight("#fff0d7",2.45);sun.position.set(-7,10,8);sun.castShadow=true;sun.shadow.mapSize.set(1024,1024);scene.add(sun);
-  const fill=new THREE.DirectionalLight("#d7e5eb",.78);fill.position.set(7,5,-7);scene.add(fill);
-  createFacade(scene);createApartment(scene);
-  const cast:CharacterRig[]=[
-    makeCharacter("bruno",-1.55,-2.05,true),makeCharacter("valentina",1.70,.35),
-    // Martina is moved well to Bruno's right so she cannot cover him in the master shot.
-    makeCharacter("martina",-2.45,.15),makeCharacter("tomas",.45,-.70),makeCharacter("ernesto",2.75,.15)
-  ];
-  cast.forEach(r=>{scene.add(r.root);r.root.position.y=r.name==="bruno"?-1.795:-2.135;r.root.rotation.y=0;r.leftArm.rotation.x=0;r.rightArm.rotation.x=0;});
-  const arcade=createArcade(scene);
-  return {scene,cast,arcade};
+  const scene=new THREE.Scene();
+  const dinner=createEntrePartidasFeedbackSet(scene);
+  return {scene,cast:dinner.cast,dinner};
 }
 
 function cameraFor(shot:ArcadeShot,camera:THREE.PerspectiveCamera){
-  let p:[number,number,number]=[0,2.35,10.6],target:[number,number,number]=[0,-.15,-2.45],fov=76;
+  let p:[number,number,number]=[0,6.2,22],target:[number,number,number]=[0,1.05,.35],fov=46;
   switch(shot){
     case "exterior":p=[35,7.5,23.6];target=[35,7.5,-4.4];fov=50;break;
-    case "master":p=[0,2.55,10.8];target=[0,-.15,-2.45];fov=76;break;
-    case "bruno":p=[-1.55,1.25,.65];target=[-1.55,-.25,-2.05];fov=50;break;
-    case "martina":p=[-2.95,1.25,2.70];target=[-2.45,-.30,.15];fov=48;break;
-    case "tomas":p=[2.1,1.25,2.35];target=[.45,-.35,-.70];fov=44;break;
-    case "valentina":p=[2.80,1.30,2.85];target=[1.70,-.30,.35];fov=50;break;
-    case "ernesto":p=[4.45,1.25,3.2];target=[2.75,-.35,.15];fov=43;break;
-    case "arcade":p=[5.25,1.35,1.25];target=[4.65,-.55,-1.45];fov=38;break;
-    case "reaction":p=[0,1.6,3.4];target=[0,-.15,-1.3];fov=54;break;
+    case "master":p=[0,6.2,22];target=[0,1.15,.45];fov=46;break;
+    case "bruno":p=[0,3.65,9.2];target=[0,2.35,3.2];fov=42;break;
+    case "martina":p=[-4.45,3.35,6.9];target=[-3.82,2.35,-1.45];fov=43;break;
+    case "tomas":p=[-1.85,3.35,6.9];target=[-1.28,2.35,-1.55];fov=43;break;
+    case "valentina":p=[1.85,3.35,6.9];target=[1.28,2.35,-1.55];fov=43;break;
+    case "ernesto":p=[4.45,3.35,6.9];target=[3.82,2.35,-1.45];fov=43;break;
+    case "reaction":p=[0,4.3,12.5];target=[0,2.0,.1];fov=48;break;
   }
   camera.position.set(...p);camera.lookAt(...target);camera.fov=fov;camera.updateProjectionMatrix();
 }
@@ -270,7 +260,7 @@ function drawBranding(ctx:CanvasRenderingContext2D,pkg:ArcadePackage,time:number
 }
 
 export async function renderEntrePartidasArcadeToWebM(pkg:ArcadePackage,onProgress:(p:ArcadeProgress)=>void,signal?:AbortSignal):Promise<Blob>{
-  if(pkg.schemaVersion!==1||pkg.engineVersion!=="entre-partidas-arcade-1.0.0")throw new Error("Paquete del capítulo 4 incompatible.");
+  if(pkg.schemaVersion!==1||pkg.engineVersion!=="entre-partidas-arcade-1.0.0")throw new Error("Paquete del capítulo 6 incompatible.");
   if(pkg.width!==720||pkg.height!==1280||pkg.fps!==24)throw new Error("El capítulo requiere 720×1280 a 24 FPS.");
   if(!pkg.dialogue.length||pkg.durationSeconds<=0)throw new Error("El capítulo necesita diálogos y una duración válida.");
   if(!(await canEncodeVideo("vp9",{width:pkg.width,height:pkg.height,frameRate:pkg.fps})))throw new Error("No hay codificador VP9 disponible para el render.");
@@ -279,7 +269,7 @@ export async function renderEntrePartidasArcadeToWebM(pkg:ArcadePackage,onProgre
   renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.12;
   const world=makeScene(),camera=new THREE.PerspectiveCamera(48,pkg.width/pkg.height,.1,140);
   const canvas=document.createElement("canvas");canvas.width=pkg.width;canvas.height=pkg.height;const ctx=canvas.getContext("2d");if(!ctx)throw new Error("No se pudo crear el lienzo del capítulo.");
-  const exteriorBackground=world.scene.background;const exteriorFog=world.scene.fog;const interiorBackground=new THREE.Color("#d9cdbb");const interiorFog=new THREE.Fog("#d9cdbb",28,88);
+  const exteriorBackground=new THREE.Color("#b8cbd2");const exteriorFog=new THREE.Fog("#c8c8bb",38,95);const interiorBackground=new THREE.Color("#d9d5ca");const interiorFog=new THREE.Fog("#d9d5ca",22,48);
   const target=new BufferTarget(),output=new Output({format:new WebMOutputFormat(),target});
   const videoSource=new CanvasSource(canvas,{codec:"vp9",quality:new Quality({bitrate:8_000_000})});output.addVideoTrack(videoSource,{frameRate:pkg.fps});
   output.setMetadataTags({title:pkg.title,artist:"Ingredora — Entre Partidas",date:new Date(pkg.createdAt)});
@@ -292,32 +282,14 @@ export async function renderEntrePartidasArcadeToWebM(pkg:ArcadePackage,onProgre
       const shot:ArcadeShot=t<3.2?"exterior":cue?.shot??"master";
       world.scene.background=t<3.2?exteriorBackground:interiorBackground;
       world.scene.fog=t<3.2?exteriorFog:interiorFog;
-      world.arcade.cabinet.position.set(4.65,-2.12,-1.45);
-      world.arcade.cabinet.rotation.y=-.10;
-      drawArcadeScreen(world.arcade.sctx,t);world.arcade.screenTexture.needsUpdate=true;
-      const speakerRig=cue?world.cast.find(r=>r.name===cue.speaker):undefined;
-      world.cast.forEach((rig,index)=>{
-        const active=cue?.speaker===rig.name,phase=index*.83;
-        const dx=(speakerRig?.root.position.x??rig.root.position.x)-rig.root.position.x;
-        const targetYaw=active?Math.sin(t*1.05+phase)*.025:cue?.look===rig.name?Math.sign(dx)*.14:Math.sin(t*.35+phase)*.012;
-        rig.head.rotation.y=THREE.MathUtils.lerp(rig.head.rotation.y,targetYaw,.09);
-        rig.head.rotation.x=active?Math.sin(t*2.2+phase)*.035:Math.sin(t*.55+phase)*.008;
-        const vowels=(cue?.text.match(/[aeiouáéíóúü]/gi)||[]).length;
-        const progress=cue?Math.max(0,Math.min(.999,(t-cue.start)/Math.max(.1,cue.end-cue.start))):0;
-        const mouthOpen=active ? .04+Math.pow(Math.max(0,Math.sin(progress*Math.max(2,vowels)*Math.PI*2)),.8)*.55 : .025;
-        rig.mouth.scale.set(1,mouthOpen,1);
-        const idle=Math.sin(t*.72+phase)*.018;
-        const gesture=active&&rig.name!=="bruno"?Math.sin(t*2.0+phase)*.055:0;
-        rig.leftArm.rotation.z=active?(rig.name==="bruno"?-.018:-.045-gesture):(rig.name==="bruno"?-.004:-.018-idle);
-        rig.rightArm.rotation.z=active?(rig.name==="bruno"?.018:.045+gesture*.8):(rig.name==="bruno"?.004:.018+idle);
-        if(rig.name==="bruno"){
-          // Bruno keeps his arms lowered even while speaking; only a tiny relaxed sway remains.
-          rig.leftArm.rotation.x=0;
-          rig.rightArm.rotation.x=0;
-        }
-        rig.root.position.y=rig.name==="bruno"?-1.795:-2.135;
-      });
-      cameraFor(shot,camera);renderer.render(world.scene,camera);ctx.drawImage(renderer.domElement,0,0,pkg.width,pkg.height);
+      world.dinner.update(t,pkg.dialogue);
+      cameraFor(shot,camera);
+      if(t<3.2){
+        const progress=Math.max(0,Math.min(1,t/3.2)),ease=progress*progress*(3-2*progress);
+        camera.position.z-=2.7*ease;
+        camera.lookAt(35,7.5,-4.4);
+      }
+      renderer.render(world.scene,camera);ctx.drawImage(renderer.domElement,0,0,pkg.width,pkg.height);
       const vignette=ctx.createRadialGradient(360,550,280,360,640,930);vignette.addColorStop(0,"rgba(0,0,0,0)");vignette.addColorStop(1,"rgba(12,15,16,.17)");ctx.fillStyle=vignette;ctx.fillRect(0,0,pkg.width,pkg.height);
       drawCaptions(ctx,pkg,t);drawBranding(ctx,pkg,t);await videoSource.add(t,1/pkg.fps);
       if(frame%8===0||frame===totalFrames-1)onProgress({frame:frame+1,totalFrames,percent:Math.round((frame+1)/totalFrames*100)});
