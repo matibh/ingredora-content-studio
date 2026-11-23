@@ -9,8 +9,8 @@
 
 ## Continuidad obligatoria
 
-- Abrir con la misma fachada del edificio del capítulo 2: seis niveles, tres ventanas por piso, balcones alternados y placa verde con el número **284**.
-- Se reutiliza la geometría procedural original de `src/engine/entrePartidasDinner.ts`; no se crea otro edificio parecido.
+- Abrir con la misma toma exterior del edificio del capítulo 2: seis niveles, tres ventanas por piso y placa verde con el número **284**. No modificar esa primera toma.
+- En todos los planos interiores, el fondo libre debe ser beige, igual al color de las paredes.
 - Bruno y Valentina vuelven del viaje con la arcade. El capítulo comienza cuando la máquina ya está trabada en la puerta.
 - Vestuario y colores canónicos: Bruno terracota, Martina rosa tostado, Tomás verde petróleo, Valentina azul petróleo y Ernesto cárdigan verde oliva con pelo y barba grises.
 - La arcade permanece encendida y atascada durante todo el conflicto. Marquee luminoso **INGREDORA** y pantalla retro **INSERT COIN**.
@@ -23,11 +23,11 @@
 3. **Bruno:** «¡Sí entra! ¡Tiene que entrar!»
 4. **Tomás:** «¿Y si la ponemos de costado?»
 5. **Ernesto:** «¡Está de costado!»
-6. **Tomás:** «Bueno... ¡del otro costado!»
+6. **Tomás:** «Uh, estamos al horno.» (entra `risa.mp3` después de la frase)
 7. **Valentina:** «Bruno, ¿vos mediste la puerta antes de comprarla?»
 8. **Bruno:** «Bueno... no.»
 9. **Martina:** «¿Cómo que no?»
-10. **Tomás:** «¡Ja, ja, ja! ¡El genio de Ingredora!»
+10. **Tomás:** «¡Ja, ja, ja! ¡Un genio, Brunito!» (risa breve)
 11. **Bruno:** «¡No se rían! ¡Ayuden!»
 12. **Ernesto:** «¿Y ahora qué hacemos?»
 13. **Martina:** «No sé. ¿Tenés alguna idea?»
@@ -55,8 +55,8 @@ El remate lo dice Bruno. La pausa posterior deja que el absurdo se entienda ante
 
 ## Dirección de actuación
 
-- Gestos pequeños y naturales; no mover brazos y piernas exageradamente.
-- La fuerza física se lee con inclinación leve del torso, manos apoyadas en el gabinete y tensión breve, no con sacudidas grandes.
+- Personajes y arcade firmes, apoyados en el piso: sin flotación, rebotes ni desplazamientos de posición.
+- Al hablar, cada personaje mueve apenas la cabeza y los brazos; cuando escucha, solo gestos idle mínimos. Las piernas permanecen quietas.
 - Cada reacción tiene su propio plano; no animar a los cinco simultáneamente.
 - Respetar el eje de la puerta y mantener la misma orientación de la máquina entre planos.
 - El gabinete no atraviesa el marco ni cambia de tamaño/forma entre tomas.
@@ -72,10 +72,10 @@ El remate lo dice Bruno. La pausa posterior deja que el absurdo se entienda ante
 ## Audio y subtítulos
 
 - Cinco voces diferenciadas con variante regional.
-- Risa breve únicamente después de «¡El genio de Ingredora!».
-- Sonido/ambiente arcade suave mientras la pantalla muestra INSERT COIN.
+- Música de apertura recuperada del comienzo del capítulo 2, durante la toma exterior y la tarjeta del capítulo.
+- Usar `risa.mp3` después de «Uh, estamos al horno» y después de «¡Un genio, Brunito!».
+- Música de cierre recuperada de la placa final del capítulo 2, debajo de los créditos; no usar una placa «FIN» porque la serie continúa.
 - Subtítulos dinámicos, caja adaptable y máximo dos renglones.
-- Outro musical al terminar el remate; no usar una placa «FIN» porque la serie continúa.
 
 ## Criterios de revisión
 

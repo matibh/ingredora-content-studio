@@ -38,7 +38,7 @@ export function makeCharacter(name: EntrePartidasCue["speaker"], x: number, z: n
   const isBruno=name==="bruno", isMartina=name==="martina", isTomas=name==="tomas", isErnesto=name==="ernesto";
   const skin=mat(isBruno?"#c98e6e":isMartina?"#d6a080":isTomas?"#e1b18e":"#c99a79");
   const hair=mat(isBruno?"#30241f":isMartina?"#30201c":isTomas?"#4b3328":"#8b8a82");
-  const hairTie=mat(isMartina?"#d8a64c":"#d5d8df");
+  const hairTie=mat(isMartina||name==="valentina"?"#d8a64c":"#d5d8df");
   const shirt=mat(isBruno?"#c46a43":isMartina?"#bd7958":isTomas?"#527c78":isErnesto?"#718064":"#47788a");
   const pants=mat(isErnesto?"#4b5148":"#35414a"), shoes=mat("#222528",.56);
   const head=new THREE.Group();head.position.set(0,isBruno?1.62:2.12,0);root.add(head);
@@ -76,8 +76,8 @@ export function makeCharacter(name: EntrePartidasCue["speaker"], x: number, z: n
     box(head,[.70,.57,.18],hair,[0,-.035,-.285]);
     box(head,[.13,.48,.42],hair,[-.305,-.055,-.015]);
     box(head,[.13,.48,.42],hair,[.305,-.055,-.015]);
-    if(isMartina){
-      // High ponytail grows from behind the crown; the tie remains visible from profile.
+    if(isMartina||name==="valentina"){
+      // Martina y Valentina comparten el mismo peinado largo; el color de remera las distingue.
       box(head,[.25,.16,.20],hair,[.12,.49,-.29]);
       box(head,[.10,.10,.11],hairTie,[.12,.48,-.405]);
       box(head,[.22,.32,.22],hair,[.15,.28,-.51]);
@@ -93,11 +93,6 @@ export function makeCharacter(name: EntrePartidasCue["speaker"], x: number, z: n
       box(head,[.72,.19,.60],hair,[0,.34,-.02]);
       box(head,[.15,.28,.18],hair,[-.30,.18,.15]);
       box(head,[.15,.28,.18],hair,[.30,.18,.15]);
-    }else{
-      // Valentina's established long hair silhouette.
-      box(head,[.27,.18,.21],hair,[-.12,.49,-.29]);
-      box(head,[.105,.095,.11],hairTie,[-.12,.48,-.405]);
-      box(head,[.20,.28,.20],hair,[-.15,.27,-.52]);
     }
   }
   if(isErnesto){

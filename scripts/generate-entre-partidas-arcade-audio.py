@@ -9,7 +9,6 @@ import edge_tts
 AUDIO=Path("public/studio/audio/entre-partidas/arcade-04")
 PACKAGE=Path("public/studio/packages/entre-partidas-arcade.v1.json")
 LAUGH=AUDIO/"risa.mp3"
-OUTRO=AUDIO/"risa-y-outro.mp3"
 VOICE=AUDIO/"voice-track.mp3"
 TIMINGS=AUDIO/"word-timings.json"
 FPS=24
@@ -26,11 +25,11 @@ SEGMENTS=[
  {"id":"03-bruno-si-entra","speaker":"bruno","text":"¡Sí entra! ¡Tiene que entrar!","look":"martina","shot":"bruno","pause":.35},
  {"id":"04-tomas-costado","speaker":"tomas","text":"¿Y si la ponemos de costado?","look":"ernesto","shot":"tomas","pause":.22},
  {"id":"05-ernesto-costado","speaker":"ernesto","text":"¡Está de costado!","look":"tomas","shot":"ernesto","pause":.2},
- {"id":"06-tomas-otro-lado","speaker":"tomas","text":"Bueno... ¡del otro costado!","look":"martina","shot":"tomas","pause":.35},
+ {"id":"06-tomas-al-horno","speaker":"tomas","text":"Uh, estamos al horno.","look":"martina","shot":"tomas","laugh":True,"pause":.35},
  {"id":"07-valentina-mediste","speaker":"valentina","text":"Bruno, ¿vos mediste la puerta antes de comprarla?","look":"bruno","shot":"valentina","pause":.8},
  {"id":"08-bruno-no","speaker":"bruno","text":"Bueno... no.","look":"valentina","shot":"bruno","pause":.4},
  {"id":"09-martina-como-que-no","speaker":"martina","text":"¿Cómo que no?","look":"bruno","shot":"martina","pause":.25},
- {"id":"10-tomas-genio","speaker":"tomas","text":"¡Ja, ja, ja! ¡El genio de Ingredora!","look":"bruno","shot":"tomas","laugh":True,"pause":.55},
+ {"id":"10-tomas-genio","speaker":"tomas","text":"¡Ja, ja, ja! ¡Un genio, Brunito!","look":"bruno","shot":"tomas","laugh":True,"pause":.55},
  {"id":"11-bruno-ayuden","speaker":"bruno","text":"¡No se rían! ¡Ayuden!","look":"tomas","shot":"bruno","pause":.35},
  {"id":"12-ernesto-ahora","speaker":"ernesto","text":"¿Y ahora qué hacemos?","look":"martina","shot":"ernesto","pause":.3},
  {"id":"13-martina-idea","speaker":"martina","text":"No sé. ¿Tenés alguna idea?","look":"bruno","shot":"martina","pause":.55},
@@ -65,7 +64,7 @@ def concat(items:list[Path],dst:Path,work:Path):
  run(["ffmpeg","-hide_banner","-loglevel","error","-y","-f","concat","-safe","0","-i",str(listing),"-c:a","pcm_s16le","-ar","48000","-ac","2",str(dst)])
 async def main():
  AUDIO.mkdir(parents=True,exist_ok=True)
- for p in [LAUGH,OUTRO]:
+ for p in [LAUGH]:
   if not p.is_file() or p.stat().st_size<100:raise SystemExit("Falta el recurso de audio original: "+str(p))
  with tempfile.TemporaryDirectory(prefix="arcade-04-",dir=AUDIO) as td:
   work=Path(td);parts=[];cues=[];words=[];cursor=3.15
@@ -81,13 +80,14 @@ async def main():
    if seg.get("laugh"):parts.append(laugh);cursor+=1.65
    pause=work/f"pause-{i:02d}.wav";silence(pause,seg.get("pause",.25));parts.append(pause);cursor+=seg.get("pause",.25)
   end_card=cursor
-  outro_wav=work/"outro.wav";normalize(OUTRO,outro_wav,"volume=-1.2dB,afade=t=in:st=0:d=0.12")
-  parts.append(outro_wav);total=cursor+duration(OUTRO)
+  # Reservar la duración de la placa final; la música del capítulo 2 se agrega en la mezcla final del MP4.
+  outro_wav=work/"outro-silence.wav";silence(outro_wav,9.38)
+  parts.append(outro_wav);total=cursor+duration(outro_wav)
   combined=work/"combined.wav";concat(parts,combined,work)
   run(["ffmpeg","-hide_banner","-loglevel","error","-y","-i",str(combined),"-c:a","libmp3lame","-b:a","192k",str(VOICE)])
   pkg=json.loads(PACKAGE.read_text(encoding="utf-8"))
   pkg["dialogue"]=cues;pkg["endCardStart"]=round(end_card,3);pkg["durationSeconds"]=math.ceil(total)
   PACKAGE.write_text(json.dumps(pkg,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
-  TIMINGS.write_text(json.dumps({"fps":FPS,"durationSeconds":pkg["durationSeconds"],"dialogue":cues,"words":words},ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+  TIMINGS.write_text(json.dumps({"fps":FPS,"durationSeconds":pkg["durationSeconds"],"endCardStart":round(end_card,3),"dialogue":cues,"words":words},ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
   print(f"VOICE={VOICE} duration={duration(VOICE):.2f}s; dialogue={len(cues)}; endcard={end_card:.2f}s; total={pkg['durationSeconds']}s")
 if __name__=="__main__":asyncio.run(main())
