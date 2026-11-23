@@ -201,6 +201,7 @@ function drawArcadeScreen(ctx:CanvasRenderingContext2D,time:number){
 
 function makeScene(){
   const scene=new THREE.Scene();
+  createFacade(scene);
   const dinner=createEntrePartidasFeedbackSet(scene);
   return {scene,cast:dinner.cast,dinner};
 }
@@ -209,8 +210,8 @@ function cameraFor(shot:ArcadeShot,camera:THREE.PerspectiveCamera){
   let p:[number,number,number]=[0,6.2,22],target:[number,number,number]=[0,1.05,.35],fov=46;
   switch(shot){
     case "exterior":p=[35,7.5,23.6];target=[35,7.5,-4.4];fov=50;break;
-    case "master":p=[0,6.2,22];target=[0,1.15,.45];fov=46;break;
-    case "bruno":p=[0,3.65,9.2];target=[0,2.35,3.2];fov=42;break;
+    case "master":p=[0,7.2,25];target=[0,1.35,.35];fov=46;break;
+    case "bruno":p=[7.5,3.75,8.8];target=[5.45,2.35,1.05];fov=43;break;
     case "martina":p=[-4.45,3.35,6.9];target=[-3.82,2.35,-1.45];fov=43;break;
     case "tomas":p=[-1.85,3.35,6.9];target=[-1.28,2.35,-1.55];fov=43;break;
     case "valentina":p=[1.85,3.35,6.9];target=[1.28,2.35,-1.55];fov=43;break;
