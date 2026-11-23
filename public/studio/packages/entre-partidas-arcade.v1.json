@@ -1,15 +1,16 @@
 {
   "schemaVersion": 1,
   "engineVersion": "entre-partidas-arcade-1.0.0",
-  "id": "ingredora-entre-partidas-arcade-004",
-  "title": "Entre Partidas — No entra ni a palos",
+  "id": "ingredora-entre-partidas-arcade-005",
+  "title": "Entre Partidas — El torneo del pasillo",
   "createdAt": "2026-11-23T00:00:00-03:00",
   "fps": 24,
   "width": 720,
   "height": 1280,
-  "durationSeconds": 75,
-  "endCardStart": 67,
+  "durationSeconds": 105,
+  "endCardStart": 96,
   "dialogue": [],
-  "voiceoverUrl": "studio/audio/entre-partidas/arcade-04/voice-track.mp3",
-  "wordTimingsUrl": "studio/audio/entre-partidas/arcade-04/word-timings.json"
+  "voiceoverUrl": "studio/audio/entre-partidas/arcade-05/voice-track.mp3",
+  "wordTimingsUrl": "studio/audio/entre-partidas/arcade-05/word-timings.json",
+  "chapterNumber": 5
 }
