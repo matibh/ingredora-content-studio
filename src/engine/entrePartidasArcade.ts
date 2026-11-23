@@ -41,15 +41,8 @@ function createFacade(world:THREE.Scene){
       box(world,[1.70,.055,.055],facadeLight,[x,y+.72,frontZ+.08],false);
       box(world,[1.70,.055,.055],facadeLight,[x,y-.72,frontZ+.08],false);
       box(world,[.045,1.42,.045],frame,[x,y,frontZ+.085],false);
-      if((floor+column)%2===0&&floor<5){
-        const balconyY=y-.98;
-        box(world,[2.75,.14,.92],concrete,[x,balconyY,frontZ-.48],false);
-        box(world,[2.78,.07,.07],frame,[x,balconyY+.68,frontZ-.86],false);
-        for(let rail=0;rail<9;rail++)box(world,[.035,.66,.035],frame,[x-1.34+rail*.335,balconyY+.34,frontZ-.86],false);
-        box(world,[.08,.62,.08],facadeLight,[x-1.35,balconyY+.34,frontZ-.48],false);
-        box(world,[.08,.62,.08],facadeLight,[x+1.35,balconyY+.34,frontZ-.48],false);
-        if(column===0){box(world,[.34,.28,.30],mat("#9a634a",.95),[x+.72,balconyY+.18,frontZ-.58],false);sphere(world,[.46,.38,.34],mat("#5d8055",.95),[x+.72,balconyY+.50,frontZ-.58],9);}
-      }
+      // Thin concrete window sills match the exact flat facade seen in chapter 2.
+      box(world,[1.95,.10,.20],concrete,[x,y-.88,frontZ-.06],false);
     }
     box(world,[12.8,.10,.18],facadeLight,[bx,y-1.28,frontZ+.04],false);
     box(world,[12.8,.035,.035],mat("#bd9858",.34,.64),[bx,y+1.02,frontZ+.02],false);
@@ -162,7 +155,7 @@ function makeScene(){
 function cameraFor(shot:ArcadeShot,camera:THREE.PerspectiveCamera){
   let p:[number,number,number]=[0,2.2,9.0],target:[number,number,number]=[0,-.2,-2.4],fov=64;
   switch(shot){
-    case "exterior":p=[35,8.6,14.8];target=[35,7.1,-4.4];fov=39;break;
+    case "exterior":p=[35,7.5,23.6];target=[35,7.5,-4.4];fov=50;break;
     case "master":p=[0,2.25,9.0];target=[0,-.2,-2.4];fov=64;break;
     case "bruno":p=[-2.0,1.35,-.15];target=[-.95,-.35,-4.0];fov=43;break;
     case "martina":p=[-3.2,1.25,2.4];target=[-1.55,-.35,-.72];fov=44;break;
@@ -191,12 +184,16 @@ function drawCaptions(ctx:CanvasRenderingContext2D,pkg:ArcadePackage,time:number
 
 function drawBranding(ctx:CanvasRenderingContext2D,pkg:ArcadePackage,time:number){
   const w=pkg.width,h=pkg.height,s=w/720;
-  if(time<2.45){
-    const alpha=Math.max(0,Math.min(1,time/.32,(2.45-time)/.42));ctx.save();ctx.globalAlpha=alpha;
-    ctx.fillStyle="rgba(16,40,32,.94)";ctx.beginPath();ctx.roundRect(w*.075,h*.24,w*.85,h*.31,22*s);ctx.fill();
-    ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle="#d7e8ad";ctx.font="900 "+Math.round(19*s)+"px Arial";ctx.fillText("INGREDORA ORIGINALS",w/2,h*.31);
-    ctx.fillStyle="#fffaf0";ctx.font="900 "+Math.round(52*s)+"px Arial Black,Arial";ctx.fillText("ENTRE PARTIDAS",w/2,h*.405);
-    ctx.fillStyle="#f0d18b";ctx.font="900 "+Math.round(23*s)+"px Arial";ctx.fillText("CAPÍTULO 4 · NO ENTRA NI A PALOS",w/2,h*.49);ctx.restore();
+  if(time<2.25){
+    const alpha=Math.max(0,Math.min(1,time/.28,(2.25-time)/.36));ctx.save();ctx.globalAlpha=alpha;
+    const panelW=w*.90,panelH=h*.155,x=(w-panelW)/2,y=h*.045;
+    ctx.shadowColor="rgba(0,0,0,.38)";ctx.shadowBlur=24*s;
+    const g=ctx.createLinearGradient(x,y,x+panelW,y+panelH);g.addColorStop(0,"rgba(20,48,39,.96)");g.addColorStop(1,"rgba(31,67,54,.94)");
+    ctx.fillStyle=g;ctx.beginPath();ctx.roundRect(x,y,panelW,panelH,20*s);ctx.fill();ctx.shadowBlur=0;
+    ctx.textAlign="center";ctx.textBaseline="middle";
+    ctx.fillStyle="#d7e8ad";ctx.font="900 "+Math.round(16*s)+"px Arial";ctx.fillText("INGREDORA ORIGINALS",w/2,y+panelH*.17);
+    ctx.fillStyle="#fffaf0";ctx.font="900 "+Math.round(54*s)+"px Arial Black,Arial";ctx.fillText("ENTRE PARTIDAS",w/2,y+panelH*.49);
+    ctx.fillStyle="#f0d18b";ctx.font="900 "+Math.round(22*s)+"px Arial";ctx.fillText("CAPÍTULO 4",w/2,y+panelH*.82);ctx.restore();
   }
   if(time>=pkg.endCardStart){
     const alpha=Math.min(1,(time-pkg.endCardStart)/.5);ctx.save();ctx.globalAlpha=alpha;
@@ -229,7 +226,7 @@ export async function renderEntrePartidasArcadeToWebM(pkg:ArcadePackage,onProgre
     for(let frame=0;frame<totalFrames;frame++){
       if(signal?.aborted)throw new Error("Render cancelado.");
       const t=frame/pkg.fps,cue=pkg.dialogue.find(c=>t>=c.start&&t<=c.end);
-      const shot:ArcadeShot=t<3.1?"exterior":cue?.shot??"master";
+      const shot:ArcadeShot=t<3.2?"exterior":cue?.shot??"master";
       world.arcade.cabinet.position.x=Math.sin(t*2.4)*.018*(t>3.1&&t<pkg.endCardStart?1:0);
       world.arcade.cabinet.rotation.y=.34+Math.sin(t*2.4)*.012*(t>3.1&&t<pkg.endCardStart?1:0);
       drawArcadeScreen(world.arcade.sctx,t);world.arcade.screenTexture.needsUpdate=true;
