@@ -222,7 +222,9 @@ function createArcade(world:THREE.Scene){
   // yet cannot pass through the 1.61 m doorway because it is too wide.
   cabinet.scale.set(1.42,1.12,1.18);world.add(cabinet);
   const black=mat("#171b1c",.38,.18),side=mat("#253c35",.42,.12),metal=mat("#9ca49b",.32,.72),red=mat("#d94b38",.34,.2);
-  // 2.02 m wide x 2.33 m high: wider than the 1.42 m door, but lower than its 2.55 m opening.\n  cabinet.scale.set(1.42,1.12,1.0);\n  box(cabinet,[1.42,2.08,.88],side,[0,1.04,0]);
+  // 2.02 m wide x 2.33 m high: wider than the 1.42 m door, but lower than its 2.55 m opening.
+  cabinet.scale.set(1.42,1.12,1.0);
+  box(cabinet,[1.42,2.08,.88],side,[0,1.04,0]);
   box(cabinet,[1.32,1.90,.08],black,[0,1.03,.47]);
   // Bright marquee: large, readable INGREDORA branding.
   const marqueeTex=texture((ctx,w,h)=>{ctx.fillStyle="#102d24";ctx.fillRect(0,0,w,h);ctx.strokeStyle="#e4c46f";ctx.lineWidth=10;ctx.strokeRect(10,10,w-20,h-20);ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillStyle="#fff6d9";ctx.font="900 78px Arial Black,Arial";ctx.fillText("INGREDORA",w/2,h/2);},768,180);
