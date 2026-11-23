@@ -12,5 +12,5 @@ try{
  if(await page.title()==="ERROR DE RENDER")throw new Error(await page.locator("#status").innerText());
  const result=await downloadPromise;if(result.error)throw new Error("No se recibió el WebM: "+result.error.message);
  const path=await result.download.path();if(!path)throw new Error("El navegador no entregó el archivo.");
- await result.download.saveAs("/tmp/ingredora-entre-partidas-la-derrota-de-bruno.webm");console.log("RENDER_FILE=/tmp/ingredora-entre-partidas-la-derrota-de-bruno.webm");
+ await result.download.saveAs("/tmp/ingredora-entre-partidas-de-ingredora-a-chef.webm");console.log("RENDER_FILE=/tmp/ingredora-entre-partidas-de-ingredora-a-chef.webm");
 }finally{if(browser.isConnected())await browser.close();}
