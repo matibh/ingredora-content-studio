@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""Genera voces rioplatenses, risas y tiempos exactos para Entre Partidas EP-S04."""
+"""Genera voces rioplatenses, risas y tiempos exactos para Entre Partidas EP-S05."""
 # FFmpeg uses the runner image package cache when the binary is absent.
 from __future__ import annotations
 import asyncio, json, math, shutil, subprocess, tempfile
 from pathlib import Path
 import edge_tts
 
-AUDIO=Path("public/studio/audio/entre-partidas/arcade-04")
+AUDIO=Path("public/studio/audio/entre-partidas/arcade-05")
 PACKAGE=Path("public/studio/packages/entre-partidas-arcade.v1.json")
 INTRO=AUDIO/"chapter-2-intro-music.wav"
 LAUGH=AUDIO/"risa.mp3"
@@ -24,20 +24,34 @@ CAST={
  "ernesto":{"voice":"es-CL-LorenzoNeural","rate":"-10%","pitch":"-5Hz","volume":"+6%"},
 }
 SEGMENTS=[
- {"id":"01-bruno-empuja","speaker":"bruno","text":"¡Dale, dale! ¡Un poquito más!","look":"martina","shot":"master","pause":.25},
- {"id":"02-martina-no-entra","speaker":"martina","text":"¡Bruno, no entra!","look":"bruno","shot":"martina","pause":.25},
- {"id":"03-bruno-si-entra","speaker":"bruno","text":"¡Sí entra! ¡Tiene que entrar!","look":"martina","shot":"bruno","pause":.35},
- {"id":"04-tomas-costado","speaker":"tomas","text":"¿Y si la ponemos de costado?","look":"ernesto","shot":"tomas","pause":.22},
- {"id":"05-ernesto-costado","speaker":"ernesto","text":"¡Está de costado!","look":"tomas","shot":"ernesto","pause":.2},
- {"id":"06-tomas-al-horno","speaker":"tomas","text":"Uh, estamos al horno.","look":"martina","shot":"tomas","laugh":True,"pause":.35},
- {"id":"07-valentina-mediste","speaker":"valentina","text":"Bruno, ¿vos mediste la puerta antes de comprarla?","look":"bruno","shot":"valentina","pause":.8},
- {"id":"08-bruno-no","speaker":"bruno","text":"Bueno... no.","look":"valentina","shot":"bruno","pause":.4},
- {"id":"09-martina-como-que-no","speaker":"martina","text":"¿Cómo que no?","look":"bruno","shot":"martina","pause":.25},
- {"id":"10-tomas-genio","speaker":"tomas","text":"¡Ja, ja, ja! ¡Un genio, Brunito!","look":"bruno","shot":"tomas","laugh":True,"pause":.55},
- {"id":"11-bruno-ayuden","speaker":"bruno","text":"¡No se rían! ¡Ayuden!","look":"tomas","shot":"bruno","pause":.35},
- {"id":"12-ernesto-ahora","speaker":"ernesto","text":"¿Y ahora qué hacemos?","look":"martina","shot":"ernesto","pause":.3},
- {"id":"13-martina-idea","speaker":"martina","text":"No sé. ¿Tenés alguna idea?","look":"bruno","shot":"martina","pause":.55},
- {"id":"14-bruno-mudarnos","speaker":"bruno","text":"Sí. Nos vamos a tener que mudar.","look":"valentina","shot":"bruno","pause":.8},
+ {"id":"01-inauguracion","speaker":"bruno","text":"¡Bienvenidos al primer torneo internacional del pasillo!","look":"martina","shot":"bruno","pause":.4},
+ {"id":"02-internacional","speaker":"martina","text":"¿Internacional? Estamos los cinco acá.","look":"bruno","shot":"martina","laugh":True,"pause":.3},
+ {"id":"03-ambientes","speaker":"bruno","text":"Hay participantes de distintos ambientes.","look":"martina","shot":"bruno","pause":.35},
+ {"id":"04-premio","speaker":"ernesto","text":"¿Y cuál es el premio?","look":"bruno","shot":"ernesto","pause":.2},
+ {"id":"05-respeto","speaker":"bruno","text":"El respeto de los demás.","look":"ernesto","shot":"bruno","pause":.2},
+ {"id":"06-sin-plata","speaker":"ernesto","text":"¿No tenés plata para comprar un premio?","look":"bruno","shot":"ernesto","pause":.3},
+ {"id":"07-no-precio","speaker":"bruno","text":"El respeto no tiene precio.","look":"ernesto","shot":"bruno","pause":.2},
+ {"id":"08-no-pagar","speaker":"ernesto","text":"Claro, porque no lo podés pagar.","look":"bruno","shot":"ernesto","laugh":True,"pause":.4},
+ {"id":"09-reglas","speaker":"tomas","text":"¿Y cuáles son las reglas?","look":"bruno","shot":"tomas","pause":.2},
+ {"id":"10-gana","speaker":"bruno","text":"Son simples: gana el que más puntos hace.","look":"tomas","shot":"bruno","pause":.25},
+ {"id":"11-perder","speaker":"valentina","text":"¿Y si alguien pierde?","look":"bruno","shot":"valentina","pause":.2},
+ {"id":"12-yo-gano","speaker":"bruno","text":"No está contemplado. Yo organicé esto para ganar.","look":"valentina","shot":"bruno","laugh":True,"pause":.35},
+ {"id":"13-boton","speaker":"bruno","text":"¡Está fallando! ¡Este botón no responde!","look":"martina","shot":"bruno","pause":.25},
+ {"id":"14-reves","speaker":"martina","text":"Lo estás apretando al revés.","look":"bruno","shot":"martina","pause":.3},
+ {"id":"15-tecnica","speaker":"bruno","text":"Es una técnica avanzada.","look":"martina","shot":"bruno","laugh":True,"pause":.35},
+ {"id":"16-arreglado","speaker":"ernesto","text":"Esto está arreglado.","look":"tomas","shot":"ernesto","pause":.2},
+ {"id":"17-recien","speaker":"valentina","text":"¡Si recién empezaste!","look":"ernesto","shot":"valentina","pause":.2},
+ {"id":"18-potencial","speaker":"ernesto","text":"No me dieron tiempo a demostrar mi potencial.","look":"valentina","shot":"ernesto","laugh":True,"pause":.35},
+ {"id":"19-ocho","speaker":"martina","text":"Voy ganando por ocho.","look":"bruno","shot":"martina","pause":.25},
+ {"id":"20-discutible","speaker":"bruno","text":"Ocho es un número bastante discutible.","look":"martina","shot":"bruno","laugh":True,"pause":.35},
+ {"id":"21-organizador","speaker":"martina","text":"¿No eras el organizador?","look":"bruno","shot":"martina","pause":.2},
+ {"id":"22-imparcial","speaker":"bruno","text":"Sí, por eso tengo que mantener la imparcialidad.","look":"martina","shot":"bruno","pause":.3},
+ {"id":"23-perdiste","speaker":"tomas","text":"¡Perdiste!","look":"bruno","shot":"tomas","pause":.2},
+ {"id":"24-evaluando","speaker":"bruno","text":"No perdí. Estoy evaluando el torneo desde adentro.","look":"tomas","shot":"bruno","laugh":True,"pause":.45},
+ {"id":"25-ahora","speaker":"ernesto","text":"¡Pero ahora me tocaba a mí!","look":"bruno","shot":"ernesto","pause":.2},
+ {"id":"26-presupuesto","speaker":"bruno","text":"Se suspendió por falta de presupuesto.","look":"ernesto","shot":"bruno","pause":.2},
+ {"id":"27-que-presupuesto","speaker":"martina","text":"¿Qué presupuesto?","look":"bruno","shot":"martina","pause":.2},
+ {"id":"28-paciencia","speaker":"bruno","text":"El de paciencia.","look":"martina","shot":"bruno","laugh":True,"pause":.4}
 ]
 def run(cmd:list[str])->str:
  p=subprocess.run(cmd,check=True,capture_output=True,text=True);return p.stdout.strip()
@@ -72,7 +86,7 @@ async def main():
   if not p.is_file() or p.stat().st_size<100:raise SystemExit("Falta el recurso de audio original: "+str(p))
  if duration(OUTRO)<INTRO_SECONDS+1.0:raise SystemExit("El archivo risa y outro.mp3 no contiene un cierre musical suficiente.")
  if duration(LAUGH)<LAUGH_SECONDS:raise SystemExit("risa.mp3 debe durar al menos 2.20 segundos.")
- with tempfile.TemporaryDirectory(prefix="arcade-04-",dir=AUDIO) as td:
+ with tempfile.TemporaryDirectory(prefix="arcade-05-",dir=AUDIO) as td:
   work=Path(td);parts=[];cues=[];words=[];cursor=INTRO_SECONDS
   intro=work/"intro.wav"
   normalize(INTRO,intro,f"atrim=start=0:end={INTRO_SECONDS:.3f},volume=0dB,afade=t=in:st=0:d=0.12,afade=t=out:st={INTRO_SECONDS-.35:.3f}:d=0.35")
