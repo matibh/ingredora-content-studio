@@ -1,5 +1,4 @@
 import * as THREE from "three";
-import { makeCharacter } from "./entrePartidas";
 
 export type DinnerSpeaker = "bruno" | "martina" | "tomas" | "valentina" | "ernesto";
 export type DinnerCue = { id?: string; speaker: DinnerSpeaker; text: string; start: number; end: number; look?: DinnerSpeaker };
@@ -25,7 +24,7 @@ const texture=(draw:(ctx:CanvasRenderingContext2D,w:number,h:number)=>void,w=512
   draw(ctx,w,h);const map=new THREE.CanvasTexture(canvas);map.colorSpace=THREE.SRGBColorSpace;map.anisotropy=8;return map;
 };
 
-export function createDiner(name:DinnerSpeaker,x:number,z:number,turn:number,includeChair=true):DinerRig{
+export function createDiner(name:DinnerSpeaker,x:number,z:number,turn:number,includeChair=true,standing=false):DinerRig{
   const root=new THREE.Group();root.position.set(x,-1.92,z);root.rotation.y=turn;
   const skinColors:Record<DinnerSpeaker,string>={bruno:"#c98e6e",martina:"#d6a080",tomas:"#e1b18e",valentina:"#dfaa8b",ernesto:"#c99a79"};
   const hairColors:Record<DinnerSpeaker,string>={bruno:"#30241f",martina:"#30201c",tomas:"#4b3328",valentina:"#211b1a",ernesto:"#8b8a82"};
@@ -44,7 +43,14 @@ export function createDiner(name:DinnerSpeaker,x:number,z:number,turn:number,inc
   else if(name==="ernesto"){box(root,[1.08,1.28,.62],shirt,[0,2.05,-.04]);box(root,[.05,.80,.035],mat("#d3c7a9"),[0,2.10,.284],false);box(root,[.10,.38,.04],mat("#d3c7a9"),[0,1.80,.29],false);}
   else{box(root,[.94,1.28,.54],shirt,[0,2.05,-.04]);if(name==="martina")box(root,[.14,.80,.035],mat("#e5c3a7"),[0,2.12,.278],false);else if(name==="valentina")box(root,[.09,.64,.035],mat("#d6d7d0"),[0,2.10,.278],false);else{box(root,[.08,.92,.035],mat("#d9d3c4"),[0,2.08,.278],false);box(root,[.44,.10,.04],mat("#d9d3c4"),[0,2.48,.30],false);}}
   box(root,[.64,.42,.54],pants,[0,1.32,.16]);
-  for(const side of [-1,1]){const thigh=box(root,[.38,.42,.88],pants,[side*.25,.93,.53]);thigh.rotation.x=-.09;box(root,[.38,.18,.75],shoes,[side*.25,.73,1.02]);}
+  if(standing){
+    for(const side of [-1,1]){
+      box(root,[.36,1.02,.38],pants,[side*.25,.48,.02]);
+      box(root,[.39,.18,.48],shoes,[side*.25,-.08,.12]);
+    }
+  }else{
+    for(const side of [-1,1]){const thigh=box(root,[.38,.42,.88],pants,[side*.25,.93,.53]);thigh.rotation.x=-.09;box(root,[.38,.18,.75],shoes,[side*.25,.73,1.02]);}
+  }
   // Individually recognizable cubic heads and hairstyles.
   const head=new THREE.Group();head.position.set(0,3.02,.02);root.add(head);box(head,[.78,.84,.70],skin,[0,0,0]);
   if(name==="bruno"){box(head,[.82,.23,.74],hair,[0,.33,-.015]);box(head,[.73,.14,.64],hair,[-.04,.47,.005]);box(head,[.19,.18,.22],hair,[-.29,.20,.25]);}
@@ -290,7 +296,7 @@ export function createEntrePartidasFeedbackSet(world:THREE.Scene){
   ];
   const diners=placements.map(([name,x,z,turn])=>createDiner(name,x,z,turn));diners.forEach(d=>world.add(d.root));
   createTableSetting(world,diners,true);
-  const bruno=makeCharacter("bruno",5.45,1.05,true);bruno.root.rotation.y=-1.15;
+  const bruno=createDiner("bruno",5.45,1.05,-1.15,false,true);bruno.root.position.y=-1.78;
   const apron=mat("#eee4d1",.94),apronEdge=mat("#b9a98f",.88);
   box(bruno.root,[.72,.86,.045],apron,[0,1.02,.247],false);
   box(bruno.root,[.72,.09,.055],apronEdge,[0,1.46,.255],false);
