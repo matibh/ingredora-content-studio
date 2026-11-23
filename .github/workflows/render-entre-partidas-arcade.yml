@@ -100,3 +100,5 @@ jobs:
           path: /tmp/ingredora-entre-partidas-la-derrota-de-bruno.mp4
           if-no-files-found: error
           retention-days: 30
+
+# Chapter 5 revised post-tournament story: La derrota de Bruno.
