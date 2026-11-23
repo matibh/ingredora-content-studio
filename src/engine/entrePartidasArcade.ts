@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import { BufferTarget, CanvasSource, Output, Quality, WebMOutputFormat, canEncodeVideo } from "mediabunny";
-import { type CharacterRig, type EntrePartidasSpeaker } from "./entrePartidas";
+import { type EntrePartidasSpeaker } from "./entrePartidas";
 import { createEntrePartidasFeedbackSet } from "./entrePartidasDinner";
 
 export type ArcadeShot = "exterior" | "master" | "bruno" | "martina" | "tomas" | "valentina" | "ernesto" | "reaction";
@@ -200,6 +200,8 @@ function drawArcadeScreen(ctx:CanvasRenderingContext2D,time:number){
 }
 
 function makeScene(){
+  // Legacy set builders remain in this module for compatibility with previous chapters.
+  void createApartment; void createArcade; void drawArcadeScreen;
   const scene=new THREE.Scene();
   createFacade(scene);
   const dinner=createEntrePartidasFeedbackSet(scene);
