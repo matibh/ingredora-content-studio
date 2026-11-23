@@ -33,7 +33,7 @@ const texture = (draw: (ctx: CanvasRenderingContext2D,w:number,h:number)=>void,w
   draw(ctx,w,h);const map=new THREE.CanvasTexture(canvas);map.colorSpace=THREE.SRGBColorSpace;map.anisotropy=8;return map;
 };
 
-export function makeCharacter(name: EntrePartidasCue["speaker"], x: number, z: number): CharacterRig {
+export function makeCharacter(name: EntrePartidasCue["speaker"], x: number, z: number, relaxedBrunoArms = false): CharacterRig {
   const root=new THREE.Group();root.position.set(x,-1.975,z);
   const isBruno=name==="bruno", isMartina=name==="martina", isTomas=name==="tomas", isErnesto=name==="ernesto";
   const skin=mat(isBruno?"#c98e6e":isMartina||name==="valentina"?"#d6a080":isTomas?"#e1b18e":"#c99a79");
@@ -112,15 +112,17 @@ export function makeCharacter(name: EntrePartidasCue["speaker"], x: number, z: n
 
   const arm=(side:number)=>{
     const pivot=new THREE.Group();
-    // Bruno holds both products forward at chest height; shoulders sit outside the torso
-    // and the forearms extend along the character's forward axis instead of hanging down.
+    const forwardBrunoPose=isBruno&&!relaxedBrunoArms;
+    // Keep Bruno's original forward-reaching pose for packages; the arcade shot uses relaxed arms.
     pivot.position.set(side*(isBruno?.43:.39),isBruno?1.08:1.56,.02);root.add(pivot);
-    if(isBruno){
-      // The sleeve angles slightly outward from the shoulder; the forearm stays straight
-      // and reaches forward along +Z into the outside edge of the package.
+    if(forwardBrunoPose){
       box(pivot,[.27,.23,.38],shirt,[side*.06,0,.18]);
       box(pivot,[.19,.19,.46],skin,[side*.13,-.025,.56]);
       box(pivot,[.20,.16,.18],skin,[side*.14,-.04,.92]);
+    }else if(isBruno){
+      box(pivot,[.25,.22,.19],shirt,[side*.015,-.08,0]);
+      box(pivot,[.16,.48,.15],skin,[side*.015,-.39,.015]);
+      box(pivot,[.18,.15,.16],skin,[side*.015,-.69,.025]);
     }else{
       box(pivot,[.17,.18,.18],skin,[0,-.06,0]);
       box(pivot,[.14,.53,.15],skin,[0,-.39,.018]);
