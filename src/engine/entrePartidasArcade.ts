@@ -48,7 +48,7 @@ function createFacade(world:THREE.Scene){
         for(let rail=0;rail<9;rail++)box(world,[.035,.66,.035],frame,[x-1.34+rail*.335,balconyY+.34,frontZ-.86],false);
         box(world,[.08,.62,.08],facadeLight,[x-1.35,balconyY+.34,frontZ-.48],false);
         box(world,[.08,.62,.08],facadeLight,[x+1.35,balconyY+.34,frontZ-.48],false);
-        if(column===0){const pot=box(world,[.34,.28,.30],mat("#9a634a",.95),[x+.72,balconyY+.18,frontZ-.58],false);sphere(world,[.46,.38,.34],mat("#5d8055",.95),[x+.72,balconyY+.50,frontZ-.58],9);}
+        if(column===0){box(world,[.34,.28,.30],mat("#9a634a",.95),[x+.72,balconyY+.18,frontZ-.58],false);sphere(world,[.46,.38,.34],mat("#5d8055",.95),[x+.72,balconyY+.50,frontZ-.58],9);}
       }
     }
     box(world,[12.8,.10,.18],facadeLight,[bx,y-1.28,frontZ+.04],false);
@@ -117,7 +117,7 @@ function createArcade(world:THREE.Scene){
   // Overlay screen stays in front of the bezel.
   screen.position.z=.531;
   box(cabinet,[1.12,.20,.12],black,[0,.72,.52]);
-  const control=box(cabinet,[1.12,.26,.48],side,[0,.55,.38]);
+  box(cabinet,[1.12,.26,.48],side,[0,.55,.38]);
   const stick=new THREE.Group();stick.position.set(-.30,.70,.48);cabinet.add(stick);
   const shaft=new THREE.Mesh(new THREE.CylinderGeometry(.035,.045,.30,12),metal);shaft.position.y=.12;stick.add(shaft);
   sphere(stick,[.17,.17,.17],red,[0,.30,0],12);
