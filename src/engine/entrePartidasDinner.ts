@@ -290,7 +290,7 @@ export function createEntrePartidasFeedbackSet(world:THREE.Scene){
   ];
   const diners=placements.map(([name,x,z,turn])=>createDiner(name,x,z,turn));diners.forEach(d=>world.add(d.root));
   createTableSetting(world,diners,true);
-  const bruno=makeCharacter("bruno",0,3.35,true);bruno.root.rotation.y=Math.PI;
+  const bruno=makeCharacter("bruno",5.45,1.05,true);bruno.root.rotation.y=-1.15;
   const apron=mat("#eee4d1",.94),apronEdge=mat("#b9a98f",.88);
   box(bruno.root,[.72,.86,.045],apron,[0,1.02,.247],false);
   box(bruno.root,[.72,.09,.055],apronEdge,[0,1.46,.255],false);
