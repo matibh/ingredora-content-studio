@@ -217,7 +217,7 @@ function createApartment(world:THREE.Scene){
 }
 
 function createArcade(world:THREE.Scene){
-  const cabinet=new THREE.Group();cabinet.position.set(0,-2.12,-2.85);cabinet.rotation.y=.34;
+  const cabinet=new THREE.Group();cabinet.position.set(0,-2.12,-3.08);cabinet.rotation.y=.34;
   // 2.02 m wide but only 2.33 m tall: it clears the 2.50 m height,
   // yet cannot pass through the 1.61 m doorway because it is too wide.
   cabinet.scale.set(1.42,1.12,1.18);world.add(cabinet);
