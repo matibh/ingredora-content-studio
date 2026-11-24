@@ -28,9 +28,9 @@ export function createDiner(name:DinnerSpeaker,x:number,z:number,turn:number,inc
   const root=new THREE.Group();root.position.set(x,groundSeated?-2.08:-1.92,z);root.rotation.y=turn;
   const skinColors:Record<DinnerSpeaker,string>={bruno:"#c98e6e",martina:"#d6a080",tomas:"#e1b18e",valentina:"#dfaa8b",ernesto:"#c99a79"};
   const hairColors:Record<DinnerSpeaker,string>={bruno:"#30241f",martina:"#30201c",tomas:"#4b3328",valentina:"#211b1a",ernesto:"#8b8a82"};
-  const shirtColors:Record<DinnerSpeaker,string>={bruno:"#c46a43",martina:"#bd7958",tomas:"#527c78",valentina:"#47788a",ernesto:"#718064"};
+  const shirtColors:Record<DinnerSpeaker,string>={bruno:"#c46a43",martina:"#f4cbd6",tomas:"#527c78",valentina:"#47788a",ernesto:"#718064"};
   const skin=mat(skinColors[name]),hair=mat(hairColors[name],.92),shirt=mat(shirtColors[name],.88);
-  const pants=mat(name==="ernesto"?"#4b5148":"#35414a"),shoes=mat("#23282a",.58),dark=mat("#25201e",.7),ivory=mat("#fff8e9",.42);
+  const pants=mat(name==="ernesto"?"#4b5148":name==="martina"?"#8eaabd":"#35414a"),shoes=mat("#23282a",.58),dark=mat("#25201e",.7),ivory=mat("#fff8e9",.42);
   // The same character rig can be reused in another seat without carrying its dining chair.
   if(includeChair){
     const chairWood=mat("#6e5038",.58),chairFabric=mat(name==="bruno"||name==="valentina"?"#526b69":"#7d6550",.95);
@@ -40,16 +40,30 @@ export function createDiner(name:DinnerSpeaker,x:number,z:number,turn:number,inc
   }
   // Bruno's standing pose is a complete body; the seated silhouettes remain unchanged for the four diners.
   if(standing){
-    box(root,[1.04,1.32,.58],shirt,[0,2.08,-.04]);
-    // One broad pelvis overlaps the shirt and both thighs: no exposed seam or floating hip blocks.
-    box(root,[.90,.62,.60],pants,[0,1.17,.015]);
-    for(const side of [-1,1]){
-      // Trouser legs begin inside the pelvis and meet the shoes cleanly at floor level.
-      box(root,[.42,1.02,.46],pants,[side*.21,.50,.045]);
-      box(root,[.44,.18,.54],shoes,[side*.21,-.09,.15]);
+    if(name==="martina"){
+      // Martina's slim canonical silhouette: a light-pink sleeveless tank top with bare shoulders.
+      box(root,[.76,1.12,.52],shirt,[0,2.05,-.04]);
+      box(root,[.105,.31,.52],shirt,[-.205,2.62,-.04]);
+      box(root,[.105,.31,.52],shirt,[.205,2.62,-.04]);
+      // Short denim shorts sit at the waist; legs remain skin-colored below the hem.
+      box(root,[.78,.38,.55],pants,[0,1.27,.02]);
+      for(const side of [-1,1]){
+        box(root,[.29,.68,.39],skin,[side*.195,.69,.045]);
+        box(root,[.26,.49,.35],skin,[side*.195,.16,.035]);
+        box(root,[.31,.18,.46],shoes,[side*.195,-.12,.14]);
+      }
+    }else{
+      box(root,[1.04,1.32,.58],shirt,[0,2.08,-.04]);
+      // One broad pelvis overlaps the shirt and both thighs: no exposed seam or floating hip blocks.
+      box(root,[.90,.62,.60],pants,[0,1.17,.015]);
+      for(const side of [-1,1]){
+        // Trouser legs begin inside the pelvis and meet the shoes cleanly at floor level.
+        box(root,[.42,1.02,.46],pants,[side*.21,.50,.045]);
+        box(root,[.44,.18,.54],shoes,[side*.21,-.09,.15]);
+      }
+      // Small central crotch bridge connects the inner thigh faces without closing the leg gap below.
+      box(root,[.22,.42,.48],pants,[0,.73,.045]);
     }
-    // Small central crotch bridge connects the inner thigh faces without closing the leg gap below.
-    box(root,[.22,.42,.48],pants,[0,.73,.045]);
   }else if(groundSeated){
     // Compact, unmistakably seated-on-the-ground silhouette for the camping circle.
     // The torso and head sit lower; the pelvis is deliberately wider and the legs rest near the floor.
@@ -101,8 +115,13 @@ export function createDiner(name:DinnerSpeaker,x:number,z:number,turn:number,inc
   const mouth=box(head,[.16,.026,.02],mat("#713b37"),[0,-.25,.36],false);
   const makeArm=(side:number)=>{
     const pivot=new THREE.Group();
-    pivot.position.set(side*(standing?.48:.52),standing?2.44:(groundSeated?1.82:2.54),.02);root.add(pivot);
-    if(standing){
+    pivot.position.set(side*(name==="martina"&&standing?.40:standing?.48:.52),standing?2.44:(groundSeated?1.82:2.54),.02);root.add(pivot);
+    if(standing&&name==="martina"){
+      // Bare, narrower arms keep the tank-top shoulders visibly uncovered.
+      box(pivot,[.23,.54,.25],skin,[side*.025,-.07,.02]);
+      box(pivot,[.19,.44,.21],skin,[side*.035,-.50,.055]);
+      box(pivot,[.18,.16,.18],skin,[side*.035,-.78,.085]);
+    }else if(standing){
       // Sleeve is embedded slightly into the shoulder; forearm and hand have deliberate overlap.
       const sleeve=box(pivot,[.34,.62,.38],shirt,[side*.025,-.06,.02]);sleeve.rotation.z=side*-.035;
       box(pivot,[.22,.44,.24],skin,[side*.025,-.50,.055]);
