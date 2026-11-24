@@ -230,7 +230,6 @@ function createApartmentBuilding(scene: THREE.Scene) {
   // misma fachada crema, seis pisos, tres ventanas por planta y placa 284.
   const facade = mat("#c9bca8", .94), facadeLight = mat("#e1d4c0", .92);
   const concrete = mat("#8d887e", .86), frame = mat("#554f49", .62);
-  const windowGlass = new THREE.MeshStandardMaterial({ color: "#263b4b", roughness: .22, metalness: .18, emissive: "#182a35", emissiveIntensity: .18 });
   box(scene, [13.2, 19, 10.3], facade, [0, 7.45, -9.45], false);
   box(scene, [13.2, 19, .95], facade, [0, 7.45, -4.72], false);
   box(scene, [13.45, .42, 1.08], concrete, [0, 17.15, -4.72], false);
