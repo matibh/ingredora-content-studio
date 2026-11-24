@@ -32,13 +32,15 @@ jobs:
         with:
           ref: main
           path: _uploaded-audio-assets
-      - name: Stage original combined laugh and outro
+      - name: Stage original party ambience, laughter and outro
         run: |
           mkdir -p public/studio/audio/entre-partidas/rooftop-08
           cp "_uploaded-audio-assets/risa y outro.mp3" "public/studio/audio/entre-partidas/rooftop-08/risa-y-outro.mp3"
           cp "_uploaded-audio-assets/risa.mp3" "public/studio/audio/entre-partidas/rooftop-08/risa.mp3"
+          cp "_uploaded-audio-assets/party.mp3" "public/studio/audio/entre-partidas/rooftop-08/party.mp3"
           test -s "public/studio/audio/entre-partidas/rooftop-08/risa-y-outro.mp3"
           test -s "public/studio/audio/entre-partidas/rooftop-08/risa.mp3"
+          test -s "public/studio/audio/entre-partidas/rooftop-08/party.mp3"
       - uses: actions/setup-node@v4
         with:
           node-version: 22
