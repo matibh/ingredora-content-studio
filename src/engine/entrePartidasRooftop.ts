@@ -97,13 +97,13 @@ function createPhone(label: string) {
 }
 
 const shirtBase: Record<DinnerSpeaker, string> = {
-  bruno: "#c46a43", martina: "#bd7958", tomas: "#527c78", valentina: "#47788a", ernesto: "#718064"
+  bruno: "#c46a43", martina: "#f4cbd6", tomas: "#527c78", valentina: "#47788a", ernesto: "#718064"
 };
 const hairBase: Record<DinnerSpeaker, string> = {
   bruno: "#30241f", martina: "#30201c", tomas: "#4b3328", valentina: "#211b1a", ernesto: "#8b8a82"
 };
 const pantsBase: Record<DinnerSpeaker, string> = {
-  bruno: "#35414a", martina: "#35414a", tomas: "#35414a", valentina: "#35414a", ernesto: "#4b5148"
+  bruno: "#35414a", martina: "#8eaabd", tomas: "#35414a", valentina: "#35414a", ernesto: "#4b5148"
 };
 
 type Outfit = { shirt: string; pants: string; hair: string; accent: string; style: "plain" | "jacket" | "vest" | "tie" | "scarf" | "stripes" | "skirt"; female?: boolean };
@@ -315,14 +315,33 @@ function createCityAndSky(scene: THREE.Scene) {
     const h = 19.5 + (i * 7 % 9) * 1.65;
     const z = -34 - (i % 3) * 3.0;
     const cityBottom = -2.20;
-    box(scene, [2.65, h, 2.5], skylineMats[i % skylineMats.length], [x, cityBottom + h / 2, z], false);
-    for (let row = 0; row < Math.floor(h / 1.3); row++) {
+
+    // Every tower owns its façade details: windows stay attached when the camera moves.
+    const building = new THREE.Group();
+    building.position.set(x, cityBottom, z);
+    scene.add(building);
+    box(building, [2.65, h, 2.5], skylineMats[i % skylineMats.length], [0, h / 2, 0], false);
+
+    const glow = new THREE.MeshBasicMaterial({ color: "#dfb97c", transparent: true, opacity: .7 });
+    const rows = Math.max(1, Math.floor((h - .9) / 1.3));
+    for (let row = 0; row < rows; row++) {
+      const windowY = .70 + row * 1.25;
+      if (windowY + .21 >= h) continue;
+
+      // Two separated front columns, built as shallow panes flush with the wall.
       for (let col = 0; col < 2; col++) {
         if ((i + row + col) % 3 === 0) continue;
-        const glow = new THREE.MeshBasicMaterial({ color: "#dfb97c", transparent: true, opacity: .7 });
-        const windowPane = new THREE.Mesh(new THREE.PlaneGeometry(.28, .36), glow);
-        windowPane.position.set(x - .48 + col * .94, ROOF_Y - 2.0 + .85 + row * 1.28, z + 1.26);
-        scene.add(windowPane);
+        const pane = new THREE.Mesh(new THREE.BoxGeometry(.34, .42, .045), glow);
+        pane.position.set(col === 0 ? -.57 : .57, windowY, 1.272);
+        building.add(pane);
+      }
+
+      // Side panes are part of the same building group for oblique camera angles.
+      for (let sideIndex = 0; sideIndex < 2; sideIndex++) {
+        if ((i + row + sideIndex + 1) % 4 === 0) continue;
+        const sidePane = new THREE.Mesh(new THREE.BoxGeometry(.045, .42, .34), glow);
+        sidePane.position.set(sideIndex === 0 ? -1.327 : 1.327, windowY, 0);
+        building.add(sidePane);
       }
     }
   }
@@ -455,7 +474,7 @@ function buildParty() {
   const bruno = makeLead(scene, "bruno", "bruno", -2.15, -7.55,
     { shirt: "#c46a43", pants: "#35414a", hair: "#30241f", accent: "#a95637", style: "plain" }, .14, "right");
   const martina = makeLead(scene, "martina", "martina", .05, -7.55,
-    { shirt: "#bd7958", pants: "#35414a", hair: "#30201c", accent: "#e5c3a7", style: "plain", female: true }, -.05, "left");
+    { shirt: "#f4cbd6", pants: "#8eaabd", hair: "#30201c", accent: "#e5c3a7", style: "plain", female: true }, -.05, "left");
   const ernesto = makeLead(scene, "ernesto", "ernesto", 2.25, -7.55,
     { shirt: "#718064", pants: "#4b5148", hair: "#8b8a82", accent: "#d3c7a9", style: "plain" }, -.18, "none");
   const crowd = createCrowd(scene);
