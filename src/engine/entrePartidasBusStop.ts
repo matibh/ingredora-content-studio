@@ -127,11 +127,11 @@ function makeWorld() {
   const asphalt = mat("#242b34", .98), pavement = mat("#777b7b", .98), curb = mat("#b7b5ac", .95);
   const soil = mat("#242b2d", 1);
   box(scene, [90, .12, 90], soil, [0, -2.17, 0], false);
-  box(scene, [50, .14, 14], asphalt, [0, -2.10, -6.7], false);
-  box(scene, [50, .22, 8.2], pavement, [0, -2.04, 3.35], false);
-  box(scene, [50, .23, .42], curb, [0, -1.97, -.86], false);
-  box(scene, [50, .035, .16], mat("#e6dfc7", .88), [0, -1.99, -13.52], false);
-  for (let x = -22; x <= 22; x += 5.5) box(scene, [2.65, .025, .14], mat("#e2d8bd", .88), [x, -2.015, -6.65], false);
+  box(scene, [50, .14, 14], asphalt, [0, -2.17, -6.7], false);
+  box(scene, [50, .18, 8.2], pavement, [0, -2.20, 3.35], false);
+  box(scene, [50, .23, .42], curb, [0, -2.145, -.86], false);
+  box(scene, [50, .035, .16], mat("#e6dfc7", .88), [0, -2.08, -13.52], false);
+  for (let x = -22; x <= 22; x += 5.5) box(scene, [2.65, .025, .14], mat("#e2d8bd", .88), [x, -2.08, -6.65], false);
   // Quiet low-rise neighborhood with warm windows behind the stop.
   const wall = mat("#323d4a", .98), wallAlt = mat("#41434a", .98), frame = mat("#1b2936", .76);
   const lit = new THREE.MeshStandardMaterial({ color: "#e7bd79", emissive: "#e5a84f", emissiveIntensity: 1.25, roughness: .45 });
@@ -150,22 +150,22 @@ function makeWorld() {
   }
   // A single tree and rubbish bin create a readable Argentine neighborhood corner.
   const trunk = mat("#4b352b", .98), leaves = mat("#263d38", .98), leavesLight = mat("#375248", .98);
-  rod(scene, [-9.2, -2.0, .9], [-9.2, 1.35, .9], .19, trunk);
+  rod(scene, [-9.2, -2.11, .9], [-9.2, 1.35, .9], .19, trunk);
   for (let i = 0; i < 4; i++) sphere(scene, [1.8, 1.55, 1.7], i % 2 ? leaves : leavesLight, [-9.2 + Math.cos(i * Math.PI / 2) * .72, 1.6 + (i % 2) * .32, .9 + Math.sin(i * Math.PI / 2) * .65], 8);
-  const bin = new THREE.Group(); bin.position.set(8.1, -2.02, .7); scene.add(bin);
+  const bin = new THREE.Group(); bin.position.set(8.1, -2.11, .7); scene.add(bin);
   const metal = mat("#4a5559", .52, .45);
   const binBody = new THREE.Mesh(new THREE.CylinderGeometry(.32, .38, .88, 9), metal); binBody.position.y = .44; bin.add(binBody);
   const binLid = new THREE.Mesh(new THREE.CylinderGeometry(.39, .39, .10, 9), mat("#29353a", .42, .42)); binLid.position.y = .92; bin.add(binLid);
   // Neighborhood streetlamp: a warm pool of light highlights the three leads.
   const poleMat = mat("#303c42", .65, .52), poleX = -5.8;
-  rod(scene, [poleX, -2.0, .2], [poleX, 5.1, .2], .095, poleMat);
+  rod(scene, [poleX, -2.11, .2], [poleX, 5.1, .2], .095, poleMat);
   rod(scene, [poleX, 5.0, .2], [poleX + 1.1, 5.0, .2], .08, poleMat);
   const shade = new THREE.Mesh(new THREE.CylinderGeometry(.34, .58, .24, 10), mat("#39464a", .6, .36)); shade.position.set(poleX + 1.1, 4.88, .2); scene.add(shade);
   sphere(scene, [.34, .18, .34], new THREE.MeshStandardMaterial({ color: "#ffe1a1", emissive: "#ffc66f", emissiveIntensity: 3.2 }), [poleX + 1.1, 4.72, .2], 10);
   const streetGlow = new THREE.PointLight(0xffc77f, 52, 18, 1.8); streetGlow.position.set(poleX + 1.0, 4.45, .2); scene.add(streetGlow);
   const fill = new THREE.PointLight(0xffddb1, 14, 15, 1.9); fill.position.set(0, 4.2, 3.4); scene.add(fill);
   // Bus shelter: four posts, roof, back panels, bench, route sign and a little advertising panel.
-  const shelter = new THREE.Group(); shelter.position.set(0, -2.0, .05); scene.add(shelter);
+  const shelter = new THREE.Group(); shelter.position.set(0, -2.11, .05); scene.add(shelter);
   const steel = mat("#343f46", .44, .62), glass = new THREE.MeshStandardMaterial({ color: "#6f8b96", roughness: .3, metalness: .12, transparent: true, opacity: .24 });
   for (const x of [-3.55, -1.2, 1.2, 3.55]) rod(shelter, [x, 0, -.38], [x, 3.1, -.38], .065, steel);
   box(shelter, [7.55, .18, 1.95], mat("#253641", .5, .38), [0, 3.13, -.35], false);
