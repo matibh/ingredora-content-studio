@@ -2,8 +2,8 @@ import * as THREE from "three";
 import { BufferTarget, CanvasSource, Output, Quality, WebMOutputFormat, canEncodeVideo } from "mediabunny";
 import { createDiner, type DinnerSpeaker, type DinerRig } from "./entrePartidasDinner";
 
-type LeadId = "bruno" | "nutritionist" | "ernesto";
-export type RooftopShot = "exterior" | "wide" | "bruno" | "nutritionist" | "ernesto" | "group" | "phone" | "ranking";
+type LeadId = "bruno" | "martina" | "ernesto";
+export type RooftopShot = "exterior" | "wide" | "pair" | "bruno" | "martina" | "ernesto" | "group" | "phone" | "ranking";
 export type RooftopCue = {
   id: string;
   speaker: LeadId;
@@ -145,21 +145,6 @@ function dressRig(rig: DinerRig, archetype: DinnerSpeaker, outfit: Outfit) {
   }
 }
 
-function addNutritionistDetails(rig: DinerRig) {
-  // Nuevo personaje invitado construido sobre el mismo rig blocky de la serie,
-  // con peinado recogido, anteojos discretos y vestuario casual propio.
-  box(rig.head, [.27, .24, .25], mat("#59362a", .94), [0, .43, -.30], false);
-  const glasses = mat("#4f4a43", .36, .35);
-  for (const side of [-1, 1]) {
-    box(rig.head, [.19, .025, .025], glasses, [side * .18, .055, .382], false);
-    box(rig.head, [.025, .13, .025], glasses, [side * .27, -.005, .382], false);
-    box(rig.head, [.025, .13, .025], glasses, [side * .09, -.005, .382], false);
-  }
-  box(rig.head, [.12, .025, .025], glasses, [0, .045, .384], false);
-  sphere(rig.head, [.055, .055, .045], mat("#d8b56d", .32, .55), [-.40, -.13, .34], 8);
-  sphere(rig.head, [.055, .055, .045], mat("#d8b56d", .32, .55), [.40, -.13, .34], 8);
-}
-
 function addCrowdAccessory(rig: DinerRig, index: number, accent: string) {
   if (index % 7 === 0) {
     const cap = mat(accent, .9);
@@ -174,15 +159,19 @@ function addCrowdAccessory(rig: DinerRig, index: number, accent: string) {
 }
 
 function createCrowd(scene: THREE.Scene) {
-  const specs: Array<[number, number, DinnerSpeaker, number, number]> = [
-    [-5.40, -5.65, "tomas", 0, .70], [-3.95, -5.25, "martina", 1, .72], [3.95, -5.30, "bruno", 2, .72], [5.35, -5.90, "valentina", 3, .70],
-    [-5.50, -7.75, "valentina", 4, .71], [5.45, -7.85, "ernesto", 5, .70],
-    [-5.25, -9.75, "bruno", 6, .72], [5.28, -9.85, "martina", 7, .72],
-    [-4.85, -12.60, "martina", 8, .70], [-3.35, -13.15, "tomas", 9, .73], [-1.80, -13.25, "valentina", 10, .70],
-    [-.15, -13.30, "bruno", 11, .72], [1.55, -13.20, "martina", 12, .70], [3.25, -13.05, "ernesto", 13, .73], [4.85, -12.45, "valentina", 14, .70],
-    [-4.55, -10.95, "ernesto", 15, .72], [-3.05, -11.65, "bruno", 16, .71], [-1.42, -11.70, "tomas", 17, .73],
-    [.32, -11.75, "martina", 18, .70], [2.02, -11.70, "valentina", 19, .72], [3.70, -11.10, "bruno", 20, .70],
-    [4.95, -10.80, "tomas", 21, .73], [-5.55, -8.85, "martina", 22, .70], [5.55, -8.95, "valentina", 23, .70]
+  const specs: Array<[number, number, DinnerSpeaker, number, number, number]> = [
+    [-5.25, -5.75, "tomas", 0, .70, 0], [-4.10, -6.15, "martina", 1, .72, 0], [-4.80, -6.90, "bruno", 2, .72, 0],
+    [4.05, -5.80, "valentina", 3, .70, 1], [5.20, -6.25, "ernesto", 5, .70, 1], [4.70, -7.00, "tomas", 9, .73, 1],
+    [-5.30, -8.75, "valentina", 4, .71, 2], [-4.15, -9.35, "bruno", 6, .72, 2], [-4.90, -10.10, "martina", 7, .70, 2],
+    [4.10, -8.85, "ernesto", 13, .73, 3], [5.20, -9.40, "martina", 8, .70, 3], [4.80, -10.15, "valentina", 14, .70, 3],
+    [-4.70, -11.60, "martina", 12, .70, 4], [-3.50, -12.40, "tomas", 17, .73, 4], [-4.60, -13.20, "valentina", 19, .72, 4],
+    [-1.90, -11.60, "bruno", 11, .72, 5], [-.80, -12.50, "tomas", 15, .72, 5], [-1.60, -13.20, "martina", 18, .70, 5],
+    [1.00, -11.60, "valentina", 20, .70, 6], [2.00, -12.50, "ernesto", 21, .73, 6], [1.20, -13.20, "bruno", 16, .71, 6],
+    [3.60, -11.60, "bruno", 23, .72, 7], [4.60, -12.40, "tomas", 22, .70, 7], [3.80, -13.20, "martina", 10, .70, 7]
+  ];
+  const clusterCenters: Array<[number, number]> = [
+    [-4.72, -6.25], [4.65, -6.35], [-4.78, -9.40], [4.70, -9.45],
+    [-4.25, -12.40], [-1.42, -12.42], [1.42, -12.42], [4.00, -12.40]
   ];
   const outfits: Outfit[] = [
     { shirt: "#557e87", pants: "#303b48", hair: "#4b3328", accent: "#d5c6a6", style: "jacket" },
@@ -211,9 +200,11 @@ function createCrowd(scene: THREE.Scene) {
     { shirt: "#8a6a52", pants: "#343f49", hair: "#5a3329", accent: "#e4d9c5", style: "vest" }
   ];
   const crowd: DinerRig[] = [];
-  specs.forEach(([x, z, archetype, outfitIndex, scale], index) => {
+  specs.forEach(([x, z, archetype, outfitIndex, scale, cluster], index) => {
     const outfit = outfits[outfitIndex];
-    const rig = createDiner(archetype, x, z, ((index % 4) - 1.5) * .30, false, true);
+    const [centerX, centerZ] = clusterCenters[cluster];
+    const turn = Math.atan2(centerX - x, centerZ - z) + ((index % 3) - 1) * .10;
+    const rig = createDiner(archetype, x, z, turn, false, true);
     dressRig(rig, archetype, outfit);
     addCrowdAccessory(rig, index, outfit.accent);
     rig.root.scale.setScalar(scale);
@@ -321,9 +312,10 @@ function createCityAndSky(scene: THREE.Scene) {
   const skylineMats = ["#18283a", "#202d3d", "#263344", "#172638"].map(c => mat(c, .98));
   for (let i = 0; i < 13; i++) {
     const x = -22 + i * 3.65;
-    const h = 5.0 + (i * 7 % 9) * 1.35;
-    const z = -30 - (i % 3) * 2.5;
-    box(scene, [2.65, h, 2.5], skylineMats[i % skylineMats.length], [x, ROOF_Y - 2.0 + h / 2, z], false);
+    const h = 19.5 + (i * 7 % 9) * 1.65;
+    const z = -34 - (i % 3) * 3.0;
+    const cityBottom = -2.20;
+    box(scene, [2.65, h, 2.5], skylineMats[i % skylineMats.length], [x, cityBottom + h / 2, z], false);
     for (let row = 0; row < Math.floor(h / 1.3); row++) {
       for (let col = 0; col < 2; col++) {
         if ((i + row + col) % 3 === 0) continue;
@@ -428,10 +420,10 @@ function makeLead(scene: THREE.Scene, id: LeadId, archetype: DinnerSpeaker, x: n
   const rig = createDiner(archetype, x, z, turn, false, true);
   rig.root.position.y = ROOF_Y + .08;
   dressRig(rig, archetype, outfit);
-  if (id === "nutritionist") addNutritionistDetails(rig);
+  if (id === "martina") addNutritionistDetails(rig);
   let phone: THREE.Group | undefined;
   if (phoneHand !== "none") {
-    phone = createPhone(id === "bruno" ? "BRUNO" : "INVITADA");
+    phone = createPhone(id.toUpperCase());
     if (phoneHand === "right") {
       phone.position.set(.10, -.68, .40);
       phone.rotation.set(-.16, 0, .03);
@@ -463,14 +455,13 @@ function buildParty() {
   createPartyProps(scene);
   const bruno = makeLead(scene, "bruno", "bruno", -2.15, -7.55,
     { shirt: "#c46a43", pants: "#35414a", hair: "#30241f", accent: "#a95637", style: "plain" }, .14, "right");
-  const nutritionist = makeLead(scene, "nutritionist", "valentina", .05, -7.55,
-    { shirt: "#647c86", pants: "#c5b69e", hair: "#59362a", accent: "#f1e8d7", style: "jacket", female: true }, -.05, "left");
+  const martina = makeLead(scene, "martina", "martina", .05, -7.55,
+    { shirt: "#bd7958", pants: "#35414a", hair: "#30201c", accent: "#e5c3a7", style: "plain", female: true }, -.05, "left");
   const ernesto = makeLead(scene, "ernesto", "ernesto", 2.25, -7.55,
     { shirt: "#718064", pants: "#4b5148", hair: "#8b8a82", accent: "#d3c7a9", style: "plain" }, -.18, "none");
-  // Small accessory details distinguish the guest while preserving the family rig used by the show.
   const crowd = createCrowd(scene);
   void lights;
-  return { scene, leads: [bruno, nutritionist, ernesto], crowd };
+  return { scene, leads: [bruno, martina, ernesto], crowd };
 }
 
 function cameraFor(shot: RooftopShot, camera: THREE.PerspectiveCamera, t: number, party: ReturnType<typeof buildParty>) {
@@ -479,8 +470,9 @@ function cameraFor(shot: RooftopShot, camera: THREE.PerspectiveCamera, t: number
   const views: Record<RooftopShot, { p: [number, number, number]; target: [number, number, number]; fov: number }> = {
     exterior: { p: [0, 10.3, 38.0], target: [0, 7.7, -8.6], fov: 35 },
     wide: { p: [0, floor + 7.0, -.05], target: [0, floor + 2.55, -8.0], fov: 52 },
+    pair: { p: [-.85, floor + 5.15, -1.55], target: [-.95, floor + 3.72, -7.55], fov: 47 },
     bruno: { p: [-4.15, floor + 4.2, -1.70], target: [-2.15, floor + 2.75, -7.52], fov: 43 },
-    nutritionist: { p: [3.35, floor + 4.25, -1.85], target: [.05, floor + 2.72, -7.52], fov: 44 },
+    martina: { p: [3.35, floor + 4.25, -1.85], target: [.05, floor + 2.72, -7.52], fov: 44 },
     ernesto: { p: [5.15, floor + 4.25, -1.90], target: [2.25, floor + 2.72, -7.52], fov: 44 },
     group: { p: [0, floor + 6.2, -1.05], target: [0, floor + 2.52, -7.60], fov: 49 },
     phone: { p: [-1.2, floor + 3.0, -2.55], target: [-1.1, floor + 2.02, -6.90], fov: 38 },
@@ -504,13 +496,13 @@ function cameraFor(shot: RooftopShot, camera: THREE.PerspectiveCamera, t: number
 
 type PartyWorld = ReturnType<typeof buildParty>;
 function updateParty(t: number, cue: RooftopCue | undefined, party: PartyWorld) {
-  const phaseFor = (id: LeadId) => id === "bruno" ? 0 : id === "nutritionist" ? 1.4 : 2.7;
+  const phaseFor = (id: LeadId) => id === "bruno" ? 0 : id === "martina" ? 1.4 : 2.7;
   const speaker = cue?.speaker;
   for (const lead of party.leads) {
     const { rig, id } = lead;
     const active = speaker === id;
     const phase = phaseFor(id);
-    const targetAngle = cue?.look === id ? 0 : id === "bruno" ? .10 : id === "nutritionist" ? -.07 : -.12;
+    const targetAngle = cue?.look === id ? 0 : id === "bruno" ? .10 : id === "martina" ? -.07 : -.12;
     rig.head.rotation.y = targetAngle + Math.sin(t * .31 + phase) * .012;
     rig.head.rotation.x = active ? Math.sin(t * 3.4 + phase) * .018 : Math.sin(t * .46 + phase) * .006;
     const syllables = cue?.text.match(/[aeiouáéíóúü]/gi)?.length ?? 2;
@@ -523,7 +515,7 @@ function updateParty(t: number, cue: RooftopCue | undefined, party: PartyWorld) 
       rig.rightArm.rotation.z = .10;
       rig.leftArm.rotation.x = active ? -.035 : .008;
       rig.leftArm.rotation.z = active ? -.075 - Math.sin(t * 1.6) * .015 : -.01;
-    } else if (id === "nutritionist") {
+    } else if (id === "martina") {
       rig.leftArm.rotation.x = .18 + Math.sin(t * .68 + .3) * .008;
       rig.leftArm.rotation.z = -.08;
       rig.rightArm.rotation.x = active ? -.035 : 0;
@@ -538,17 +530,26 @@ function updateParty(t: number, cue: RooftopCue | undefined, party: PartyWorld) 
   }
   party.crowd.forEach((rig, index) => {
     const phase = index * .73;
-    rig.head.rotation.y = Math.sin(t * .27 + phase) * .075;
-    rig.head.rotation.x = Math.sin(t * .36 + phase * .5) * .012;
-    rig.leftArm.rotation.z = -.008 - (index % 4 === 0 ? Math.sin(t * .9 + phase) * .028 : 0);
-    rig.rightArm.rotation.z = .008 + (index % 5 === 0 ? Math.sin(t * .8 + phase) * .026 : 0);
+    const blinkCycle = (t + index * .83) % (4.0 + (index % 5) * .39);
+    const blink = blinkCycle < .13 || (index % 7 === 2 && blinkCycle > .30 && blinkCycle < .42);
+    rig.eyes.forEach(eye => { eye.scale.y = blink ? .10 : 1; });
+    rig.head.rotation.y = Math.sin(t * (.52 + (index % 3) * .09) + phase) * .12
+      + Math.sin(t * .20 + phase * .7) * .035;
+    rig.head.rotation.x = Math.sin(t * (.72 + (index % 4) * .08) + phase * .5) * .030;
+    rig.head.rotation.z = Math.sin(t * .58 + phase * .8) * .014;
+    const talking = Math.max(0, Math.sin(t * (1.55 + (index % 4) * .11) + phase));
+    rig.mouth.scale.y = .20 + talking * .75;
+    rig.leftArm.rotation.z = -.018 + Math.sin(t * 1.08 + phase) * .060;
+    rig.rightArm.rotation.z = .018 + Math.sin(t * 1.19 + phase + 1.25) * .060;
+    rig.leftArm.rotation.x = Math.sin(t * .82 + phase) * .025;
+    rig.rightArm.rotation.x = Math.sin(t * .88 + phase + .9) * .025;
   });
 }
 
 function drawCaptions(ctx: CanvasRenderingContext2D, pkg: RooftopPackage, time: number) {
   const cue = pkg.dialogue.find(item => time >= item.start && time <= item.end);
   if (!cue) return;
-  const names: Record<LeadId, string> = { bruno: "BRUNO", nutritionist: "NUTRICIONISTA", ernesto: "ERNESTO" };
+  const names: Record<LeadId, string> = { bruno: "BRUNO", martina: "MARTINA", ernesto: "ERNESTO" };
   const scale = pkg.width / 720, maxWidth = pkg.width * .88;
   ctx.save(); ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.lineJoin = "round";
   const font = 26 * scale;
