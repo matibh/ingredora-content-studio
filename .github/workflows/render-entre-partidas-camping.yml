@@ -4,6 +4,7 @@ on:
     branches: ["feature/entre-partidas-ad-engine"]
     paths:
       - "src/engine/entrePartidasCamping.ts"
+      - "src/engine/entrePartidasDinner.ts"
       - "src/render-camping.ts"
       - "public/studio/packages/entre-partidas-camping.v1.json"
       - "scripts/generate-entre-partidas-camping-audio.py"
