@@ -5,7 +5,7 @@ import { createDiner } from "./entrePartidasDinner";
 
 export type CampingShot = "exterior" | "master" | "bruno" | "martina" | "tomas" | "valentina" | "ernesto" | "reaction";
 export type CampingCue = { id:string; speaker:EntrePartidasSpeaker; text:string; start:number; end:number; look?:EntrePartidasSpeaker; shot:CampingShot; laugh?:boolean };
-export type CampingPackage = { schemaVersion:1; engineVersion:"entre-partidas-arcade-1.0.0"; id:string; title:string; createdAt:string; fps:number; width:number; height:number; durationSeconds:number; endCardStart:number; chapterNumber?:number; dialogue:CampingCue[] };
+export type CampingPackage = { schemaVersion:1; engineVersion:"entre-partidas-camping-1.0.0"; id:string; title:string; createdAt:string; fps:number; width:number; height:number; durationSeconds:number; endCardStart:number; chapterNumber?:number; dialogue:CampingCue[] };
 export type CampingProgress = { frame:number; totalFrames:number; percent:number };
 
 const mat=(color:string,roughness=.78,metalness=0)=>new THREE.MeshStandardMaterial({color,roughness,metalness});
