@@ -52,7 +52,7 @@ SEGMENTS=[
  {"id":"28-bruno-perdi","speaker":"bruno","text":"Perdí el reto diario...","look":"valentina","shot":"bruno","pause":.26},
  {"id":"29-ernesto-senal-humo","speaker":"ernesto","text":"No te preocupes. El camping tiene señal.","look":"bruno","shot":"ernesto","pause":.22},
  {"id":"30-bruno-en-serio","speaker":"bruno","text":"¿En serio?","look":"ernesto","shot":"bruno","pause":.18},
- {"id":"31-ernesto-humo","speaker":"ernesto","text":"Sí. La de humo.","look":"bruno","shot":"ernesto","laugh":True,"pause":.38},
+ {"id":"31-ernesto-humo","speaker":"ernesto","text":"Sí. La de humo.","look":"bruno","shot":"ernesto","pause":.38},
 ]
 def run(cmd:list[str])->str:
  p=subprocess.run(cmd,check=True,capture_output=True,text=True);return p.stdout.strip()
