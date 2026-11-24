@@ -38,17 +38,24 @@ export function createDiner(name:DinnerSpeaker,x:number,z:number,turn:number,inc
     box(root,[1.02,.16,.96],chairWood,[0,.78,-.12]);
     for(const side of [-1,1]){box(root,[.10,.90,.10],chairWood,[side*.41,.32,-.43]);box(root,[.10,.90,.10],chairWood,[side*.41,.32,.25]);}
   }
-  // Seated chest, waist and thighs.
-  if(name==="bruno"){box(root,[1.04,1.34,.58],shirt,[0,2.08,-.04]);box(root,[.22,.16,.035],mat("#a95637"),[0,1.42,.262],false);}
-  else if(name==="ernesto"){box(root,[1.08,1.28,.62],shirt,[0,2.05,-.04]);box(root,[.05,.80,.035],mat("#d3c7a9"),[0,2.10,.284],false);box(root,[.10,.38,.04],mat("#d3c7a9"),[0,1.80,.29],false);}
-  else{box(root,[.94,1.28,.54],shirt,[0,2.05,-.04]);if(name==="martina")box(root,[.14,.80,.035],mat("#e5c3a7"),[0,2.12,.278],false);else if(name==="valentina")box(root,[.09,.64,.035],mat("#d6d7d0"),[0,2.10,.278],false);else{box(root,[.08,.92,.035],mat("#d9d3c4"),[0,2.08,.278],false);box(root,[.44,.10,.04],mat("#d9d3c4"),[0,2.48,.30],false);}}
-  box(root,[.64,.42,.54],pants,[0,1.32,.16]);
+  // Bruno's standing pose is a complete body; the seated silhouettes remain unchanged for the four diners.
   if(standing){
+    box(root,[1.04,1.32,.58],shirt,[0,2.08,-.04]);
+    // One broad pelvis overlaps the shirt and both thighs: no exposed seam or floating hip blocks.
+    box(root,[.90,.62,.60],pants,[0,1.17,.015]);
     for(const side of [-1,1]){
-      box(root,[.36,1.02,.38],pants,[side*.25,.48,.02]);
-      box(root,[.39,.18,.48],shoes,[side*.25,-.08,.12]);
+      // Trouser legs begin inside the pelvis and meet the shoes cleanly at floor level.
+      box(root,[.42,1.02,.46],pants,[side*.21,.50,.045]);
+      box(root,[.44,.18,.54],shoes,[side*.21,-.09,.15]);
     }
+    // Small central crotch bridge connects the inner thigh faces without closing the leg gap below.
+    box(root,[.22,.42,.48],pants,[0,.73,.045]);
   }else{
+    // Original seated silhouettes from Chapter 2.
+    if(name==="bruno"){box(root,[1.04,1.34,.58],shirt,[0,2.08,-.04]);box(root,[.22,.16,.035],mat("#a95637"),[0,1.42,.262],false);}
+    else if(name==="ernesto"){box(root,[1.08,1.28,.62],shirt,[0,2.05,-.04]);box(root,[.05,.80,.035],mat("#d3c7a9"),[0,2.10,.284],false);box(root,[.10,.38,.04],mat("#d3c7a9"),[0,1.80,.29],false);}
+    else{box(root,[.94,1.28,.54],shirt,[0,2.05,-.04]);if(name==="martina")box(root,[.14,.80,.035],mat("#e5c3a7"),[0,2.12,.278],false);else if(name==="valentina")box(root,[.09,.64,.035],mat("#d6d7d0"),[0,2.10,.278],false);else{box(root,[.08,.92,.035],mat("#d9d3c4"),[0,2.08,.278],false);box(root,[.44,.10,.04],mat("#d9d3c4"),[0,2.48,.30],false);}}
+    box(root,[.64,.42,.54],pants,[0,1.32,.16]);
     for(const side of [-1,1]){const thigh=box(root,[.38,.42,.88],pants,[side*.25,.93,.53]);thigh.rotation.x=-.09;box(root,[.38,.18,.75],shoes,[side*.25,.73,1.02]);}
   }
   // Individually recognizable cubic heads and hairstyles.
@@ -66,9 +73,17 @@ export function createDiner(name:DinnerSpeaker,x:number,z:number,turn:number,inc
   }
   const mouth=box(head,[.16,.026,.02],mat("#713b37"),[0,-.25,.36],false);
   const makeArm=(side:number)=>{
-    const pivot=new THREE.Group();pivot.position.set(side*.52,2.54,.02);root.add(pivot);
-    const sleeve=box(pivot,[.31,.60,.35],shirt,[side*.04,-.05,.12]);sleeve.rotation.z=side*-.10;
-    box(pivot,[.21,.42,.22],skin,[side*.08,-.43,.32]);box(pivot,[.20,.15,.20],skin,[side*.08,-.66,.42]);
+    const pivot=new THREE.Group();
+    pivot.position.set(side*(standing?.48:.52),standing?2.44:2.54,.02);root.add(pivot);
+    if(standing){
+      // Sleeve is embedded slightly into the shoulder; forearm and hand have deliberate overlap.
+      const sleeve=box(pivot,[.34,.62,.38],shirt,[side*.025,-.06,.02]);sleeve.rotation.z=side*-.035;
+      box(pivot,[.22,.44,.24],skin,[side*.025,-.50,.055]);
+      box(pivot,[.20,.16,.20],skin,[side*.025,-.78,.085]);
+    }else{
+      const sleeve=box(pivot,[.31,.60,.35],shirt,[side*.04,-.05,.12]);sleeve.rotation.z=side*-.10;
+      box(pivot,[.21,.42,.22],skin,[side*.08,-.43,.32]);box(pivot,[.20,.15,.20],skin,[side*.08,-.66,.42]);
+    }
     return pivot;
   };
   const leftArm=makeArm(-1),rightArm=makeArm(1);
@@ -296,19 +311,17 @@ export function createEntrePartidasFeedbackSet(world:THREE.Scene){
   ];
   const diners=placements.map(([name,x,z,turn])=>createDiner(name,x,z,turn));diners.forEach(d=>world.add(d.root));
   createTableSetting(world,diners,true);
-  const bruno=createDiner("bruno",5.45,1.05,-1.15,false,true);
+  const bruno=createDiner("bruno",5.45,1.05,-.65,false,true);
   const brunoGroundY=-1.78;
   bruno.root.position.y=brunoGroundY;
   const apron=mat("#eee9dc",.96),apronEdge=mat("#b9a98f",.88),apronPocket=mat("#e0d7c6",.96);
-  // Bib sits fully on the torso, ending above the trouser line so it cannot look like split legs.
-  box(bruno.root,[.74,1.08,.05],apron,[0,2.09,.315],false);
-  box(bruno.root,[.74,.075,.06],apronEdge,[0,2.60,.325],false);
-  // Two shoulder straps connect the bib to the neckline.
-  box(bruno.root,[.105,.34,.045],apronEdge,[-.235,2.72,.295],false);
-  box(bruno.root,[.105,.34,.045],apronEdge,[.235,2.72,.295],false);
-  // A small front pocket and a neat waist seam make the apron read clearly at medium shot distance.
-  box(bruno.root,[.30,.23,.035],apronPocket,[0,1.91,.351],false);
-  box(bruno.root,[.78,.075,.045],apronEdge,[0,1.60,.33],false);
+  // A single continuous apron bib covers Bruno's shirt down to the top of the trouser pelvis.
+  box(bruno.root,[.80,1.34,.055],apron,[0,1.92,.34],false);
+  // Shoulder straps visibly join the bib at the neckline; the waist tie sits on the hip seam.
+  box(bruno.root,[.105,.34,.05],apronEdge,[-.235,2.72,.315],false);
+  box(bruno.root,[.105,.34,.05],apronEdge,[.235,2.72,.315],false);
+  box(bruno.root,[.84,.075,.06],apronEdge,[0,1.43,.375],false);
+  box(bruno.root,[.32,.23,.035],apronPocket,[0,1.88,.376],false);
   world.add(bruno.root);
   const all=[...diners,bruno];
   const update=(time:number,dialogue:DinnerCue[])=>{

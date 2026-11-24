@@ -213,7 +213,7 @@ function cameraFor(shot:ArcadeShot,camera:THREE.PerspectiveCamera){
   switch(shot){
     case "exterior":p=[35,7.5,23.6];target=[35,7.5,-4.4];fov=50;break;
     case "master":p=[0,7.2,25];target=[0,1.35,.35];fov=46;break;
-    case "bruno":p=[7.5,3.2,8.8];target=[5.45,1.35,1.05];fov=43;break;
+    case "bruno":p=[2.25,3.45,6.90];target=[5.45,1.45,1.05];fov=43;break;
     case "martina":p=[-4.45,3.35,6.9];target=[-3.82,2.35,-1.45];fov=43;break;
     case "tomas":p=[-1.85,3.35,6.9];target=[-1.28,2.35,-1.55];fov=43;break;
     case "valentina":p=[1.85,3.35,6.9];target=[1.28,2.35,-1.55];fov=43;break;
