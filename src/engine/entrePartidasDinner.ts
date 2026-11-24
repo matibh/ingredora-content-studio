@@ -24,8 +24,8 @@ const texture=(draw:(ctx:CanvasRenderingContext2D,w:number,h:number)=>void,w=512
   draw(ctx,w,h);const map=new THREE.CanvasTexture(canvas);map.colorSpace=THREE.SRGBColorSpace;map.anisotropy=8;return map;
 };
 
-export function createDiner(name:DinnerSpeaker,x:number,z:number,turn:number,includeChair=true,standing=false):DinerRig{
-  const root=new THREE.Group();root.position.set(x,-1.92,z);root.rotation.y=turn;
+export function createDiner(name:DinnerSpeaker,x:number,z:number,turn:number,includeChair=true,standing=false,groundSeated=false):DinerRig{
+  const root=new THREE.Group();root.position.set(x,groundSeated?-2.08:-1.92,z);root.rotation.y=turn;
   const skinColors:Record<DinnerSpeaker,string>={bruno:"#c98e6e",martina:"#d6a080",tomas:"#e1b18e",valentina:"#dfaa8b",ernesto:"#c99a79"};
   const hairColors:Record<DinnerSpeaker,string>={bruno:"#30241f",martina:"#30201c",tomas:"#4b3328",valentina:"#211b1a",ernesto:"#8b8a82"};
   const shirtColors:Record<DinnerSpeaker,string>={bruno:"#c46a43",martina:"#bd7958",tomas:"#527c78",valentina:"#47788a",ernesto:"#718064"};
@@ -50,6 +50,23 @@ export function createDiner(name:DinnerSpeaker,x:number,z:number,turn:number,inc
     }
     // Small central crotch bridge connects the inner thigh faces without closing the leg gap below.
     box(root,[.22,.42,.48],pants,[0,.73,.045]);
+  }else if(groundSeated){
+    // Compact, unmistakably seated-on-the-ground silhouette for the camping circle.
+    // The torso and head sit lower; the pelvis is deliberately wider and the legs rest near the floor.
+    const torsoWidth=name==="bruno"?1.04:1.00;
+    box(root,[torsoWidth,1.22,.60],shirt,[0,1.42,-.04]);
+    if(name==="bruno")box(root,[.22,.14,.035],mat("#a95637"),[0,.98,.268],false);
+    else if(name==="ernesto")box(root,[.05,.76,.035],mat("#d3c7a9"),[0,1.43,.285],false);
+    else if(name==="martina")box(root,[.14,.68,.035],mat("#e5c3a7"),[0,1.46,.278],false);
+    else if(name==="valentina")box(root,[.09,.60,.035],mat("#d6d7d0"),[0,1.45,.278],false);
+    else {box(root,[.08,.72,.035],mat("#d9d3c4"),[0,1.40,.278],false);box(root,[.42,.10,.04],mat("#d9d3c4"),[0,1.75,.30],false);}
+    // Broad hip block closes the waist-to-thigh junction; generous overlap avoids a pinched crotch.
+    box(root,[.94,.66,.68],pants,[0,.88,.10]);
+    box(root,[.32,.42,.58],pants,[0,.57,.50]);
+    for(const side of [-1,1]){
+      const thigh=box(root,[.47,.38,.94],pants,[side*.28,.43,.58]);thigh.rotation.x=-.035;
+      box(root,[.43,.17,.52],shoes,[side*.28,.12,1.05]);
+    }
   }else{
     // Original seated silhouettes from Chapter 2.
     if(name==="bruno"){box(root,[1.04,1.34,.58],shirt,[0,2.08,-.04]);box(root,[.22,.16,.035],mat("#a95637"),[0,1.42,.262],false);}
@@ -59,7 +76,7 @@ export function createDiner(name:DinnerSpeaker,x:number,z:number,turn:number,inc
     for(const side of [-1,1]){const thigh=box(root,[.38,.42,.88],pants,[side*.25,.93,.53]);thigh.rotation.x=-.09;box(root,[.38,.18,.75],shoes,[side*.25,.73,1.02]);}
   }
   // Individually recognizable cubic heads and hairstyles.
-  const head=new THREE.Group();head.position.set(0,3.02,.02);root.add(head);box(head,[.78,.84,.70],skin,[0,0,0]);
+  const head=new THREE.Group();head.position.set(0,groundSeated?2.35:3.02,.02);root.add(head);box(head,[.78,.84,.70],skin,[0,0,0]);
   if(name==="bruno"){box(head,[.82,.23,.74],hair,[0,.33,-.015]);box(head,[.73,.14,.64],hair,[-.04,.47,.005]);box(head,[.19,.18,.22],hair,[-.29,.20,.25]);}
   else if(name==="martina"){box(head,[.84,.24,.72],hair,[0,.34,-.03]);box(head,[.75,.58,.18],hair,[0,-.04,-.34]);box(head,[.15,.56,.43],hair,[-.34,-.04,-.02]);box(head,[.15,.56,.43],hair,[.34,-.04,-.02]);box(head,[.23,.16,.20],hair,[.15,.52,-.34]);box(head,[.10,.11,.12],mat("#d8a64c"),[.15,.51,-.45]);box(head,[.22,.38,.20],hair,[.19,.29,-.55]);}
   else if(name==="tomas"){box(head,[.85,.24,.70],hair,[0,.35,-.02]);box(head,[.69,.20,.36],hair,[-.10,.49,.10]);box(head,[.24,.18,.30],hair,[.22,.40,.18]);box(head,[.15,.25,.18],hair,[-.27,.30,.20]);box(head,[.12,.43,.18],hair,[-.34,-.08,-.28]);box(head,[.12,.43,.18],hair,[.34,-.08,-.28]);}
@@ -74,7 +91,7 @@ export function createDiner(name:DinnerSpeaker,x:number,z:number,turn:number,inc
   const mouth=box(head,[.16,.026,.02],mat("#713b37"),[0,-.25,.36],false);
   const makeArm=(side:number)=>{
     const pivot=new THREE.Group();
-    pivot.position.set(side*(standing?.48:.52),standing?2.44:2.54,.02);root.add(pivot);
+    pivot.position.set(side*(standing?.48:.52),standing?2.44:(groundSeated?1.82:2.54),.02);root.add(pivot);
     if(standing){
       // Sleeve is embedded slightly into the shoulder; forearm and hand have deliberate overlap.
       const sleeve=box(pivot,[.34,.62,.38],shirt,[side*.025,-.06,.02]);sleeve.rotation.z=side*-.035;

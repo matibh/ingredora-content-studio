@@ -61,7 +61,7 @@ function makeScene(){
   ];
   const diners=placements.map(([name,x,z])=>{
     const turn=Math.atan2(-x,-z);
-    return createDiner(name,x,z,turn,false);
+    return createDiner(name,x,z,turn,false,false,true);
   });
   diners.forEach(d=>scene.add(d.root));
 
@@ -116,7 +116,7 @@ function makeScene(){
       rig.leftArm.rotation.z=gesture?-arm-Math.sin(time*1.25+phase)*.008:-.008;
       rig.rightArm.rotation.z=gesture?arm+Math.sin(time*1.2+phase)*.008:.008;
       rig.leftArm.rotation.x=gesture?.012:0;rig.rightArm.rotation.x=gesture?-.012:0;
-      rig.root.position.y=-1.92+Math.sin(time*.55+phase)*.0012;
+      rig.root.position.y=-2.08+Math.sin(time*.55+phase)*.0012;
     });
     const flicker=1+Math.sin(time*4.1)*.07+Math.sin(time*2.3)*.035;
     flame.scale.y=flicker;flameCore.scale.y=1+Math.sin(time*3.5)*.045;fireLight.intensity=4.3+Math.sin(time*3.2)*.25;
@@ -127,14 +127,14 @@ function makeScene(){
 
 function cameraFor(shot:CampingShot,camera:THREE.PerspectiveCamera){
   const views:Record<string,{p:[number,number,number];target:[number,number,number];fov:number}>={
-    exterior:{p:[0,7.0,26],target:[0,0,0],fov:50},
-    master:{p:[0,7.0,22],target:[0,.25,0],fov:48},
-    bruno:{p:[0,3.65,2.9],target:[0,1.10,-4.05],fov:43},
-    martina:{p:[-1.9,3.65,-.1],target:[-3.9,1.10,-.2],fov:43},
-    tomas:{p:[-1.0,3.65,.7],target:[-2.25,1.10,3.45],fov:43},
-    valentina:{p:[1.0,3.65,.7],target:[2.25,1.10,3.45],fov:43},
-    ernesto:{p:[1.9,3.65,-.1],target:[3.9,1.10,-.2],fov:43},
-    reaction:{p:[0,5.2,14],target:[0,1.15,0],fov:48}
+    exterior:{p:[0,5.6,29],target:[0,-.35,0],fov:52},
+    master:{p:[0,5.15,25],target:[0,-.25,0],fov:51},
+    bruno:{p:[0,2.55,4.25],target:[0,.30,-4.05],fov:47},
+    martina:{p:[-1.35,2.55,1.15],target:[-3.9,.30,-.2],fov:48},
+    tomas:{p:[-.40,2.65,-.10],target:[-2.25,.30,3.45],fov:48},
+    valentina:{p:[.40,2.65,-.10],target:[2.25,.30,3.45],fov:48},
+    ernesto:{p:[1.35,2.55,1.15],target:[3.9,.30,-.2],fov:48},
+    reaction:{p:[0,4.45,16.5],target:[0,.65,0],fov:50}
   };
   const v=views[shot]??views.master;
   camera.position.set(...v.p);camera.lookAt(...v.target);camera.fov=v.fov;camera.updateProjectionMatrix();
