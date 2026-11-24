@@ -126,7 +126,8 @@ function makeWorld() {
   const soft = new THREE.DirectionalLight(0xbacbe2, .55); soft.position.set(8, 6, -10); scene.add(soft);
   const asphalt = mat("#242b34", .98), pavement = mat("#777b7b", .98), curb = mat("#b7b5ac", .95);
   const soil = mat("#242b2d", 1);
-  box(scene, [90, .12, 90], soil, [0, -2.17, 0], false);
+  // Keep the base well below road/sidewalk tops: no coplanar surfaces can flicker in the establishing shot.
+  box(scene, [90, .12, 90], soil, [0, -3.0, 0], false);
   box(scene, [50, .14, 14], asphalt, [0, -2.17, -6.7], false);
   box(scene, [50, .18, 8.2], pavement, [0, -2.20, 3.35], false);
   box(scene, [50, .23, .42], curb, [0, -2.145, -.86], false);
@@ -164,22 +165,18 @@ function makeWorld() {
   sphere(scene, [.34, .18, .34], new THREE.MeshStandardMaterial({ color: "#ffe1a1", emissive: "#ffc66f", emissiveIntensity: 3.2 }), [poleX + 1.1, 4.72, .2], 10);
   const streetGlow = new THREE.PointLight(0xffc77f, 52, 18, 1.8); streetGlow.position.set(poleX + 1.0, 4.45, .2); scene.add(streetGlow);
   const fill = new THREE.PointLight(0xffddb1, 14, 15, 1.9); fill.position.set(0, 4.2, 3.4); scene.add(fill);
-  // Bus shelter: four posts, roof, back panels, bench, route sign and a little advertising panel.
-  const shelter = new THREE.Group(); shelter.position.set(0, -2.11, .05); scene.add(shelter);
-  const steel = mat("#343f46", .44, .62), glass = new THREE.MeshStandardMaterial({ color: "#6f8b96", roughness: .3, metalness: .12, transparent: true, opacity: .24 });
-  for (const x of [-3.55, -1.2, 1.2, 3.55]) rod(shelter, [x, 0, -.38], [x, 3.1, -.38], .065, steel);
-  box(shelter, [7.55, .18, 1.95], mat("#253641", .5, .38), [0, 3.13, -.35], false);
-  box(shelter, [7.2, .08, .06], mat("#d2b26c", .5, .5), [0, 3.02, .66], false);
-  box(shelter, [7.2, 2.64, .035], glass, [0, 1.53, -.36], false);
-  box(shelter, [.06, 2.55, .08], steel, [-2.35, 1.53, -.31], false);
-  box(shelter, [.06, 2.55, .08], steel, [2.35, 1.53, -.31], false);
-  // Bench and supports.
-  box(shelter, [3.65, .16, .62], mat("#8b6847", .72), [0, .72, .30]);
-  box(shelter, [3.65, .12, .10], mat("#5b493a", .72), [0, 1.24, -.02]);
-  for (const x of [-1.45, 1.45]) box(shelter, [.12, .70, .12], steel, [x, .33, .25]);
-  label(shelter, "PARADA", "LÍNEA 122", [-3.95, 2.45, -.28], [1.8, .82], "#193b4d");
-  // Small side panels show a restrained Ingredora poster.
-  label(shelter, "JUGÁ", "INGREDORA.COM", [3.80, 1.75, -.28], [1.0, 1.25], "#173a2d");
+  // Only a simple free-standing bench remains at the stop; no roof, railings, glass or stop-sign structure.
+  const bench = new THREE.Group(); bench.position.set(0, -2.11, .05); scene.add(bench);
+  const benchWood = mat("#8b6847", .72), benchMetal = mat("#343f46", .48, .58);
+  box(bench, [3.65, .14, .58], benchWood, [0, .72, .30]);
+  for (let slat = 0; slat < 3; slat++) {
+    box(bench, [3.58, .045, .13], mat(slat === 1 ? "#9a7551" : "#79583c", .78), [0, .63 + slat * .085, .30 + (slat - 1) * .17], false);
+  }
+  box(bench, [3.65, .12, .12], benchWood, [0, 1.20, -.02]);
+  for (const x of [-1.42, 1.42]) {
+    box(bench, [.10, .72, .13], benchMetal, [x, .34, .25]);
+    box(bench, [.52, .08, .72], benchMetal, [x, .055, .27]);
+  }
   // Sparse stars and moon, all static; no post-processing or expensive environment maps.
   const skyOrb = new THREE.Mesh(new THREE.SphereGeometry(1.08, 16, 12), new THREE.MeshBasicMaterial({ color: "#e6eaf0" }));
   skyOrb.position.set(12.2, 12.0, -21); scene.add(skyOrb);
@@ -187,14 +184,32 @@ function makeWorld() {
   for (let i = 0; i < 42; i++) sphere(scene, [.055, .055, .055], starMat, [-19 + ((i * 37) % 38), 7 + ((i * 17) % 12), -22 + ((i * 13) % 8)], 6);
   const rigs = {
     bruno: createDiner("bruno", -2.9, 2.3, 0, false, true),
-    tomas: createDiner("tomas", .05, 2.3, 0, false, true),
-    valentina: createDiner("valentina", 3.0, 2.3, 0, false, true),
+    tomas: createDiner("tomas", .05, 2.3, 0, false, true, false, false, false, true),
+    valentina: createDiner("valentina", 3.0, 2.3, 0, false, true, false, false, true, true),
   };
   Object.values(rigs).forEach(rig => scene.add(rig.root));
-  // Bruno keeps staring at a small illuminated phone held close to his chest.
-  const phoneBody = box(rigs.bruno.rightArm, [.30, .52, .075], mat("#15191e", .28, .32), [.025, -.28, .12], false);
-  phoneBody.rotation.x = -.08;
-  box(rigs.bruno.rightArm, [.245, .425, .018], new THREE.MeshBasicMaterial({ color: "#87d9ef" }), [.025, -.275, .166], false);
+  // The phone sits in Bruno's palm, overlapping the hand and wrist instead of floating at the elbow.
+  const phone = new THREE.Group();
+  phone.position.set(.02, -.79, .19); phone.rotation.set(-.035, 0, -.035); rigs.bruno.rightArm.add(phone);
+  box(phone, [.29, .50, .055], mat("#101820", .28, .30), [0, 0, 0], false);
+  const phoneCanvas = document.createElement("canvas"); phoneCanvas.width = 256; phoneCanvas.height = 512;
+  const phoneCtx = phoneCanvas.getContext("2d");
+  if (!phoneCtx) throw new Error("No se pudo crear la pantalla del celular de Bruno.");
+  const phoneGradient = phoneCtx.createLinearGradient(0, 0, 0, 512);
+  phoneGradient.addColorStop(0, "#19394a"); phoneGradient.addColorStop(1, "#0b202c");
+  phoneCtx.fillStyle = phoneGradient; phoneCtx.fillRect(0, 0, 256, 512);
+  phoneCtx.fillStyle = "#a8d5d6"; phoneCtx.font = "600 18px Arial"; phoneCtx.textAlign = "center";
+  phoneCtx.fillText("LUN · LÍNEA 122", 128, 48);
+  phoneCtx.fillStyle = "#fff5dc"; phoneCtx.font = "900 62px Arial"; phoneCtx.fillText("23:48", 128, 150);
+  phoneCtx.fillStyle = "#d0e5e5"; phoneCtx.font = "700 23px Arial"; phoneCtx.fillText("PRÓXIMO COLECTIVO", 128, 215);
+  phoneCtx.fillStyle = "#f0c878"; phoneCtx.font = "900 42px Arial"; phoneCtx.fillText("23:50", 128, 276);
+  phoneCtx.fillStyle = "#a8d5d6"; phoneCtx.font = "600 18px Arial"; phoneCtx.fillText("DESAFÍO DIARIO", 128, 366);
+  phoneCtx.fillStyle = "#fff5dc"; phoneCtx.font = "800 24px Arial"; phoneCtx.fillText("INGREDORA", 128, 404);
+  phoneCtx.fillStyle = "#7bc4c8"; phoneCtx.fillRect(84, 454, 88, 5);
+  const phoneTexture = new THREE.CanvasTexture(phoneCanvas); phoneTexture.colorSpace = THREE.SRGBColorSpace;
+  const phoneScreen = new THREE.Mesh(new THREE.PlaneGeometry(.258, .462), new THREE.MeshBasicMaterial({ map: phoneTexture, toneMapped: false }));
+  phoneScreen.position.set(0, 0, .029); phone.add(phoneScreen);
+  box(phone, [.07, .008, .006], mat("#9fb6be", .24), [0, -.232, .032], false);
   const bus = makeBus(scene);
   return { scene, rigs, bus, streetGlow, fill };
 }
@@ -218,23 +233,42 @@ function cameraFor(shot: BusStopShot, camera: THREE.PerspectiveCamera) {
   };
   const v = views[shot]; camera.position.set(...v.p); camera.lookAt(...v.target); camera.fov = v.fov; camera.updateProjectionMatrix();
 }
-function updateCharacters(rigs: Record<"bruno" | "tomas" | "valentina", DinerRig>, cue: BusStopCue | undefined, time: number) {
+type WalkMotion = { phase: number; intensity: number; yaw: number };
+function updateCharacters(
+  rigs: Record<"bruno" | "tomas" | "valentina", DinerRig>,
+  cue: BusStopCue | undefined,
+  time: number,
+  walking: Partial<Record<"tomas" | "valentina", WalkMotion>> = {},
+) {
   const values = Object.values(rigs);
   values.forEach((rig, index) => {
-    const talking = rig.name === cue?.speaker, phase = index * .91;
+    const talking = rig.name === cue?.speaker, idlePhase = index * .91;
+    const motion = rig.name === "tomas" || rig.name === "valentina" ? walking[rig.name] : undefined;
     const targetLook = cue?.look === rig.name ? 0 : cue?.look ? (rig.x < rigs[cue.look as keyof typeof rigs]?.x ? .10 : -.10) : 0;
     rig.head.rotation.y = THREE.MathUtils.lerp(rig.head.rotation.y, targetLook, .10);
-    rig.head.rotation.x = talking ? Math.sin(time * 3.1 + phase) * .022 : Math.sin(time * .54 + phase) * .006;
+    rig.head.rotation.x = talking ? Math.sin(time * 3.1 + idlePhase) * .022 : Math.sin(time * .54 + idlePhase) * .006;
     const syllables = cue?.text.toLowerCase().match(/[aeiouáéíóúü]/g)?.length ?? 2;
     const progress = cue ? Math.max(0, Math.min(.999, (time - cue.start) / Math.max(.08, cue.end - cue.start))) : 0;
     const mouthOpen = talking ? .04 + Math.pow(Math.max(0, Math.sin(progress * Math.max(2, syllables) * Math.PI * 2)), .8) * .64 : .026;
     rig.mouth.scale.set(1, mouthOpen, 1);
-    // Calm, small gestures; Bruno keeps the phone hand raised.
-    rig.leftArm.rotation.z = talking ? -.035 - Math.sin(time * 1.8 + phase) * .025 : -.012;
-    rig.rightArm.rotation.z = rig.name === "bruno" ? -.24 : talking ? .035 + Math.sin(time * 1.7 + phase) * .025 : .012;
-    rig.leftArm.rotation.x = talking ? .018 : 0;
-    rig.rightArm.rotation.x = rig.name === "bruno" ? -.12 : talking ? -.018 : 0;
-    if (rig.root.parent?.name !== "BusStopBus") rig.root.position.y = -1.92 + Math.sin(time * .65 + phase) * (rig.name === "bruno" ? .002 : .003);
+    if (motion && motion.intensity > .01) {
+      const swing = Math.sin(motion.phase) * motion.intensity;
+      if (rig.leftLeg) rig.leftLeg.rotation.x = swing * .34;
+      if (rig.rightLeg) rig.rightLeg.rotation.x = -swing * .34;
+      rig.leftArm.rotation.x = -swing * .16;
+      rig.rightArm.rotation.x = swing * .16;
+      rig.leftArm.rotation.z = -.015;
+      rig.rightArm.rotation.z = rig.name === "bruno" ? -.08 : .015;
+      if (rig.root.parent?.name !== "BusStopBus") rig.root.rotation.y = motion.yaw;
+    } else {
+      if (rig.leftLeg) rig.leftLeg.rotation.x = THREE.MathUtils.lerp(rig.leftLeg.rotation.x, 0, .22);
+      if (rig.rightLeg) rig.rightLeg.rotation.x = THREE.MathUtils.lerp(rig.rightLeg.rotation.x, 0, .22);
+      rig.leftArm.rotation.z = talking ? -.035 - Math.sin(time * 1.8 + idlePhase) * .025 : -.012;
+      rig.rightArm.rotation.z = rig.name === "bruno" ? -.08 : talking ? .035 + Math.sin(time * 1.7 + idlePhase) * .025 : .012;
+      rig.leftArm.rotation.x = talking ? .018 : 0;
+      rig.rightArm.rotation.x = rig.name === "bruno" ? .035 : talking ? -.018 : 0;
+      if (rig.root.parent?.name !== "BusStopBus") rig.root.position.y = -1.92 + Math.sin(time * .65 + idlePhase) * (rig.name === "bruno" ? .002 : .003);
+    }
   });
 }
 
@@ -264,8 +298,30 @@ export async function renderEntrePartidasBusStopToWebM(pkg: BusStopPackage, onPr
   const stopX = 2.25, stopZ = -6.0;
   const initialTomas = world.rigs.tomas.root.position.clone();
   const initialValentina = world.rigs.valentina.root.position.clone();
-  const finalTomas = new THREE.Vector3(.70, -1.70, stopZ + .72);
-  const finalValentina = new THREE.Vector3(1.56, -1.70, stopZ + .72);
+  // Each passenger gets an individual curved route and reaches the doorway in single file.
+  const finalTomas = new THREE.Vector3(.80, -1.17, stopZ + .72);
+  const finalValentina = new THREE.Vector3(1.16, -1.17, stopZ + .02);
+  const tomasPath = new THREE.CatmullRomCurve3([
+    initialTomas.clone(),
+    new THREE.Vector3(-.10, -1.92, 1.15),
+    new THREE.Vector3(.10, -1.92, -.85),
+    new THREE.Vector3(.43, -1.78, -3.05),
+    new THREE.Vector3(.74, -1.52, -4.58),
+    finalTomas.clone(),
+  ]);
+  const valentinaPath = new THREE.CatmullRomCurve3([
+    initialValentina.clone(),
+    new THREE.Vector3(2.86, -1.92, 1.20),
+    new THREE.Vector3(2.45, -1.92, -.72),
+    new THREE.Vector3(1.94, -1.78, -2.92),
+    new THREE.Vector3(1.39, -1.52, -4.48),
+    finalValentina.clone(),
+  ]);
+  const tomasWalkStart = doorsAt + .28;
+  const valentinaWalkStart = doorsAt + 1.02;
+  const walkFinish = boardEnd + .22;
+  const tomasWalkDuration = Math.max(2.8, walkFinish - tomasWalkStart);
+  const valentinaWalkDuration = Math.max(2.5, walkFinish - valentinaWalkStart);
   let started = false;
   try {
     await output.start(); started = true;
@@ -283,25 +339,39 @@ export async function renderEntrePartidasBusStopToWebM(pkg: BusStopPackage, onPr
       world.bus.doorLeft.position.x = -1.88 - doorOpen * .52;
       world.bus.doorRight.position.x = -.98 + doorOpen * .52;
       world.bus.headlights.forEach((light, i) => { light.intensity = 11.5 + Math.sin(time * 1.4 + i) * .25; });
-      // Tomás and Valentina walk toward the open doors. A slight body bob keeps the movement alive.
-      if (time >= boardAt && time < boardEnd && !world.bus.boarded) {
-        const p = ease((time - boardAt) / Math.max(.1, boardEnd - boardAt));
-        world.rigs.tomas.root.position.lerpVectors(initialTomas, finalTomas, p);
-        world.rigs.valentina.root.position.lerpVectors(initialValentina, finalValentina, p);
-        world.rigs.tomas.root.rotation.y = lerp(0, Math.PI, p);
-        world.rigs.valentina.root.rotation.y = lerp(0, Math.PI, p);
-        world.rigs.tomas.root.position.y += Math.sin(time * 9) * .028 * (1 - p);
-        world.rigs.valentina.root.position.y += Math.sin(time * 9 + .8) * .028 * (1 - p);
+      // Tomás goes first; Valentina follows half a beat later. Both use a curved path, alternating leg/arm swings and a visible step-up.
+      const walking: Partial<Record<"tomas" | "valentina", WalkMotion>> = {};
+      const movePassenger = (rig: DinerRig, path: THREE.CatmullRomCurve3, start: number, duration: number) => {
+        const elapsed = time - start;
+        const p = ease(elapsed / Math.max(.1, duration));
+        const position = path.getPointAt(Math.max(0, Math.min(1, p)));
+        const tangent = path.getTangentAt(Math.max(0, Math.min(.999, p))).normalize();
+        const blend = Math.min(ease(elapsed / .34), 1 - ease((duration - elapsed) / .40));
+        const phase = Math.max(0, elapsed) * 8.4;
+        position.y += Math.abs(Math.sin(phase * 2)) * .012 * Math.max(0, blend);
+        rig.root.position.copy(position);
+        rig.root.rotation.y = Math.atan2(tangent.x, tangent.z);
+        if (elapsed >= 0 && elapsed <= duration + .02 && blend > .01) {
+          walking[rig.name as "tomas" | "valentina"] = { phase, intensity: blend, yaw: rig.root.rotation.y };
+        }
+      };
+      if (!world.bus.boarded && time >= tomasWalkStart && time < walkFinish) {
+        movePassenger(world.rigs.tomas, tomasPath, tomasWalkStart, tomasWalkDuration);
+      }
+      if (!world.bus.boarded && time >= valentinaWalkStart && time < walkFinish) {
+        movePassenger(world.rigs.valentina, valentinaPath, valentinaWalkStart, valentinaWalkDuration);
       }
       if (time >= boardEnd && !world.bus.boarded) {
+        world.rigs.tomas.root.position.copy(finalTomas);
+        world.rigs.valentina.root.position.copy(finalValentina);
         world.scene.updateMatrixWorld(true); world.bus.root.updateMatrixWorld(true);
         world.bus.root.attach(world.rigs.tomas.root); world.bus.root.attach(world.rigs.valentina.root);
         world.bus.boarded = true;
       }
-      // The bus pulls away just after both passengers get on, leaving Bruno at the curb.
+      // The bus pulls away only after both passengers have reached the inside of the open doorway.
       if (time >= departAt) world.bus.root.position.x = lerp(stopX, 22, ease((time - departAt) / 3.1));
       else if (time < departAt) world.bus.root.position.x = lerp(-19, stopX, arrivalProgress);
-      updateCharacters(world.rigs, cue, time);
+      updateCharacters(world.rigs, cue, time, walking);
       cameraFor(shot, camera);
       if (time < 3.2) {
         const p = ease(time / 3.2);

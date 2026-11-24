@@ -2,7 +2,7 @@ import * as THREE from "three";
 
 export type DinnerSpeaker = "bruno" | "martina" | "tomas" | "valentina" | "ernesto";
 export type DinnerCue = { id?: string; speaker: DinnerSpeaker; text: string; start: number; end: number; look?: DinnerSpeaker };
-export type DinerRig = { name: DinnerSpeaker; root: THREE.Group; head: THREE.Group; mouth: THREE.Mesh; eyes: THREE.Group[]; leftArm: THREE.Group; rightArm: THREE.Group; x: number; z: number };
+export type DinerRig = { name: DinnerSpeaker; root: THREE.Group; head: THREE.Group; mouth: THREE.Mesh; eyes: THREE.Group[]; leftArm: THREE.Group; rightArm: THREE.Group; leftLeg?: THREE.Group; rightLeg?: THREE.Group; x: number; z: number };
 export type EntrePartidasDinnerSet = { update(time: number, dialogue: DinnerCue[]): void; getSpeakerPosition(speaker: DinnerSpeaker): THREE.Vector3 };
 
 const mat=(color:string,roughness=.78,metalness=0)=>new THREE.MeshStandardMaterial({color,roughness,metalness});
@@ -24,13 +24,14 @@ const texture=(draw:(ctx:CanvasRenderingContext2D,w:number,h:number)=>void,w=512
   draw(ctx,w,h);const map=new THREE.CanvasTexture(canvas);map.colorSpace=THREE.SRGBColorSpace;map.anisotropy=8;return map;
 };
 
-export function createDiner(name:DinnerSpeaker,x:number,z:number,turn:number,includeChair=true,standing=false,groundSeated=false,rooftopMartina=false):DinerRig{
+export function createDiner(name:DinnerSpeaker,x:number,z:number,turn:number,includeChair=true,standing=false,groundSeated=false,rooftopMartina=false,busStopValentina=false,articulatedStanding=false):DinerRig{
   const root=new THREE.Group();root.position.set(x,groundSeated?-2.08:-1.92,z);root.rotation.y=turn;
   const skinColors:Record<DinnerSpeaker,string>={bruno:"#c98e6e",martina:"#d6a080",tomas:"#e1b18e",valentina:"#dfaa8b",ernesto:"#c99a79"};
   const hairColors:Record<DinnerSpeaker,string>={bruno:"#30241f",martina:"#30201c",tomas:"#4b3328",valentina:"#211b1a",ernesto:"#8b8a82"};
   const shirtColors:Record<DinnerSpeaker,string>={bruno:"#c46a43",martina:"#bd7958",tomas:"#527c78",valentina:"#47788a",ernesto:"#718064"};
   const skin=mat(skinColors[name]),hair=mat(hairColors[name],.92),shirt=mat(rooftopMartina&&name==="martina"?"#f4cbd6":shirtColors[name],.88);
-  const pants=mat(name==="ernesto"?"#4b5148":"#35414a"),shoes=mat("#23282a",.58),dark=mat("#25201e",.7),ivory=mat("#fff8e9",.42);
+  const pants=mat(name==="ernesto"?"#4b5148":"#35414a"),shorts=mat(busStopValentina&&name==="valentina"?"#547f9c":"#35414a"),shoes=mat("#23282a",.58),dark=mat("#25201e",.7),ivory=mat("#fff8e9",.42);
+  let leftLeg:THREE.Group|undefined,rightLeg:THREE.Group|undefined;
   // The same character rig can be reused in another seat without carrying its dining chair.
   if(includeChair){
     const chairWood=mat("#6e5038",.58),chairFabric=mat(name==="bruno"||name==="valentina"?"#526b69":"#7d6550",.95);
@@ -41,28 +42,52 @@ export function createDiner(name:DinnerSpeaker,x:number,z:number,turn:number,inc
   // Bruno's standing pose is a complete body; the seated silhouettes remain unchanged for the four diners.
   if(standing){
     if(name==="martina"&&rooftopMartina){
-      // Martina's slim canonical silhouette: a light-pink sleeveless tank top with bare shoulders.
       box(root,[.76,1.12,.52],shirt,[0,2.05,-.04]);
       box(root,[.105,.31,.52],shirt,[-.205,2.62,-.04]);
       box(root,[.105,.31,.52],shirt,[.205,2.62,-.04]);
-      // Short denim shorts sit at the waist; legs remain skin-colored below the hem.
       box(root,[.78,.38,.55],pants,[0,1.27,.02]);
       for(const side of [-1,1]){
         box(root,[.29,.68,.39],skin,[side*.195,.69,.045]);
         box(root,[.26,.49,.35],skin,[side*.195,.16,.035]);
         box(root,[.31,.18,.46],shoes,[side*.195,-.12,.14]);
       }
+    }else if(name==="valentina"&&busStopValentina){
+      // Valentina: narrow sleeveless top, uncovered shoulders, short denim shorts and slim legs.
+      box(root,[.70,1.08,.48],shirt,[0,2.02,-.035]);
+      box(root,[.095,.29,.48],shirt,[-.185,2.65,-.035]);
+      box(root,[.095,.29,.48],shirt,[.185,2.65,-.035]);
+      box(root,[.73,.36,.52],shorts,[0,1.29,.025]);
+      box(root,[.75,.065,.535],shorts,[0,1.465,.025]);
     }else{
       box(root,[1.04,1.32,.58],shirt,[0,2.08,-.04]);
-      // One broad pelvis overlaps the shirt and both thighs: no exposed seam or floating hip blocks.
       box(root,[.90,.62,.60],pants,[0,1.17,.015]);
-      for(const side of [-1,1]){
-        // Trouser legs begin inside the pelvis and meet the shoes cleanly at floor level.
-        box(root,[.42,1.02,.46],pants,[side*.21,.50,.045]);
-        box(root,[.44,.18,.54],shoes,[side*.21,-.09,.15]);
+      if(!articulatedStanding){
+        for(const side of [-1,1]){
+          box(root,[.42,1.02,.46],pants,[side*.21,.50,.045]);
+          box(root,[.44,.18,.54],shoes,[side*.21,-.09,.15]);
+        }
+        box(root,[.22,.42,.48],pants,[0,.73,.045]);
       }
-      // Small central crotch bridge connects the inner thigh faces without closing the leg gap below.
-      box(root,[.22,.42,.48],pants,[0,.73,.045]);
+    }
+    if(articulatedStanding){
+      const makeStandingLeg=(side:number)=>{
+        const leg=new THREE.Group();
+        leg.position.set(side*(name==="valentina"&&busStopValentina ? .18 : .21),.82,.025);
+        root.add(leg);
+        const legMaterial=name==="valentina"&&busStopValentina?skin:pants;
+        const width=name==="valentina"&&busStopValentina ? .265 : .34;
+        box(leg,[width,.72,.39],legMaterial,[0,0,0]);
+        box(leg,[width*.92,.58,.34],legMaterial,[0,-.41,.025]);
+        box(leg,[width*1.06,.18,.48],shoes,[0,-.91,.14]);
+        return leg;
+      };
+      leftLeg=makeStandingLeg(-1);rightLeg=makeStandingLeg(1);
+    }else if(name==="valentina"&&busStopValentina){
+      for(const side of [-1,1]){
+        box(root,[.265,.72,.39],skin,[side*.18,.46,.045]);
+        box(root,[.245,.58,.34],skin,[side*.18,.05,.07]);
+        box(root,[.28,.18,.48],shoes,[side*.18,-.09,.14]);
+      }
     }
   }else if(groundSeated){
     // Compact, unmistakably seated-on-the-ground silhouette for the camping circle.
@@ -96,6 +121,17 @@ export function createDiner(name:DinnerSpeaker,x:number,z:number,turn:number,inc
   if(name==="bruno"){box(head,[.82,.23,.74],hair,[0,.33,-.015]);box(head,[.73,.14,.64],hair,[-.04,.47,.005]);box(head,[.19,.18,.22],hair,[-.29,.20,.25]);}
   else if(name==="martina"){box(head,[.84,.24,.72],hair,[0,.34,-.03]);box(head,[.75,.58,.18],hair,[0,-.04,-.34]);box(head,[.15,.56,.43],hair,[-.34,-.04,-.02]);box(head,[.15,.56,.43],hair,[.34,-.04,-.02]);box(head,[.23,.16,.20],hair,[.15,.52,-.34]);box(head,[.10,.11,.12],mat("#d8a64c"),[.15,.51,-.45]);box(head,[.22,.38,.20],hair,[.19,.29,-.55]);}
   else if(name==="tomas"){box(head,[.85,.24,.70],hair,[0,.35,-.02]);box(head,[.69,.20,.36],hair,[-.10,.49,.10]);box(head,[.24,.18,.30],hair,[.22,.40,.18]);box(head,[.15,.25,.18],hair,[-.27,.30,.20]);box(head,[.12,.43,.18],hair,[-.34,-.08,-.28]);box(head,[.12,.43,.18],hair,[.34,-.08,-.28]);}
+  else if(name==="valentina"&&busStopValentina){
+    // Crown swept back into a low ponytail; the sides of her face and shoulders stay clear.
+    box(head,[.83,.24,.72],hair,[0,.35,-.025]);
+    box(head,[.70,.12,.25],hair,[0,.455,.19]);
+    box(head,[.13,.27,.20],hair,[-.34,.20,.04]);box(head,[.13,.27,.20],hair,[.34,.20,.04]);
+    sphere(head,[.25,.20,.22],hair,[0,.20,-.40],10);
+    rod(head,[0,.12,-.48],[.10,-.22,-.53],.13,hair);
+    rod(head,[.10,-.22,-.53],[.20,-.55,-.46],.105,hair);
+    rod(head,[0,.11,-.47],[.035,.075,-.49],.055,mat("#d7ad55",.55));
+    sphere(head,[.09,.12,.07],mat("#d7ad55",.34,.7),[.42,-.13,.36],10);
+  }
   else if(name==="valentina"){box(head,[.83,.25,.72],hair,[0,.35,-.03]);box(head,[.72,.62,.19],hair,[0,-.05,-.35]);box(head,[.16,.76,.27],hair,[-.36,-.20,-.04]);box(head,[.16,.76,.27],hair,[.36,-.20,-.04]);box(head,[.12,.54,.22],hair,[-.34,-.50,-.08]);box(head,[.12,.54,.22],hair,[.34,-.50,-.08]);sphere(head,[.09,.12,.07],mat("#d7ad55",.34,.7),[.42,-.13,.36],10);}
   else{box(head,[.82,.22,.70],hair,[0,.35,-.03]);box(head,[.74,.18,.60],hair,[0,.47,-.05]);box(head,[.14,.36,.28],hair,[-.34,.20,.13]);box(head,[.14,.36,.28],hair,[.34,.20,.13]);}
   const eyes: THREE.Group[] = [];
@@ -115,8 +151,9 @@ export function createDiner(name:DinnerSpeaker,x:number,z:number,turn:number,inc
   const mouth=box(head,[.16,.026,.02],mat("#713b37"),[0,-.25,.36],false);
   const makeArm=(side:number)=>{
     const pivot=new THREE.Group();
-    pivot.position.set(side*(name==="martina"&&standing&&rooftopMartina?.40:standing?.48:.52),standing?2.44:(groundSeated?1.82:2.54),.02);root.add(pivot);
-    if(standing&&name==="martina"&&rooftopMartina){
+    const bareShoulders=standing&&((name==="martina"&&rooftopMartina)||(name==="valentina"&&busStopValentina));
+    pivot.position.set(side*(name==="valentina"&&busStopValentina ? .37 : name==="martina"&&rooftopMartina ? .40 : standing ? .48 : .52),standing?2.44:(groundSeated?1.82:2.54),.02);root.add(pivot);
+    if(bareShoulders){
       // Bare, narrower arms keep the tank-top shoulders visibly uncovered.
       box(pivot,[.23,.54,.25],skin,[side*.025,-.07,.02]);
       box(pivot,[.19,.44,.21],skin,[side*.035,-.50,.055]);
@@ -142,7 +179,7 @@ export function createDiner(name:DinnerSpeaker,x:number,z:number,turn:number,inc
     sphere(phone,[.018,.018,.012],mat("#aab9bf",.2),[0,.143,.035],8);
   }
   root.traverse(object=>{if(object instanceof THREE.Mesh){object.castShadow=false;object.receiveShadow=false;}});
-  return{name,root,head,mouth,eyes,leftArm,rightArm,x,z};
+  return{name,root,head,mouth,eyes,leftArm,rightArm,leftLeg,rightLeg,x,z};
 }
 
 function createCokeBottle(world:THREE.Scene,x:number,y:number,z:number){
