@@ -2,7 +2,7 @@ import * as THREE from "three";
 
 export type DinnerSpeaker = "bruno" | "martina" | "tomas" | "valentina" | "ernesto";
 export type DinnerCue = { id?: string; speaker: DinnerSpeaker; text: string; start: number; end: number; look?: DinnerSpeaker };
-export type DinerRig = { name: DinnerSpeaker; root: THREE.Group; head: THREE.Group; mouth: THREE.Mesh; leftArm: THREE.Group; rightArm: THREE.Group; x: number; z: number };
+export type DinerRig = { name: DinnerSpeaker; root: THREE.Group; head: THREE.Group; mouth: THREE.Mesh; eyes: THREE.Group[]; leftArm: THREE.Group; rightArm: THREE.Group; x: number; z: number };
 export type EntrePartidasDinnerSet = { update(time: number, dialogue: DinnerCue[]): void; getSpeakerPosition(speaker: DinnerSpeaker): THREE.Vector3 };
 
 const mat=(color:string,roughness=.78,metalness=0)=>new THREE.MeshStandardMaterial({color,roughness,metalness});
@@ -84,7 +84,15 @@ export function createDiner(name:DinnerSpeaker,x:number,z:number,turn:number,inc
   else if(name==="tomas"){box(head,[.85,.24,.70],hair,[0,.35,-.02]);box(head,[.69,.20,.36],hair,[-.10,.49,.10]);box(head,[.24,.18,.30],hair,[.22,.40,.18]);box(head,[.15,.25,.18],hair,[-.27,.30,.20]);box(head,[.12,.43,.18],hair,[-.34,-.08,-.28]);box(head,[.12,.43,.18],hair,[.34,-.08,-.28]);}
   else if(name==="valentina"){box(head,[.83,.25,.72],hair,[0,.35,-.03]);box(head,[.72,.62,.19],hair,[0,-.05,-.35]);box(head,[.16,.76,.27],hair,[-.36,-.20,-.04]);box(head,[.16,.76,.27],hair,[.36,-.20,-.04]);box(head,[.12,.54,.22],hair,[-.34,-.50,-.08]);box(head,[.12,.54,.22],hair,[.34,-.50,-.08]);sphere(head,[.09,.12,.07],mat("#d7ad55",.34,.7),[.42,-.13,.36],10);}
   else{box(head,[.82,.22,.70],hair,[0,.35,-.03]);box(head,[.74,.18,.60],hair,[0,.47,-.05]);box(head,[.14,.36,.28],hair,[-.34,.20,.13]);box(head,[.14,.36,.28],hair,[.34,.20,.13]);}
-  for(const side of [-1,1]){box(head,[.14,.095,.018],ivory,[side*.18,.035,.355],false);box(head,[.048,.068,.012],dark,[side*.18+.006,.035,.367],false);box(head,[.15,.026,.014],hair,[side*.18,.16,.348],false);}
+  const eyes: THREE.Group[] = [];
+  for(const side of [-1,1]){
+    const eye = new THREE.Group();
+    eye.position.set(side*.18,.035,.355);
+    box(eye,[.14,.095,.018],ivory,[0,0,0],false);
+    box(eye,[.048,.068,.012],dark,[.006,0,.012],false);
+    box(eye,[.15,.026,.014],hair,[0,.125,-.007],false);
+    head.add(eye); eyes.push(eye);
+  }
   if(name==="ernesto"){
     const glasses=mat("#6a665d",.32,.55);
     for(const side of [-1,1]){const rim=new THREE.Mesh(new THREE.TorusGeometry(.105,.012,6,16),glasses);rim.position.set(side*.18,.03,.365);head.add(rim);}
@@ -115,7 +123,7 @@ export function createDiner(name:DinnerSpeaker,x:number,z:number,turn:number,inc
     sphere(phone,[.018,.018,.012],mat("#aab9bf",.2),[0,.143,.035],8);
   }
   root.traverse(object=>{if(object instanceof THREE.Mesh){object.castShadow=false;object.receiveShadow=false;}});
-  return{name,root,head,mouth,leftArm,rightArm,x,z};
+  return{name,root,head,mouth,eyes,leftArm,rightArm,x,z};
 }
 
 function createCokeBottle(world:THREE.Scene,x:number,y:number,z:number){
