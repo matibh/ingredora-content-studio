@@ -12,9 +12,6 @@ const mat=(color:string,roughness=.78,metalness=0)=>new THREE.MeshStandardMateri
 const box=(parent:THREE.Object3D,size:[number,number,number],material:THREE.Material,pos:[number,number,number],cast=true)=>{
   const mesh=new THREE.Mesh(new THREE.BoxGeometry(...size),material);mesh.position.set(...pos);mesh.castShadow=cast;mesh.receiveShadow=true;parent.add(mesh);return mesh;
 };
-const sphere=(parent:THREE.Object3D,size:[number,number,number],material:THREE.Material,pos:[number,number,number],segments=14)=>{
-  const mesh=new THREE.Mesh(new THREE.SphereGeometry(.5,segments,10),material);mesh.position.set(...pos);mesh.scale.set(...size);mesh.castShadow=true;mesh.receiveShadow=true;parent.add(mesh);return mesh;
-};
 const texture=(draw:(ctx:CanvasRenderingContext2D,w:number,h:number)=>void,w=512,h=256)=>{
   const canvas=document.createElement("canvas");canvas.width=w;canvas.height=h;const ctx=canvas.getContext("2d");
   if(!ctx)throw new Error("No se pudo crear una textura de Entre Partidas.");
