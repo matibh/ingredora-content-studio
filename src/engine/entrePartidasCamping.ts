@@ -52,7 +52,13 @@ function makeScene(){
   };
   makeTent(-7.0,-6.0,.18,1.0);
   makeTent(7.0,-6.0,-.18,1.0);
-  makeTent(0,7.0,Math.PI,1.0);
+
+  // Más árboles en el fondo, detrás de Bruno, para dar profundidad a su plano.
+  const rearTrees:Array<[number,number,number]>=[[-6.2,-10.8,5.2],[-4.1,-12.4,6.0],[-2.0,-11.5,4.8],[0,-13.2,6.4],[2.1,-11.8,5.4],[4.2,-12.7,6.1],[6.1,-10.9,5.0]];
+  for(const [x,z,h] of rearTrees){
+    const trunkMesh=new THREE.Mesh(new THREE.CylinderGeometry(.24,.38,h*.40,7),trunk);trunkMesh.position.set(x,-2+h*.20,z);trunkMesh.castShadow=true;scene.add(trunkMesh);
+    for(let layer=0;layer<3;layer++){const crown=new THREE.Mesh(new THREE.ConeGeometry(1.65-layer*.20,2.5,7),layer%2?leafB:leafA);crown.position.set(x,-2+h*.40+layer*1.16,z);crown.castShadow=true;scene.add(crown);}
+  }
 
   // Cinco personajes sentados en el suelo, formando una ronda alrededor de la fogata.
   const names=["martina","tomas","bruno","valentina","ernesto"] as const;
@@ -100,9 +106,6 @@ function makeScene(){
   const flameCore=new THREE.Mesh(new THREE.ConeGeometry(.25,.88,6),new THREE.MeshStandardMaterial({color:"#ffd16c",emissive:"#ff9c27",emissiveIntensity:1.5}));
   flameCore.position.set(fireX,-1.10,fireZ);scene.add(flameCore);
   const fireLight=new THREE.PointLight(0xffa34b,4.5,15,2);fireLight.position.set(fireX,.05,fireZ);scene.add(fireLight);
-  const smokeMat=new THREE.MeshStandardMaterial({color:"#c6c8c0",transparent:true,opacity:.18,roughness:1,depthWrite:false});
-  const smoke:THREE.Mesh[]=[];
-  for(let i=0;i<3;i++){const puff=new THREE.Mesh(new THREE.SphereGeometry(.25+i*.08,8,6),smokeMat);puff.position.set(fireX,.15+i*.38,fireZ);scene.add(puff);smoke.push(puff);}
   const update=(time:number,dialogue:CampingCue[])=>{
     const cue=dialogue.find(item=>time>=item.start&&time<=item.end);
     diners.forEach((rig,index)=>{
@@ -116,11 +119,11 @@ function makeScene(){
       rig.leftArm.rotation.z=gesture?-arm-Math.sin(time*1.25+phase)*.008:-.008;
       rig.rightArm.rotation.z=gesture?arm+Math.sin(time*1.2+phase)*.008:.008;
       rig.leftArm.rotation.x=gesture?.012:0;rig.rightArm.rotation.x=gesture?-.012:0;
+      if(rig.name==="bruno"){rig.rightArm.rotation.z=-.20;rig.rightArm.rotation.x=-.12;}
       rig.root.position.y=-2.08+Math.sin(time*.55+phase)*.0012;
     });
     const flicker=1+Math.sin(time*4.1)*.07+Math.sin(time*2.3)*.035;
     flame.scale.y=flicker;flameCore.scale.y=1+Math.sin(time*3.5)*.045;fireLight.intensity=4.3+Math.sin(time*3.2)*.25;
-    smoke.forEach((puff,i)=>{puff.position.y=.1+i*.38+Math.sin(time*.35+i)*.04;puff.scale.setScalar(1+i*.18+Math.sin(time*.3+i)*.025);});
   };
   return {scene,cast:diners,dinner:{update}};
 }
