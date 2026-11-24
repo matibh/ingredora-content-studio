@@ -34,52 +34,75 @@ function makeScene(){
     const stem=new THREE.Mesh(new THREE.CylinderGeometry(.22,.34,h*.42,7),trunk);stem.position.set(x,-2+h*.21,depth);stem.castShadow=true;scene.add(stem);
     for(let layer=0;layer<3;layer++){const crown=new THREE.Mesh(new THREE.ConeGeometry(1.45-layer*.20,2.35,7),layer%2?leafB:leafA);crown.position.set(x,-2+h*.42+layer*1.12,depth);crown.castShadow=true;scene.add(crown);}
   }
-  // One large tent in the background.
-  const tent=new THREE.Group();tent.position.set(-6.0,-2.02,-7.1);tent.rotation.y=.14;scene.add(tent);
+
+  // Tres carpas de camping distribuidas alrededor del claro.
   const canvas=mat("#b6a17a",.98),canvasDark=mat("#806e50",.98),tentFloor=mat("#4b5945",.98);
-  const panel1=new THREE.Mesh(new THREE.BufferGeometry(),canvas);
-  const makeTri=(a:number[],b:number[],c:number[],material:THREE.Material)=>{const g=new THREE.BufferGeometry();g.setAttribute("position",new THREE.Float32BufferAttribute([...a,...b,...c],3));g.computeVertexNormals();const m=new THREE.Mesh(g,material);m.castShadow=true;m.receiveShadow=true;tent.add(m);};
-  makeTri([-2.0,0,0],[2.0,0,0],[0,2.6,0],canvas);makeTri([-2.0,0,0],[0,2.6,0],[0,0,2.5],canvasDark);
-  makeTri([2.0,0,0],[0,0,2.5],[0,2.6,0],canvas);makeTri([-2.0,0,0],[0,0,2.5],[2.0,0,0],tentFloor);
-  void panel1;
-  // Picnic table and five fixed chairs/characters.
-  const wood=mat("#76583c",.78),edge=mat("#493728",.82);
-  box(scene,[10.6,.24,3.25],wood,[0,.24,.58]);box(scene,[10.65,.10,3.30],edge,[0,.08,.58]);
-  for(const x of [-4.35,4.35])for(const z of [-.48,1.62])box(scene,[.22,2.0,.22],edge,[x,-.88,z]);
-  for(const x of [-4.5,-2.25,0,2.25,4.5]){box(scene,[.08,.08,2.1],mat("#b28b5c",.9),[x,.40,.58],false);}
+  const makeTent=(x:number,z:number,rotation:number,scale:number)=>{
+    const tent=new THREE.Group();tent.position.set(x,-2.02,z);tent.rotation.y=rotation;tent.scale.setScalar(scale);scene.add(tent);
+    const tri=(a:number[],b:number[],c:number[],material:THREE.Material)=>{
+      const g=new THREE.BufferGeometry();g.setAttribute("position",new THREE.Float32BufferAttribute([...a,...b,...c],3));g.computeVertexNormals();
+      const m=new THREE.Mesh(g,material);m.castShadow=true;m.receiveShadow=true;tent.add(m);
+    };
+    tri([-2,0,0],[2,0,0],[0,2.6,0],canvas);
+    tri([-2,0,0],[0,2.6,0],[0,0,2.5],canvasDark);
+    tri([2,0,0],[0,0,2.5],[0,2.6,0],canvas);
+    tri([-2,0,0],[0,0,2.5],[2,0,0],tentFloor);
+    const seam=box(tent,[.055,2.55,.055],canvasDark,[0,1.28,.025],false);
+    void seam;
+  };
+  makeTent(-7.0,-6.0,.18,1.0);
+  makeTent(7.0,-6.0,-.18,1.0);
+  makeTent(0,7.0,Math.PI,1.0);
+
+  // Cinco personajes sentados en el suelo, formando una ronda alrededor de la fogata.
   const names=["martina","tomas","bruno","valentina","ernesto"] as const;
-  const placements:Array<[typeof names[number],number,number,number]>=[
-    ["martina",-4.55,-1.55,.04],["tomas",-2.28,-1.55,.02],["bruno",0,-1.55,0],["valentina",2.28,-1.55,-.02],["ernesto",4.55,-1.55,-.04]
+  const placements:Array<[typeof names[number],number,number]>=[
+    ["martina",-3.9,-.2],["tomas",-2.25,3.45],["bruno",0,-4.05],["valentina",2.25,3.45],["ernesto",3.9,-.2]
   ];
-  const diners=placements.map(([name,x,z,turn])=>createDiner(name,x,z,turn));diners.forEach(d=>scene.add(d.root));
-  // A clearly branded Ingredora cooler and provisions anchor the product inside the story.
-  const cooler= new THREE.Group();cooler.position.set(5.7,-1.98,1.7);scene.add(cooler);
-  box(cooler,[1.45,.92,.88],mat("#d8d4c6",.62),[0,.46,0]);box(cooler,[1.50,.16,.94],mat("#315b49",.45),[0,.92,0]);
-  const brandTex=texture((ctx,w,h)=>{ctx.fillStyle="#143b2d";ctx.fillRect(0,0,w,h);ctx.fillStyle="#f7f0dc";ctx.textAlign="center";ctx.textBaseline="middle";ctx.font="900 62px Arial";ctx.fillText("INGREDORA",w/2,h/2);},512,128);
-  const coolerLabel=new THREE.Mesh(new THREE.PlaneGeometry(1.25,.31),new THREE.MeshBasicMaterial({map:brandTex,toneMapped:false}));coolerLabel.position.set(0,.48,.451);cooler.add(coolerLabel);
-  // Food parcels and reusable cups on the tabletop.
-  for(const [x,color] of [[-3.8,"#d8b56b"],[-1.0,"#d8d2bd"],[1.25,"#b8c9a0"]] as Array<[number,string]>){
-    box(scene,[.62,.58,.48],mat(color,.94),[x,.67,.58]);
-    const label=new THREE.Mesh(new THREE.PlaneGeometry(.48,.24),new THREE.MeshBasicMaterial({map:brandTex,toneMapped:false}));label.position.set(x,.68,.827);scene.add(label);
+  const diners=placements.map(([name,x,z])=>{
+    const turn=Math.atan2(-x,-z);
+    return createDiner(name,x,z,turn,false);
+  });
+  diners.forEach(d=>scene.add(d.root));
+
+  // El equipo de camping lleva la marca Ingredora; no hay mobiliario de comedor.
+  const cooler=new THREE.Group();cooler.position.set(-5.45,-1.98,1.35);cooler.rotation.y=.32;scene.add(cooler);
+  box(cooler,[1.25,.82,.82],mat("#d8d4c6",.62),[0,.41,0]);
+  box(cooler,[1.30,.14,.88],mat("#315b49",.45),[0,.84,0]);
+  const brandTex=texture((ctx,w,h)=>{
+    ctx.fillStyle="#143b2d";ctx.fillRect(0,0,w,h);ctx.fillStyle="#f7f0dc";ctx.textAlign="center";ctx.textBaseline="middle";
+    ctx.font="900 58px Arial";ctx.fillText("INGREDORA",w/2,h/2);
+  },512,128);
+  const coolerLabel=new THREE.Mesh(new THREE.PlaneGeometry(1.08,.27),new THREE.MeshBasicMaterial({map:brandTex,toneMapped:false}));
+  coolerLabel.position.set(0,.43,.416);cooler.add(coolerLabel);
+  // A small branded pennant beside the tents reinforces Ingredora without adding clutter.
+  const flag=new THREE.Group();flag.position.set(5.7,-2.02,2.8);scene.add(flag);
+  const pole= new THREE.Mesh(new THREE.CylinderGeometry(.035,.045,2.65,8),mat("#6b553d",.9));pole.position.y=1.32;flag.add(pole);
+  const flagTex=texture((ctx,w,h)=>{ctx.fillStyle="#153d2e";ctx.fillRect(0,0,w,h);ctx.fillStyle="#fff6df";ctx.textAlign="center";ctx.textBaseline="middle";ctx.font="900 54px Arial";ctx.fillText("INGREDORA",w/2,h/2);},512,128);
+  const pennant=new THREE.Mesh(new THREE.PlaneGeometry(1.8,.52),new THREE.MeshBasicMaterial({map:flagTex,toneMapped:false,side:THREE.DoubleSide}));
+  pennant.position.set(.86,2.12,0);flag.add(pennant);
+
+  // Fogata central: piedras, leños y llamas contenidas.
+  const fireX=0,fireZ=0;
+  const stone=mat("#62645c",.96),wood=mat("#59402e",.98);
+  for(let i=0;i<12;i++){
+    const a=i*Math.PI/6,rock=new THREE.Mesh(new THREE.DodecahedronGeometry(.28,0),stone);
+    rock.position.set(Math.cos(a)*1.02,-1.88,Math.sin(a)*1.02);rock.scale.set(1,.62,.82);rock.castShadow=true;scene.add(rock);
   }
-  // Bruno's phone rests on the table in front of him; its screen shows the daily challenge and no signal.
-  const phone=new THREE.Group();phone.position.set(0,.49,1.24);phone.rotation.x=-.16;scene.add(phone);
-  box(phone,[.42,.72,.075],mat("#171c1b",.28,.25),[0,.37,0]);
-  const screenTex=texture((ctx,w,h)=>{ctx.fillStyle="#f4f0e5";ctx.fillRect(0,0,w,h);ctx.fillStyle="#174b38";ctx.fillRect(0,0,w,h*.20);ctx.fillStyle="#fff";ctx.textAlign="center";ctx.font="900 35px Arial";ctx.fillText("ingredora",w/2,h*.14);ctx.fillStyle="#244c3d";ctx.font="900 27px Arial";ctx.fillText("RETO DIARIO",w/2,h*.34);ctx.fillStyle="#6b746c";ctx.font="700 20px Arial";ctx.fillText("SIN CONEXIÓN",w/2,h*.53);ctx.fillStyle="#d33b36";ctx.fillRect(w*.34,h*.69,w*.32,h*.055);ctx.fillStyle="#6a6d66";ctx.font="700 18px Arial";ctx.fillText("REINTENTAR",w/2,h*.85);},256,512);
-  const phoneScreen=new THREE.Mesh(new THREE.PlaneGeometry(.36,.62),new THREE.MeshBasicMaterial({map:screenTex,toneMapped:false}));phoneScreen.position.set(0,.37,.041);phone.add(phoneScreen);
-  // Ingredora sign on the front of the picnic table, readable in the master shot.
-  const bannerTex=texture((ctx,w,h)=>{ctx.fillStyle="#153d2e";ctx.fillRect(0,0,w,h);ctx.strokeStyle="#e3c87e";ctx.lineWidth=10;ctx.strokeRect(8,8,w-16,h-16);ctx.fillStyle="#fff6df";ctx.textAlign="center";ctx.textBaseline="middle";ctx.font="900 86px Arial";ctx.fillText("INGREDORA",w/2,h/2);},768,180);
-  const banner=new THREE.Mesh(new THREE.PlaneGeometry(4.4,.78),new THREE.MeshBasicMaterial({map:bannerTex,toneMapped:false}));banner.position.set(0,-.28,2.225);scene.add(banner);
-  // Small fire pit with a soft flicker and a thin smoke plume for the final joke.
-  const pit=new THREE.Mesh(new THREE.CylinderGeometry(.85,.92,.28,12),mat("#4b4d47",.82));pit.position.set(6.0,-1.78,-4.2);scene.add(pit);
-  const ember=new THREE.Mesh(new THREE.CylinderGeometry(.58,.58,.12,12),mat("#382c23",.8));ember.position.set(6.0,-1.59,-4.2);scene.add(ember);
+  for(let i=0;i<3;i++){
+    const log=box(scene,[1.35,.18,.20],wood,[fireX+(i-1)*.12,-1.92,fireZ+(i-1)*.12]);
+    log.rotation.y=i*Math.PI/3;
+  }
+  const ember=new THREE.Mesh(new THREE.CylinderGeometry(.67,.72,.12,12),mat("#382c23",.8));
+  ember.position.set(fireX,-1.91,fireZ);scene.add(ember);
   const flameMat=new THREE.MeshStandardMaterial({color:"#f28a36",emissive:"#d85b18",emissiveIntensity:1.1,roughness:.65});
-  const flame=new THREE.Mesh(new THREE.ConeGeometry(.48,1.35,7),flameMat);flame.position.set(6.0,-.86,-4.2);scene.add(flame);
-  const flameCore=new THREE.Mesh(new THREE.ConeGeometry(.25,.88,6),new THREE.MeshStandardMaterial({color:"#ffd16c",emissive:"#ff9c27",emissiveIntensity:1.5}));flameCore.position.set(6.0,-.92,-4.2);scene.add(flameCore);
-  const fireLight=new THREE.PointLight(0xffa34b,4.5,13,2);fireLight.position.set(6.0,.1,-4.2);scene.add(fireLight);
-  const smokeMat=new THREE.MeshStandardMaterial({color:"#c6c8c0",transparent:true,opacity:.22,roughness:1,depthWrite:false});
-  const smoke=[] as THREE.Mesh[];
-  for(let i=0;i<3;i++){const puff=new THREE.Mesh(new THREE.SphereGeometry(.25+i*.08,8,6),smokeMat);puff.position.set(6.0,.1+i*.38,-4.2);scene.add(puff);smoke.push(puff);}
+  const flame=new THREE.Mesh(new THREE.ConeGeometry(.48,1.35,7),flameMat);flame.position.set(fireX,-1.05,fireZ);scene.add(flame);
+  const flameCore=new THREE.Mesh(new THREE.ConeGeometry(.25,.88,6),new THREE.MeshStandardMaterial({color:"#ffd16c",emissive:"#ff9c27",emissiveIntensity:1.5}));
+  flameCore.position.set(fireX,-1.10,fireZ);scene.add(flameCore);
+  const fireLight=new THREE.PointLight(0xffa34b,4.5,15,2);fireLight.position.set(fireX,.05,fireZ);scene.add(fireLight);
+  const smokeMat=new THREE.MeshStandardMaterial({color:"#c6c8c0",transparent:true,opacity:.18,roughness:1,depthWrite:false});
+  const smoke:THREE.Mesh[]=[];
+  for(let i=0;i<3;i++){const puff=new THREE.Mesh(new THREE.SphereGeometry(.25+i*.08,8,6),smokeMat);puff.position.set(fireX,.15+i*.38,fireZ);scene.add(puff);smoke.push(puff);}
   const update=(time:number,dialogue:CampingCue[])=>{
     const cue=dialogue.find(item=>time>=item.start&&time<=item.end);
     diners.forEach((rig,index)=>{
@@ -93,7 +116,7 @@ function makeScene(){
       rig.leftArm.rotation.z=gesture?-arm-Math.sin(time*1.25+phase)*.008:-.008;
       rig.rightArm.rotation.z=gesture?arm+Math.sin(time*1.2+phase)*.008:.008;
       rig.leftArm.rotation.x=gesture?.012:0;rig.rightArm.rotation.x=gesture?-.012:0;
-      rig.root.position.y=-1.92+Math.sin(time*.55+phase)*.0025;
+      rig.root.position.y=-1.92+Math.sin(time*.55+phase)*.0012;
     });
     const flicker=1+Math.sin(time*4.1)*.07+Math.sin(time*2.3)*.035;
     flame.scale.y=flicker;flameCore.scale.y=1+Math.sin(time*3.5)*.045;fireLight.intensity=4.3+Math.sin(time*3.2)*.25;
@@ -103,20 +126,19 @@ function makeScene(){
 }
 
 function cameraFor(shot:CampingShot,camera:THREE.PerspectiveCamera){
-  let p:[number,number,number]=[0,6.6,24],target:[number,number,number]=[0,1.0,-.4],fov=48;
-  switch(shot){
-    case "exterior":p=[0,7.0,26];target=[0,1.0,-.6];fov=50;break;
-    case "master":p=[0,6.4,23.5];target=[0,1.15,-.5];fov=48;break;
-    case "bruno":p=[0,3.7,12.2];target=[0,1.35,-1.35];fov=43;break;
-    case "martina":p=[-4.5,3.8,12.2];target=[-4.5,1.35,-1.4];fov=43;break;
-    case "tomas":p=[-2.25,3.8,12.2];target=[-2.25,1.35,-1.4];fov=43;break;
-    case "valentina":p=[2.25,3.8,12.2];target=[2.25,1.35,-1.4];fov=43;break;
-    case "ernesto":p=[4.5,3.8,12.2];target=[4.5,1.35,-1.4];fov=43;break;
-    case "reaction":p=[0,4.5,16];target=[0,1.5,-1.1];fov=48;break;
-  }
-  camera.position.set(...p);camera.lookAt(...target);camera.fov=fov;camera.updateProjectionMatrix();
+  const views:Record<string,{p:[number,number,number];target:[number,number,number];fov:number}>={
+    exterior:{p:[0,7.0,26],target:[0,0,0],fov:50},
+    master:{p:[0,7.0,22],target:[0,.25,0],fov:48},
+    bruno:{p:[0,3.65,2.9],target:[0,1.10,-4.05],fov:43},
+    martina:{p:[-1.9,3.65,-.1],target:[-3.9,1.10,-.2],fov:43},
+    tomas:{p:[-1.0,3.65,.7],target:[-2.25,1.10,3.45],fov:43},
+    valentina:{p:[1.0,3.65,.7],target:[2.25,1.10,3.45],fov:43},
+    ernesto:{p:[1.9,3.65,-.1],target:[3.9,1.10,-.2],fov:43},
+    reaction:{p:[0,5.2,14],target:[0,1.15,0],fov:48}
+  };
+  const v=views[shot]??views.master;
+  camera.position.set(...v.p);camera.lookAt(...v.target);camera.fov=v.fov;camera.updateProjectionMatrix();
 }
-
 function drawCaptions(ctx:CanvasRenderingContext2D,pkg:CampingPackage,time:number){
   const cue=pkg.dialogue.find(c=>time>=c.start&&time<=c.end);if(!cue)return;
   const names:Record<EntrePartidasSpeaker,string>={bruno:"BRUNO",martina:"MARTINA",tomas:"TOMÁS",valentina:"VALENTINA",ernesto:"ERNESTO"};
