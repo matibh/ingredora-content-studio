@@ -41,9 +41,9 @@ SEGMENTS = [
     {"id":"14-bruno-experiencia","speaker":"bruno","text":"Experiencia.","shot":"bruno","look":"martina","pause":0.20},
     {"id":"15-martina-anos","speaker":"martina","text":"¿Cuántos años?","shot":"martina","look":"bruno","pause":0.18},
     {"id":"16-bruno-muchos","speaker":"bruno","text":"Muchos.","shot":"bruno","look":"martina","pause":0.20},
-    {"id":"17-martina-trayectoria","speaker":"martina","text":"Bueno, por lo menos tenés trayectoria.","shot":"martina","look":"bruno","pause":0.30,"laugh_after":True},
+    {"id":"17-martina-trayectoria","speaker":"martina","text":"Bueno, por lo menos tenés trayectoria.","shot":"wide","look":"bruno","pause":0.30,"laugh_after":True},
     {"id":"18-ernesto-profesor","speaker":"ernesto","text":"Bruno, ¿no eras vos el que le iba a enseñar?","shot":"ernesto","look":"bruno","pause":0.25},
-    {"id":"19-bruno-dificil","speaker":"bruno","text":"Le estoy enseñando. Está aprendiendo a jugar contra alguien difícil.","shot":"bruno","look":"ernesto","pause":0.26},
+    {"id":"19-bruno-dificil","speaker":"bruno","text":"Le estoy enseñando. Está aprendiendo a jugar contra alguien difícil.","shot":"wide","look":"ernesto","pause":0.26},
     {"id":"20-martina-como-vos","speaker":"martina","text":"Ah, ¿como vos?","shot":"martina","look":"bruno","pause":0.38,"laugh_after":True},
     {"id":"21-bruno-revancha","speaker":"bruno","text":"Dale, una más. Esta la gano yo.","shot":"bruno","look":"martina","pause":0.26},
     {"id":"22-martina-ranking","speaker":"martina","text":"Listo. ¿Cómo veo el ranking?","shot":"martina","look":"bruno","pause":0.32},
@@ -52,7 +52,7 @@ SEGMENTS = [
     {"id":"25-martina-bueno","speaker":"martina","text":"¿Eso es bueno?","shot":"martina","look":"bruno","pause":0.25},
     {"id":"26-bruno-delicada","speaker":"bruno","text":"¡No! Bueno, para vos sí. Para mí es una situación bastante delicada.","shot":"bruno","look":"martina","pause":0.38,"laugh_after":True},
     {"id":"27-ernesto-pide","speaker":"ernesto","text":"Che, ¿me enseñás a mí también?","shot":"ernesto","look":"bruno","pause":0.24},
-    {"id":"28-bruno-clase","speaker":"bruno","text":"¡No! ¡Se terminó la clase!","shot":"bruno","look":"ernesto","pause":0.25}
+    {"id":"28-bruno-clase","speaker":"bruno","text":"¡No! ¡Se terminó la clase!","shot":"wide","look":"ernesto","pause":0.25}
 ]
 
 def run(cmd: list[str]) -> str:

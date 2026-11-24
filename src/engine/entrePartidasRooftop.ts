@@ -681,7 +681,12 @@ export async function renderEntrePartidasRooftopToWebM(
       if (signal?.aborted) throw new Error("Render cancelado.");
       const time = frame / pkg.fps;
       const cue = pkg.dialogue.find(item => time >= item.start && time <= item.end);
-      const shot: RooftopShot = time < 3.2 ? "exterior" : cue?.shot ?? "wide";
+      const heldCue = cue ? undefined : pkg.dialogue.reduce<RooftopCue | undefined>(
+        (latest, item) => item.end < time ? item : latest,
+        undefined
+      );
+      // Keep the last editorial shot during dialogue gaps; do not insert an automatic wide shot.
+      const shot: RooftopShot = time < 3.2 ? "exterior" : cue?.shot ?? heldCue?.shot ?? pkg.dialogue[0]?.shot ?? "wide";
       updateParty(time, cue, party);
       cameraFor(shot, camera, time, party);
       renderer.render(party.scene, camera);
