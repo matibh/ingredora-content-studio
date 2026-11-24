@@ -92,16 +92,23 @@ async def main():
     total = math.ceil((end_card_start + outro_duration + .45) * FPS) / FPS
     bed_duration = end_card_start + .9
     bed = AUDIO / "party-bed.mp3"
-    expression = (
-        "0.055*sin(2*PI*55*t)*(0.55+0.45*cos(2*PI*1.82*t))"
-        "+0.018*sin(2*PI*110*t)"
-        "+0.012*sin(2*PI*220*t)*pow(max(0,sin(2*PI*0.455*t)),8)"
-        "+0.004*sin(2*PI*880*t)*pow(max(0,sin(2*PI*1.82*t+1.1)),20)"
+    # Base instrumental electrónica discreta construida con tonos y pulsos simples.
+    # Se generan capas separadas para evitar expresiones complejas incompatibles entre builds de FFmpeg.
+    tone_filter = (
+        "[0:a]tremolo=f=1.82:d=0.88,volume=0.22[a0];"
+        "[1:a]tremolo=f=1.82:d=0.34,volume=0.07[a1];"
+        "[2:a]tremolo=f=0.91:d=0.42,volume=0.05[a2];"
+        "[3:a]tremolo=f=3.64:d=0.72,volume=0.025[a3];"
+        "[a0][a1][a2][a3]amix=inputs=4:duration=longest,lowpass=f=9000,"
+        "afade=t=out:st=" + str(end_card_start) + ":d=0.75,volume=0.72[out]"
     )
     run([
-        "ffmpeg", "-y", "-f", "lavfi", "-i",
-        "aevalsrc=" + expression + ":s=48000:d=" + str(bed_duration),
-        "-af", "lowpass=f=9000,afade=t=out:st=" + str(end_card_start) + ":d=0.75,volume=0.72",
+        "ffmpeg", "-y",
+        "-f", "lavfi", "-i", "sine=frequency=55:sample_rate=48000:duration=" + str(bed_duration),
+        "-f", "lavfi", "-i", "sine=frequency=110:sample_rate=48000:duration=" + str(bed_duration),
+        "-f", "lavfi", "-i", "sine=frequency=164.81:sample_rate=48000:duration=" + str(bed_duration),
+        "-f", "lavfi", "-i", "sine=frequency=220:sample_rate=48000:duration=" + str(bed_duration),
+        "-filter_complex", tone_filter, "-map", "[out]",
         "-c:a", "libmp3lame", "-b:a", "160k", str(bed)
     ])
     mix_inputs = [(bed, 0.0, .20)] + clips + [(OUTRO, end_card_start, .76)]
