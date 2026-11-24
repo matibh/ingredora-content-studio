@@ -1,0 +1,88 @@
+name: Render Entre Partidas rooftop party episode
+
+on:
+  push:
+    branches: ["feature/entre-partidas-ad-engine"]
+    paths:
+      - "src/engine/entrePartidasRooftop.ts"
+      - "src/engine/entrePartidasDinner.ts"
+      - "src/render-rooftop.ts"
+      - "public/studio/packages/entre-partidas-rooftop.v1.json"
+      - "scripts/generate-entre-partidas-rooftop-audio.py"
+      - "scripts/render-rooftop.mjs"
+      - "render-rooftop.html"
+      - ".github/workflows/render-entre-partidas-rooftop.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: entre-partidas-rooftop-render
+  cancel-in-progress: true
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+      - name: Checkout original laughter and series outro
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: _uploaded-audio-assets
+      - name: Stage original combined laugh and outro
+        run: |
+          mkdir -p public/studio/audio/entre-partidas/rooftop-08
+          cp "_uploaded-audio-assets/risa y outro.mp3" "public/studio/audio/entre-partidas/rooftop-08/risa-y-outro.mp3"
+          test -s "public/studio/audio/entre-partidas/rooftop-08/risa-y-outro.mp3"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install project and browser automation
+        run: |
+          npm install --no-audit --no-fund
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+      - name: Build TypeScript and Vite
+        run: npm run build
+      - name: Install FFmpeg and free voice synthesis tool
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+          ffmpeg -version
+          python3 -m venv /tmp/entre-partidas-rooftop
+          /tmp/entre-partidas-rooftop/bin/python -m pip install --disable-pip-version-check --no-cache-dir edge-tts
+      - name: Generate timed dialogue, party music and original outro
+        run: /tmp/entre-partidas-rooftop/bin/python scripts/generate-entre-partidas-rooftop-audio.py
+      - name: Start Vite source server
+        run: |
+          npm run dev -- --host 0.0.0.0 --port 4173 > /tmp/vite-rooftop.log 2>&1 &
+          for i in $(seq 1 60); do
+            curl -fsS http://127.0.0.1:4173/ >/dev/null && break
+            sleep 2
+          done
+      - name: Render the 3D rooftop episode in Three.js
+        run: node scripts/render-rooftop.mjs
+      - name: Preserve original WebM render
+        uses: actions/upload-artifact@v4
+        with:
+          name: ingredora-entre-partidas-la-alumna-webm
+          path: /tmp/ingredora-entre-partidas-la-alumna.webm
+          if-no-files-found: error
+          retention-days: 30
+      - name: Print Vite diagnostics on failure
+        if: failure()
+        run: cat /tmp/vite-rooftop.log || true
+      - name: Mux dialogue, party music and original outro into MP4
+        run: |
+          ffmpeg -y -i /tmp/ingredora-entre-partidas-la-alumna.webm -i public/studio/audio/entre-partidas/rooftop-08/voice-track.mp3 -map 0:v:0 -map 1:a:0 -c:v libx264 -preset veryfast -crf 20 -pix_fmt yuv420p -c:a aac -b:a 192k -shortest -movflags +faststart /tmp/ingredora-entre-partidas-la-alumna.mp4
+          test -s /tmp/ingredora-entre-partidas-la-alumna.mp4
+      - name: Upload final MP4
+        uses: actions/upload-artifact@v4
+        with:
+          name: ingredora-entre-partidas-la-alumna-mp4
+          path: /tmp/ingredora-entre-partidas-la-alumna.mp4
+          if-no-files-found: error
+          retention-days: 30
