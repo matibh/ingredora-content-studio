@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "engineVersion": "entre-partidas-bus-stop-1.0.0",
+  "id": "ingredora-entre-partidas-la-parada-009",
+  "title": "Entre Partidas — La parada",
+  "createdAt": "2026-11-24T00:00:00-03:00",
+  "fps": 24,
+  "width": 720,
+  "height": 1280,
+  "durationSeconds": 90,
+  "endCardStart": 78,
+  "dialogue": [],
+  "voiceoverUrl": "studio/audio/entre-partidas/bus-stop-09/voice-track.mp3",
+  "wordTimingsUrl": "studio/audio/entre-partidas/bus-stop-09/word-timings.json",
+  "chapterNumber": 9
+}

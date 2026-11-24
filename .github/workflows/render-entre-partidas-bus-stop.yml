@@ -1,0 +1,100 @@
+name: Render Entre Partidas — La parada nocturna
+on:
+  push:
+    branches: ["feature/entre-partidas-la-parada-night"]
+    paths:
+      - "src/engine/entrePartidasBusStop.ts"
+      - "src/engine/entrePartidasDinner.ts"
+      - "src/render-bus-stop.ts"
+      - "public/studio/packages/entre-partidas-bus-stop.v1.json"
+      - "scripts/generate-entre-partidas-bus-stop-audio.py"
+      - "scripts/render-bus-stop.mjs"
+      - "render-bus-stop.html"
+      - ".github/workflows/render-entre-partidas-bus-stop.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: entre-partidas-bus-stop-render
+  cancel-in-progress: true
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+      - name: Checkout original laughter and series outro
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: _uploaded-audio-assets
+      - name: Stage original laughter and original series outro
+        run: |
+          mkdir -p public/studio/audio/entre-partidas/bus-stop-09
+          cp "_uploaded-audio-assets/risa.mp3" public/studio/audio/entre-partidas/bus-stop-09/risa.mp3
+          cp "_uploaded-audio-assets/risa y outro.mp3" public/studio/audio/entre-partidas/bus-stop-09/risa-y-outro.mp3
+          test -s public/studio/audio/entre-partidas/bus-stop-09/risa.mp3
+          test -s public/studio/audio/entre-partidas/bus-stop-09/risa-y-outro.mp3
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install project and browser automation
+        run: |
+          npm install --no-audit --no-fund
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+      - name: Build TypeScript and Vite
+        run: npm run build
+      - name: Start Vite source server
+        run: |
+          npm run dev -- --host 0.0.0.0 --port 4173 > /tmp/vite-bus-stop.log 2>&1 &
+          for i in $(seq 1 60); do
+            curl -fsS http://127.0.0.1:4173/ >/dev/null && break
+            sleep 2
+          done
+      - name: Install FFmpeg and free voice synthesis tool
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+          ffmpeg -version
+          python3 -m venv /tmp/entre-partidas-bus-stop
+          /tmp/entre-partidas-bus-stop/bin/python -m pip install --disable-pip-version-check --no-cache-dir edge-tts
+      - name: Retrieve Chapter 2 and extract original opening music
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p /tmp/episode-2-source
+          gh run download 45046758167 --repo "$GITHUB_REPOSITORY" --name ingredora-entre-partidas-cena-mp4 --dir /tmp/episode-2-source
+          source="/tmp/episode-2-source/ingredora-entre-partidas-cena.mp4"
+          test -s "$source"
+          ffmpeg -hide_banner -loglevel error -y -i "$source" -t 3.15 -vn -af "volume=+6dB,afade=t=in:st=0:d=0.12,afade=t=out:st=2.80:d=0.35" -ar 48000 -ac 2 -c:a pcm_s16le public/studio/audio/entre-partidas/bus-stop-09/chapter-2-intro-music.wav
+          test -s public/studio/audio/entre-partidas/bus-stop-09/chapter-2-intro-music.wav
+      - name: Generate three character voices, laughs and original outro
+        run: /tmp/entre-partidas-bus-stop/bin/python scripts/generate-entre-partidas-bus-stop-audio.py
+      - name: Render the night bus stop episode in Three.js
+        run: node scripts/render-bus-stop.mjs
+      - name: Preserve original WebM render
+        uses: actions/upload-artifact@v4
+        with:
+          name: ingredora-entre-partidas-la-parada-webm
+          path: /tmp/ingredora-entre-partidas-la-parada.webm
+          if-no-files-found: error
+          retention-days: 30
+      - name: Print Vite diagnostics on failure
+        if: failure()
+        run: cat /tmp/vite-bus-stop.log || true
+      - name: Mux dialogue, original laughs and series outro into MP4
+        run: |
+          ffmpeg -y -i /tmp/ingredora-entre-partidas-la-parada.webm -i public/studio/audio/entre-partidas/bus-stop-09/voice-track.mp3 -map 0:v:0 -map 1:a:0 -c:v libx264 -preset veryfast -crf 20 -pix_fmt yuv420p -c:a aac -b:a 192k -shortest -movflags +faststart /tmp/ingredora-entre-partidas-la-parada.mp4
+          test -s /tmp/ingredora-entre-partidas-la-parada.mp4
+      - name: Upload final MP4
+        uses: actions/upload-artifact@v4
+        with:
+          name: ingredora-entre-partidas-la-parada-mp4
+          path: /tmp/ingredora-entre-partidas-la-parada.mp4
+          if-no-files-found: error
+          retention-days: 30
