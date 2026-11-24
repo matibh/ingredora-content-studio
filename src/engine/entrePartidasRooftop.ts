@@ -204,7 +204,7 @@ function createCrowd(scene: THREE.Scene) {
     const outfit = outfits[outfitIndex];
     const [centerX, centerZ] = clusterCenters[cluster];
     const turn = Math.atan2(centerX - x, centerZ - z) + ((index % 3) - 1) * .10;
-    const rig = createDiner(archetype, x, z, turn, false, true, false, archetype === "martina");
+    const rig = createDiner(archetype, x, z, turn, false, true);
     dressRig(rig, archetype, outfit);
     addCrowdAccessory(rig, index, outfit.accent);
     rig.root.scale.setScalar(scale);
@@ -323,7 +323,7 @@ function createCityAndSky(scene: THREE.Scene) {
     box(building, [2.65, h, 2.5], skylineMats[i % skylineMats.length], [0, h / 2, 0], false);
 
     const glow = new THREE.MeshBasicMaterial({ color: "#dfb97c", transparent: true, opacity: .7 });
-    const rows = Math.max(1, Math.floor((h - .9) / 1.3));
+    const rows = Math.max(1, Math.ceil((h - 1.1) / 1.25));
     for (let row = 0; row < rows; row++) {
       const windowY = .70 + row * 1.25;
       if (windowY + .21 >= h) continue;
@@ -331,9 +331,13 @@ function createCityAndSky(scene: THREE.Scene) {
       // Two separated front columns, built as shallow panes flush with the wall.
       for (let col = 0; col < 2; col++) {
         if ((i + row + col) % 3 === 0) continue;
+        const paneX = col === 0 ? -.57 : .57;
         const pane = new THREE.Mesh(new THREE.BoxGeometry(.34, .42, .045), glow);
-        pane.position.set(col === 0 ? -.57 : .57, windowY, 1.272);
+        pane.position.set(paneX, windowY, 1.272);
         building.add(pane);
+        const backPane = new THREE.Mesh(new THREE.BoxGeometry(.34, .42, .045), glow);
+        backPane.position.set(paneX, windowY, -1.272);
+        building.add(backPane);
       }
 
       // Side panes are part of the same building group for oblique camera angles.
