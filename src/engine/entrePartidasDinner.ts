@@ -24,13 +24,13 @@ const texture=(draw:(ctx:CanvasRenderingContext2D,w:number,h:number)=>void,w=512
   draw(ctx,w,h);const map=new THREE.CanvasTexture(canvas);map.colorSpace=THREE.SRGBColorSpace;map.anisotropy=8;return map;
 };
 
-export function createDiner(name:DinnerSpeaker,x:number,z:number,turn:number,includeChair=true,standing=false,groundSeated=false):DinerRig{
+export function createDiner(name:DinnerSpeaker,x:number,z:number,turn:number,includeChair=true,standing=false,groundSeated=false,rooftopMartina=false):DinerRig{
   const root=new THREE.Group();root.position.set(x,groundSeated?-2.08:-1.92,z);root.rotation.y=turn;
   const skinColors:Record<DinnerSpeaker,string>={bruno:"#c98e6e",martina:"#d6a080",tomas:"#e1b18e",valentina:"#dfaa8b",ernesto:"#c99a79"};
   const hairColors:Record<DinnerSpeaker,string>={bruno:"#30241f",martina:"#30201c",tomas:"#4b3328",valentina:"#211b1a",ernesto:"#8b8a82"};
-  const shirtColors:Record<DinnerSpeaker,string>={bruno:"#c46a43",martina:"#f4cbd6",tomas:"#527c78",valentina:"#47788a",ernesto:"#718064"};
-  const skin=mat(skinColors[name]),hair=mat(hairColors[name],.92),shirt=mat(shirtColors[name],.88);
-  const pants=mat(name==="ernesto"?"#4b5148":name==="martina"?"#8eaabd":"#35414a"),shoes=mat("#23282a",.58),dark=mat("#25201e",.7),ivory=mat("#fff8e9",.42);
+  const shirtColors:Record<DinnerSpeaker,string>={bruno:"#c46a43",martina:"#bd7958",tomas:"#527c78",valentina:"#47788a",ernesto:"#718064"};
+  const skin=mat(skinColors[name]),hair=mat(hairColors[name],.92),shirt=mat(rooftopMartina&&name==="martina"?"#f4cbd6":shirtColors[name],.88);
+  const pants=mat(name==="ernesto"?"#4b5148":"#35414a"),shoes=mat("#23282a",.58),dark=mat("#25201e",.7),ivory=mat("#fff8e9",.42);
   // The same character rig can be reused in another seat without carrying its dining chair.
   if(includeChair){
     const chairWood=mat("#6e5038",.58),chairFabric=mat(name==="bruno"||name==="valentina"?"#526b69":"#7d6550",.95);
@@ -40,7 +40,7 @@ export function createDiner(name:DinnerSpeaker,x:number,z:number,turn:number,inc
   }
   // Bruno's standing pose is a complete body; the seated silhouettes remain unchanged for the four diners.
   if(standing){
-    if(name==="martina"){
+    if(name==="martina"&&rooftopMartina){
       // Martina's slim canonical silhouette: a light-pink sleeveless tank top with bare shoulders.
       box(root,[.76,1.12,.52],shirt,[0,2.05,-.04]);
       box(root,[.105,.31,.52],shirt,[-.205,2.62,-.04]);
@@ -115,8 +115,8 @@ export function createDiner(name:DinnerSpeaker,x:number,z:number,turn:number,inc
   const mouth=box(head,[.16,.026,.02],mat("#713b37"),[0,-.25,.36],false);
   const makeArm=(side:number)=>{
     const pivot=new THREE.Group();
-    pivot.position.set(side*(name==="martina"&&standing?.40:standing?.48:.52),standing?2.44:(groundSeated?1.82:2.54),.02);root.add(pivot);
-    if(standing&&name==="martina"){
+    pivot.position.set(side*(name==="martina"&&standing&&rooftopMartina?.40:standing?.48:.52),standing?2.44:(groundSeated?1.82:2.54),.02);root.add(pivot);
+    if(standing&&name==="martina"&&rooftopMartina){
       // Bare, narrower arms keep the tank-top shoulders visibly uncovered.
       box(pivot,[.23,.54,.25],skin,[side*.025,-.07,.02]);
       box(pivot,[.19,.44,.21],skin,[side*.035,-.50,.055]);
