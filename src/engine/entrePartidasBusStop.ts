@@ -73,13 +73,13 @@ type BusRig = {
 function makeBus(scene: THREE.Scene): BusRig {
   const root = new THREE.Group(); root.position.set(-19, -2.08, -6.0); scene.add(root);
   const body = mat("#e3e3d7", .56), lower = mat("#183e50", .48), stripe = mat("#f0b94f", .48);
-  const glass = new THREE.MeshStandardMaterial({ color: "#152b39", roughness: .20, metalness: .12, emissive: "#142b38", emissiveIntensity: .28 });
+  const glass = new THREE.MeshStandardMaterial({ color: "#315064", roughness: .20, metalness: .12, transparent: true, opacity: .58, depthWrite: false, emissive: "#142b38", emissiveIntensity: .22 });
   const rubber = mat("#171a1c", .94), hub = mat("#8b9798", .36, .62), lamp = new THREE.MeshStandardMaterial({ color: "#fff0bd", emissive: "#ffd775", emissiveIntensity: 2.8 });
-  box(root, [8.25, 2.65, 2.52], body, [0, 1.52, 0]);
+  box(root, [8.25, 2.65, 1.20], body, [0, 1.52, 0]);
   box(root, [8.22, .62, 2.55], lower, [0, .42, 0]);
   box(root, [8.24, .18, 2.57], stripe, [0, 1.05, 0], false);
   box(root, [8.15, .12, 2.58], mat("#142e3b", .55), [0, .12, 0], false);
-  // Front and rear windscreens.
+  // Side rails keep the body silhouette while leaving the passenger windows and door readable.\n  for (const side of [-1, 1]) {\n    box(root, [8.18, .30, .14], lower, [0, 2.73, side * 1.20], false);\n    box(root, [8.18, .12, .14], stripe, [0, 2.93, side * 1.20], false);\n  }\n  // Front and rear windscreens.
   box(root, [.045, 1.34, 2.12], glass, [4.135, 2.05, 0], false);
   box(root, [.045, 1.20, 2.10], glass, [-4.135, 2.08, 0], false);
   // Repeated passenger windows, kept simple and flush with both bus sides.
@@ -94,8 +94,7 @@ function makeBus(scene: THREE.Scene): BusRig {
   const doorMat = mat("#bac8c5", .54);
   const doorLeft = box(root, [.88, 1.88, .065], doorMat, [-1.88, 1.72, 1.295], false);
   const doorRight = box(root, [.88, 1.88, .065], doorMat, [-.98, 1.72, 1.295], false);
-  box(root, [.045, 1.83, .055], glass, [-1.88, 1.74, 1.336], false);
-  box(root, [.045, 1.83, .055], glass, [-.98, 1.74, 1.336], false);
+  // The sliding door panels stay solid; the gap behind them is open when they part.
   // Wheels and metallic hubs.
   for (const x of [-2.75, 2.75]) {
     const wheel = new THREE.Mesh(new THREE.CylinderGeometry(.51, .51, .22, 14), rubber);
