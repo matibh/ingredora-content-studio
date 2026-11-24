@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "engineVersion": "entre-partidas-camping-1.0.0",
+  "id": "ingredora-entre-partidas-camping-007",
+  "title": "Entre Partidas — Sin señal",
+  "createdAt": "2026-11-24T00:00:00-03:00",
+  "fps": 24,
+  "width": 720,
+  "height": 1280,
+  "durationSeconds": 120,
+  "endCardStart": 108,
+  "dialogue": [],
+  "voiceoverUrl": "studio/audio/entre-partidas/camping-07/voice-track.mp3",
+  "wordTimingsUrl": "studio/audio/entre-partidas/camping-07/word-timings.json",
+  "chapterNumber": 7
+}
