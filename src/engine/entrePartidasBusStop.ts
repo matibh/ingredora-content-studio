@@ -155,11 +155,11 @@ function makeWorld() {
       box(scene, [.20, b.h - .38, .16], facadeLight, [b.x + side * (b.w / 2 - .15), baseY + b.h / 2, faceZ + .10], false);
     }
     // Upper floors only: ground level is reserved for entrances, never windows.
-    const upperFloors = Math.max(1, Math.floor((b.h - 2.4) / 2.05));
+    const upperFloors = Math.max(1, Math.floor((b.h - 2.7) / 1.8));
     const columns = Math.max(2, Math.floor((b.w - 1.0) / 1.85));
     const spacing = (b.w - 1.6) / columns;
     for (let floor = 0; floor < upperFloors; floor++) {
-      const y = baseY + 3.02 + floor * 2.05;
+      const y = baseY + 3.85 + floor * 1.8;
       for (let col = 0; col < columns; col++) {
         const x = b.x - ((columns - 1) * spacing) / 2 + col * spacing;
         const windowMaterial = (floor + col + index) % 3 === 0 ? lit : darkGlass;
