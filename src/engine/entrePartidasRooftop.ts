@@ -685,8 +685,9 @@ export async function renderEntrePartidasRooftopToWebM(
         (latest, item) => item.end < time ? item : latest,
         undefined
       );
-      // Keep the last editorial shot during dialogue gaps; do not insert an automatic wide shot.
-      const shot: RooftopShot = time < 3.2 ? "exterior" : cue?.shot ?? heldCue?.shot ?? pkg.dialogue[0]?.shot ?? "wide";
+      // Wide framing is reserved for spoken lines; in the following pause return to that speaker's close-up.
+      const heldShot: RooftopShot | undefined = heldCue?.shot === "wide" ? heldCue.speaker : heldCue?.shot;
+      const shot: RooftopShot = time < 3.2 ? "exterior" : cue?.shot ?? heldShot ?? pkg.dialogue[0]?.shot ?? "wide";
       updateParty(time, cue, party);
       cameraFor(shot, camera, time, party);
       renderer.render(party.scene, camera);
