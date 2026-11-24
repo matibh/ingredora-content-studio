@@ -54,7 +54,7 @@ const textMap = (title: string, subtitle: string, bg: string, fg = "#fff5df") =>
   ctx.font = "700 34px Arial"; ctx.fillText(subtitle, 256, 178);
   const map = new THREE.CanvasTexture(canvas); map.colorSpace = THREE.SRGBColorSpace; map.anisotropy = 4; return map;
 };
-const label = (parent: THREE.Object3D, title: string, subtitle: string, pos: [number, number, number], size: [number, number], bg: string, side = THREE.DoubleSide) => {
+const label = (parent: THREE.Object3D, title: string, subtitle: string, pos: [number, number, number], size: [number, number], bg: string, side: THREE.Side = THREE.DoubleSide) => {
   const map = textMap(title, subtitle, bg);
   const mesh = new THREE.Mesh(new THREE.PlaneGeometry(size[0], size[1]), new THREE.MeshBasicMaterial({ map, side, toneMapped: false }));
   mesh.position.set(...pos); parent.add(mesh); return mesh;
