@@ -15,7 +15,6 @@ VOICE=AUDIO/"voice-track.mp3"
 TIMINGS=AUDIO/"word-timings.json"
 FPS=24
 INTRO_SECONDS=3.15
-LAUGH_SECONDS=2.20
 CAST={
  "bruno":{"voice":"es-AR-TomasNeural","rate":"+5%","pitch":"+3Hz","volume":"+6%"},
  "martina":{"voice":"es-AR-ElenaNeural","rate":"-2%","pitch":"-2Hz","volume":"+5%"},
@@ -52,7 +51,7 @@ SEGMENTS=[
  {"id":"26-valentina-nombre","speaker":"valentina","text":"¿Cómo se va a llamar?","look":"bruno","shot":"valentina","pause":.22},
  {"id":"27-bruno-brunos","speaker":"bruno","text":"Bruno's.","look":"valentina","shot":"bruno","pause":.24},
  {"id":"28-ernesto-que-sirven","speaker":"ernesto","text":"¿Y qué sirven?","look":"bruno","shot":"ernesto","pause":.22},
- {"id":"29-bruno-delivery","speaker":"bruno","text":"Delivery.","look":"ernesto","shot":"bruno","laugh":True,"pause":.50}
+ {"id":"29-bruno-delivery","speaker":"bruno","text":"Delivery.","look":"ernesto","shot":"bruno","pause":.12}
 ]
 def run(cmd:list[str])->str:
  p=subprocess.run(cmd,check=True,capture_output=True,text=True);return p.stdout.strip()
@@ -85,20 +84,17 @@ async def main():
  AUDIO.mkdir(parents=True,exist_ok=True)
  for p in [INTRO,LAUGH,OUTRO]:
   if not p.is_file() or p.stat().st_size<100:raise SystemExit("Falta el recurso de audio original: "+str(p))
- if duration(OUTRO)<INTRO_SECONDS+1.0:raise SystemExit("El archivo risa y outro.mp3 no contiene un cierre musical suficiente.")
- if duration(LAUGH)<LAUGH_SECONDS:raise SystemExit("risa.mp3 debe durar al menos 2.20 segundos.")
+ if duration(OUTRO)<1.0:raise SystemExit("El archivo risa y outro.mp3 no contiene un cierre suficiente.")
+ if duration(LAUGH)<1.65:raise SystemExit("risa.mp3 debe durar al menos 1.65 segundos para los remates intermedios.")
  with tempfile.TemporaryDirectory(prefix="arcade-05-",dir=AUDIO) as td:
   work=Path(td);parts=[];cues=[];words=[];cursor=INTRO_SECONDS
   intro=work/"intro.wav"
   normalize(INTRO,intro,f"atrim=start=0:end={INTRO_SECONDS:.3f},volume=0dB,afade=t=in:st=0:d=0.12,afade=t=out:st={INTRO_SECONDS-.35:.3f}:d=0.35")
   parts.append(intro)
   laugh=work/"laugh.wav";normalize(LAUGH,laugh,"atrim=start=0:end=1.65,volume=-5dB,afade=t=in:st=0:d=0.04,afade=t=out:st=1.35:d=0.30")
-  final_laugh=work/"final-laugh.wav"
-  normalize(LAUGH,final_laugh,f"atrim=start=0:end={LAUGH_SECONDS:.2f},volume=-5.5dB,afade=t=in:st=0:d=0.05,afade=t=out:st={LAUGH_SECONDS-.30:.2f}:d=0.30")
-  outro_music=work/"outro-music.wav"
-  outro_music_seconds=duration(OUTRO)-LAUGH_SECONDS
-  normalize(OUTRO,outro_music,f"atrim=start={LAUGH_SECONDS:.2f},volume=-1.2dB,afade=t=in:st=0:d=0.12,afade=t=out:st={max(0.0,outro_music_seconds-.65):.2f}:d=0.65")
-  pad=work/"pad.wav"
+  outro_track=work/"outro-y-risas-completo.wav"
+  # The original combined outro asset already contains its own laughter and music. Use it once, intact.
+  normalize(OUTRO,outro_track)
   for i,seg in enumerate(SEGMENTS):
    clip,clip_words,seconds=await synthesize(seg,work,i)
    start=cursor;end=start+seconds
@@ -106,18 +102,16 @@ async def main():
    for w in clip_words:words.append({"segment":seg["id"],"speaker":seg["speaker"],"text":w["text"],"start":round(start+w["start"],3),"end":round(start+w["end"],3)})
    parts.append(clip);cursor=end
    if seg.get("laugh"):parts.append(laugh);cursor+=1.65
-   pause_seconds=.22 if i==len(SEGMENTS)-1 else seg.get("pause",.25)
+   pause_seconds=.12 if i==len(SEGMENTS)-1 else seg.get("pause",.25)
    pause=work/f"pause-{i:02d}.wav";silence(pause,pause_seconds);parts.append(pause);cursor+=pause_seconds
-  # Match the established series ending: final laugh first, then the instrumental tail of "risa y outro.mp3".
-  parts.append(final_laugh);cursor+=duration(final_laugh)
-  end_card_pause=work/"end-card-pause.wav";silence(end_card_pause,.18);parts.append(end_card_pause);cursor+=.18
+  # After the final punchline, play only the complete original "risa y outro.mp3" asset.
   end_card=cursor
-  parts.append(outro_music);total=cursor+duration(outro_music)
+  parts.append(outro_track);total=cursor+duration(outro_track)
   combined=work/"combined.wav";concat(parts,combined,work)
   run(["ffmpeg","-hide_banner","-loglevel","error","-y","-i",str(combined),"-c:a","libmp3lame","-b:a","192k",str(VOICE)])
   pkg=json.loads(PACKAGE.read_text(encoding="utf-8"))
   pkg["dialogue"]=cues;pkg["endCardStart"]=round(end_card,3);pkg["durationSeconds"]=math.ceil(total)
   PACKAGE.write_text(json.dumps(pkg,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
   TIMINGS.write_text(json.dumps({"fps":FPS,"durationSeconds":pkg["durationSeconds"],"endCardStart":round(end_card,3),"dialogue":cues,"words":words},ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
-  print(f"VOICE={VOICE} duration={duration(VOICE):.2f}s; intro={duration(intro):.2f}s; dialogue={len(cues)}; final_laugh={duration(final_laugh):.2f}s; outro_music={duration(outro_music):.2f}s; endcard={end_card:.2f}s; total={pkg['durationSeconds']}s")
+  print(f"VOICE={VOICE} duration={duration(VOICE):.2f}s; intro={duration(intro):.2f}s; dialogue={len(cues)}; outro_y_risas={duration(outro_track):.2f}s (complete original file); endcard={end_card:.2f}s; total={pkg['durationSeconds']}s")
 if __name__=="__main__":asyncio.run(main())

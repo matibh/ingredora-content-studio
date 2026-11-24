@@ -296,13 +296,19 @@ export function createEntrePartidasFeedbackSet(world:THREE.Scene){
   ];
   const diners=placements.map(([name,x,z,turn])=>createDiner(name,x,z,turn));diners.forEach(d=>world.add(d.root));
   createTableSetting(world,diners,true);
-  const bruno=createDiner("bruno",5.45,1.05,-1.15,false,true);bruno.root.position.y=-1.78;
-  const apron=mat("#eee4d1",.94),apronEdge=mat("#b9a98f",.88);
-  box(bruno.root,[.72,.86,.045],apron,[0,1.02,.247],false);
-  box(bruno.root,[.72,.09,.055],apronEdge,[0,1.46,.255],false);
-  box(bruno.root,[.32,.22,.035],apronEdge,[0,.82,.274],false);
-  box(bruno.root,[.12,.42,.035],apronEdge,[-.30,1.55,.245],false);
-  box(bruno.root,[.12,.42,.035],apronEdge,[.30,1.55,.245],false);
+  const bruno=createDiner("bruno",5.45,1.05,-1.15,false,true);
+  const brunoGroundY=-1.78;
+  bruno.root.position.y=brunoGroundY;
+  const apron=mat("#eee9dc",.96),apronEdge=mat("#b9a98f",.88),apronPocket=mat("#e0d7c6",.96);
+  // Bib sits fully on the torso, ending above the trouser line so it cannot look like split legs.
+  box(bruno.root,[.74,1.08,.05],apron,[0,2.09,.315],false);
+  box(bruno.root,[.74,.075,.06],apronEdge,[0,2.60,.325],false);
+  // Two shoulder straps connect the bib to the neckline.
+  box(bruno.root,[.105,.34,.045],apronEdge,[-.235,2.72,.295],false);
+  box(bruno.root,[.105,.34,.045],apronEdge,[.235,2.72,.295],false);
+  // A small front pocket and a neat waist seam make the apron read clearly at medium shot distance.
+  box(bruno.root,[.30,.23,.035],apronPocket,[0,1.91,.351],false);
+  box(bruno.root,[.78,.075,.045],apronEdge,[0,1.60,.33],false);
   world.add(bruno.root);
   const all=[...diners,bruno];
   const update=(time:number,dialogue:DinnerCue[])=>{
@@ -316,11 +322,14 @@ export function createEntrePartidasFeedbackSet(world:THREE.Scene){
       const progress=cue?Math.max(0,Math.min(.999,(time-cue.start)/Math.max(.1,cue.end-cue.start))):0;
       rig.mouth.scale.set(1,talking?.04+Math.pow(Math.max(0,Math.sin(progress*Math.max(2,syllables)*Math.PI*2)),.8)*.62:.026,1);
       const gesture=talking?1:0;
-      rig.leftArm.rotation.z=gesture?-.055-Math.sin(time*2.0+phase)*.045:-.018-Math.sin(time*.7+phase)*.012;
-      rig.rightArm.rotation.z=gesture?.055+Math.sin(time*1.8+phase)*.045:.018+Math.sin(time*.7+phase)*.012;
-      rig.leftArm.rotation.x=gesture?.035:0;rig.rightArm.rotation.x=gesture?-.035:0;
+      // Bruno is standing: keep his arms close to the body and use small, readable gestures.
+      const armMove=rig.name==="bruno"?.032:.075;
+      rig.leftArm.rotation.z=gesture?-armMove-Math.sin(time*1.8+phase)*armMove*.35:-.014-Math.sin(time*.7+phase)*.009;
+      rig.rightArm.rotation.z=gesture?armMove+Math.sin(time*1.7+phase)*armMove*.35:.014+Math.sin(time*.7+phase)*.009;
+      rig.leftArm.rotation.x=gesture?(rig.name==="bruno"?.018:.035):0;
+      rig.rightArm.rotation.x=gesture?(rig.name==="bruno"?-.018:-.035):0;
       if(rig.name!=="bruno")rig.root.position.y=-1.92+Math.sin(time*.72+phase)*.004;
-      else rig.root.position.y=-1.975+Math.sin(time*.72+phase)*.004;
+      else rig.root.position.y=brunoGroundY+Math.sin(time*.72+phase)*.004;
     });
   };
   return {update,cast:all};
