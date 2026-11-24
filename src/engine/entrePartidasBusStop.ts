@@ -71,7 +71,7 @@ type BusRig = {
 };
 
 function makeBus(scene: THREE.Scene): BusRig {
-  const root = new THREE.Group(); root.position.set(-19, -2.08, -6.0); scene.add(root);
+  const root = new THREE.Group(); root.name = "BusStopBus"; root.position.set(-19, -2.08, -6.0); scene.add(root);
   const body = mat("#e3e3d7", .56), lower = mat("#183e50", .48), stripe = mat("#f0b94f", .48);
   const glass = new THREE.MeshStandardMaterial({ color: "#315064", roughness: .20, metalness: .12, transparent: true, opacity: .58, depthWrite: false, emissive: "#142b38", emissiveIntensity: .22 });
   const rubber = mat("#171a1c", .94), hub = mat("#8b9798", .36, .62), lamp = new THREE.MeshStandardMaterial({ color: "#fff0bd", emissive: "#ffd775", emissiveIntensity: 2.8 });
@@ -234,8 +234,7 @@ function updateCharacters(rigs: Record<"bruno" | "tomas" | "valentina", DinerRig
     rig.rightArm.rotation.z = rig.name === "bruno" ? -.24 : talking ? .035 + Math.sin(time * 1.7 + phase) * .025 : .012;
     rig.leftArm.rotation.x = talking ? .018 : 0;
     rig.rightArm.rotation.x = rig.name === "bruno" ? -.12 : talking ? -.018 : 0;
-    if (rig.name !== "bruno") rig.root.position.y = -1.92 + Math.sin(time * .65 + phase) * .003;
-    else rig.root.position.y = -1.92 + Math.sin(time * .65 + phase) * .002;
+    if (rig.root.parent?.name !== "BusStopBus") rig.root.position.y = -1.92 + Math.sin(time * .65 + phase) * (rig.name === "bruno" ? .002 : .003);
   });
 }
 
@@ -265,8 +264,8 @@ export async function renderEntrePartidasBusStopToWebM(pkg: BusStopPackage, onPr
   const stopX = 2.25, stopZ = -6.0;
   const initialTomas = world.rigs.tomas.root.position.clone();
   const initialValentina = world.rigs.valentina.root.position.clone();
-  const finalTomas = new THREE.Vector3(.70, -1.92, stopZ + .72);
-  const finalValentina = new THREE.Vector3(1.56, -1.92, stopZ + .72);
+  const finalTomas = new THREE.Vector3(.70, -1.70, stopZ + .72);
+  const finalValentina = new THREE.Vector3(1.56, -1.70, stopZ + .72);
   let started = false;
   try {
     await output.start(); started = true;
