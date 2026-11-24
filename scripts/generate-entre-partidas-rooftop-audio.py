@@ -12,6 +12,7 @@ AUDIO = Path("public/studio/audio/entre-partidas/rooftop-08")
 PACKAGE = Path("public/studio/packages/entre-partidas-rooftop.v1.json")
 OUTRO = AUDIO / "risa-y-outro.mp3"
 LAUGH = AUDIO / "risa.mp3"
+PARTY = AUDIO / "party.mp3"
 INTRO = AUDIO / "chapter-2-intro-music.wav"
 VOICE_TRACK = AUDIO / "voice-track.mp3"
 TIMINGS = AUDIO / "word-timings.json"
@@ -24,7 +25,7 @@ CAST = {
 }
 
 SEGMENTS = [
-    {"id":"01-bruno-invita","speaker":"bruno","text":"¿Por qué no jugás Ingredora? Está buenísimo.","shot":"pair","look":"martina","pause":0.24},
+    {"id":"01-bruno-invita","speaker":"bruno","text":"Martina, ¿por qué nunca jugás Ingredora?","shot":"pair","look":"martina","pause":0.24},
     {"id":"02-martina-no","speaker":"martina","text":"Nunca me descargué la aplicación.","shot":"pair","look":"bruno","pause":0.25},
     {"id":"03-bruno-explica","speaker":"bruno","text":"Dale, descargala, que te enseño. Te aparece un producto y tenés que reconocer los ingredientes.","shot":"pair","look":"martina","pause":0.32},
     {"id":"04-martina-responde","speaker":"martina","text":"Ah, este tiene jarabe de maíz, maltodextrina y tres conservantes.","shot":"martina","look":"bruno","pause":0.30},
@@ -76,6 +77,8 @@ async def main():
         raise FileNotFoundError("Falta el audio original combinado risa y outro.")
     if not LAUGH.is_file() or LAUGH.stat().st_size < 100:
         raise FileNotFoundError("Falta risa.mp3 para los remates del capítulo.")
+    if not PARTY.is_file() or PARTY.stat().st_size < 100:
+        raise FileNotFoundError("Falta party.mp3 para el ambiente de la terraza.")
     if not INTRO.is_file() or INTRO.stat().st_size < 100:
         raise FileNotFoundError("Falta la música original de apertura de Entre Partidas.")
     if duration(LAUGH) < 1.65:
@@ -85,6 +88,7 @@ async def main():
     laugh_length = 1.65
     cues = []
     cursor = 3.25
+    scene_audio_start = cursor
     for index, segment in enumerate(SEGMENTS, start=1):
         path = AUDIO / ("line-" + str(index).zfill(2) + ".mp3")
         await make_voice(segment, path)
@@ -106,33 +110,17 @@ async def main():
     end_card_start = round(final_line_end + 1.00, 3)
     outro_duration = duration(OUTRO)
     total = math.ceil((outro_start + outro_duration + .45) * FPS) / FPS
-    bed_duration = end_card_start + .9
-    bed = AUDIO / "party-bed.mp3"
-    # Base instrumental electrónica discreta construida con tonos y pulsos simples.
-    # Se generan capas separadas para evitar expresiones complejas incompatibles entre builds de FFmpeg.
-    tone_filter = (
-        "[0:a]tremolo=f=1.82:d=0.88,volume=0.22[a0];"
-        "[1:a]tremolo=f=1.82:d=0.34,volume=0.07[a1];"
-        "[2:a]tremolo=f=0.91:d=0.42,volume=0.05[a2];"
-        "[3:a]tremolo=f=3.64:d=0.72,volume=0.025[a3];"
-        "[a0][a1][a2][a3]amix=inputs=4:duration=longest,lowpass=f=9000,"
-        "afade=t=out:st=" + str(end_card_start) + ":d=0.75,volume=0.72[out]"
-    )
-    run([
-        "ffmpeg", "-y",
-        "-f", "lavfi", "-i", "sine=frequency=55:sample_rate=48000:duration=" + str(bed_duration),
-        "-f", "lavfi", "-i", "sine=frequency=110:sample_rate=48000:duration=" + str(bed_duration),
-        "-f", "lavfi", "-i", "sine=frequency=164.81:sample_rate=48000:duration=" + str(bed_duration),
-        "-f", "lavfi", "-i", "sine=frequency=220:sample_rate=48000:duration=" + str(bed_duration),
-        "-filter_complex", tone_filter, "-map", "[out]",
-        "-c:a", "libmp3lame", "-b:a", "160k", str(bed)
-    ])
-    mix_inputs = [(bed, 0.0, .20, None), (INTRO, 0.0, 1.0, 3.15)]
+    ambience_duration = max(.01, final_line_end - scene_audio_start)
+    # party.mp3 stays at unity gain (1.0), starting after the intro and ending
+    # with the final line; it is deliberately absent from both intro and outro.
+    mix_inputs = [(INTRO, 0.0, 1.0, 3.15), (PARTY, scene_audio_start, 1.0, ambience_duration)]
     mix_inputs += [(path, start, gain, None) for path, start, gain in clips]
     mix_inputs += laughs
     mix_inputs.append((OUTRO, outro_start, .78, None))
     cmd = ["ffmpeg", "-y"]
     for path, _, _, _ in mix_inputs:
+        if path == PARTY:
+            cmd += ["-stream_loop", "-1"]
         cmd += ["-i", str(path)]
     filters = []
     for index, (path, start, gain, trim) in enumerate(mix_inputs):
@@ -147,7 +135,7 @@ async def main():
         chain += f",volume={gain},adelay={delay}|{delay}[a{index}]"
         filters.append(chain)
     labels = "".join(f"[a{index}]" for index in range(len(mix_inputs)))
-    filters.append(labels + f"amix=inputs={len(mix_inputs)}:duration=longest:dropout_transition=0:normalize=0,atrim=duration={total:.3f},alimiter=limit=0.94[aout]")
+    filters.append(labels + f"amix=inputs={len(mix_inputs)}:duration=longest:dropout_transition=0:normalize=0,atrim=duration={total:.3f}[aout]")
     cmd += ["-filter_complex", ";".join(filters), "-map", "[aout]", "-c:a", "libmp3lame", "-b:a", "192k", "-ar", "48000", "-ac", "2", str(VOICE_TRACK)]
     run(cmd)
     if not VOICE_TRACK.is_file() or VOICE_TRACK.stat().st_size < 100000:
