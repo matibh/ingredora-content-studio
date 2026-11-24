@@ -64,8 +64,10 @@ export function createDiner(name:DinnerSpeaker,x:number,z:number,turn:number,inc
     box(root,[.94,.66,.68],pants,[0,.88,.10]);
     box(root,[.32,.42,.58],pants,[0,.57,.50]);
     for(const side of [-1,1]){
-      const thigh=box(root,[.47,.38,.94],pants,[side*.28,.43,.58]);thigh.rotation.x=-.035;
-      box(root,[.43,.17,.52],shoes,[side*.28,.12,1.05]);
+      // Minecraft-style legs: rigid rectangular cuboids with sharp edges and separate knee/shin blocks.
+      box(root,[.40,.38,.72],pants,[side*.25,.55,.55]);
+      box(root,[.40,.58,.38],pants,[side*.25,.25,.94]);
+      box(root,[.42,.18,.48],shoes,[side*.25,.02,1.03]);
     }
   }else{
     // Original seated silhouettes from Chapter 2.
@@ -104,6 +106,14 @@ export function createDiner(name:DinnerSpeaker,x:number,z:number,turn:number,inc
     return pivot;
   };
   const leftArm=makeArm(-1),rightArm=makeArm(1);
+  if(groundSeated&&name==="bruno"){
+    // Smartphone firmly held in Bruno's right hand, screen facing camera.
+    const phone=new THREE.Group();phone.position.set(0,-.70,.58);phone.rotation.x=-.12;phone.rotation.z=.08;rightArm.add(phone);
+    box(phone,[.19,.32,.045],mat("#171b20",.34,.22),[0,0,0]);
+    box(phone,[.165,.285,.012],mat("#4f91a7",.28,.12),[0,0,.027],false);
+    box(phone,[.045,.008,.006],mat("#d9e7eb",.2),[0,-.135,.035],false);
+    sphere(phone,[.018,.018,.012],mat("#aab9bf",.2),[0,.143,.035],8);
+  }
   root.traverse(object=>{if(object instanceof THREE.Mesh){object.castShadow=false;object.receiveShadow=false;}});
   return{name,root,head,mouth,leftArm,rightArm,x,z};
 }
