@@ -217,7 +217,7 @@ function createCrowd(scene: THREE.Scene) {
     dressRig(rig, archetype, outfit);
     addCrowdAccessory(rig, index, outfit.accent);
     rig.root.scale.setScalar(scale);
-    rig.root.position.y = ROOF_Y + 2.10 * scale;
+    rig.root.position.y = ROOF_Y + .08 * scale;
     rig.root.traverse(o => { if (o instanceof THREE.Mesh) { o.castShadow = false; o.receiveShadow = false; } });
     scene.add(rig.root);
     crowd.push(rig);
@@ -426,7 +426,7 @@ function createPartyProps(scene: THREE.Scene) {
 type LeadRig = { id: LeadId; rig: DinerRig; phone?: THREE.Group; phoneHand: "left" | "right" | "none" };
 function makeLead(scene: THREE.Scene, id: LeadId, archetype: DinnerSpeaker, x: number, z: number, outfit: Outfit, turn: number, phoneHand: "left" | "right" | "none") : LeadRig {
   const rig = createDiner(archetype, x, z, turn, false, true);
-  rig.root.position.y = ROOF_Y + 2.10;
+  rig.root.position.y = ROOF_Y + .08;
   dressRig(rig, archetype, outfit);
   if (id === "nutritionist") addNutritionistDetails(rig);
   let phone: THREE.Group | undefined;
@@ -534,7 +534,7 @@ function updateParty(t: number, cue: RooftopCue | undefined, party: PartyWorld) 
       rig.leftArm.rotation.z = active ? -.045 : -.008;
       rig.rightArm.rotation.z = active ? .045 : .008;
     }
-    rig.root.position.y = ROOF_Y + 2.10 + Math.sin(t * .55 + phase) * .001;
+    rig.root.position.y = ROOF_Y + .08 + Math.sin(t * .55 + phase) * .001;
   }
   party.crowd.forEach((rig, index) => {
     const phase = index * .73;
