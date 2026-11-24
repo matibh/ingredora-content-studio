@@ -420,7 +420,6 @@ function makeLead(scene: THREE.Scene, id: LeadId, archetype: DinnerSpeaker, x: n
   const rig = createDiner(archetype, x, z, turn, false, true);
   rig.root.position.y = ROOF_Y + .08;
   dressRig(rig, archetype, outfit);
-  if (id === "martina") addNutritionistDetails(rig);
   let phone: THREE.Group | undefined;
   if (phoneHand !== "none") {
     phone = createPhone(id.toUpperCase());
