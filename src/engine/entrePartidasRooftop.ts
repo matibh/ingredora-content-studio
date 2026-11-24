@@ -97,13 +97,13 @@ function createPhone(label: string) {
 }
 
 const shirtBase: Record<DinnerSpeaker, string> = {
-  bruno: "#c46a43", martina: "#f4cbd6", tomas: "#527c78", valentina: "#47788a", ernesto: "#718064"
+  bruno: "#c46a43", martina: "#bd7958", tomas: "#527c78", valentina: "#47788a", ernesto: "#718064"
 };
 const hairBase: Record<DinnerSpeaker, string> = {
   bruno: "#30241f", martina: "#30201c", tomas: "#4b3328", valentina: "#211b1a", ernesto: "#8b8a82"
 };
 const pantsBase: Record<DinnerSpeaker, string> = {
-  bruno: "#35414a", martina: "#8eaabd", tomas: "#35414a", valentina: "#35414a", ernesto: "#4b5148"
+  bruno: "#35414a", martina: "#35414a", tomas: "#35414a", valentina: "#35414a", ernesto: "#4b5148"
 };
 
 type Outfit = { shirt: string; pants: string; hair: string; accent: string; style: "plain" | "jacket" | "vest" | "tie" | "scarf" | "stripes" | "skirt"; female?: boolean };
@@ -204,7 +204,7 @@ function createCrowd(scene: THREE.Scene) {
     const outfit = outfits[outfitIndex];
     const [centerX, centerZ] = clusterCenters[cluster];
     const turn = Math.atan2(centerX - x, centerZ - z) + ((index % 3) - 1) * .10;
-    const rig = createDiner(archetype, x, z, turn, false, true);
+    const rig = createDiner(archetype, x, z, turn, false, true, false, archetype === "martina");
     dressRig(rig, archetype, outfit);
     addCrowdAccessory(rig, index, outfit.accent);
     rig.root.scale.setScalar(scale);
@@ -436,7 +436,7 @@ function createPartyProps(scene: THREE.Scene) {
 
 type LeadRig = { id: LeadId; rig: DinerRig; phone?: THREE.Group; phoneHand: "left" | "right" | "none" };
 function makeLead(scene: THREE.Scene, id: LeadId, archetype: DinnerSpeaker, x: number, z: number, outfit: Outfit, turn: number, phoneHand: "left" | "right" | "none") : LeadRig {
-  const rig = createDiner(archetype, x, z, turn, false, true);
+  const rig = createDiner(archetype, x, z, turn, false, true, false, id === "martina");
   rig.root.position.y = ROOF_Y + .08;
   dressRig(rig, archetype, outfit);
   let phone: THREE.Group | undefined;
