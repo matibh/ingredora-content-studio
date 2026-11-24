@@ -71,11 +71,11 @@ type BusRig = {
 };
 
 function makeBus(scene: THREE.Scene): BusRig {
-  const root = new THREE.Group(); root.name = "BusStopBus"; root.position.set(-19, -2.08, -6.0); scene.add(root);
+  const root = new THREE.Group(); root.name = "BusStopBus"; root.position.set(-19, -2.08, -3.0); root.scale.set(1.08, 1.40, 1.08); scene.add(root);
   const body = mat("#e3e3d7", .56), lower = mat("#183e50", .48), stripe = mat("#f0b94f", .48);
   const glass = new THREE.MeshStandardMaterial({ color: "#315064", roughness: .20, metalness: .12, transparent: true, opacity: .58, depthWrite: false, emissive: "#142b38", emissiveIntensity: .22 });
   const rubber = mat("#171a1c", .94), hub = mat("#8b9798", .36, .62), lamp = new THREE.MeshStandardMaterial({ color: "#fff0bd", emissive: "#ffd775", emissiveIntensity: 2.8 });
-  box(root, [8.25, 2.65, 1.20], body, [0, 1.52, 0]);
+  box(root, [8.25, 2.65, 2.52], body, [0, 1.52, 0]);
   box(root, [8.22, .62, 2.55], lower, [0, .42, 0]);
   box(root, [8.24, .18, 2.57], stripe, [0, 1.05, 0], false);
   box(root, [8.15, .12, 2.58], mat("#142e3b", .55), [0, .12, 0], false);
@@ -134,20 +134,75 @@ function makeWorld() {
   box(scene, [50, .035, .16], mat("#e6dfc7", .88), [0, -2.08, -13.52], false);
   for (let x = -22; x <= 22; x += 5.5) box(scene, [2.65, .025, .14], mat("#e2d8bd", .88), [x, -2.08, -6.65], false);
   // Quiet low-rise neighborhood with warm windows behind the stop.
-  const wall = mat("#323d4a", .98), wallAlt = mat("#41434a", .98), frame = mat("#1b2936", .76);
-  const lit = new THREE.MeshStandardMaterial({ color: "#e7bd79", emissive: "#e5a84f", emissiveIntensity: 1.25, roughness: .45 });
-  const darkGlass = mat("#1b2b3a", .34, .08);
+  const wall = mat("#b8ad9d", .98), wallAlt = mat("#9d9a91", .98);
+  const facadeLight = mat("#d2c7b6", .94), facadeShadow = mat("#756f66", .96);
+  const frame = mat("#514c46", .72), darkGlass = mat("#172b38", .30, .10);
+  const lit = new THREE.MeshStandardMaterial({ color: "#d8b77e", emissive: "#d6a45d", emissiveIntensity: .72, roughness: .48 });
+  const doorPaint = [mat("#34434a", .70), mat("#594638", .74), mat("#344d4b", .74), mat("#51453d", .74)];
+  const brass = mat("#b89a61", .34, .72), balconyMetal = mat("#343d40", .48, .58);
   const buildings = [
     { x: -13, z: -14, w: 8, h: 9, c: wall }, { x: -4.3, z: -15.5, w: 7.5, h: 7, c: wallAlt },
     { x: 5.2, z: -15, w: 9, h: 10.5, c: wall }, { x: 14.8, z: -14, w: 8, h: 8, c: wallAlt }
   ];
-  for (const b of buildings) {
-    box(scene, [b.w, b.h, .8], b.c, [b.x, -2.10 + b.h / 2, b.z], false);
-    for (let row = 0; row < Math.floor((b.h - .7) / 1.65); row++) for (let col = 0; col < Math.floor((b.w - .7) / 1.55); col++) {
-      const x = b.x - b.w / 2 + .95 + col * 1.55, y = -1.0 + row * 1.65;
-      box(scene, [.74, .82, .045], (row + col) % 3 === 0 ? darkGlass : lit, [x, y, b.z + .42], false);
-      box(scene, [.055, .88, .06], frame, [x - .39, y, b.z + .45], false);
+  for (const [index, b] of buildings.entries()) {
+    const baseY = -2.10, faceZ = b.z + .405;
+    box(scene, [b.w, b.h, .8], b.c, [b.x, baseY + b.h / 2, b.z], false);
+    // Building plinth, corner pilasters and a projecting roof cornice add depth to each street façade.
+    box(scene, [b.w + .08, .22, .20], facadeShadow, [b.x, baseY + .12, faceZ + .10], false);
+    box(scene, [b.w + .28, .20, .24], facadeLight, [b.x, baseY + b.h - .16, faceZ + .10], false);
+    box(scene, [b.w + .16, .10, .18], facadeShadow, [b.x, baseY + b.h - .34, faceZ + .08], false);
+    for (const side of [-1, 1]) {
+      box(scene, [.20, b.h - .38, .16], facadeLight, [b.x + side * (b.w / 2 - .15), baseY + b.h / 2, faceZ + .10], false);
     }
+    // Upper floors only: ground level is reserved for entrances, never windows.
+    const upperFloors = Math.max(1, Math.floor((b.h - 2.4) / 2.05));
+    const columns = Math.max(2, Math.floor((b.w - 1.0) / 1.85));
+    const spacing = (b.w - 1.6) / columns;
+    for (let floor = 0; floor < upperFloors; floor++) {
+      const y = baseY + 3.02 + floor * 2.05;
+      for (let col = 0; col < columns; col++) {
+        const x = b.x - ((columns - 1) * spacing) / 2 + col * spacing;
+        const windowMaterial = (floor + col + index) % 3 === 0 ? lit : darkGlass;
+        box(scene, [1.02, 1.22, .12], facadeShadow, [x, y, faceZ + .075], false);
+        box(scene, [.86, 1.04, .055], windowMaterial, [x, y, faceZ + .15], false);
+        box(scene, [.055, 1.12, .07], frame, [x - .45, y, faceZ + .185], false);
+        box(scene, [.055, 1.12, .07], frame, [x + .45, y, faceZ + .185], false);
+        box(scene, [.94, .075, .10], facadeLight, [x, y - .56, faceZ + .21], false);
+        box(scene, [.94, .065, .08], facadeLight, [x, y + .56, faceZ + .19], false);
+        box(scene, [.035, 1.0, .045], frame, [x, y, faceZ + .205], false);
+        if ((floor + col + index) % 2 === 0 && floor < 2) {
+          // Small projecting balconies with metal balustrades, not flat painted-on window boxes.
+          box(scene, [1.48, .10, .58], facadeShadow, [x, y - .66, faceZ + .36], false);
+          box(scene, [1.46, .055, .055], balconyMetal, [x, y - .12, faceZ + .63], false);
+          for (let rail = 0; rail < 9; rail++) {
+            box(scene, [.035, .52, .035], balconyMetal, [x - .68 + rail * .17, y - .39, faceZ + .63], false);
+          }
+        }
+      }
+      box(scene, [b.w - .35, .09, .12], facadeLight, [b.x, y - 1.08, faceZ + .08], false);
+    }
+    // Opaque street-level entry: solid door leaf, recessed panels, brass hardware and a shallow canopy.
+    const entryX = b.x + (index % 2 === 0 ? -.38 : .38);
+    const doorFrame = mat("#d7cbb8", .90);
+    box(scene, [1.38, 2.18, .18], facadeShadow, [entryX, baseY + 1.10, faceZ + .10], false);
+    box(scene, [1.17, 2.05, .16], doorFrame, [entryX, baseY + 1.08, faceZ + .19], false);
+    box(scene, [.96, 1.88, .10], doorPaint[index], [entryX, baseY + 1.00, faceZ + .27], false);
+    box(scene, [.72, .70, .035], facadeShadow, [entryX, baseY + 1.36, faceZ + .335], false);
+    box(scene, [.60, .56, .035], doorPaint[index], [entryX, baseY + 1.36, faceZ + .36], false);
+    box(scene, [.72, .48, .035], facadeShadow, [entryX, baseY + .67, faceZ + .335], false);
+    box(scene, [.60, .34, .035], doorPaint[index], [entryX, baseY + .67, faceZ + .36], false);
+    const handle = new THREE.Mesh(new THREE.SphereGeometry(.045, 8, 8), brass);
+    handle.position.set(entryX + .32, baseY + 1.02, faceZ + .405); scene.add(handle);
+    box(scene, [1.64, .12, .62], facadeShadow, [entryX, baseY + 2.18, faceZ + .37], false);
+    box(scene, [1.52, .08, .56], facadeLight, [entryX, baseY + 2.27, faceZ + .37], false);
+    box(scene, [1.55, .13, .45], facadeShadow, [entryX, baseY + .08, faceZ + .35], false);
+    for (const side of [-1, 1]) {
+      const sconce = new THREE.Mesh(new THREE.SphereGeometry(.085, 8, 8), new THREE.MeshStandardMaterial({ color: "#f3d49c", emissive: "#e6ae5f", emissiveIntensity: 1.6 }));
+      sconce.position.set(entryX + side * .92, baseY + 1.70, faceZ + .20); scene.add(sconce);
+    }
+    // A narrow address plaque gives each entrance a lived-in, finished street presence.
+    box(scene, [.44, .19, .045], facadeShadow, [entryX, baseY + 2.53, faceZ + .18], false);
+    box(scene, [.38, .12, .03], brass, [entryX, baseY + 2.53, faceZ + .215], false);
   }
   // A single tree and rubbish bin create a readable Argentine neighborhood corner.
   const trunk = mat("#4b352b", .98), leaves = mat("#263d38", .98), leavesLight = mat("#375248", .98);
@@ -172,7 +227,6 @@ function makeWorld() {
   for (let slat = 0; slat < 3; slat++) {
     box(bench, [3.58, .045, .13], mat(slat === 1 ? "#9a7551" : "#79583c", .78), [0, .63 + slat * .085, .30 + (slat - 1) * .17], false);
   }
-  box(bench, [3.65, .12, .12], benchWood, [0, 1.20, -.02]);
   for (const x of [-1.42, 1.42]) {
     box(bench, [.10, .72, .13], benchMetal, [x, .34, .25]);
     box(bench, [.52, .08, .72], benchMetal, [x, .055, .27]);
@@ -188,9 +242,11 @@ function makeWorld() {
     valentina: createDiner("valentina", 3.0, 2.3, 0, false, true, false, false, true, true),
   };
   Object.values(rigs).forEach(rig => scene.add(rig.root));
-  // The phone sits in Bruno's palm, overlapping the hand and wrist instead of floating at the elbow.
+  // Bruno keeps his phone in the right hand, with the arm lowered and held clear of his torso.
+  rigs.bruno.rightArm.position.x += .08;
+  rigs.bruno.rightArm.rotation.z = .12;
   const phone = new THREE.Group();
-  phone.position.set(.02, -.79, .19); phone.rotation.set(-.035, 0, -.035); rigs.bruno.rightArm.add(phone);
+  phone.position.set(.02, -.81, .27); phone.rotation.set(-.035, 0, -.035); rigs.bruno.rightArm.add(phone);
   box(phone, [.29, .50, .055], mat("#101820", .28, .30), [0, 0, 0], false);
   const phoneCanvas = document.createElement("canvas"); phoneCanvas.width = 256; phoneCanvas.height = 512;
   const phoneCtx = phoneCanvas.getContext("2d");
@@ -253,10 +309,10 @@ function updateCharacters(
     rig.mouth.scale.set(1, mouthOpen, 1);
     if (motion && motion.intensity > .01) {
       const swing = Math.sin(motion.phase) * motion.intensity;
-      if (rig.leftLeg) rig.leftLeg.rotation.x = swing * .34;
-      if (rig.rightLeg) rig.rightLeg.rotation.x = -swing * .34;
-      rig.leftArm.rotation.x = -swing * .16;
-      rig.rightArm.rotation.x = swing * .16;
+      if (rig.leftLeg) rig.leftLeg.rotation.x = swing * .28;
+      if (rig.rightLeg) rig.rightLeg.rotation.x = -swing * .28;
+      rig.leftArm.rotation.x = -swing * .10;
+      rig.rightArm.rotation.x = swing * .10;
       rig.leftArm.rotation.z = -.015;
       rig.rightArm.rotation.z = rig.name === "bruno" ? -.08 : .015;
       if (rig.root.parent?.name !== "BusStopBus") rig.root.rotation.y = motion.yaw;
@@ -295,26 +351,26 @@ export async function renderEntrePartidasBusStopToWebM(pkg: BusStopPackage, onPr
   const boardAt = cueStart(pkg, "16-tomas-vamos", doorsAt + 1.2);
   const boardEnd = cueEnd(pkg, "17-bruno-yavoy", boardAt + 3.0) + .18;
   const departAt = boardEnd + .42;
-  const stopX = 2.25, stopZ = -6.0;
+  const stopX = 2.25, stopZ = -3.0;
   const initialTomas = world.rigs.tomas.root.position.clone();
   const initialValentina = world.rigs.valentina.root.position.clone();
   // Each passenger gets an individual curved route and reaches the doorway in single file.
-  const finalTomas = new THREE.Vector3(.80, -1.17, stopZ + .72);
-  const finalValentina = new THREE.Vector3(1.16, -1.17, stopZ + .02);
+  const finalTomas = new THREE.Vector3(.80, -1.17, stopZ + .68);
+  const finalValentina = new THREE.Vector3(1.16, -1.17, stopZ + .25);
   const tomasPath = new THREE.CatmullRomCurve3([
     initialTomas.clone(),
     new THREE.Vector3(-.10, -1.92, 1.15),
-    new THREE.Vector3(.10, -1.92, -.85),
-    new THREE.Vector3(.43, -1.78, -3.05),
-    new THREE.Vector3(.74, -1.52, -4.58),
+    new THREE.Vector3(.10, -1.92, .15),
+    new THREE.Vector3(.43, -1.78, -.85),
+    new THREE.Vector3(.74, -1.52, -1.95),
     finalTomas.clone(),
   ]);
   const valentinaPath = new THREE.CatmullRomCurve3([
     initialValentina.clone(),
     new THREE.Vector3(2.86, -1.92, 1.20),
-    new THREE.Vector3(2.45, -1.92, -.72),
-    new THREE.Vector3(1.94, -1.78, -2.92),
-    new THREE.Vector3(1.39, -1.52, -4.48),
+    new THREE.Vector3(2.45, -1.92, -.05),
+    new THREE.Vector3(1.94, -1.78, -.95),
+    new THREE.Vector3(1.39, -1.52, -2.15),
     finalValentina.clone(),
   ]);
   const tomasWalkStart = doorsAt + .28;
@@ -347,9 +403,10 @@ export async function renderEntrePartidasBusStopToWebM(pkg: BusStopPackage, onPr
         const position = path.getPointAt(Math.max(0, Math.min(1, p)));
         const tangent = path.getTangentAt(Math.max(0, Math.min(.999, p))).normalize();
         const blend = Math.min(ease(elapsed / .34), 1 - ease((duration - elapsed) / .40));
-        const phase = Math.max(0, elapsed) * 8.4;
+        const phase = Math.max(0, elapsed) * 5.4;
         position.y += Math.abs(Math.sin(phase * 2)) * .012 * Math.max(0, blend);
         rig.root.position.copy(position);
+        rig.root.scale.setScalar(lerp(1, .84, p));
         rig.root.rotation.y = Math.atan2(tangent.x, tangent.z);
         if (elapsed >= 0 && elapsed <= duration + .02 && blend > .01) {
           walking[rig.name as "tomas" | "valentina"] = { phase, intensity: blend, yaw: rig.root.rotation.y };
@@ -363,7 +420,9 @@ export async function renderEntrePartidasBusStopToWebM(pkg: BusStopPackage, onPr
       }
       if (time >= boardEnd && !world.bus.boarded) {
         world.rigs.tomas.root.position.copy(finalTomas);
+        world.rigs.tomas.root.scale.setScalar(.84);
         world.rigs.valentina.root.position.copy(finalValentina);
+        world.rigs.valentina.root.scale.setScalar(.84);
         world.scene.updateMatrixWorld(true); world.bus.root.updateMatrixWorld(true);
         world.bus.root.attach(world.rigs.tomas.root); world.bus.root.attach(world.rigs.valentina.root);
         world.bus.boarded = true;

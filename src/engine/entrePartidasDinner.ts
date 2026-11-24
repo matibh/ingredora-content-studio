@@ -117,7 +117,7 @@ export function createDiner(name:DinnerSpeaker,x:number,z:number,turn:number,inc
     for(const side of [-1,1]){const thigh=box(root,[.38,.42,.88],pants,[side*.25,.93,.53]);thigh.rotation.x=-.09;box(root,[.38,.18,.75],shoes,[side*.25,.73,1.02]);}
   }
   // Individually recognizable cubic heads and hairstyles.
-  const head=new THREE.Group();head.position.set(0,groundSeated?2.35:3.02,.02);root.add(head);box(head,[.78,.84,.70],skin,[0,0,0]);
+  const head=new THREE.Group();head.position.set(0,groundSeated?2.35:3.02,.02);if(name==="valentina"&&busStopValentina)head.scale.setScalar(.90);root.add(head);box(head,[.78,.84,.70],skin,[0,0,0]);
   if(name==="bruno"){box(head,[.82,.23,.74],hair,[0,.33,-.015]);box(head,[.73,.14,.64],hair,[-.04,.47,.005]);box(head,[.19,.18,.22],hair,[-.29,.20,.25]);}
   else if(name==="martina"){box(head,[.84,.24,.72],hair,[0,.34,-.03]);box(head,[.75,.58,.18],hair,[0,-.04,-.34]);box(head,[.15,.56,.43],hair,[-.34,-.04,-.02]);box(head,[.15,.56,.43],hair,[.34,-.04,-.02]);box(head,[.23,.16,.20],hair,[.15,.52,-.34]);box(head,[.10,.11,.12],mat("#d8a64c"),[.15,.51,-.45]);box(head,[.22,.38,.20],hair,[.19,.29,-.55]);}
   else if(name==="tomas"){box(head,[.85,.24,.70],hair,[0,.35,-.02]);box(head,[.69,.20,.36],hair,[-.10,.49,.10]);box(head,[.24,.18,.30],hair,[.22,.40,.18]);box(head,[.15,.25,.18],hair,[-.27,.30,.20]);box(head,[.12,.43,.18],hair,[-.34,-.08,-.28]);box(head,[.12,.43,.18],hair,[.34,-.08,-.28]);}
