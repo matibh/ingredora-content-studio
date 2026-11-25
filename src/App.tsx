@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import LibraryExplorer from "./LibraryExplorer";
+import PublishingScreen from "./PublishingScreen";
 import { renderPackageToWebM, type RenderProgress } from "./engine/renderer";
 import { renderSitcomPackageToWebM } from "./series2d/renderer";
 import type { SitcomProductionPackage } from "./series2d/types";
@@ -75,6 +76,7 @@ function formatDate(value?: string) {
 
 function App() {
   const [manifest, setManifest] = useState<Manifest>(EMPTY_MANIFEST);
+  const [studioScreen, setStudioScreen] = useState<"library" | "publish">("library");
   const [loading, setLoading] = useState(true);
   const [collectionFilter, setCollectionFilter] = useState<"all" | "advertising" | "series">("all");
   const [voiceAuditionsReady, setVoiceAuditionsReady] = useState(false);
@@ -380,7 +382,10 @@ function App() {
       </header>
 
       <main id="inicio">
-        <LibraryExplorer />
+        {studioScreen === "publish" ? (
+          <PublishingScreen productions={manifest.productions.filter((item) => item.status === "ready" && !!item.videoUrl)} initialProductionId={activeId ?? undefined} onBack={() => setStudioScreen("library")} />
+        ) : <>
+        <LibraryExplorer onPublish={() => { setStudioScreen("publish"); window.scrollTo({ top: 0, behavior: "smooth" }); }} />
         <section className="intro">
           <div className="intro-copy">
             <p className="eyebrow">INGREDORA ORIGINALS</p>
@@ -606,6 +611,7 @@ function App() {
             })}</div>
           </section>
         )}
+        </>}
       </main>
 
       <footer className="footer"><a className="footer-brand" href="#inicio">ingredora<span>.</span></a><span>CREADO CON INTENCIÓN. PRODUCIDO PARA JUGAR.</span><span>CONTENT STUDIO © 2026</span></footer>
