@@ -58,7 +58,8 @@ function parseMetadata(text: string): Record<string, CopyData> {
     let block = "";
     if (heading) block = section(text, heading, allHeadings);
     const title = labelValue(block, p.id === "youtube" ? "TÍTULO PRINCIPAL" : p.id === "facebook" ? "TÍTULO" : p.id === "instagram" ? "TÍTULO" : "TÍTULO");
-    const desc = labelValue(block, p.id === "youtube" ? "DESCRIPCIÓN" : p.id === "instagram" || p.id === "tiktok" ? "CAPTION PRINCIPAL" : p.id === "facebook" ? "COPY" : "POST PRINCIPAL");
+    const desc = labelValue(block, p.id === "youtube" ? "DESCRIPCIÓN" : p.id === "instagram" || p.id === "tiktok" ? "CAPTION PRINCIPAL" : p.id === "facebook" ? "COPY" : "POST PRINCIPAL")
+      || section(text, new RegExp("^DESCRIPCIÓN\\\\s*[-—]\\\\s*" + (p.id === "youtube" ? "YOUTUBE SHORTS" : p.id === "instagram" ? "INSTAGRAM REELS" : p.id === "facebook" ? "FACEBOOK REELS" : p.id.toUpperCase()) + "$", "im"), /^(?:DESCRIPCIÓN|ETIQUETAS|HASHTAGS|COMENTARIO|TEXTO PARA PORTADA|CTA|NOTAS|CRÉDITO|CONTROL|FIN)/im);
     const tags = labelValue(block, "ETIQUETAS / TAGS") || labelValue(block, "ETIQUETAS / TAGS DE YOUTUBE") || labelValue(block, "ETIQUETAS");
     const hash = labelValue(block, "HASHTAGS");
     const pinned = labelValue(block, "COMENTARIO PARA FIJAR") || labelValue(block, "COMENTARIO FIJADO");
