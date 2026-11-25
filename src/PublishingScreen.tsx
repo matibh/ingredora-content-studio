@@ -183,7 +183,7 @@ export default function PublishingScreen({ productions, initialProductionId }: P
             <div>
               <p className="eyebrow">TRANSFERENCIA DIRECTA</p>
               <h3>Enviar MP4 + TXT a Posty</h3>
-              <p>Posty recupera los dos archivos desde este repositorio, los carga en tu cuenta y guarda el video como borrador. No se publica nada automáticamente.</p>
+              <p>Posty recupera los dos archivos desde este repositorio, los carga en tu cuenta y deja el video registrado en Posty sin publicarlo. No se inicia ninguna publicación automáticamente.</p>
             </div>
             <label className="publish-field">
               <span>URL DE TU POSTY</span>
