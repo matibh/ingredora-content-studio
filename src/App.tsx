@@ -76,7 +76,12 @@ function formatDate(value?: string) {
 
 function App() {
   const [manifest, setManifest] = useState<Manifest>(EMPTY_MANIFEST);
-  const [studioScreen, setStudioScreen] = useState<"library" | "publish">("library");
+  const [studioScreen, setStudioScreen] = useState<"library" | "publish">(() => window.location.hash === "#subir-a-redes" ? "publish" : "library");
+  useEffect(() => {
+    const syncScreen = () => setStudioScreen(window.location.hash === "#subir-a-redes" ? "publish" : "library");
+    window.addEventListener("hashchange", syncScreen);
+    return () => window.removeEventListener("hashchange", syncScreen);
+  }, []);
   const [loading, setLoading] = useState(true);
   const [collectionFilter, setCollectionFilter] = useState<"all" | "advertising" | "series">("all");
   const [voiceAuditionsReady, setVoiceAuditionsReady] = useState(false);
@@ -377,15 +382,15 @@ function App() {
         </a>
         <div className="topbar-right">
           <span className={`connection ${connection}`}><i />{connection === "connected" ? "Biblioteca sincronizada" : "No se pudo actualizar"}</span>
-          <span className="topbar-tag">STUDIO / 01</span>
+          <a className="topbar-publish-link" href="#subir-a-redes">Subir a redes ↗</a><span className="topbar-tag">STUDIO / 01</span>
         </div>
       </header>
 
       <main id="inicio">
         {studioScreen === "publish" ? (
-          <PublishingScreen productions={manifest.productions.filter((item) => item.status === "ready" && !!item.videoUrl)} initialProductionId={activeId ?? undefined} onBack={() => setStudioScreen("library")} />
+          <PublishingScreen productions={manifest.productions.filter((item) => item.status === "ready" && !!item.videoUrl)} initialProductionId={activeId ?? undefined} onBack={() => { window.location.hash = "inicio"; setStudioScreen("library"); }} />
         ) : <>
-        <LibraryExplorer onPublish={() => { setStudioScreen("publish"); window.scrollTo({ top: 0, behavior: "smooth" }); }} />
+        <LibraryExplorer onPublish={() => { window.location.hash = "subir-a-redes"; setStudioScreen("publish"); window.scrollTo({ top: 0, behavior: "smooth" }); }} />
         <section className="intro">
           <div className="intro-copy">
             <p className="eyebrow">INGREDORA ORIGINALS</p>
