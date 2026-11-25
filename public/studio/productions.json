@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-21T20:30:00Z",
+  "updatedAt": "2026-11-25T11:08:16.937Z",
   "productions": [
     {
       "id": "ingredora-entre-partidas-capitulo-01",
@@ -10,7 +10,7 @@
       "seasonNumber": 1,
       "episodeNumber": 1,
       "description": "Bruno estudia obsesivamente las etiquetas en el supermercado mientras Martina y Valentina lo encuentran en el pasillo. Render final de 65 segundos; pendiente de integrar el MP4 aprobado en la biblioteca pública del Studio.",
-      "status": "rendering",
+      "status": "planned",
       "durationSeconds": 65.02,
       "aspectRatio": "9:16",
       "language": "Español rioplatense",
@@ -54,7 +54,7 @@
       "id": "ingredora-operation-label-detective-013",
       "title": "Operación Etiqueta — El caso Guaymallén",
       "description": "Un detective encuentra un alfajor Guaymallén, busca la lista de ingredientes y no la encuentra. Le pide a la audiencia que complete los ingredientes en Ingredora.com para cerrar el caso.",
-      "status": "rendering",
+      "status": "ready",
       "packageUrl": "studio/packages/operation-label-detective.v1.json",
       "durationSeconds": 30,
       "aspectRatio": "9:16",
@@ -67,13 +67,15 @@
       ],
       "version": "2.0",
       "createdAt": "2026-11-20T20:35:00-03:00",
-      "caption": "🕵️ CASO ABIERTO: un alfajor Guaymallén y una lista de ingredientes que desapareció. ¿Vos sabés cuáles tiene? Entrá a Ingredora.com, completá los ingredientes y ayudá al detective a cerrar el caso. #Ingredora #Guaymallen #OperacionEtiqueta #DesafioDeIngredientes"
+      "caption": "🕵️ CASO ABIERTO: un alfajor Guaymallén y una lista de ingredientes que desapareció. ¿Vos sabés cuáles tiene? Entrá a Ingredora.com, completá los ingredientes y ayudá al detective a cerrar el caso. #Ingredora #Guaymallen #OperacionEtiqueta #DesafioDeIngredientes",
+      "finalFileName": "ingredora-operation-label-detective-013.mp4",
+      "videoUrl": "https://raw.githubusercontent.com/matibh/ingredora-content-studio/main/Contenido%20a%20subir/ingredora-operation-label-detective-013.mp4"
     },
     {
       "id": "ingredora-cindor-game-show-001",
       "title": "Cindor Original — El concurso de los ingredientes",
       "description": "Programa de concursos con dos participantes, atriles y pulsadores. Pregunta sobre los ingredientes de Cindor Original 200 ml, seis segundos para responder y revelación final. Cierre: «¿Cuántos acertaste? Entrá a Ingredora.com y jugá».",
-      "status": "rendering",
+      "status": "ready",
       "packageUrl": "studio/packages/cindor-game-show.v1.json",
       "durationSeconds": 30,
       "aspectRatio": "9:16",
@@ -87,13 +89,15 @@
       ],
       "version": "1.0",
       "createdAt": "2026-11-20T19:45:00-03:00",
-      "caption": "Dos participantes. Una Cindor. ¿Quién sabe qué ingredientes tiene? 🏆 Tenés 6 segundos para jugar desde casa. Después contanos cuántos acertaste. ¡Entrá a Ingredora.com y probá más desafíos! #Ingredora #Cindor #DesafioDeIngredientes #Concurso"
+      "caption": "Dos participantes. Una Cindor. ¿Quién sabe qué ingredientes tiene? 🏆 Tenés 6 segundos para jugar desde casa. Después contanos cuántos acertaste. ¡Entrá a Ingredora.com y probá más desafíos! #Ingredora #Cindor #DesafioDeIngredientes #Concurso",
+      "finalFileName": "ingredora-cindor-game-show-001.mp4",
+      "videoUrl": "https://raw.githubusercontent.com/matibh/ingredora-content-studio/main/Contenido%20a%20subir/ingredora-cindor-game-show-001.mp4"
     },
     {
       "id": "ingredora-oreo-family-merienda-011",
       "title": "Oreo Original — subtítulos agrupados (render nuevo)",
       "description": "La chica dice «Tenés seis segundos» y luego calla. En pantalla aparece 6, 5, 4, 3, 2, 1 sin narración. Después retoma con «Tiempo». Subtítulos agrupados en frases de 3 o 4 palabras, sincronizadas con la voz.",
-      "status": "rendering",
+      "status": "ready",
       "packageUrl": "studio/packages/oreo-family-merienda.v1.json",
       "durationSeconds": 30,
       "aspectRatio": "9:16",
@@ -107,13 +111,15 @@
       ],
       "version": "8.5",
       "createdAt": "2026-11-20T19:00:00-03:00",
-      "caption": "¿Cuánto sabés de lo que comés? 🍪 Tenés seis segundos para recordar los ingredientes. La cuenta es visual, sin voz. Entrá a Ingredora.com y jugá. #Ingredora #Oreo #DesafioDeIngredientes"
+      "caption": "¿Cuánto sabés de lo que comés? 🍪 Tenés seis segundos para recordar los ingredientes. La cuenta es visual, sin voz. Entrá a Ingredora.com y jugá. #Ingredora #Oreo #DesafioDeIngredientes",
+      "finalFileName": "ingredora-oreo-family-merienda-011.mp4",
+      "videoUrl": "https://raw.githubusercontent.com/matibh/ingredora-content-studio/main/Contenido%20a%20subir/ingredora-oreo-family-merienda-011.mp4"
     },
     {
       "id": "ingredora-coca-cola-poolside-002",
       "title": "Coca-Cola — Un día de playa, una Coca bien fría",
       "description": "27 segundos a 60 FPS. Plano de vertido reencuadrado para mostrar botella y vaso completos; botella más próxima al vaso, chorro orgánico alineado con el pico y marca Ingredora.com arriba a la izquierda. Desafío de 6 segundos y revelación de ingredientes en 5 segundos.",
-      "status": "rendering",
+      "status": "ready",
       "packageUrl": "studio/packages/coca-cola-poolside.v1.json",
       "durationSeconds": 27,
       "aspectRatio": "9:16",
@@ -125,13 +131,15 @@
       ],
       "version": "6.2",
       "createdAt": "2026-11-19T20:00:00-03:00",
-      "caption": "Playa, sol y una Coca bien fría. Pero pará… ¿sabés qué tiene adentro? Tenés seis segundos para adivinar sus ingredientes. ¿Cuántos acertaste? ¡Jugá en Ingredora! #Ingredora #DesafíoDeIngredientes #CocaCola"
+      "caption": "Playa, sol y una Coca bien fría. Pero pará… ¿sabés qué tiene adentro? Tenés seis segundos para adivinar sus ingredientes. ¿Cuántos acertaste? ¡Jugá en Ingredora! #Ingredora #DesafíoDeIngredientes #CocaCola",
+      "finalFileName": "ingredora-coca-cola-poolside-002.mp4",
+      "videoUrl": "https://raw.githubusercontent.com/matibh/ingredora-content-studio/main/Contenido%20a%20subir/ingredora-coca-cola-poolside-002.mp4"
     },
     {
       "id": "ingredora-nutella-supermarket-spot-009",
       "title": "Nutella — Desafío y visita a Ingredora (versión 9)",
       "description": "Spot de 33 segundos con desafío de memoria y cierre visual para entrar a ingredora.com o buscar el enlace en el perfil.",
-      "status": "rendering",
+      "status": "ready",
       "packageUrl": "studio/packages/nutella-supermarket.v8.json",
       "durationSeconds": 33,
       "aspectRatio": "9:16",
@@ -143,7 +151,185 @@
       ],
       "version": "10.0",
       "createdAt": "2026-11-19T16:00:00-03:00",
-      "caption": "¿Cuántos ingredientes recordás? Ingredora es el juego de desafíos diarios sobre ingredientes. Entrá a ingredora.com y poné a prueba lo que sabés. También podés encontrar el link en mi perfil. #Ingredora #Nutella #DesafíoDeIngredientes"
+      "caption": "¿Cuántos ingredientes recordás? Ingredora es el juego de desafíos diarios sobre ingredientes. Entrá a ingredora.com y poné a prueba lo que sabés. También podés encontrar el link en mi perfil. #Ingredora #Nutella #DesafíoDeIngredientes",
+      "finalFileName": "001-nutella.mp4",
+      "videoUrl": "https://raw.githubusercontent.com/matibh/ingredora-content-studio/main/Contenido%20a%20subir/001-nutella.mp4"
+    },
+    {
+      "id": "ingredora-entre-partidas-capitulo-02",
+      "title": "Entre Partidas — Capítulo 2",
+      "episodeLabel": "Capítulo 2",
+      "seriesTitle": "Entre Partidas",
+      "seasonNumber": 1,
+      "episodeNumber": 2,
+      "description": "Pendiente de incorporar la versión final de este capítulo.",
+      "status": "planned",
+      "aspectRatio": "9:16",
+      "language": "Español rioplatense",
+      "platforms": [
+        "YouTube",
+        "Instagram Reels",
+        "Facebook Reels",
+        "TikTok",
+        "X"
+      ],
+      "version": "1.0.0",
+      "collection": "series",
+      "renderEngine": "three"
+    },
+    {
+      "id": "ingredora-entre-partidas-capitulo-03",
+      "title": "Entre Partidas — Capítulo 3",
+      "episodeLabel": "Capítulo 3",
+      "seriesTitle": "Entre Partidas",
+      "seasonNumber": 1,
+      "episodeNumber": 3,
+      "description": "Pendiente de incorporar la versión final de este capítulo.",
+      "status": "planned",
+      "aspectRatio": "9:16",
+      "language": "Español rioplatense",
+      "platforms": [
+        "YouTube",
+        "Instagram Reels",
+        "Facebook Reels",
+        "TikTok",
+        "X"
+      ],
+      "version": "1.0.0",
+      "collection": "series",
+      "renderEngine": "three"
+    },
+    {
+      "id": "ingredora-entre-partidas-capitulo-04",
+      "title": "Entre Partidas — Capítulo 4",
+      "episodeLabel": "Capítulo 4",
+      "seriesTitle": "Entre Partidas",
+      "seasonNumber": 1,
+      "episodeNumber": 4,
+      "description": "Pendiente de incorporar la versión final de este capítulo.",
+      "status": "planned",
+      "aspectRatio": "9:16",
+      "language": "Español rioplatense",
+      "platforms": [
+        "YouTube",
+        "Instagram Reels",
+        "Facebook Reels",
+        "TikTok",
+        "X"
+      ],
+      "version": "1.0.0",
+      "collection": "series",
+      "renderEngine": "three"
+    },
+    {
+      "id": "ingredora-entre-partidas-capitulo-05",
+      "title": "Entre Partidas — Capítulo 5",
+      "episodeLabel": "Capítulo 5",
+      "seriesTitle": "Entre Partidas",
+      "seasonNumber": 1,
+      "episodeNumber": 5,
+      "description": "Pendiente de incorporar la versión final de este capítulo.",
+      "status": "planned",
+      "aspectRatio": "9:16",
+      "language": "Español rioplatense",
+      "platforms": [
+        "YouTube",
+        "Instagram Reels",
+        "Facebook Reels",
+        "TikTok",
+        "X"
+      ],
+      "version": "1.0.0",
+      "collection": "series",
+      "renderEngine": "three"
+    },
+    {
+      "id": "ingredora-entre-partidas-capitulo-06",
+      "title": "Entre Partidas — Capítulo 6",
+      "episodeLabel": "Capítulo 6",
+      "seriesTitle": "Entre Partidas",
+      "seasonNumber": 1,
+      "episodeNumber": 6,
+      "description": "Pendiente de incorporar la versión final de este capítulo.",
+      "status": "planned",
+      "aspectRatio": "9:16",
+      "language": "Español rioplatense",
+      "platforms": [
+        "YouTube",
+        "Instagram Reels",
+        "Facebook Reels",
+        "TikTok",
+        "X"
+      ],
+      "version": "1.0.0",
+      "collection": "series",
+      "renderEngine": "three"
+    },
+    {
+      "id": "ingredora-entre-partidas-capitulo-07",
+      "title": "Entre Partidas — Capítulo 7",
+      "episodeLabel": "Capítulo 7",
+      "seriesTitle": "Entre Partidas",
+      "seasonNumber": 1,
+      "episodeNumber": 7,
+      "description": "Pendiente de incorporar la versión final de este capítulo.",
+      "status": "planned",
+      "aspectRatio": "9:16",
+      "language": "Español rioplatense",
+      "platforms": [
+        "YouTube",
+        "Instagram Reels",
+        "Facebook Reels",
+        "TikTok",
+        "X"
+      ],
+      "version": "1.0.0",
+      "collection": "series",
+      "renderEngine": "three"
+    },
+    {
+      "id": "ingredora-entre-partidas-capitulo-08",
+      "title": "Entre Partidas — Capítulo 8",
+      "episodeLabel": "Capítulo 8",
+      "seriesTitle": "Entre Partidas",
+      "seasonNumber": 1,
+      "episodeNumber": 8,
+      "description": "Pendiente de incorporar la versión final de este capítulo.",
+      "status": "planned",
+      "aspectRatio": "9:16",
+      "language": "Español rioplatense",
+      "platforms": [
+        "YouTube",
+        "Instagram Reels",
+        "Facebook Reels",
+        "TikTok",
+        "X"
+      ],
+      "version": "1.0.0",
+      "collection": "series",
+      "renderEngine": "three"
+    },
+    {
+      "id": "ingredora-entre-partidas-capitulo-09",
+      "title": "Entre Partidas — Capítulo 9",
+      "episodeLabel": "Capítulo 9",
+      "seriesTitle": "Entre Partidas",
+      "seasonNumber": 1,
+      "episodeNumber": 9,
+      "description": "Pendiente de incorporar la versión final de este capítulo.",
+      "status": "planned",
+      "aspectRatio": "9:16",
+      "language": "Español rioplatense",
+      "platforms": [
+        "YouTube",
+        "Instagram Reels",
+        "Facebook Reels",
+        "TikTok",
+        "X"
+      ],
+      "version": "1.0.0",
+      "collection": "series",
+      "renderEngine": "three"
     }
   ]
 }
