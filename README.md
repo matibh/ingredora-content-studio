@@ -34,3 +34,12 @@ Ingredora Content Studio combina la preparación creativa desde ChatGPT con la e
 El manifiesto `public/studio/productions.json` conecta las producciones preparadas con la aplicación de exhibición. El esquema inicial es `schemaVersion: 1`. Cada elemento incluye `id`, `title` y `status` (`planned`, `rendering` o `ready`). Para que aparezca como video listo debe tener `status: "ready"` y una URL `videoUrl` reproducible. Los campos opcionales incluyen `description`, `posterUrl`, `durationSeconds`, `aspectRatio`, `language`, `platforms`, `version`, `createdAt` y `caption`.
 
 Si la documentación y el comportamiento del código difieren, manda el código vigente: actualizar la guía en el mismo cambio.
+
+
+## Biblioteca de videos y publicación
+
+La biblioteca central se alimenta desde `public/studio/productions.json`. Los MP4 finales aprobados se guardan en `Contenido a subir/` y cada registro apunta al archivo reproducible. En la sección **Series originales → Capítulos** hay nueve fichas para *Entre Partidas*: se puede seleccionar el capítulo y cargar un MP4 final, con autorización, para que el archivo quede vinculado a su número y aparezca en el reproductor.
+
+Los cinco MP4 históricos que ya estaban en el repositorio (Nutella, Cindor, Coca-Cola, Oreo y Operación Etiqueta) se muestran como entregas terminadas. Los renders que existan únicamente en IndexedDB del navegador no se pueden reconstruir desde el servidor: deben subirse o renderizarse de nuevo para formar parte de la biblioteca central.
+
+Desde el reproductor, **Distribución** permite descargar el MP4, copiar el copy y abrir YouTube Studio, Instagram, Meta Business Suite, TikTok o X. La confirmación de publicación sigue siendo manual en cada plataforma; abrir sus sitios no publica contenido por sí mismo. No se guardan contraseñas ni tokens sociales en el navegador.
