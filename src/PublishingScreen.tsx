@@ -5,10 +5,10 @@ type Production = {
   finalFileName?: string; durationSeconds?: number; aspectRatio?: string;
   collection?: string; episodeNumber?: number; episodeLabel?: string;
 };
-type VideoAsset = { id: string; name: string; title: string; videoUrl: string; txtUrl: string };
+type VideoAsset = { id: string; name: string; title: string; videoUrl: string; txtUrl: string; collection: "Publicidad" | "Serie" };
 type CopyData = { title: string; description: string; hashtags: string; tags: string; pinnedComment: string; altText: string };
 type Props = { productions: Production[]; initialProductionId?: string };
-const REPO = "https://api.github.com/repos/matibh/ingredora-content-studio/contents/Contenido%20a%20subir?ref=main";
+const REPO = "https://api.github.com/repos/matibh/ingredora-content-studio/contents/Contenido%20a%20subir";
 const RAW = "https://raw.githubusercontent.com/matibh/ingredora-content-studio/main/Contenido%20a%20subir/";
 const PLATFORMS = [
   { id: "youtube", name: "YouTube", mark: "▶", note: "Título, descripción, tags y comentario" },
@@ -80,6 +80,7 @@ function niceTitle(filename: string) {
 }
 export default function PublishingScreen({ productions, initialProductionId }: Props) {
   const [assets, setAssets] = useState<VideoAsset[]>([]);
+  const [collection, setCollection] = useState<"Publicidad" | "Serie">("Publicidad");
   const [videoId, setVideoId] = useState("");
   const [loadingAssets, setLoadingAssets] = useState(true);
   const [loadingMetadata, setLoadingMetadata] = useState(false);
@@ -103,24 +104,26 @@ export default function PublishingScreen({ productions, initialProductionId }: P
     (async () => {
       try {
         setLoadingAssets(true);
-        const response = await fetch(REPO, { headers: { Accept: "application/vnd.github+json" } });
-        if (!response.ok) throw new Error("No se pudo leer la carpeta Contenido a subir.");
+        const folder = collection;
+        const response = await fetch(`${REPO}/${encodeURIComponent(folder)}?ref=main`, { headers: { Accept: "application/vnd.github+json" } });
+        if (!response.ok) throw new Error(`No se pudo leer la carpeta ${folder}.`);
         const entries = await response.json() as Array<{ name: string; type: string }>;
         const videos = entries.filter(entry => entry.type === "file" && /\.mp4$/i.test(entry.name)).map(entry => {
           const base = entry.name.replace(/\.mp4$/i, "");
-          return { id: base, name: entry.name, title: niceTitle(entry.name), videoUrl: RAW + encodeURIComponent(entry.name), txtUrl: RAW + encodeURIComponent(base + ".txt") };
+          const folderPath = encodeURIComponent(folder) + "/";
+          return { id: `${folder}/${base}`, name: entry.name, title: niceTitle(entry.name), collection: folder, videoUrl: RAW + folderPath + encodeURIComponent(entry.name), txtUrl: RAW + folderPath + encodeURIComponent(base + ".txt") };
         });
         if (!cancelled) {
           setAssets(videos);
           const preferred = videos.find(v => v.id === initialProductionId || v.name === productions.find(p => p.id === initialProductionId)?.finalFileName) || videos[0];
-          if (preferred) setVideoId(preferred.id);
+          setVideoId(preferred?.id || "");
         }
       } catch (error) {
         if (!cancelled) setMetadataError(error instanceof Error ? error.message : "Error al cargar los MP4.");
       } finally { if (!cancelled) setLoadingAssets(false); }
     })();
     return () => { cancelled = true; };
-  }, []);
+  }, [collection]);
   useEffect(() => {
     if (!active) { setCopies({}); return; }
     let cancelled = false;
@@ -147,9 +150,10 @@ export default function PublishingScreen({ productions, initialProductionId }: P
     <div className="publish-layout">
       <div className="publish-main">
         <section className="publish-card">
-          <div className="publish-card-title"><span>01</span><div><h2>Video final</h2><p>Se muestran exclusivamente los MP4 de «Contenido a subir».</p></div></div>
+          <div className="publish-card-title"><span>01</span><div><h2>Video final</h2><p>Elegí la biblioteca de Publicidad o los capítulos de la Serie.</p></div></div>
+          <label className="publish-field"><span>TIPO DE CONTENIDO</span><select value={collection} onChange={e=>{setCollection(e.target.value as "Publicidad" | "Serie");setVideoId("");setThumbnail(null);}} disabled={loadingAssets}><option value="Publicidad">Publicidad</option><option value="Serie">Serie</option></select></label>
           <label className="publish-field"><span>SELECCIONAR MP4</span><select value={videoId} onChange={e=>{setVideoId(e.target.value);setThumbnail(null);}} disabled={loadingAssets}><option value="">{loadingAssets ? "Buscando MP4…" : "Seleccionar video…"}</option>{assets.map(item=><option key={item.id} value={item.id}>{item.name}</option>)}</select></label>
-          {active ? <div className="publish-video-preview"><video src={active.videoUrl} controls playsInline preload="metadata"/><div><strong>{active.name}</strong><small>MP4 final · TXT asociado: {active.name.replace(/\.mp4$/i, ".txt")}</small></div></div> : <div className="publish-empty-video">{loadingAssets ? "Leyendo la carpeta de videos…" : "No hay MP4 disponibles en Contenido a subir."}</div>}
+          {active ? <div className="publish-video-preview"><video src={active.videoUrl} controls playsInline preload="metadata"/><div><strong>{active.name}</strong><small>{active.collection} · TXT asociado: {active.name.replace(/\.mp4$/i, ".txt")}</small></div></div> : <div className="publish-empty-video">{loadingAssets ? "Leyendo la carpeta de videos…" : "No hay MP4 disponibles en la carpeta {collection}."}</div>}
           {loadingMetadata && <p className="publish-feedback">Leyendo el TXT y completando los campos…</p>}
           {metadataError && <p className="publish-feedback" role="alert">{metadataError}</p>}
           <label className="publish-field"><span>PORTADA / MINIATURA (OPCIONAL)</span><input type="file" accept="image/png,image/jpeg,image/webp" onChange={e=>setThumbnail(e.target.files?.[0]||null)}/>{thumbnail&&<small className="publish-hint">{thumbnail.name}</small>}</label>
