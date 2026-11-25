@@ -1,40 +1,44 @@
-NÚMERO DE CAPÍTULO:
-1
-
-NOMBRE DEL CAPÍTULO:
-El supermercado (también identificado en el paquete de producción como «El entrenamiento»).
-
-PERSONAJES QUE APARECEN:
-Bruno, Martina y Valentina.
-
-¿CÓMO COMIENZA?
-La historia presenta el supermercado y encuentra a Bruno instalado en una góndola, leyendo con muchísima concentración las etiquetas de los productos. La escena deja claro que no está haciendo las compras de manera normal: está estudiando.
-
-¿QUÉ SUCEDE DURANTE EL CAPÍTULO?
-Bruno explica que se está preparando para el Desafío Diario de Ingredora del día siguiente. Como puede aparecer cualquier producto y tiene apenas quince segundos para responder, decidió empezar a estudiar las etiquetas del supermercado. Martina y Valentina lo encuentran y le preguntan por qué está leyendo ingredientes en vez de comprar. Bruno cuenta que empezó por las galletitas y que después piensa seguir con lácteos, conservas y congelados.
-
-¿CUÁL ES EL CONFLICTO O SITUACIÓN PRINCIPAL?
-La preparación exagerada de Bruno: se toma el desafío tan en serio que convierte una visita al supermercado en una sesión de estudio y se olvida del propósito de ir a comprar.
-
-¿CUÁLES SON LOS MOMENTOS MÁS GRACIOSOS O IMPORTANTES?
-- Bruno lee en voz alta ingredientes como harina de trigo, azúcar, aceite vegetal y maltodextrina.
-- Martina y Valentina intentan entender para qué está estudiando si ni siquiera sabe qué producto aparecerá en el desafío.
-- Cuando le preguntan cuándo piensa comprar algo, responde simplemente: «Después».
-- Valentina le recuerda que también tiene que comprar comida.
-
-¿CÓMO TERMINA?
-Valentina le recuerda que no se olvide de comprar comida. Bruno, todavía concentrado en lo suyo, responde «Sí, sí...». Después aparece el cierre de la serie con su música y los créditos.
-
-¿HAY ALGUNA FRASE O DIÁLOGO MEMORABLE?
-«Mañana es el Desafío Diario. Esta vez lo quiero hacer bien.»
-«¿Y cuándo pensás comprar algo?» — «Después.»
-«¡Y acordate de comprar comida!» — «Sí, sí...»
-
-¿QUÉ DEBERÍA SABER ALGUIEN ANTES DE VERLO?
-Es el primer capítulo de la serie y presenta la obsesión de Bruno por aprender los ingredientes de los productos para jugar mejor a Ingredora. No hace falta conocer capítulos anteriores.
-
-¿HAY ALGÚN SPOILER QUE DEBAMOS EVITAR?
-No hay una revelación argumental importante. Para promocionarlo conviene reservar el remate de «Después» y la respuesta final de Bruno.
-
-INFORMACIÓN ADICIONAL:
-La producción está ambientada en un supermercado y presenta el tono de comedia cotidiana de Entre Partidas. El cierre no lleva una placa «FIN»: la serie continúa.
+INGREDORA_PUBLISHING_TEMPLATE_V1
+@GLOBAL
+TITLE: Entre Partidas | Cap. 1: El supermercado
+DESCRIPTION: Bruno tiene una forma muy particular de prepararse para el Desafío Diario: estudiar las etiquetas del súper.
+HASHTAGS: #Ingredora #EntrePartidas #Supermercado #ComediaArgentina
+TAGS: Ingredora, Entre Partidas, El supermercado, Bruno, Martina, Valentina, supermercado, etiquetas de alimentos, ingredientes, desafío diario, comedia argentina, humor cotidiano
+PINNED_COMMENT: ¿Vos también te preparás así para un desafío? 😅 Contanos y descubrí más en Ingredora.com.
+ALT_TEXT: Video vertical de comedia de Ingredora. Bruno está en un supermercado leyendo con mucha concentración las etiquetas de los productos. Martina y Valentina se acercan y conversan con él sobre su preparación para el Desafío Diario.
+@YOUTUBE
+TITLE: El supermercado 😂 | Entre Partidas - Capítulo 1
+DESCRIPTION: Bruno fue al supermercado a hacer las compras… pero terminó estudiando las etiquetas. 🛒📚 Se está preparando para el Desafío Diario de Ingredora y parece que se lo tomó bastante en serio. ¿Vos también te pondrías a estudiar los ingredientes antes de jugar? Conocé más en https://ingredora.com
+HASHTAGS: #Ingredora #EntrePartidas #Supermercado #ComediaArgentina
+TAGS: Ingredora, Entre Partidas, El supermercado, Bruno, Martina, Valentina, supermercado, etiquetas de alimentos, ingredientes, desafío diario, comedia argentina, humor cotidiano
+PINNED_COMMENT: ¿Vos también te preparás así para un desafío? 😅 Contanos y descubrí más en Ingredora.com.
+ALT_TEXT: Video vertical de comedia de Ingredora. Bruno está en un supermercado leyendo con mucha concentración las etiquetas de los productos. Martina y Valentina se acercan y conversan con él sobre su preparación para el Desafío Diario.
+@INSTAGRAM
+TITLE: El supermercado
+DESCRIPTION: Bruno fue al súper, pero parece que se olvidó de hacer las compras. 🛒📚 Está estudiando las etiquetas para el Desafío Diario de Ingredora. ¿Estrategia brillante o se lo tomó demasiado en serio? 😅 Más en Ingredora.com
+HASHTAGS: #Ingredora #EntrePartidas #Supermercado #ComediaArgentina
+TAGS: 
+PINNED_COMMENT: ¿Vos también te preparás así para un desafío? 😅 Contanos y descubrí más en Ingredora.com.
+ALT_TEXT: Video vertical de comedia de Ingredora. Bruno está en un supermercado leyendo con mucha concentración las etiquetas de los productos. Martina y Valentina se acercan y conversan con él sobre su preparación para el Desafío Diario.
+@TIKTOK
+TITLE: El supermercado
+DESCRIPTION: POV: vas al supermercado y te encontrás a alguien estudiando las etiquetas. 🛒😂 Bruno se prepara para el Desafío Diario de Ingredora. ¿Vos harías lo mismo?
+HASHTAGS: #Ingredora #EntrePartidas #Supermercado #ComediaArgentina
+TAGS: 
+PINNED_COMMENT: ¿Vos también te preparás así para un desafío? 😅 Contanos y descubrí más en Ingredora.com.
+ALT_TEXT: Video vertical de comedia de Ingredora. Bruno está en un supermercado leyendo con mucha concentración las etiquetas de los productos. Martina y Valentina se acercan y conversan con él sobre su preparación para el Desafío Diario.
+@FACEBOOK
+TITLE: El supermercado
+DESCRIPTION: Bruno tiene un objetivo: llegar preparado al próximo Desafío Diario de Ingredora. El problema es que convirtió el supermercado en una sala de estudio. 🛒📚 ¿Qué te parece su método?
+HASHTAGS: #Ingredora #EntrePartidas #Supermercado #ComediaArgentina
+TAGS: 
+PINNED_COMMENT: ¿Vos también te preparás así para un desafío? 😅 Contanos y descubrí más en Ingredora.com.
+ALT_TEXT: Video vertical de comedia de Ingredora. Bruno está en un supermercado leyendo con mucha concentración las etiquetas de los productos. Martina y Valentina se acercan y conversan con él sobre su preparación para el Desafío Diario.
+@X
+TITLE: El supermercado
+DESCRIPTION: Bruno fue al supermercado a estudiar las etiquetas para el Desafío Diario. 🛒📚 ¿Preparación inteligente o se olvidó de hacer las compras? 😅 https://ingredora.com
+HASHTAGS: #Ingredora #EntrePartidas #Supermercado #ComediaArgentina
+TAGS: 
+PINNED_COMMENT: ¿Vos también te preparás así para un desafío? 😅 Contanos y descubrí más en Ingredora.com.
+ALT_TEXT: Video vertical de comedia de Ingredora. Bruno está en un supermercado leyendo con mucha concentración las etiquetas de los productos. Martina y Valentina se acercan y conversan con él sobre su preparación para el Desafío Diario.
+@END
