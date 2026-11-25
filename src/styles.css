@@ -215,3 +215,8 @@ button.explorer-row:hover,.explorer-row:hover{background:#f8faf6}
 .publish-tip{background:#f5f8f1}.publish-tip strong{font-size:11px;color:#456044}.publish-tip p{margin:8px 0 0;color:#849084;font-size:9px;line-height:1.7}
 @media(max-width:850px){.publish-layout{grid-template-columns:1fr}.publish-sidebar{position:static;grid-row:1}.publish-summary{padding:18px}.publish-summary h3{margin-bottom:12px}}
 @media(max-width:560px){.publish-heading{align-items:flex-start;padding:28px 0 22px}.publish-heading h1{font-size:43px}.publish-step{padding:12px}.publish-step span{max-width:70px;text-align:center;line-height:1.4}.publish-card{padding:17px}.publish-platforms{grid-template-columns:1fr}.publish-fields-two{grid-template-columns:1fr;gap:0}.publish-topline{align-items:flex-start;flex-direction:column;gap:3px}}
+
+/* Mantener las acciones de la biblioteca en una sola fila */
+.explorer-actions{display:flex;flex-direction:row;align-items:center;flex-wrap:nowrap;gap:8px;width:100%}
+.explorer-actions button{white-space:nowrap}
+@media(max-width:560px){.explorer-actions{gap:6px}.explorer-actions button{padding:8px 9px;font-size:9px}}
