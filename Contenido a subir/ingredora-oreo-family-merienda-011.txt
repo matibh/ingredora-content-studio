@@ -1,3 +1,48 @@
+INGREDORA_PUBLISHING_TEMPLATE_V1
+@GLOBAL
+TITLE: ¿Sabés qué tiene una Oreo? 🍪 | Tenés 6 segundos
+DESCRIPTION: ¿Te acordás de los ingredientes de una Oreo? Tenés seis segundos para poner a prueba tu memoria. Mirá el desafío, intentá responder antes de que termine la cuenta y contanos cuántos acertaste. Más desafíos en https://ingredora.com
+HASHTAGS: #Ingredora #Oreo #DesafioDeIngredientes #CuantoSabes
+TAGS: Ingredora, Oreo, galletitas Oreo, ingredientes de Oreo, desafío de ingredientes, adivinar ingredientes, trivia de alimentos, juego de memoria, Argentina
+PINNED_COMMENT: ¡No vale volver atrás! 👀 ¿Cuántos ingredientes recordaste en esos seis segundos? Contame tu resultado y probá más desafíos en https://ingredora.com.
+ALT_TEXT: Video vertical de Ingredora sobre un desafío de memoria relacionado con Oreo Original. En una escena de merienda se presenta una pregunta sobre lo que comemos. Se muestra una cuenta regresiva visual y el cierre invita a jugar más desafíos en Ingredora.com.
+@YOUTUBE
+TITLE: ¿Sabés qué tiene una Oreo? 🍪 | Tenés 6 segundos
+DESCRIPTION: ¿Te acordás de los ingredientes de una Oreo? Tenés seis segundos para poner a prueba tu memoria. Mirá el desafío, intentá responder antes de que termine la cuenta y contanos cuántos acertaste. Más desafíos en https://ingredora.com
+HASHTAGS: #Ingredora #Oreo #DesafioDeIngredientes #CuantoSabes
+TAGS: Ingredora, Oreo, galletitas Oreo, ingredientes de Oreo, desafío de ingredientes, adivinar ingredientes, trivia de alimentos, juego de memoria, Argentina
+PINNED_COMMENT: ¡No vale volver atrás! 👀 ¿Cuántos ingredientes recordaste en esos seis segundos? Contame tu resultado y probá más desafíos en https://ingredora.com.
+ALT_TEXT: Video vertical de Ingredora sobre un desafío de memoria relacionado con Oreo Original. En una escena de merienda se presenta una pregunta sobre lo que comemos. Se muestra una cuenta regresiva visual y el cierre invita a jugar más desafíos en Ingredora.com.
+@INSTAGRAM
+TITLE: ¿Sabés qué tiene una Oreo? 🍪 | Tenés 6 segundos
+DESCRIPTION: ¿Te acordás de los ingredientes de una Oreo? Tenés seis segundos para poner a prueba tu memoria. Mirá el desafío, intentá responder antes de que termine la cuenta y contanos cuántos acertaste. Más desafíos en https://ingredora.com
+HASHTAGS: #Ingredora #Oreo #DesafioDeIngredientes #CuantoSabes
+TAGS: 
+PINNED_COMMENT: ¡No vale volver atrás! 👀 ¿Cuántos ingredientes recordaste en esos seis segundos? Contame tu resultado y probá más desafíos en https://ingredora.com.
+ALT_TEXT: Video vertical de Ingredora sobre un desafío de memoria relacionado con Oreo Original. En una escena de merienda se presenta una pregunta sobre lo que comemos. Se muestra una cuenta regresiva visual y el cierre invita a jugar más desafíos en Ingredora.com.
+@TIKTOK
+TITLE: ¿Sabés qué tiene una Oreo? 🍪 | Tenés 6 segundos
+DESCRIPTION: ¿Te acordás de los ingredientes de una Oreo? Tenés seis segundos para poner a prueba tu memoria. Mirá el desafío, intentá responder antes de que termine la cuenta y contanos cuántos acertaste. Más desafíos en https://ingredora.com
+HASHTAGS: #Ingredora #Oreo #DesafioDeIngredientes #CuantoSabes
+TAGS: 
+PINNED_COMMENT: ¡No vale volver atrás! 👀 ¿Cuántos ingredientes recordaste en esos seis segundos? Contame tu resultado y probá más desafíos en https://ingredora.com.
+ALT_TEXT: Video vertical de Ingredora sobre un desafío de memoria relacionado con Oreo Original. En una escena de merienda se presenta una pregunta sobre lo que comemos. Se muestra una cuenta regresiva visual y el cierre invita a jugar más desafíos en Ingredora.com.
+@FACEBOOK
+TITLE: ¿Sabés qué tiene una Oreo? 🍪 | Tenés 6 segundos
+DESCRIPTION: ¿Te acordás de los ingredientes de una Oreo? Tenés seis segundos para poner a prueba tu memoria. Mirá el desafío, intentá responder antes de que termine la cuenta y contanos cuántos acertaste. Más desafíos en https://ingredora.com
+HASHTAGS: #Ingredora #Oreo #DesafioDeIngredientes #CuantoSabes
+TAGS: 
+PINNED_COMMENT: ¡No vale volver atrás! 👀 ¿Cuántos ingredientes recordaste en esos seis segundos? Contame tu resultado y probá más desafíos en https://ingredora.com.
+ALT_TEXT: Video vertical de Ingredora sobre un desafío de memoria relacionado con Oreo Original. En una escena de merienda se presenta una pregunta sobre lo que comemos. Se muestra una cuenta regresiva visual y el cierre invita a jugar más desafíos en Ingredora.com.
+@X
+TITLE: ¿Sabés qué tiene una Oreo? 🍪 | Tenés 6 segundos
+DESCRIPTION: ¿Te acordás de los ingredientes de una Oreo? Tenés seis segundos para poner a prueba tu memoria. Mirá el desafío, intentá responder antes de que termine la cuenta y contanos cuántos acertaste. Más desafíos en https://ingredora.com
+HASHTAGS: #Ingredora #Oreo #DesafioDeIngredientes #CuantoSabes
+TAGS: 
+PINNED_COMMENT: ¡No vale volver atrás! 👀 ¿Cuántos ingredientes recordaste en esos seis segundos? Contame tu resultado y probá más desafíos en https://ingredora.com.
+ALT_TEXT: Video vertical de Ingredora sobre un desafío de memoria relacionado con Oreo Original. En una escena de merienda se presenta una pregunta sobre lo que comemos. Se muestra una cuenta regresiva visual y el cierre invita a jugar más desafíos en Ingredora.com.
+@END
+--- FIN DE METADATOS ESTRUCTURADOS ---
 INGREDORA — PAQUETE DE PUBLICACIÓN EN REDES
 PRODUCCIÓN 011 — OREO ORIGINAL
 ============================================================
