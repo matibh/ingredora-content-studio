@@ -96,6 +96,12 @@ export default function PublishingScreen({ productions, initialProductionId }: P
   const [platformFormat, setPlatformFormat] = useState("Automático");
   const [thumbnail, setThumbnail] = useState<File | null>(null);
   const [message, setMessage] = useState("");
+  const [postyUrl, setPostyUrl] = useState("");
+  const [postyError, setPostyError] = useState("");
+  useEffect(() => {
+    const savedUrl = window.localStorage.getItem("ingredora-posty-url");
+    if (savedUrl) setPostyUrl(savedUrl);
+  }, []);
   const active = assets.find(item => item.id === videoId);
   const currentCopy = copies[activePlatform] || emptyCopy();
   const parsedTags = useMemo(() => currentCopy.tags.split(/[,\n]/).map(tag => tag.trim()).filter(Boolean), [currentCopy.tags]);
@@ -143,10 +149,27 @@ export default function PublishingScreen({ productions, initialProductionId }: P
   }, [videoId, assets]);
   const updateCopy = (field: keyof CopyData, value: string) => setCopies(current => ({ ...current, [activePlatform]: { ...(current[activePlatform] || emptyCopy()), [field]: value } }));
   const toggle = (id: string) => setSelected(current => current.includes(id) ? current.filter(item => item !== id) : [...current, id]);
+  const openInPosty = () => {
+    if (!active) return;
+    try {
+      const target = new URL(postyUrl.trim());
+      if ((target.protocol !== "https:" && !(target.protocol === "http:" && ["localhost", "127.0.0.1"].includes(target.hostname))) || target.username || target.password) {
+        throw new Error("Ingresá una URL HTTPS válida de Posty.");
+      }
+      target.pathname = "/dashboard/upload";
+      target.search = "";
+      target.searchParams.set("studio", active.collection + "/" + active.name);
+      window.localStorage.setItem("ingredora-posty-url", target.origin);
+      window.open(target.toString(), "_blank", "noopener,noreferrer");
+      setPostyError("");
+    } catch (error) {
+      setPostyError(error instanceof Error ? error.message : "No se pudo abrir Posty.");
+    }
+  };
   const readyToReview = !!active && !loadingMetadata && !!currentCopy.description.trim() && selected.length > 0 && (schedule === "now" || schedule === "draft" || !!scheduledAt);
   return <section className="publish-screen">
     <div className="publish-topline"><span>INGREDORA STUDIO / DISTRIBUCIÓN</span><span>PUBLICACIÓN MULTIPLATAFORMA</span></div>
-    <header className="publish-heading"><div><p className="eyebrow">DISTRIBUCIÓN MULTIPLATAFORMA</p><h1>Subir a <em>redes.</em></h1><p>Elegí un MP4 y cargamos automáticamente los textos de su TXT asociado.</p></div><div className="publish-step"><strong>01</strong><span>PREPARAR PUBLICACIÓN</span></div></header>
+    <header className="publish-heading"><div><p className="eyebrow">DISTRIBUCIÓN MULTIPLATAFORMA</p><h1>Subir a <em>redes.</em></h1><p>Elegí un MP4 y cargamos automáticamente los textos de su TXT asociado. También podés transferir ambos archivos a Posty sin descargarlos.</p></div><div className="publish-step"><strong>01</strong><span>PREPARAR PUBLICACIÓN</span></div></header>
     <div className="publish-layout">
       <div className="publish-main">
         <section className="publish-card">
@@ -156,6 +179,22 @@ export default function PublishingScreen({ productions, initialProductionId }: P
           {active ? <div className="publish-video-preview"><video src={active.videoUrl} controls playsInline preload="metadata"/><div><strong>{active.name}</strong><small>{active.collection} · TXT asociado: {active.name.replace(/\.mp4$/i, ".txt")}</small></div></div> : <div className="publish-empty-video">{loadingAssets ? "Leyendo la carpeta de videos…" : "No hay MP4 disponibles en la carpeta {collection}."}</div>}
           {loadingMetadata && <p className="publish-feedback">Leyendo el TXT y completando los campos…</p>}
           {metadataError && <p className="publish-feedback" role="alert">{metadataError}</p>}
+          <div className="publish-posty-import">
+            <div>
+              <p className="eyebrow">TRANSFERENCIA DIRECTA</p>
+              <h3>Enviar MP4 + TXT a Posty</h3>
+              <p>Posty recupera los dos archivos desde este repositorio, los carga en tu cuenta y guarda el video como borrador. No se publica nada automáticamente.</p>
+            </div>
+            <label className="publish-field">
+              <span>URL DE TU POSTY</span>
+              <input type="url" value={postyUrl} onChange={event => { setPostyUrl(event.target.value); setPostyError(""); }} placeholder="https://tu-posty.vercel.app" autoComplete="url" />
+            </label>
+            <button type="button" className="publish-review-button" disabled={!active || !postyUrl.trim()} onClick={openInPosty}>
+              Enviar {active?.name || "video"} a Posty <span>→</span>
+            </button>
+            {postyError && <p className="publish-feedback" role="alert">{postyError}</p>}
+            <small>Se abre Posty en otra pestaña. Iniciá sesión si te lo solicita y revisá los metadatos antes de guardar el borrador.</small>
+          </div>
           <label className="publish-field"><span>PORTADA / MINIATURA (OPCIONAL)</span><input type="file" accept="image/png,image/jpeg,image/webp" onChange={e=>setThumbnail(e.target.files?.[0]||null)}/>{thumbnail&&<small className="publish-hint">{thumbnail.name}</small>}</label>
         </section>
         <section className="publish-card">
