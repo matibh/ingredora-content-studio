@@ -1,43 +1,44 @@
-NÚMERO DE CAPÍTULO:
-6
-
-NOMBRE DEL CAPÍTULO:
-De Ingredora a chef.
-
-PERSONAJES QUE APARECEN:
-Bruno, Martina, Tomás, Valentina y Ernesto.
-
-¿CÓMO COMIENZA?
-La comida ya terminó y Martina le pregunta a Bruno si quiere escuchar la devolución. Él acepta, pero pide que sean justos porque era su primera vez cocinando para el grupo.
-
-¿QUÉ SUCEDE DURANTE EL CAPÍTULO?
-Los demás comentan cómo salió la comida que preparó Bruno. Ernesto pregunta si la receta era para cinco personas o para que cinco personas sobrevivieran. Martina admite que le gustó especialmente cuando llegó el delivery. Valentina enumera los problemas del plato: el queso estaba frío, el huevo crudo y había una cáscara entera. Bruno intenta defenderlo como una experiencia gastronómica de texturas y una receta experimental. Después de aceptar las críticas, promete cocinar algo mejor la próxima vez. Cuando le preguntan qué va a cambiar, responde que cambiará al público. Finalmente cuenta que quiere abrir un restaurante llamado Bruno's.
-
-¿CUÁL ES EL CONFLICTO O SITUACIÓN PRINCIPAL?
-Bruno quiere demostrar que puede cocinar, pero la comida que preparó fue un desastre y sus amigos no pueden ocultarlo. En vez de asumirlo del todo, intenta justificar el resultado y proyecta abrir su propio restaurante.
-
-¿CUÁLES SON LOS MOMENTOS MÁS GRACIOSOS O IMPORTANTES?
-- Ernesto pregunta si la comida era para cinco o para sobrevivir cinco.
-- Valentina señala que el queso estaba frío, el huevo crudo y había una cáscara entera.
-- Bruno define el plato como «una experiencia gastronómica de texturas».
-- Tomás dice que había que adivinar qué textura iba a tocar.
-- Bruno responde «No. El público» cuando le preguntan si va a cambiar la receta.
-- La idea de su futuro restaurante termina con una respuesta inesperada sobre qué va a servir.
-
-¿CÓMO TERMINA?
-Bruno anuncia que su restaurante se llamará «Bruno's». Ernesto pregunta qué van a servir y Bruno responde: «Delivery». La respuesta cierra el chiste y da paso a la música de salida.
-
-¿HAY ALGUNA FRASE O DIÁLOGO MEMORABLE?
-«¿La receta era para cinco o para sobrevivir cinco?»
-«Era una experiencia gastronómica de texturas.»
-«No. El público.»
-«¿Y qué sirven?» — «Delivery.»
-
-¿QUÉ DEBERÍA SABER ALGUIEN ANTES DE VERLO?
-Es una historia autoconclusiva centrada en la primera experiencia de Bruno cocinando para sus amigos. La escena sucede después de la comida, en el comedor del departamento.
-
-¿HAY ALGÚN SPOILER QUE DEBAMOS EVITAR?
-Sí. Conviene reservar la respuesta final «Delivery», que es el remate del capítulo.
-
-INFORMACIÓN ADICIONAL:
-El paquete de producción registra el capítulo como el número 6, con el título «De Ingredora a chef». El audio contiene 29 intervenciones de los cinco personajes.
+INGREDORA_PUBLISHING_TEMPLATE_V1
+@GLOBAL
+TITLE: Entre Partidas | Cap. 6: De Ingredora a chef
+DESCRIPTION: Bruno quiso cocinar para sus amigos. La devolución de la mesa no fue exactamente la que esperaba.
+HASHTAGS: #Ingredora #EntrePartidas #Cocina #ComediaArgentina
+TAGS: Ingredora, Entre Partidas, De Ingredora a chef, Bruno, Martina, Tomás, Valentina, Ernesto, cocinar, comida, chef, restaurante, delivery, comedia argentina
+PINNED_COMMENT: ¿Le darías otra oportunidad a Bruno en la cocina? 🍽️ Te leemos.
+ALT_TEXT: Video vertical de comedia de Ingredora. Bruno conversa con Martina, Tomás, Valentina y Ernesto después de cocinar para ellos. Los amigos comentan cómo salió la comida y Bruno intenta justificar el resultado.
+@YOUTUBE
+TITLE: De Ingredora a chef 😂 | Entre Partidas - Capítulo 6
+DESCRIPTION: Bruno se animó a cocinar para todos y ahora llegó el momento de escuchar las opiniones. 🍽️ Sus amigos tienen observaciones bastante concretas y él intenta defender su creación con argumentos gastronómicos. ¿Le darías una segunda oportunidad como chef?
+HASHTAGS: #Ingredora #EntrePartidas #Cocina #ComediaArgentina
+TAGS: Ingredora, Entre Partidas, De Ingredora a chef, Bruno, Martina, Tomás, Valentina, Ernesto, cocinar, comida, chef, restaurante, delivery, comedia argentina
+PINNED_COMMENT: ¿Le darías otra oportunidad a Bruno en la cocina? 🍽️ Te leemos.
+ALT_TEXT: Video vertical de comedia de Ingredora. Bruno conversa con Martina, Tomás, Valentina y Ernesto después de cocinar para ellos. Los amigos comentan cómo salió la comida y Bruno intenta justificar el resultado.
+@INSTAGRAM
+TITLE: De Ingredora a chef
+DESCRIPTION: Bruno cocinó para sus amigos y llegó la hora de la devolución. 🍽️😅 Hay críticas constructivas… y hay críticas que duelen. ¿Te animarías a probar su próximo plato?
+HASHTAGS: #Ingredora #EntrePartidas #Cocina #ComediaArgentina
+TAGS: 
+PINNED_COMMENT: ¿Le darías otra oportunidad a Bruno en la cocina? 🍽️ Te leemos.
+ALT_TEXT: Video vertical de comedia de Ingredora. Bruno conversa con Martina, Tomás, Valentina y Ernesto después de cocinar para ellos. Los amigos comentan cómo salió la comida y Bruno intenta justificar el resultado.
+@TIKTOK
+TITLE: De Ingredora a chef
+DESCRIPTION: Bruno cocinó para cinco. Sus amigos todavía están procesando la experiencia. 🍽️😂
+HASHTAGS: #Ingredora #EntrePartidas #Cocina #ComediaArgentina
+TAGS: 
+PINNED_COMMENT: ¿Le darías otra oportunidad a Bruno en la cocina? 🍽️ Te leemos.
+ALT_TEXT: Video vertical de comedia de Ingredora. Bruno conversa con Martina, Tomás, Valentina y Ernesto después de cocinar para ellos. Los amigos comentan cómo salió la comida y Bruno intenta justificar el resultado.
+@FACEBOOK
+TITLE: De Ingredora a chef
+DESCRIPTION: Bruno quiso sorprender a sus amigos con una comida hecha por él. Después de probarla, llega la devolución: comentarios sinceros, explicaciones creativas y un nuevo proyecto gastronómico. 🍽️
+HASHTAGS: #Ingredora #EntrePartidas #Cocina #ComediaArgentina
+TAGS: 
+PINNED_COMMENT: ¿Le darías otra oportunidad a Bruno en la cocina? 🍽️ Te leemos.
+ALT_TEXT: Video vertical de comedia de Ingredora. Bruno conversa con Martina, Tomás, Valentina y Ernesto después de cocinar para ellos. Los amigos comentan cómo salió la comida y Bruno intenta justificar el resultado.
+@X
+TITLE: De Ingredora a chef
+DESCRIPTION: Bruno cocinó para sus amigos y ahora tiene que escuchar la devolución. 🍽️😅 ¿Le darías otra oportunidad? https://ingredora.com
+HASHTAGS: #Ingredora #EntrePartidas #Cocina #ComediaArgentina
+TAGS: 
+PINNED_COMMENT: ¿Le darías otra oportunidad a Bruno en la cocina? 🍽️ Te leemos.
+ALT_TEXT: Video vertical de comedia de Ingredora. Bruno conversa con Martina, Tomás, Valentina y Ernesto después de cocinar para ellos. Los amigos comentan cómo salió la comida y Bruno intenta justificar el resultado.
+@END
