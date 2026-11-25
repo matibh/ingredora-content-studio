@@ -41,43 +41,49 @@ function labelValue(block: string, label: string) {
 }
 function parseMetadata(text: string): Record<string, CopyData> {
   const out: Record<string, CopyData> = Object.fromEntries(PLATFORMS.map(p => [p.id, emptyCopy()]));
-  const universalTitle = section(text, /^TÍTULO PRINCIPAL$/im, /^(ALTERNATIVAS? DE TÍTULO|DESCRIPCIÓN|CONCEPTO|$)/im);
-  const universalDescription = section(text, /^DESCRIPCIÓN\s*[-—].*$/im, /^(ETIQUETAS|HASHTAGS|COMENTARIO|TEXTO PARA PORTADA|CTA|NOTAS|CRÉDITO|CONTROL|FIN)/im);
-  const universalTags = section(text, /^(ETIQUETAS \/ TAGS|ETIQUETAS|TAGS)\b.*$/im, /^(HASHTAGS|COMENTARIO|TEXTO PARA PORTADA|CTA|NOTAS|CONTROL|FIN)/im);
-  const universalHash = section(text, /^HASHTAGS PRINCIPALES$/im, /^(COMENTARIO|TEXTO PARA PORTADA|CTA|NOTAS|CRÉDITO|CONTROL|FIN)/im);
-  const platformBlocks: Record<string, RegExp[]> = {
-    youtube: [/^\s*3\. YOUTUBE SHORTS\s*$/im, /^\s*YOUTUBE SHORTS\s*$/im, /^\s*YOUTUBE\s*$/im],
-    instagram: [/^\s*4\. INSTAGRAM REELS\s*$/im, /^\s*INSTAGRAM REELS\s*$/im, /^\s*INSTAGRAM\s*$/im],
-    tiktok: [/^\s*5\. TIKTOK\s*$/im, /^\s*TIKTOK\s*$/im],
-    facebook: [/^\s*6\. FACEBOOK REELS\s*$/im, /^\s*FACEBOOK REELS\s*$/im, /^\s*FACEBOOK\s*$/im],
-    x: [/^\s*7\. X\s*$/im, /^\s*X \(ANTES TWITTER\)\s*$/im, /^\s*X\s*$/im]
-  };
-  const allHeadings = /^(?:\d+\.\s*)?(?:YOUTUBE SHORTS|YOUTUBE|INSTAGRAM REELS|INSTAGRAM|TIKTOK|FACEBOOK REELS|FACEBOOK|X(?: \(ANTES TWITTER\))?|COPY UNIVERSAL|\d+\.\s+COPY|\d+\.\s+PUBLICACIÓN|\d+\.\s+CHECKLIST|\d+\.\s+MARCAS|\d+\.\s+ESTADO|FIN\b).*$/im;
-  for (const p of PLATFORMS) {
-    const heading = platformBlocks[p.id].find(re => re.test(text));
-    let block = "";
-    if (heading) block = section(text, heading, allHeadings);
-    const title = labelValue(block, p.id === "youtube" ? "TÍTULO PRINCIPAL" : p.id === "facebook" ? "TÍTULO" : p.id === "instagram" ? "TÍTULO" : "TÍTULO");
-    const desc = labelValue(block, p.id === "youtube" ? "DESCRIPCIÓN" : p.id === "instagram" || p.id === "tiktok" ? "CAPTION PRINCIPAL" : p.id === "facebook" ? "COPY" : "POST PRINCIPAL")
-      || section(text, new RegExp("^DESCRIPCIÓN\\\\s*[-—]\\\\s*" + (p.id === "youtube" ? "YOUTUBE SHORTS" : p.id === "instagram" ? "INSTAGRAM REELS" : p.id === "facebook" ? "FACEBOOK REELS" : p.id.toUpperCase()) + "$", "im"), /^(?:DESCRIPCIÓN|ETIQUETAS|HASHTAGS|COMENTARIO|TEXTO PARA PORTADA|CTA|NOTAS|CRÉDITO|CONTROL|FIN)/im);
-    const tags = labelValue(block, "ETIQUETAS / TAGS") || labelValue(block, "ETIQUETAS / TAGS DE YOUTUBE") || labelValue(block, "ETIQUETAS");
-    const hash = labelValue(block, "HASHTAGS");
-    const pinned = labelValue(block, "COMENTARIO PARA FIJAR") || labelValue(block, "COMENTARIO FIJADO");
-    const alt = labelValue(block, "TEXTO ALTERNATIVO") || labelValue(block, "TEXTO ALT") || labelValue(block, "DESCRIPCIÓN ACCESIBLE");
-    out[p.id] = {
-      title: clean(title || (p.id === "youtube" ? universalTitle : "")),
-      description: clean(desc || (p.id === "youtube" ? universalDescription : universalDescription)),
-      hashtags: clean(hash || universalHash),
-      tags: clean(tags || (p.id === "youtube" ? universalTags : "")),
-      pinnedComment: clean(pinned),
-      altText: clean(alt)
-    };
+  if (text.includes("INGREDORA_PUBLISHING_TEMPLATE_V1")) {
+    const blocks: Record<string, Record<string, string>> = {};
+    let currentBlock = "";
+    let currentField = "";
+    for (const rawLine of text.split(/\\r?\\n/)) {
+      const line = rawLine.trimEnd();
+      const marker = line.trim().match(/^@([A-Z]+)$/);
+      if (marker) {
+        currentBlock = marker[1].toLowerCase();
+        if (currentBlock === "end") break;
+        blocks[currentBlock] ||= {};
+        currentField = "";
+        continue;
+      }
+      const field = line.match(/^(TITLE|DESCRIPTION|HASHTAGS|TAGS|PINNED_COMMENT|ALT_TEXT):\\s?(.*)$/);
+      if (field && currentBlock) {
+        currentField = field[1];
+        blocks[currentBlock][currentField] = field[2] || "";
+      } else if (currentField && currentBlock && line.trim()) {
+        blocks[currentBlock][currentField] += (blocks[currentBlock][currentField] ? "\\n" : "") + line.trim();
+      }
+    }
+    const global = blocks.global || {};
+    for (const p of PLATFORMS) {
+      const values = { ...global, ...(blocks[p.id] || {}) };
+      out[p.id] = {
+        title: clean(values.TITLE || ""),
+        description: clean(values.DESCRIPTION || ""),
+        hashtags: clean(values.HASHTAGS || ""),
+        tags: clean(values.TAGS || ""),
+        pinnedComment: clean(values.PINNED_COMMENT || ""),
+        altText: clean(values.ALT_TEXT || "")
+      };
+    }
+    return out;
   }
-  // TXT breves sin bloques separados: usar los campos universales en todas las redes.
+  // Compatibilidad temporal con TXT anteriores al template v1.
+  const universalTitle = section(text, /^TÍTULO PRINCIPAL$/im, /^(ALTERNATIVAS? DE TÍTULO|DESCRIPCIÓN|CONCEPTO|$)/im);
+  const universalDescription = section(text, /^DESCRIPCIÓN\\s*[-—].*$/im, /^(ETIQUETAS|HASHTAGS|COMENTARIO|TEXTO PARA PORTADA|CTA|NOTAS|CRÉDITO|CONTROL|FIN)/im);
+  const universalTags = section(text, /^(ETIQUETAS \\/ TAGS|ETIQUETAS|TAGS)\\b.*$/im, /^(HASHTAGS|COMENTARIO|TEXTO PARA PORTADA|CTA|NOTAS|CONTROL|FIN)/im);
+  const universalHash = section(text, /^HASHTAGS PRINCIPALES$/im, /^(COMENTARIO|TEXTO PARA PORTADA|CTA|NOTAS|CRÉDITO|CONTROL|FIN)/im);
   for (const p of PLATFORMS) {
-    if (!out[p.id].description) out[p.id].description = clean(universalDescription);
-    if (!out[p.id].hashtags) out[p.id].hashtags = clean(universalHash);
-    if (!out[p.id].title) out[p.id].title = clean(universalTitle);
+    out[p.id] = { title: clean(universalTitle), description: clean(universalDescription), hashtags: clean(universalHash), tags: p.id === "youtube" ? clean(universalTags) : "", pinnedComment: "", altText: "" };
   }
   return out;
 }
