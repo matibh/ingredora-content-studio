@@ -1,43 +1,44 @@
-NÚMERO DE CAPÍTULO:
-5
-
-NOMBRE DEL CAPÍTULO:
-La derrota de Bruno.
-
-PERSONAJES QUE APARECEN:
-Bruno, Martina, Tomás, Valentina y Ernesto.
-
-¿CÓMO COMIENZA?
-La partida de arcade ya terminó y Martina pregunta si pueden reconocer que ganó. Tomás confirma el resultado: diez a dos. Bruno se niega a aceptar la derrota y dice que la máquina contó mal.
-
-¿QUÉ SUCEDE DURANTE EL CAPÍTULO?
-Los demás escuchan las explicaciones de Bruno por haber perdido contra Martina. Primero culpa al joystick, después a una supuesta demora de conexión, al calor y a la presión de jugar con todos mirando. Valentina, Tomás y Ernesto van desmontando cada excusa. Bruno pide una revancha, pero intenta imponer condiciones y termina suspendiéndola por «cuestiones técnicas». Martina le pide que la felicite por haber ganado.
-
-¿CUÁL ES EL CONFLICTO O SITUACIÓN PRINCIPAL?
-Bruno no sabe perder. Martina le ganó claramente en la arcade, pero él busca explicaciones cada vez más absurdas para no reconocer que ella jugó mejor.
-
-¿CUÁLES SON LOS MOMENTOS MÁS GRACIOSOS O IMPORTANTES?
-- Tomás confirma el resultado: «Ganaste. Diez a dos. No hay mucha discusión».
-- Bruno dice que el joystick se le iba para la izquierda, aunque estaba jugando con la derecha.
-- Asegura que había lag, pero Valentina señala que la máquina está enchufada a la pared.
-- Tomás recuerda que están en un pasillo y que hay corriente de aire cuando Bruno culpa al calor.
-- Bruno dice que no puede concentrarse y organizar al mismo tiempo porque él es el organizador.
-- Cuando Martina le exige que admita que es mejor, Bruno intenta suspender la revancha.
-
-¿CÓMO TERMINA?
-Ernesto lee el cartel de la máquina: «MARTINA CAMPEONA» y debajo «BRUNO: GAME OVER». Bruno responde que por lo menos sigue teniendo el récord de excusas. Tomás remata: «Ese sí que no te lo gana nadie». Entra la risa y la música de cierre.
-
-¿HAY ALGUNA FRASE O DIÁLOGO MEMORABLE?
-«Yo no perdí. La máquina contó mal.»
-«¿Quién sabe cómo está el internet de la pared?»
-«Queda suspendida la revancha por cuestiones técnicas.»
-«Ese sí que no te lo gana nadie.»
-
-¿QUÉ DEBERÍA SABER ALGUIEN ANTES DE VERLO?
-El episodio se apoya en la rivalidad amistosa entre Bruno y Martina y continúa el hilo de la máquina arcade introducida en el capítulo 4.
-
-¿HAY ALGÚN SPOILER QUE DEBAMOS EVITAR?
-Sí. No adelantar el resultado diez a dos, el cartel de Martina campeona ni el remate del récord de excusas.
-
-INFORMACIÓN ADICIONAL:
-El registro de render confirma un MP4 final de 2 minutos y 30 segundos aproximadamente, en formato vertical 720 × 1280 y 24 FPS. La versión definitiva se llama «La derrota de Bruno».
+INGREDORA_PUBLISHING_TEMPLATE_V1
+@GLOBAL
+TITLE: Entre Partidas | Cap. 5: La derrota de Bruno
+DESCRIPTION: Martina ganó la partida de arcade, pero Bruno tiene varias explicaciones para el resultado.
+HASHTAGS: #Ingredora #EntrePartidas #Arcade #Humor
+TAGS: Ingredora, Entre Partidas, La derrota de Bruno, Bruno, Martina, Tomás, Valentina, Ernesto, arcade, videojuegos, perder, revancha, excusas, comedia argentina
+PINNED_COMMENT: ¿Sos buen perdedor o pedís revancha? 🎮 Contanos.
+ALT_TEXT: Video vertical de comedia de Ingredora. Después de una partida de arcade, Martina celebra y Bruno cuestiona el resultado. Tomás, Valentina y Ernesto escuchan y comentan sus distintas excusas.
+@YOUTUBE
+TITLE: La derrota de Bruno 😂 | Entre Partidas - Capítulo 5
+DESCRIPTION: La partida terminó y el resultado está a la vista. 🎮 Martina ganó, pero Bruno no parece convencido. Entre explicaciones técnicas y excusas cada vez más creativas, reconocer la derrota se vuelve otra competencia. ¿Sos buen perdedor o también pedís revancha?
+HASHTAGS: #Ingredora #EntrePartidas #Arcade #Humor
+TAGS: Ingredora, Entre Partidas, La derrota de Bruno, Bruno, Martina, Tomás, Valentina, Ernesto, arcade, videojuegos, perder, revancha, excusas, comedia argentina
+PINNED_COMMENT: ¿Sos buen perdedor o pedís revancha? 🎮 Contanos.
+ALT_TEXT: Video vertical de comedia de Ingredora. Después de una partida de arcade, Martina celebra y Bruno cuestiona el resultado. Tomás, Valentina y Ernesto escuchan y comentan sus distintas excusas.
+@INSTAGRAM
+TITLE: La derrota de Bruno
+DESCRIPTION: Perder es parte del juego… aceptar que perdiste es otra historia. 😂🎮 Martina ganó y Bruno tiene una explicación para cada detalle. ¿Sos de aceptar la derrota o de pedir revancha?
+HASHTAGS: #Ingredora #EntrePartidas #Arcade #Humor
+TAGS: 
+PINNED_COMMENT: ¿Sos buen perdedor o pedís revancha? 🎮 Contanos.
+ALT_TEXT: Video vertical de comedia de Ingredora. Después de una partida de arcade, Martina celebra y Bruno cuestiona el resultado. Tomás, Valentina y Ernesto escuchan y comentan sus distintas excusas.
+@TIKTOK
+TITLE: La derrota de Bruno
+DESCRIPTION: Cuando perdés en la arcade pero estás seguro de que la culpa fue del joystick, el lag y el universo. 🎮😂
+HASHTAGS: #Ingredora #EntrePartidas #Arcade #Humor
+TAGS: 
+PINNED_COMMENT: ¿Sos buen perdedor o pedís revancha? 🎮 Contanos.
+ALT_TEXT: Video vertical de comedia de Ingredora. Después de una partida de arcade, Martina celebra y Bruno cuestiona el resultado. Tomás, Valentina y Ernesto escuchan y comentan sus distintas excusas.
+@FACEBOOK
+TITLE: La derrota de Bruno
+DESCRIPTION: Martina se llevó la victoria en la arcade. Bruno, en cambio, tiene una lista de motivos por los que el resultado no debería contar. Una competencia amistosa que se pone cada vez más divertida. 🎮
+HASHTAGS: #Ingredora #EntrePartidas #Arcade #Humor
+TAGS: 
+PINNED_COMMENT: ¿Sos buen perdedor o pedís revancha? 🎮 Contanos.
+ALT_TEXT: Video vertical de comedia de Ingredora. Después de una partida de arcade, Martina celebra y Bruno cuestiona el resultado. Tomás, Valentina y Ernesto escuchan y comentan sus distintas excusas.
+@X
+TITLE: La derrota de Bruno
+DESCRIPTION: Martina ganó la partida. Bruno tiene varias explicaciones, pero ninguna parece incluir aceptar la derrota. 🎮😂 https://ingredora.com
+HASHTAGS: #Ingredora #EntrePartidas #Arcade #Humor
+TAGS: 
+PINNED_COMMENT: ¿Sos buen perdedor o pedís revancha? 🎮 Contanos.
+ALT_TEXT: Video vertical de comedia de Ingredora. Después de una partida de arcade, Martina celebra y Bruno cuestiona el resultado. Tomás, Valentina y Ernesto escuchan y comentan sus distintas excusas.
+@END
