@@ -340,3 +340,17 @@ La cadencia inicial se define en el documento 01 y se ajusta con datos reales.
 ---
 
 **Estado:** especificación inicial. Las APIs y políticas de plataformas cambian. El MVP produce y prepara publicaciones; el usuario publica manualmente. Ninguna integración futura puede introducir cargos, billing o incumplir los términos del canal.
+
+
+## 19. Biblioteca central y envío manual desde el Studio
+
+El Content Studio incorpora un archivo de videos finales ligado a `public/studio/productions.json`. Los MP4 aprobados se guardan en la carpeta de entregas del repositorio y se asocian a una producción o a uno de los nueve capítulos de *Entre Partidas*. La sección de capítulos acepta un MP4 final, el número de capítulo y la autorización editorial. Una carga reemplaza el archivo vigente de ese capítulo y deja el commit anterior como historial.
+
+Para cada entrega con MP4 final, el reproductor muestra cinco destinos: YouTube Studio, Instagram, Meta Business Suite/Facebook, TikTok y X. El flujo asistido es:
+1. Descargar el MP4 final desde la ficha.
+2. Copiar o editar la descripción.
+3. Abrir el destino elegido.
+4. Adjuntar el archivo descargado, revisar portada, copy, visibilidad y demás ajustes.
+5. Confirmar en la plataforma y verificar la publicación.
+
+**No es publicación automática ni un scheduler.** Cada plataforma exige su propio proceso de cuenta, autorización o revisión para publicar desde una aplicación. La API de TikTok requiere app registrada, aprobación del alcance `video.publish` y auditoría para publicar públicamente; la API de YouTube exige OAuth con `youtube.upload`; Instagram requiere cuenta profesional y permisos de publicación; Facebook requiere Page Access Token y permisos/tareas de administración; X cobra por uso de su API. Mientras no se configuren y aprueben esas integraciones y sus costos, el Studio solo prepara el archivo y abre el canal oficial.
