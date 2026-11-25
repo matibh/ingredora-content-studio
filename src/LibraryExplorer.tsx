@@ -40,9 +40,9 @@ export default function LibraryExplorer(){
    <div className="explorer-nav"><button type="button" onClick={()=>setPath("")} aria-label="Inicio">⌂</button><span>›</span>{crumbs.map(c=><span className="crumb" key={c.path}><button type="button" onClick={()=>setPath(c.path)}>{c.name}</button>›</span>)}<strong>{path.split("/").pop()||"Este equipo"}</strong></div>
    <div className="explorer-actions"><button type="button" onClick={()=>setShowFolder(v=>!v)}>＋ Nueva carpeta</button><button type="button" onClick={()=>input.current?.click()}>↑ Subir archivo</button></div>
   </div>
+  <input ref={input} className="explorer-hidden-input" type="file" onChange={e=>setFile(e.target.files?.[0]||null)}/>
   {(showFolder||file)&&<div className="explorer-create-panel">
    {showFolder&&<div className="explorer-new-folder"><input value={folderName} onChange={e=>setFolderName(e.target.value)} placeholder="Nombre de la carpeta nueva" maxLength={70}/><button type="button" disabled={!folderName.trim()||busy||!approval.trim()} onClick={createFolder}>Crear carpeta</button><button className="explorer-cancel" type="button" onClick={()=>setShowFolder(false)}>Cancelar</button></div>}
-   <input ref={input} className="explorer-hidden-input" type="file" onChange={e=>setFile(e.target.files?.[0]||null)}/>
    {file&&<div className="explorer-file-upload"><span>▤ {file.name} · {humanSize(file.size)}</span><button type="button" disabled={busy||!approval.trim()} onClick={uploadFile}>{busy?"Subiendo…":"Confirmar subida"}</button><button className="explorer-cancel" type="button" onClick={()=>{setFile(null);if(input.current)input.current.value="";}}>Quitar</button></div>}
    <label className="explorer-auth">AUTORIZACIÓN PARA MODIFICAR LA BIBLIOTECA<input type="password" value={approval} onChange={e=>setApproval(e.target.value)} placeholder="Contraseña de aprobación"/></label>
    <small>Archivos de hasta 40 MB. Las carpetas y archivos se guardan en el repositorio central.</small>
