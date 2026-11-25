@@ -45,7 +45,7 @@ function parseMetadata(text: string): Record<string, CopyData> {
     const blocks: Record<string, Record<string, string>> = {};
     let currentBlock = "";
     let currentField = "";
-    for (const rawLine of text.split(/\\r?\\n/)) {
+    for (const rawLine of text.split(/\r?\n/)) {
       const line = rawLine.trimEnd();
       const marker = line.trim().match(/^@([A-Z]+)$/);
       if (marker) {
@@ -55,12 +55,12 @@ function parseMetadata(text: string): Record<string, CopyData> {
         currentField = "";
         continue;
       }
-      const field = line.match(/^(TITLE|DESCRIPTION|HASHTAGS|TAGS|PINNED_COMMENT|ALT_TEXT):\\s?(.*)$/);
+      const field = line.match(/^(TITLE|DESCRIPTION|HASHTAGS|TAGS|PINNED_COMMENT|ALT_TEXT):\s?(.*)$/);
       if (field && currentBlock) {
         currentField = field[1];
         blocks[currentBlock][currentField] = field[2] || "";
       } else if (currentField && currentBlock && line.trim()) {
-        blocks[currentBlock][currentField] += (blocks[currentBlock][currentField] ? "\\n" : "") + line.trim();
+        blocks[currentBlock][currentField] += (blocks[currentBlock][currentField] ? "\n" : "") + line.trim();
       }
     }
     const global = blocks.global || {};
@@ -80,7 +80,7 @@ function parseMetadata(text: string): Record<string, CopyData> {
   // Compatibilidad temporal con TXT anteriores al template v1.
   const universalTitle = section(text, /^TÍTULO PRINCIPAL$/im, /^(ALTERNATIVAS? DE TÍTULO|DESCRIPCIÓN|CONCEPTO|$)/im);
   const universalDescription = section(text, /^DESCRIPCIÓN\\s*[-—].*$/im, /^(ETIQUETAS|HASHTAGS|COMENTARIO|TEXTO PARA PORTADA|CTA|NOTAS|CRÉDITO|CONTROL|FIN)/im);
-  const universalTags = section(text, /^(ETIQUETAS \\/ TAGS|ETIQUETAS|TAGS)\\b.*$/im, /^(HASHTAGS|COMENTARIO|TEXTO PARA PORTADA|CTA|NOTAS|CONTROL|FIN)/im);
+  const universalTags = section(text, /^(ETIQUETAS \/ TAGS|ETIQUETAS|TAGS)\\b.*$/im, /^(HASHTAGS|COMENTARIO|TEXTO PARA PORTADA|CTA|NOTAS|CONTROL|FIN)/im);
   const universalHash = section(text, /^HASHTAGS PRINCIPALES$/im, /^(COMENTARIO|TEXTO PARA PORTADA|CTA|NOTAS|CRÉDITO|CONTROL|FIN)/im);
   for (const p of PLATFORMS) {
     out[p.id] = { title: clean(universalTitle), description: clean(universalDescription), hashtags: clean(universalHash), tags: p.id === "youtube" ? clean(universalTags) : "", pinnedComment: "", altText: "" };
