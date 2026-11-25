@@ -9,7 +9,7 @@ const KEY="sb_publishable__TDF6zsAZEvsWgSkAntJgw_qxYYuUop";
 const roots=["Publicidad","Series originales","Material compartido"];
 function humanSize(bytes:number){if(bytes<1024)return bytes+" B";if(bytes<1048576)return (bytes/1024).toFixed(0)+" KB";return (bytes/1048576).toFixed(1)+" MB";}
 function fileIcon(name:string,mime=""){const ext=name.split(".").pop()?.toLowerCase();if(mime.startsWith("video/")||["mp4","webm","mov","mkv"].includes(ext||""))return "▶";if(mime.startsWith("image/")||["png","jpg","jpeg","webp","gif","svg"].includes(ext||""))return "▧";if(["pdf","doc","docx","txt","md"].includes(ext||""))return "▤";if(["mp3","wav","ogg","m4a"].includes(ext||""))return "♫";return "▧";}
-export default function LibraryExplorer(){
+export default function LibraryExplorer({onPublish}:{onPublish:()=>void}){
  const [manifest,setManifest]=useState<Manifest>({productions:[],folders:[],files:[]});
  const [path,setPath]=useState("");
  const [loading,setLoading]=useState(true);
@@ -38,7 +38,7 @@ export default function LibraryExplorer(){
   <div className="library-titlebar"><div><p className="eyebrow">INGREDORA CONTENT STUDIO</p><h2>Biblioteca</h2><span>Todos tus videos, renders y materiales en un solo lugar.</span></div><div className="library-count"><strong>{productions.filter(p=>p.status==="ready"&&p.videoUrl).length+files.length}</strong><small>ARCHIVOS</small></div></div>
   <div className="explorer-toolbar">
    <div className="explorer-nav"><button type="button" onClick={()=>setPath("")} aria-label="Inicio">⌂</button><span>›</span>{crumbs.map(c=><span className="crumb" key={c.path}><button type="button" onClick={()=>setPath(c.path)}>{c.name}</button>›</span>)}<strong>{path.split("/").pop()||"Este equipo"}</strong></div>
-   <div className="explorer-actions"><button type="button" onClick={()=>setShowFolder(v=>!v)}>＋ Nueva carpeta</button><button type="button" onClick={()=>input.current?.click()}>↑ Subir archivo</button></div>
+   <div className="explorer-actions"><button type="button" onClick={()=>setShowFolder(v=>!v)}>＋ Nueva carpeta</button><button type="button" onClick={()=>input.current?.click()}>↑ Subir archivo</button><button className="explorer-publish-button" type="button" onClick={onPublish}>↗ Subir a redes</button></div>
   </div>
   <input ref={input} className="explorer-hidden-input" type="file" onChange={e=>setFile(e.target.files?.[0]||null)}/>
   {(showFolder||file)&&<div className="explorer-create-panel">
