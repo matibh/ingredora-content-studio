@@ -208,6 +208,14 @@ button.explorer-row:hover,.explorer-row:hover{background:#f8faf6}
 .publish-summary-row span{font-size:8px;color:#8c998e}.publish-summary-row strong{font-size:10px;color:#405a43;overflow-wrap:anywhere}
 .publish-selected-chips{display:flex;flex-wrap:wrap;gap:5px;margin:12px 0}
 .publish-selected-chips span{padding:5px 7px;border-radius:20px;background:#edf3e8;color:#547149;font-size:8px;font-weight:700}
+.publish-posty-import{margin:18px 0;padding:16px;border:1px solid #dce7d7;border-radius:10px;background:#f6f9f3}
+.publish-posty-import>div:first-child{margin-bottom:13px}
+.publish-posty-import .eyebrow{margin:0 0 5px;color:#81947b;font-size:8px;font-weight:800;letter-spacing:1.1px}
+.publish-posty-import h3{margin:0 0 6px;color:#2d4533;font:800 14px Arial}
+.publish-posty-import p:not(.eyebrow){margin:0;color:#7f8d80;font-size:9px;line-height:1.65}
+.publish-posty-import .publish-field{margin-bottom:8px}
+.publish-posty-import>small{display:block;color:#89958b;font-size:8px;line-height:1.6}
+.publish-posty-import .publish-feedback{margin:8px 0 0}
 .publish-review-button{display:flex;align-items:center;justify-content:space-between;width:100%;margin:12px 0 10px;padding:13px 15px;border:0;border-radius:8px;background:#284b35;color:#f2f8eb;font-size:10px;font-weight:800;cursor:pointer}
 .publish-review-button:disabled{opacity:.4;cursor:not-allowed}
 .publish-summary>small{display:block;color:#919c92;font-size:8px;line-height:1.6}
