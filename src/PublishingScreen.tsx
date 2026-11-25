@@ -27,18 +27,6 @@ function section(text: string, heading: RegExp, next: RegExp) {
   for (let i = start + 1; i < lines.length; i++) if (next.test(lines[i].trim())) { end = i; break; }
   return lines.slice(start + 1, end).join("\n").trim().replace(/^[-=]{3,}\s*$/gm, "").trim();
 }
-function labelValue(block: string, label: string) {
-  const lines = block.split(/\r?\n/);
-  const index = lines.findIndex(line => new RegExp("^\\s*" + label + "\\s*$", "i").test(line.trim()));
-  if (index < 0) return "";
-  const result: string[] = [];
-  for (let i = index + 1; i < lines.length; i++) {
-    if (/^[A-ZÁÉÍÓÚÜÑ0-9][A-ZÁÉÍÓÚÜÑ0-9 /()—–_-]{2,}$/.test(lines[i].trim()) || /^[-=]{3,}$/.test(lines[i].trim())) break;
-    if (lines[i].trim()) result.push(lines[i].trim());
-    else if (result.length) break;
-  }
-  return result.join("\n").trim();
-}
 function parseMetadata(text: string): Record<string, CopyData> {
   const out: Record<string, CopyData> = Object.fromEntries(PLATFORMS.map(p => [p.id, emptyCopy()]));
   if (text.includes("INGREDORA_PUBLISHING_TEMPLATE_V1")) {
