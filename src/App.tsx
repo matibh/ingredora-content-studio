@@ -27,6 +27,7 @@ type Production = {
   seasonNumber?: number;
   episodeNumber?: number;
   episodeLabel?: string;
+  finalFileName?: string;
 };
 
 type Manifest = {
@@ -45,6 +46,17 @@ const SERIES_VOICE_AUDITIONS = [
 
 const MANIFEST_URL = `${import.meta.env.BASE_URL}studio/productions.json`;
 const EMPTY_MANIFEST: Manifest = { schemaVersion: 1, updatedAt: null, productions: [] };
+
+const SOCIAL_DESTINATIONS = [
+  { id: "youtube", label: "YouTube", detail: "YouTube Studio", url: "https://studio.youtube.com/" },
+  { id: "instagram", label: "Instagram", detail: "Instagram web", url: "https://www.instagram.com/" },
+  { id: "facebook", label: "Facebook", detail: "Meta Business Suite", url: "https://business.facebook.com/latest/home" },
+  { id: "tiktok", label: "TikTok", detail: "Subir video", url: "https://www.tiktok.com/upload" },
+  { id: "x", label: "X", detail: "Crear publicación", url: "https://x.com/compose/post" },
+] as const;
+
+const APPROVE_UPLOAD_URL = "https://xblqghhhchffuqkmzgta.supabase.co/functions/v1/approve-content-upload";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable__TDF6zsAZEvsWgSkAntJgw_qxYYuUop";
 
 function formatDuration(seconds?: number) {
   if (!seconds || !Number.isFinite(seconds)) return "Duración pendiente";
@@ -80,6 +92,14 @@ function App() {
   const [approvalKey, setApprovalKey] = useState("");
   const [mp4Stage, setMp4Stage] = useState("");
   const [approvalMessage, setApprovalMessage] = useState<string | null>(null);
+  const [finalEpisodeNumber, setFinalEpisodeNumber] = useState("1");
+  const [finalFile, setFinalFile] = useState<File | null>(null);
+  const [finalUploadBusy, setFinalUploadBusy] = useState(false);
+  const [finalUploadMessage, setFinalUploadMessage] = useState<string | null>(null);
+  const [finalUploadError, setFinalUploadError] = useState<string | null>(null);
+  const [socialCaption, setSocialCaption] = useState("");
+  const [socialMessage, setSocialMessage] = useState<string | null>(null);
+  const finalFileInput = useRef<HTMLInputElement | null>(null);
   const renderingIds = useRef(new Set<string>());
 
   const loadProductions = useCallback(async () => {
@@ -183,6 +203,11 @@ function App() {
   const active = ready.find((item) => item.id === activeId) ?? ready[0] ?? null;
   const activeVideoUrl = active ? (localVideos[active.id] || active.videoUrl) : undefined;
   const activeIsRendering = !!active && renderingIds.current.has(active.id);
+
+  useEffect(() => {
+    setSocialCaption(active?.caption ?? "");
+    setSocialMessage(null);
+  }, [active?.id, active?.caption]);
   const regenerateProduction = (item: Production) => {
     if (!item.packageUrl || renderingIds.current.has(item.id)) return;
     const oldLocalUrl = localVideos[item.id];
@@ -216,15 +241,23 @@ function App() {
       form.append("video", new File([mp4], basename + ".mp4", { type: "video/mp4" }));
       form.append("basename", basename);
       form.append("txtName", basename + ".txt");
-      setMp4Stage("SUBIENDO A GITHUB");
-      const response = await fetch("https://xblqghhhchffuqkmzgta.supabase.co/functions/v1/approve-content-upload", {
+      form.append("productionId", active.id);
+      form.append("collection", active.collection || "advertising");
+      if (active.collection === "series" && active.episodeNumber) {
+        form.append("episodeNumber", String(active.episodeNumber));
+        form.append("seriesTitle", active.seriesTitle || "Entre Partidas");
+      }
+      setMp4Stage("SUBIENDO A LA BIBLIOTECA");
+      const response = await fetch(APPROVE_UPLOAD_URL, {
         method: "POST",
-        headers: { apikey: "sb_publishable__TDF6zsAZEvsWgSkAntJgw_qxYYuUop", "x-studio-approval-key": approvalKey },
+        headers: { apikey: SUPABASE_PUBLISHABLE_KEY, "x-studio-approval-key": approvalKey },
         body: form,
       });
       const result = await response.json();
       if (!response.ok || !result.ok) throw new Error(result.error || "No se pudo subir la producción.");
-      setApprovalMessage(result.textUploaded ? "✓ MP4 y TXT subidos: " + result.videoPath + " · " + result.textPath : "✓ MP4 subido: " + result.videoPath + " · Aviso: no se encontró el TXT; el video se entregó igualmente.");
+      if (result.libraryUpdated === false) throw new Error("El MP4 se guardó, pero la biblioteca no se pudo actualizar: " + (result.warning || "reintentá la integración."));
+      setApprovalMessage("✓ MP4 incorporado a la biblioteca: " + result.videoPath);
+      await loadProductions();
       setMp4Stage("COMPLETADO");
     } catch (error) {
       const message = error instanceof Error ? error.message : "No se pudo completar la conversión y subida.";
@@ -232,7 +265,101 @@ function App() {
     } finally { setMp4Busy(false); setApprovalBusy(false); }
   };
 
-  const inProgress = visibleProductions.filter((item) => !ready.some((readyItem) => readyItem.id === item.id));
+  const uploadEpisodeFinal = async () => {
+    if (!finalFile || finalUploadBusy) return;
+    if (!approvalKey.trim()) {
+      setFinalUploadError("Ingresá la contraseña de aprobación para autorizar la entrega.");
+      return;
+    }
+    const episodeNumber = Number(finalEpisodeNumber);
+    if (!Number.isInteger(episodeNumber) || episodeNumber < 1 || episodeNumber > 9) {
+      setFinalUploadError("Elegí un capítulo entre el 1 y el 9.");
+      return;
+    }
+    if (!finalFile.name.toLowerCase().endsWith(".mp4") || (finalFile.type && finalFile.type !== "video/mp4")) {
+      setFinalUploadError("El archivo debe ser un MP4.");
+      return;
+    }
+    if (finalFile.size > 100 * 1024 * 1024) {
+      setFinalUploadError("El MP4 supera el máximo actual de 100 MB.");
+      return;
+    }
+
+    const suffix = String(episodeNumber).padStart(2, "0");
+    const basename = "entre-partidas-capitulo-" + suffix;
+    const productionId = "ingredora-entre-partidas-capitulo-" + suffix;
+    const form = new FormData();
+    form.append("video", finalFile, basename + ".mp4");
+    form.append("basename", basename);
+    form.append("txtName", "");
+    form.append("productionId", productionId);
+    form.append("collection", "series");
+    form.append("seriesTitle", "Entre Partidas");
+    form.append("episodeNumber", String(episodeNumber));
+    form.append("aspectRatio", "9:16");
+
+    setFinalUploadBusy(true);
+    setFinalUploadError(null);
+    setFinalUploadMessage(null);
+    try {
+      const response = await fetch(APPROVE_UPLOAD_URL, {
+        method: "POST",
+        headers: { apikey: SUPABASE_PUBLISHABLE_KEY, "x-studio-approval-key": approvalKey },
+        body: form,
+      });
+      const result = await response.json();
+      if (!response.ok || !result.ok) throw new Error(result.error || "No se pudo subir el MP4.");
+      if (!result.libraryUpdated) throw new Error("El MP4 llegó al repositorio, pero no se pudo vincular al capítulo. " + (result.warning || "Volvé a intentar la carga."));
+      await loadProductions();
+      setCollectionFilter("series");
+      setActiveId(productionId);
+      setFinalUploadMessage("Capítulo " + suffix + " incorporado correctamente. Ya aparece en la biblioteca y está listo para preparar su publicación.");
+      setFinalFile(null);
+      if (finalFileInput.current) finalFileInput.current.value = "";
+      setApprovalKey("");
+    } catch (error) {
+      setFinalUploadError(error instanceof Error ? error.message : "No se pudo completar la subida.");
+    } finally {
+      setFinalUploadBusy(false);
+    }
+  };
+
+  const downloadActiveMp4 = async () => {
+    if (!active?.videoUrl) return;
+    setSocialMessage("Preparando descarga del MP4…");
+    try {
+      const response = await fetch(active.videoUrl);
+      if (!response.ok) throw new Error("No se pudo recuperar el MP4 desde la biblioteca.");
+      const blob = await response.blob();
+      const objectUrl = URL.createObjectURL(blob);
+      const anchor = document.createElement("a");
+      anchor.href = objectUrl;
+      anchor.download = active.finalFileName || (active.id + ".mp4");
+      document.body.appendChild(anchor);
+      anchor.click();
+      anchor.remove();
+      window.setTimeout(() => URL.revokeObjectURL(objectUrl), 1500);
+      setSocialMessage("MP4 descargado. Adjuntalo en la plataforma que vayas a publicar.");
+    } catch (error) {
+      setSocialMessage(error instanceof Error ? error.message : "No se pudo descargar el MP4.");
+    }
+  };
+
+  const copySocialCaption = async () => {
+    const text = socialCaption.trim();
+    if (!text) {
+      setSocialMessage("Escribí una descripción antes de copiarla.");
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(text);
+      setSocialMessage("Descripción copiada.");
+    } catch {
+      setSocialMessage("El navegador no permitió copiar el texto. Seleccionalo y copialo manualmente.");
+    }
+  };
+
+  const inProgress = visibleProductions.filter((item) => item.status !== "planned" && !ready.some((readyItem) => readyItem.id === item.id));
 
   return (
     <div className="studio-shell">
@@ -252,7 +379,7 @@ function App() {
           <div className="intro-copy">
             <p className="eyebrow">INGREDORA ORIGINALS</p>
             <h1>Ideas que se<br /><em>convierten en video.</em></h1>
-            <p className="intro-description">Cada producción nace, se dirige y se construye desde nuestro espacio creativo. Acá encontrás los videos terminados, listos para reproducir.</p>
+            <p className="intro-description">Un solo lugar para reunir los renders, incorporar los MP4 finales por capítulo y preparar su publicación en los canales de Ingredora.</p>
           </div>
           <div className="intro-orbit" aria-hidden="true">
             <div className="orbit-ring ring-a" /><div className="orbit-ring ring-b" />
@@ -299,16 +426,52 @@ function App() {
 
         {collectionFilter === "series" && (
           <section className="chapters-section" aria-label="Capítulos de las series">
-            <div className="section-topline"><div><p className="eyebrow">SERIES ORIGINALS</p><h2>Capítulos</h2></div><span className="section-index">BIBLIOTECA POR EPISODIOS</span></div>
+            <div className="section-topline"><div><p className="eyebrow">SERIES ORIGINALS</p><h2>Capítulos</h2></div><span className="section-index">9 CAPÍTULOS · TEMPORADA 1</span></div>
+
+            <div className="chapter-upload-panel">
+              <div className="chapter-upload-heading">
+                <p className="eyebrow">ENTREGA FINAL</p>
+                <h3>Incorporar un MP4 terminado</h3>
+                <p>Elegí el archivo final, indicá a qué capítulo pertenece y guardalo en la biblioteca central. Si volvés a subir el mismo capítulo, se reemplaza su versión vigente y queda el historial de cambios en el repositorio.</p>
+              </div>
+              <div className="chapter-upload-controls">
+                <label className="chapter-field">
+                  <span>CAPÍTULO</span>
+                  <select value={finalEpisodeNumber} onChange={(event) => setFinalEpisodeNumber(event.target.value)}>
+                    {Array.from({ length: 9 }, (_, index) => index + 1).map((number) => (
+                      <option key={number} value={String(number)}>Capítulo {String(number).padStart(2, "0")}</option>
+                    ))}
+                  </select>
+                </label>
+                <label className="chapter-file-field">
+                  <span>ARCHIVO MP4 FINAL</span>
+                  <input ref={finalFileInput} type="file" accept="video/mp4,.mp4" onChange={(event) => { setFinalFile(event.target.files?.[0] ?? null); setFinalUploadError(null); setFinalUploadMessage(null); }} />
+                </label>
+              </div>
+              {finalFile && <div className="selected-final-file"><strong>{finalFile.name}</strong><span>{(finalFile.size / (1024 * 1024)).toFixed(1)} MB</span></div>}
+              <div className="chapter-upload-auth">
+                <label className="chapter-field">
+                  <span>CONTRASEÑA DE APROBACIÓN</span>
+                  <input type="password" autoComplete="current-password" value={approvalKey} onChange={(event) => setApprovalKey(event.target.value)} placeholder="Ingresá tu contraseña" />
+                </label>
+                <button className="chapter-upload-button" type="button" disabled={!finalFile || !approvalKey.trim() || finalUploadBusy} onClick={uploadEpisodeFinal}>
+                  {finalUploadBusy ? "SUBIENDO Y ACTUALIZANDO LA BIBLIOTECA…" : "SUBIR MP4 Y ASIGNAR AL CAPÍTULO"}
+                </button>
+              </div>
+              <small className="chapter-upload-note">Formato MP4 · máximo 100 MB · la carga requiere autorización. Esta acción incorpora el video al archivo, pero no lo publica automáticamente en redes.</small>
+              {finalUploadError && <p className="chapter-upload-feedback error">{finalUploadError}</p>}
+              {finalUploadMessage && <p className="chapter-upload-feedback success">{finalUploadMessage}</p>}
+            </div>
+
             {Array.from(new Set(visibleProductions.filter((item) => item.collection === "series" && item.seriesTitle).map((item) => item.seriesTitle!))).map((seriesTitle) => {
-              const episodes = visibleProductions.filter((item) => item.collection === "series" && item.seriesTitle === seriesTitle).sort((left, right) => (left.episodeNumber ?? 999) - (right.episodeNumber ?? 999));
+              const episodes = visibleProductions.filter((item) => item.collection === "series" && item.seriesTitle === seriesTitle && (item.episodeNumber ?? 0) > 0).sort((left, right) => (left.episodeNumber ?? 999) - (right.episodeNumber ?? 999));
               return <div className="series-block" key={seriesTitle}>
                 <div className="series-heading"><div><span className="series-kicker">SERIE ORIGINAL · TEMPORADA {episodes[0]?.seasonNumber ?? 1}</span><h3>{seriesTitle}</h3></div><span>{episodes.length} {episodes.length === 1 ? "CAPÍTULO" : "CAPÍTULOS"}</span></div>
                 <div className="chapter-grid">{episodes.map((episode) => {
                   const playable = (episode.status === "ready" && !!episode.videoUrl) || !!localVideos[episode.id];
                   return <button className={playable ? "chapter-card playable" : "chapter-card pending"} key={episode.id} type="button" disabled={!playable} onClick={() => { setActiveId(episode.id); window.scrollTo({ top: 0, behavior: "smooth" }); }}>
                     <span className="chapter-number">{episode.episodeNumber === 0 ? "P" : String(episode.episodeNumber ?? 1).padStart(2, "0")}</span>
-                    <span className="chapter-copy"><strong>{episode.episodeLabel || episode.title}</strong><small>{episode.description}</small><em>{playable ? "REPRODUCIR CAPÍTULO" : "RENDER LISTO · PENDIENTE DE INTEGRAR A LA BIBLIOTECA"}</em></span>
+                    <span className="chapter-copy"><strong>{episode.episodeLabel || episode.title}</strong><small>{episode.description}</small><em>{playable ? "REPRODUCIR CAPÍTULO" : "PENDIENTE DE CARGAR MP4 FINAL"}</em></span>
                     <span className="chapter-duration">{formatDuration(episode.durationSeconds)}</span>
                   </button>;
                 })}</div>
@@ -360,6 +523,30 @@ function App() {
                   {mp4Error && <small className="mp4-error">{mp4Error}</small>}
                   {approvalMessage && <small className="approval-result">{approvalMessage}</small>}
                 </div>
+                {active.videoUrl && (
+                  <section className="publishing-panel" aria-label="Preparar publicación en redes sociales">
+                    <p className="eyebrow">DISTRIBUCIÓN</p>
+                    <h4>Preparar publicación</h4>
+                    <p>Descargá el MP4 final, copiá el texto y abrí el canal. La publicación se confirma manualmente dentro de cada plataforma.</p>
+                    <label className="social-caption-field">
+                      <span>DESCRIPCIÓN / COPY</span>
+                      <textarea value={socialCaption} onChange={(event) => setSocialCaption(event.target.value)} rows={4} placeholder="Escribí la descripción para acompañar el video…" />
+                    </label>
+                    <div className="social-primary-actions">
+                      <button type="button" onClick={downloadActiveMp4}>↓ DESCARGAR MP4</button>
+                      <button type="button" onClick={copySocialCaption}>COPIAR DESCRIPCIÓN</button>
+                    </div>
+                    <div className="social-platform-grid">
+                      {SOCIAL_DESTINATIONS.map((platform) => (
+                        <a key={platform.id} href={platform.url} target="_blank" rel="noreferrer">
+                          <strong>{platform.label}</strong><small>{platform.detail}</small>
+                        </a>
+                      ))}
+                    </div>
+                    <small className="social-publish-note">El Studio no inicia sesión en tus redes ni publica por su cuenta. Abrí el canal, adjuntá el MP4 descargado, pegá la descripción y confirmá la publicación allí.</small>
+                    {socialMessage && <small className="social-message" role="status">{socialMessage}</small>}
+                  </section>
+                )}
                 <p className="date-note">{formatDate(active.createdAt)}</p>
               </div>
             </div>
@@ -377,7 +564,7 @@ function App() {
 
         {ready.length > 1 && (
           <section className="archive-section">
-            <div className="section-topline"><div><p className="eyebrow">THE ARCHIVE</p><h2>Más producciones</h2></div><span className="section-index">{String(ready.length).padStart(2, "0")} VIDEOS</span></div>
+            <div className="section-topline"><div><p className="eyebrow">THE ARCHIVE</p><h2>Todos los videos terminados</h2></div><span className="section-index">{String(ready.length).padStart(2, "0")} VIDEOS</span></div>
             <div className="archive-grid">
               {ready.filter((item) => item.id !== active?.id).map((item) => (
                 <button className="archive-card" key={item.id} onClick={() => { setActiveId(item.id); window.scrollTo({ top: 0, behavior: "smooth" }); }} type="button">
