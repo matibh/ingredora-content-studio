@@ -1,3 +1,48 @@
+INGREDORA_PUBLISHING_TEMPLATE_V1
+@GLOBAL
+TITLE: ¿Sabés qué tiene una Cindor? 🏆 | El concurso de los ingredientes
+DESCRIPTION: Dos participantes, una pregunta y apenas seis segundos: ¿cuáles son los ingredientes de una Cindor Original? Los concursantes se quedaron en blanco… Ahora te toca a vos. Jugá en https://ingredora.com
+HASHTAGS: #Ingredora #Cindor #DesafioDeIngredientes #Concurso #Trivia
+TAGS: Ingredora, Cindor, Cindor Original, ingredientes Cindor, leche chocolatada, desafío de ingredientes, concurso, trivia, Argentina
+PINNED_COMMENT: ¡Se quedaron mudos! 😂 ¿Vos sabés la respuesta? Seguí jugando en https://ingredora.com.
+ALT_TEXT: Video vertical con estética de concurso. Dos participantes enfrentan una pregunta sobre los ingredientes de Cindor Original y una cuenta regresiva de seis segundos. El cierre invita a jugar en Ingredora.com.
+@YOUTUBE
+TITLE: ¿Sabés qué tiene una Cindor? 🏆 | El concurso de los ingredientes
+DESCRIPTION: Dos participantes, una pregunta y apenas seis segundos: ¿cuáles son los ingredientes de una Cindor Original? Los concursantes se quedaron en blanco… Ahora te toca a vos. Jugá en https://ingredora.com
+HASHTAGS: #Ingredora #Cindor #DesafioDeIngredientes #Concurso #Trivia
+TAGS: Ingredora, Cindor, Cindor Original, ingredientes Cindor, leche chocolatada, desafío de ingredientes, concurso, trivia, Argentina
+PINNED_COMMENT: ¡Se quedaron mudos! 😂 ¿Vos sabés la respuesta? Seguí jugando en https://ingredora.com.
+ALT_TEXT: Video vertical con estética de concurso. Dos participantes enfrentan una pregunta sobre los ingredientes de Cindor Original y una cuenta regresiva de seis segundos. El cierre invita a jugar en Ingredora.com.
+@INSTAGRAM
+TITLE: ¿Sabés qué tiene una Cindor? 🏆 | El concurso de los ingredientes
+DESCRIPTION: Dos participantes, una pregunta y apenas seis segundos: ¿cuáles son los ingredientes de una Cindor Original? Los concursantes se quedaron en blanco… Ahora te toca a vos. Jugá en https://ingredora.com
+HASHTAGS: #Ingredora #Cindor #DesafioDeIngredientes #Concurso #Trivia
+TAGS: 
+PINNED_COMMENT: ¡Se quedaron mudos! 😂 ¿Vos sabés la respuesta? Seguí jugando en https://ingredora.com.
+ALT_TEXT: Video vertical con estética de concurso. Dos participantes enfrentan una pregunta sobre los ingredientes de Cindor Original y una cuenta regresiva de seis segundos. El cierre invita a jugar en Ingredora.com.
+@TIKTOK
+TITLE: ¿Sabés qué tiene una Cindor? 🏆 | El concurso de los ingredientes
+DESCRIPTION: Dos participantes, una pregunta y apenas seis segundos: ¿cuáles son los ingredientes de una Cindor Original? Los concursantes se quedaron en blanco… Ahora te toca a vos. Jugá en https://ingredora.com
+HASHTAGS: #Ingredora #Cindor #DesafioDeIngredientes #Concurso #Trivia
+TAGS: 
+PINNED_COMMENT: ¡Se quedaron mudos! 😂 ¿Vos sabés la respuesta? Seguí jugando en https://ingredora.com.
+ALT_TEXT: Video vertical con estética de concurso. Dos participantes enfrentan una pregunta sobre los ingredientes de Cindor Original y una cuenta regresiva de seis segundos. El cierre invita a jugar en Ingredora.com.
+@FACEBOOK
+TITLE: ¿Sabés qué tiene una Cindor? 🏆 | El concurso de los ingredientes
+DESCRIPTION: Dos participantes, una pregunta y apenas seis segundos: ¿cuáles son los ingredientes de una Cindor Original? Los concursantes se quedaron en blanco… Ahora te toca a vos. Jugá en https://ingredora.com
+HASHTAGS: #Ingredora #Cindor #DesafioDeIngredientes #Concurso #Trivia
+TAGS: 
+PINNED_COMMENT: ¡Se quedaron mudos! 😂 ¿Vos sabés la respuesta? Seguí jugando en https://ingredora.com.
+ALT_TEXT: Video vertical con estética de concurso. Dos participantes enfrentan una pregunta sobre los ingredientes de Cindor Original y una cuenta regresiva de seis segundos. El cierre invita a jugar en Ingredora.com.
+@X
+TITLE: ¿Sabés qué tiene una Cindor? 🏆 | El concurso de los ingredientes
+DESCRIPTION: Dos participantes, una pregunta y apenas seis segundos: ¿cuáles son los ingredientes de una Cindor Original? Los concursantes se quedaron en blanco… Ahora te toca a vos. Jugá en https://ingredora.com
+HASHTAGS: #Ingredora #Cindor #DesafioDeIngredientes #Concurso #Trivia
+TAGS: 
+PINNED_COMMENT: ¡Se quedaron mudos! 😂 ¿Vos sabés la respuesta? Seguí jugando en https://ingredora.com.
+ALT_TEXT: Video vertical con estética de concurso. Dos participantes enfrentan una pregunta sobre los ingredientes de Cindor Original y una cuenta regresiva de seis segundos. El cierre invita a jugar en Ingredora.com.
+@END
+--- FIN DE METADATOS ESTRUCTURADOS ---
 INGREDORA — PAQUETE DE PUBLICACIÓN EN REDES
 PRODUCCIÓN 012 — CINDOR ORIGINAL: EL CONCURSO DE LOS INGREDIENTES
 ============================================================
