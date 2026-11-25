@@ -1,39 +1,44 @@
-NÚMERO DE CAPÍTULO:
-3
-
-NOMBRE DEL CAPÍTULO:
-Lo sé todo.
-
-PERSONAJES QUE APARECEN:
-Bruno y Valentina.
-
-¿CÓMO COMIENZA?
-Un auto recorre una ruta argentina. Se presenta el viaje con un plano exterior del vehículo y la apertura de la serie. Valentina conduce y Bruno viaja de acompañante.
-
-¿QUÉ SUCEDE DURANTE EL CAPÍTULO?
-Durante el trayecto aparecen carteles publicitarios de productos, primero de Jorgito y luego de Oreo. Bruno se distrae con los carteles y comenta los productos y sus ingredientes. Valentina intenta mantener la atención en el viaje mientras Bruno presume cuánto sabe y se engancha cada vez más con la publicidad que ve por la ventana.
-
-¿CUÁL ES EL CONFLICTO O SITUACIÓN PRINCIPAL?
-La distracción de Bruno: está tan pendiente de reconocer productos y pensar en sus ingredientes que deja de prestar atención al viaje y a la conversación con Valentina.
-
-¿CUÁLES SON LOS MOMENTOS MÁS GRACIOSOS O IMPORTANTES?
-- El cartel de Jorgito aparece a lo lejos y se acerca hasta pasar junto al auto.
-- Más adelante sucede lo mismo con el cartel de Oreo.
-- Bruno admite que está jugando mal porque los carteles lo distraen.
-- La conversación convierte un viaje por la ruta en otra oportunidad para hablar de productos y comida.
-
-¿CÓMO TERMINA?
-El viaje continúa entre la charla y los carteles. Bruno termina tentado por lo que vio en la publicidad y expresa que ahora quiere comprar un paquete de Oreo/alfajores. El cierre muestra la identidad de Ingredora Originals con música de salida.
-
-¿HAY ALGUNA FRASE O DIÁLOGO MEMORABLE?
-«Estoy jugando mal porque me distraen los carteles.»
-«Qué ricas unas Oreo. Ahora quiero un paquete.»
-
-¿QUÉ DEBERÍA SABER ALGUIEN ANTES DE VERLO?
-No hace falta conocer la trama de otros capítulos. La premisa de la serie —la obsesión de Bruno por los ingredientes y los productos— ayuda a entender el humor.
-
-¿HAY ALGÚN SPOILER QUE DEBAMOS EVITAR?
-No hay un giro argumental. Conviene no adelantar la aparición de los carteles ni la última frase de Bruno.
-
-INFORMACIÓN ADICIONAL:
-El paquete de producción identifica el episodio como EP-S03 y especifica que no hay escenas de celular ni desafíos en pantalla. La conducción está a cargo de Valentina.
+INGREDORA_PUBLISHING_TEMPLATE_V1
+@GLOBAL
+TITLE: Entre Partidas | Cap. 3: Lo sé todo
+DESCRIPTION: En plena ruta, Bruno descubre que hasta los carteles publicitarios pueden distraerlo.
+HASHTAGS: #Ingredora #EntrePartidas #Ruta #ComediaArgentina
+TAGS: Ingredora, Entre Partidas, Lo sé todo, Bruno, Valentina, ruta argentina, viaje en auto, carteles publicitarios, Oreo, Jorgito, comida, comedia argentina
+PINNED_COMMENT: ¿Qué cartel te haría distraerte durante un viaje? 🚗 Te leemos.
+ALT_TEXT: Video vertical de comedia de Ingredora. Valentina conduce un auto por una ruta argentina y Bruno viaja de acompañante. Durante el recorrido aparecen carteles publicitarios de productos que llaman la atención de Bruno.
+@YOUTUBE
+TITLE: Lo sé todo 😂 | Entre Partidas - Capítulo 3
+DESCRIPTION: Un viaje por la ruta debería ser tranquilo… pero Bruno no puede dejar de mirar los carteles de productos. 🚗🍪 Valentina intenta seguir viaje mientras él se distrae con todo lo que ve. ¿A vos también te pasa que una publicidad te deja pensando en comida?
+HASHTAGS: #Ingredora #EntrePartidas #Ruta #ComediaArgentina
+TAGS: Ingredora, Entre Partidas, Lo sé todo, Bruno, Valentina, ruta argentina, viaje en auto, carteles publicitarios, Oreo, Jorgito, comida, comedia argentina
+PINNED_COMMENT: ¿Qué cartel te haría distraerte durante un viaje? 🚗 Te leemos.
+ALT_TEXT: Video vertical de comedia de Ingredora. Valentina conduce un auto por una ruta argentina y Bruno viaja de acompañante. Durante el recorrido aparecen carteles publicitarios de productos que llaman la atención de Bruno.
+@INSTAGRAM
+TITLE: Lo sé todo
+DESCRIPTION: Un viaje por la ruta y Bruno mirando absolutamente todos los carteles. 🚗😂 Hay publicidades que te despiertan el antojo en el peor momento. ¿Te pasó?
+HASHTAGS: #Ingredora #EntrePartidas #Ruta #ComediaArgentina
+TAGS: 
+PINNED_COMMENT: ¿Qué cartel te haría distraerte durante un viaje? 🚗 Te leemos.
+ALT_TEXT: Video vertical de comedia de Ingredora. Valentina conduce un auto por una ruta argentina y Bruno viaja de acompañante. Durante el recorrido aparecen carteles publicitarios de productos que llaman la atención de Bruno.
+@TIKTOK
+TITLE: Lo sé todo
+DESCRIPTION: Cuando salís de viaje pero los carteles de comida te distraen de todo. 🚗🍪 Bruno entiende el problema… demasiado tarde.
+HASHTAGS: #Ingredora #EntrePartidas #Ruta #ComediaArgentina
+TAGS: 
+PINNED_COMMENT: ¿Qué cartel te haría distraerte durante un viaje? 🚗 Te leemos.
+ALT_TEXT: Video vertical de comedia de Ingredora. Valentina conduce un auto por una ruta argentina y Bruno viaja de acompañante. Durante el recorrido aparecen carteles publicitarios de productos que llaman la atención de Bruno.
+@FACEBOOK
+TITLE: Lo sé todo
+DESCRIPTION: Bruno y Valentina viajan por la ruta, pero la atención de Bruno está en otra parte: los carteles de productos que aparecen en el camino. Un viaje normal se convierte en una sucesión de distracciones. 🚗
+HASHTAGS: #Ingredora #EntrePartidas #Ruta #ComediaArgentina
+TAGS: 
+PINNED_COMMENT: ¿Qué cartel te haría distraerte durante un viaje? 🚗 Te leemos.
+ALT_TEXT: Video vertical de comedia de Ingredora. Valentina conduce un auto por una ruta argentina y Bruno viaja de acompañante. Durante el recorrido aparecen carteles publicitarios de productos que llaman la atención de Bruno.
+@X
+TITLE: Lo sé todo
+DESCRIPTION: Bruno salió a la ruta, pero no puede dejar de mirar los carteles de comida. 🚗🍪 ¿A quién más le pasa? https://ingredora.com
+HASHTAGS: #Ingredora #EntrePartidas #Ruta #ComediaArgentina
+TAGS: 
+PINNED_COMMENT: ¿Qué cartel te haría distraerte durante un viaje? 🚗 Te leemos.
+ALT_TEXT: Video vertical de comedia de Ingredora. Valentina conduce un auto por una ruta argentina y Bruno viaja de acompañante. Durante el recorrido aparecen carteles publicitarios de productos que llaman la atención de Bruno.
+@END
