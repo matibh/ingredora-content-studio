@@ -1,41 +1,44 @@
-NÚMERO DE CAPÍTULO:
-4
-
-NOMBRE DEL CAPÍTULO:
-No entra ni a palos.
-
-PERSONAJES QUE APARECEN:
-Bruno, Valentina, Martina, Tomás y Ernesto.
-
-¿CÓMO COMIENZA?
-La apertura muestra la fachada del edificio 284, la misma que ya apareció en el capítulo 2. Al pasar al interior, Bruno y Valentina están intentando entrar con una máquina arcade que ya quedó trabada en la puerta del departamento.
-
-¿QUÉ SUCEDE DURANTE EL CAPÍTULO?
-Los cinco intentan resolver cómo pasar la máquina por el vano. Bruno insiste en que tiene que entrar y pide que empujen. Tomás propone ponerla de costado, pero Ernesto le recuerda que ya está de costado. Valentina pregunta si Bruno midió la puerta antes de comprarla; él admite que no. A partir de ahí aparecen intentos de justificar el problema y comentarios de los demás mientras la arcade sigue atascada.
-
-¿CUÁL ES EL CONFLICTO O SITUACIÓN PRINCIPAL?
-La máquina arcade es más grande que la abertura del departamento y no pueden hacerla pasar. Bruno quiere resolverlo a fuerza de insistir, pero queda expuesto porque ni siquiera midió la puerta antes de comprarla.
-
-¿CUÁLES SON LOS MOMENTOS MÁS GRACIOSOS O IMPORTANTES?
-- Tomás propone girar la máquina, y Ernesto responde: «¡Está de costado!».
-- Valentina pregunta si Bruno midió la puerta antes de comprarla.
-- Bruno admite: «Bueno... no».
-- La arcade permanece encendida y trabada, con el cartel INGREDORA y la pantalla INSERT COIN.
-- Después de todos los intentos, Bruno presenta una solución desproporcionada.
-
-¿CÓMO TERMINA?
-Bruno propone: «Nos vamos a tener que mudar». Los demás quedan frente a la máquina todavía atascada. Sigue la placa final de la serie con música de cierre; no aparece una placa «FIN».
-
-¿HAY ALGUNA FRASE O DIÁLOGO MEMORABLE?
-«¡Está de costado!»
-«¿Vos mediste la puerta antes de comprarla?» — «Bueno... no.»
-«Sí. Nos vamos a tener que mudar.»
-
-¿QUÉ DEBERÍA SABER ALGUIEN ANTES DE VERLO?
-La arcade es el centro de la situación y el capítulo retoma la continuidad visual del edificio y del departamento establecidos en capítulos anteriores. No hace falta ver el capítulo 3 para entender el problema.
-
-¿HAY ALGÚN SPOILER QUE DEBAMOS EVITAR?
-Sí. El remate de Bruno sobre mudarse es el chiste final y conviene reservarlo.
-
-INFORMACIÓN ADICIONAL:
-El guion de producción se titula «No entra ni a palos». La fachada de apertura debe conservar el número 284 y la continuidad de los personajes. La máquina queda trabada desde el primer plano interior.
+INGREDORA_PUBLISHING_TEMPLATE_V1
+@GLOBAL
+TITLE: Entre Partidas | Cap. 4: No entra ni a palos
+DESCRIPTION: Bruno compró una máquina arcade. Solo hay un pequeño detalle: no pasa por la puerta.
+HASHTAGS: #Ingredora #EntrePartidas #Arcade #ComediaArgentina
+TAGS: Ingredora, Entre Partidas, No entra ni a palos, Bruno, Martina, Tomás, Valentina, Ernesto, máquina arcade, videojuegos, mudanza, comedia argentina
+PINNED_COMMENT: ¿Cómo intentarías hacer entrar la arcade? 🎮 Queremos leer tu solución.
+ALT_TEXT: Video vertical de comedia de Ingredora. Bruno y sus amigos intentan ingresar una máquina arcade al departamento, pero queda atascada en el vano de la puerta. Todos discuten posibles soluciones.
+@YOUTUBE
+TITLE: No entra ni a palos 😂 | Entre Partidas - Capítulo 4
+DESCRIPTION: Bruno consiguió una máquina arcade para el departamento. 🎮 Hay entusiasmo, hay ganas de jugar… y hay un problema con la puerta. Todos intentan encontrar la manera de hacerla entrar. ¿Vos qué solución se te ocurriría? Más en https://ingredora.com
+HASHTAGS: #Ingredora #EntrePartidas #Arcade #ComediaArgentina
+TAGS: Ingredora, Entre Partidas, No entra ni a palos, Bruno, Martina, Tomás, Valentina, Ernesto, máquina arcade, videojuegos, mudanza, comedia argentina
+PINNED_COMMENT: ¿Cómo intentarías hacer entrar la arcade? 🎮 Queremos leer tu solución.
+ALT_TEXT: Video vertical de comedia de Ingredora. Bruno y sus amigos intentan ingresar una máquina arcade al departamento, pero queda atascada en el vano de la puerta. Todos discuten posibles soluciones.
+@INSTAGRAM
+TITLE: No entra ni a palos
+DESCRIPTION: Bruno compró una arcade para el departamento. 🎮 Todo perfecto… salvo por un detalle bastante importante. ¿Cómo hacés entrar algo que no pasa por la puerta? 😂
+HASHTAGS: #Ingredora #EntrePartidas #Arcade #ComediaArgentina
+TAGS: 
+PINNED_COMMENT: ¿Cómo intentarías hacer entrar la arcade? 🎮 Queremos leer tu solución.
+ALT_TEXT: Video vertical de comedia de Ingredora. Bruno y sus amigos intentan ingresar una máquina arcade al departamento, pero queda atascada en el vano de la puerta. Todos discuten posibles soluciones.
+@TIKTOK
+TITLE: No entra ni a palos
+DESCRIPTION: Compró una máquina arcade para el departamento. Se olvidó de comprobar un pequeño detalle. 🎮😂
+HASHTAGS: #Ingredora #EntrePartidas #Arcade #ComediaArgentina
+TAGS: 
+PINNED_COMMENT: ¿Cómo intentarías hacer entrar la arcade? 🎮 Queremos leer tu solución.
+ALT_TEXT: Video vertical de comedia de Ingredora. Bruno y sus amigos intentan ingresar una máquina arcade al departamento, pero queda atascada en el vano de la puerta. Todos discuten posibles soluciones.
+@FACEBOOK
+TITLE: No entra ni a palos
+DESCRIPTION: La nueva adquisición de Bruno promete horas de diversión, pero antes hay que superar un obstáculo: la máquina arcade no logra pasar por la puerta. La familia intenta resolverlo como puede. 🎮
+HASHTAGS: #Ingredora #EntrePartidas #Arcade #ComediaArgentina
+TAGS: 
+PINNED_COMMENT: ¿Cómo intentarías hacer entrar la arcade? 🎮 Queremos leer tu solución.
+ALT_TEXT: Video vertical de comedia de Ingredora. Bruno y sus amigos intentan ingresar una máquina arcade al departamento, pero queda atascada en el vano de la puerta. Todos discuten posibles soluciones.
+@X
+TITLE: No entra ni a palos
+DESCRIPTION: Bruno compró una máquina arcade para el departamento. 🎮 Solo falta resolver un detalle: hacerla pasar por la puerta. 😂 https://ingredora.com
+HASHTAGS: #Ingredora #EntrePartidas #Arcade #ComediaArgentina
+TAGS: 
+PINNED_COMMENT: ¿Cómo intentarías hacer entrar la arcade? 🎮 Queremos leer tu solución.
+ALT_TEXT: Video vertical de comedia de Ingredora. Bruno y sus amigos intentan ingresar una máquina arcade al departamento, pero queda atascada en el vano de la puerta. Todos discuten posibles soluciones.
+@END
