@@ -76,12 +76,6 @@ function formatDate(value?: string) {
 
 function App() {
   const [manifest, setManifest] = useState<Manifest>(EMPTY_MANIFEST);
-  const [studioScreen, setStudioScreen] = useState<"library" | "publish">(() => window.location.hash === "#subir-a-redes" ? "publish" : "library");
-  useEffect(() => {
-    const syncScreen = () => setStudioScreen(window.location.hash === "#subir-a-redes" ? "publish" : "library");
-    window.addEventListener("hashchange", syncScreen);
-    return () => window.removeEventListener("hashchange", syncScreen);
-  }, []);
   const [loading, setLoading] = useState(true);
   const [collectionFilter, setCollectionFilter] = useState<"all" | "advertising" | "series">("all");
   const [voiceAuditionsReady, setVoiceAuditionsReady] = useState(false);
@@ -382,16 +376,19 @@ function App() {
         </a>
         <div className="topbar-right">
           <span className={`connection ${connection}`}><i />{connection === "connected" ? "Biblioteca sincronizada" : "No se pudo actualizar"}</span>
-          <a className="topbar-publish-link" href="#subir-a-redes">Subir a redes ↗</a><span className="topbar-tag">STUDIO / 01</span>
+<span className="topbar-tag">STUDIO / 01</span>
         </div>
       </header>
 
       <main id="inicio">
-        {studioScreen === "publish" ? (
-          <PublishingScreen productions={manifest.productions.filter((item) => item.status === "ready" && !!item.videoUrl)} initialProductionId={activeId ?? undefined} onBack={() => { window.location.hash = "inicio"; setStudioScreen("library"); }} />
-        ) : <>
-        <LibraryExplorer onPublish={() => { window.location.hash = "subir-a-redes"; setStudioScreen("publish"); window.scrollTo({ top: 0, behavior: "smooth" }); }} />
-        <section className="intro">
+        <div id="subir-a-redes"><PublishingScreen productions={manifest.productions.filter((item) => item.status === "ready" && !!item.videoUrl)} initialProductionId={activeId ?? undefined} /></div>
+        <div className="publishing-library-separator" aria-hidden="true"><span>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span><span>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span><span>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span></div>
+        <details className="frontpage-section library-frontpage-section">
+          <summary><span>01 · ARCHIVO CENTRAL</span><strong>Biblioteca de contenidos</strong><i>+</i></summary>
+          <div className="frontpage-section-content"><LibraryExplorer onPublish={() => document.getElementById("subir-a-redes")?.scrollIntoView({ behavior: "smooth" })} /></div>
+        </details>
+        <>
+        <details className="frontpage-section"><summary><span>02 · PRESENTACIÓN</span><strong>Ingredora Content Studio</strong><i>+</i></summary><div className="frontpage-section-content"><section className="intro">
           <div className="intro-copy">
             <p className="eyebrow">INGREDORA ORIGINALS</p>
             <h1>Ideas que se<br /><em>convierten en video.</em></h1>
@@ -401,9 +398,9 @@ function App() {
             <div className="orbit-ring ring-a" /><div className="orbit-ring ring-b" />
             <div className="orbit-core"><span>i</span></div><b className="orbit-star star-a">✳</b><b className="orbit-star star-b">✦</b>
           </div>
-        </section>
+        </section></div></details>
 
-        <section className="collection-switcher" aria-label="Colecciones del estudio">
+        <details className="frontpage-section"><summary><span>03 · COLECCIONES</span><strong>Publicidad y series</strong><i>+</i></summary><div className="frontpage-section-content"><section className="collection-switcher" aria-label="Colecciones del estudio">
           <div className="collection-switcher-copy">
             <p className="eyebrow">EL ESTUDIO</p>
             <strong>Dos formas de contar historias.</strong>
@@ -414,10 +411,10 @@ function App() {
             <button type="button" className={collectionFilter === "advertising" ? "collection-tab active" : "collection-tab"} aria-pressed={collectionFilter === "advertising"} onClick={() => setCollectionFilter("advertising")}>Publicidad</button>
             <button type="button" className={collectionFilter === "series" ? "collection-tab active" : "collection-tab"} aria-pressed={collectionFilter === "series"} onClick={() => setCollectionFilter("series")}>Series originales</button>
           </div>
-        </section>
+        </section></div></details>
 
         {collectionFilter === "series" && voiceAuditionsReady && (
-          <section className="voice-cast-section" aria-label="Audiciones del elenco">
+          <details className="frontpage-section"><summary><span>04 · CASTING</span><strong>Las cinco voces</strong><i>+</i></summary><div className="frontpage-section-content"><section className="voice-cast-section" aria-label="Audiciones del elenco">
             <div className="section-topline">
               <div><p className="eyebrow">CASTING PROVISIONAL</p><h2>Las cinco voces</h2></div>
               <span className="section-index">ESPAÑOL · 5 IDENTIDADES</span>
@@ -437,11 +434,11 @@ function App() {
                 </article>
               ))}
             </div>
-          </section>
+          </section></div></details>
         )}
 
         {collectionFilter === "series" && (
-          <section className="chapters-section" aria-label="Capítulos de las series">
+          <details className="frontpage-section"><summary><span>05 · SERIES</span><strong>Capítulos y entregas finales</strong><i>+</i></summary><div className="frontpage-section-content"><section className="chapters-section" aria-label="Capítulos de las series">
             <div className="section-topline"><div><p className="eyebrow">SERIES ORIGINALS</p><h2>Capítulos</h2></div><span className="section-index">9 CAPÍTULOS · TEMPORADA 1</span></div>
 
             <div className="chapter-upload-panel">
@@ -493,10 +490,10 @@ function App() {
                 })}</div>
               </div>;
             })}
-          </section>
+          </section></div></details>
         )}
 
-        <section className="player-section" aria-label="Última producción">
+        <details className="frontpage-section"><summary><span>06 · REPRODUCCIÓN</span><strong>Última producción</strong><i>+</i></summary><div className="frontpage-section-content"><section className="player-section" aria-label="Última producción">
           <div className="section-topline"><div><p className="eyebrow">THE SCREENING ROOM</p><h2>Última producción</h2></div><span className="section-index">01 — PLAY</span></div>
           {active ? (
             <div className="featured-layout">
@@ -576,10 +573,10 @@ function App() {
               </div>
             </div>
           )}
-        </section>
+        </section></div></details>
 
         {ready.length > 1 && (
-          <section className="archive-section">
+          <details className="frontpage-section"><summary><span>07 · ARCHIVO</span><strong>Todos los videos terminados</strong><i>+</i></summary><div className="frontpage-section-content"><section className="archive-section">
             <div className="section-topline"><div><p className="eyebrow">THE ARCHIVE</p><h2>Todos los videos terminados</h2></div><span className="section-index">{String(ready.length).padStart(2, "0")} VIDEOS</span></div>
             <div className="archive-grid">
               {ready.filter((item) => item.id !== active?.id).map((item) => (
@@ -589,11 +586,11 @@ function App() {
                 </button>
               ))}
             </div>
-          </section>
+          </section></div></details>
         )}
 
         {inProgress.length > 0 && (
-          <section className="pipeline-section">
+          <details className="frontpage-section"><summary><span>08 · PRODUCCIÓN</span><strong>En producción</strong><i>+</i></summary><div className="frontpage-section-content"><section className="pipeline-section">
             <div className="section-topline"><div><p className="eyebrow">IN THE WORKS</p><h2>En producción</h2></div><span className="section-index">{String(inProgress.length).padStart(2, "0")} PROYECTOS</span></div>
             <div className="pipeline-list">{inProgress.map((item) => {
               const progress = renderProgress[item.id];
@@ -614,9 +611,9 @@ function App() {
                 <span className={`pipeline-status ${error ? "status-error" : ""}`}>{error ? "REQUIERE ATENCIÓN" : progress ? `${progress.percent}%` : "EN PROCESO"}</span>
               </article>;
             })}</div>
-          </section>
+          </section></div></details>
         )}
-        </>}
+        </>
       </main>
 
       <footer className="footer"><a className="footer-brand" href="#inicio">ingredora<span>.</span></a><span>CREADO CON INTENCIÓN. PRODUCIDO PARA JUGAR.</span><span>CONTENT STUDIO © 2026</span></footer>
