@@ -380,6 +380,7 @@ function App() {
       </header>
 
       <main id="inicio">
+        <LibraryExplorer />
         <section className="intro">
           <div className="intro-copy">
             <p className="eyebrow">INGREDORA ORIGINALS</p>
@@ -404,8 +405,6 @@ function App() {
             <button type="button" className={collectionFilter === "series" ? "collection-tab active" : "collection-tab"} aria-pressed={collectionFilter === "series"} onClick={() => setCollectionFilter("series")}>Series originales</button>
           </div>
         </section>
-
-        <LibraryExplorer />
 
         {collectionFilter === "series" && voiceAuditionsReady && (
           <section className="voice-cast-section" aria-label="Audiciones del elenco">
