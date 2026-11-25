@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-25T11:08:16.937Z",
+  "updatedAt": "2026-11-25T11:39:10.301Z",
   "productions": [
     {
       "id": "ingredora-entre-partidas-capitulo-01",
@@ -330,6 +330,19 @@
       "version": "1.0.0",
       "collection": "series",
       "renderEngine": "three"
+    }
+  ],
+  "folders": [],
+  "files": [
+    {
+      "id": "0cf68f34-efc2-4195-88b8-05c4eae09cee",
+      "name": "capitulo-1.mp4",
+      "path": "capitulo-1.mp4",
+      "folder": "",
+      "url": "https://raw.githubusercontent.com/matibh/ingredora-content-studio/138d35dd9b59f3ea71ea03583c962a5548541964/Contenido%20a%20subir/Biblioteca/capitulo-1.mp4",
+      "size": 15881950,
+      "mimeType": "video/mp4",
+      "uploadedAt": "2026-11-25T11:39:10.301Z"
     }
   ]
 }
