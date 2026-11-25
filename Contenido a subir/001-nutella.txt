@@ -1,3 +1,48 @@
+INGREDORA_PUBLISHING_TEMPLATE_V1
+@GLOBAL
+TITLE: ¿Qué tiene realmente la Nutella? 👀
+DESCRIPTION: ¡Lo reconocés enseguida! Pero… ¿sabés qué tiene realmente? Hay siete ingredientes en la etiqueta. Leelos, memorizalos y contame cuántos recordás sin volver a mirar. Jugá en https://ingredora.com
+HASHTAGS: #Ingredora #Nutella #Ingredientes #Desafio #Curiosidades
+TAGS: Ingredora, Nutella, ingredientes Nutella, desafío de memoria, juego diario, curiosidades de alimentos, Argentina
+PINNED_COMMENT: 🍫 ¿Cuántos de los siete ingredientes recordás? Te leo 👇
+ALT_TEXT: Video vertical de Ingredora sobre Nutella. Se muestra el frasco y su etiqueta para proponer un desafío de memoria sobre siete ingredientes. El cierre invita a jugar en Ingredora.com.
+@YOUTUBE
+TITLE: ¿Qué tiene realmente la Nutella? 👀
+DESCRIPTION: ¡Lo reconocés enseguida! Pero… ¿sabés qué tiene realmente? Hay siete ingredientes en la etiqueta. Leelos, memorizalos y contame cuántos recordás sin volver a mirar. Jugá en https://ingredora.com
+HASHTAGS: #Ingredora #Nutella #Ingredientes #Desafio #Curiosidades
+TAGS: Ingredora, Nutella, ingredientes Nutella, desafío de memoria, juego diario, curiosidades de alimentos, Argentina
+PINNED_COMMENT: 🍫 ¿Cuántos de los siete ingredientes recordás? Te leo 👇
+ALT_TEXT: Video vertical de Ingredora sobre Nutella. Se muestra el frasco y su etiqueta para proponer un desafío de memoria sobre siete ingredientes. El cierre invita a jugar en Ingredora.com.
+@INSTAGRAM
+TITLE: ¿Qué tiene realmente la Nutella? 👀
+DESCRIPTION: ¡Lo reconocés enseguida! Pero… ¿sabés qué tiene realmente? Hay siete ingredientes en la etiqueta. Leelos, memorizalos y contame cuántos recordás sin volver a mirar. Jugá en https://ingredora.com
+HASHTAGS: #Ingredora #Nutella #Ingredientes #Desafio #Curiosidades
+TAGS: 
+PINNED_COMMENT: 🍫 ¿Cuántos de los siete ingredientes recordás? Te leo 👇
+ALT_TEXT: Video vertical de Ingredora sobre Nutella. Se muestra el frasco y su etiqueta para proponer un desafío de memoria sobre siete ingredientes. El cierre invita a jugar en Ingredora.com.
+@TIKTOK
+TITLE: ¿Qué tiene realmente la Nutella? 👀
+DESCRIPTION: ¡Lo reconocés enseguida! Pero… ¿sabés qué tiene realmente? Hay siete ingredientes en la etiqueta. Leelos, memorizalos y contame cuántos recordás sin volver a mirar. Jugá en https://ingredora.com
+HASHTAGS: #Ingredora #Nutella #Ingredientes #Desafio #Curiosidades
+TAGS: 
+PINNED_COMMENT: 🍫 ¿Cuántos de los siete ingredientes recordás? Te leo 👇
+ALT_TEXT: Video vertical de Ingredora sobre Nutella. Se muestra el frasco y su etiqueta para proponer un desafío de memoria sobre siete ingredientes. El cierre invita a jugar en Ingredora.com.
+@FACEBOOK
+TITLE: ¿Qué tiene realmente la Nutella? 👀
+DESCRIPTION: ¡Lo reconocés enseguida! Pero… ¿sabés qué tiene realmente? Hay siete ingredientes en la etiqueta. Leelos, memorizalos y contame cuántos recordás sin volver a mirar. Jugá en https://ingredora.com
+HASHTAGS: #Ingredora #Nutella #Ingredientes #Desafio #Curiosidades
+TAGS: 
+PINNED_COMMENT: 🍫 ¿Cuántos de los siete ingredientes recordás? Te leo 👇
+ALT_TEXT: Video vertical de Ingredora sobre Nutella. Se muestra el frasco y su etiqueta para proponer un desafío de memoria sobre siete ingredientes. El cierre invita a jugar en Ingredora.com.
+@X
+TITLE: ¿Qué tiene realmente la Nutella? 👀
+DESCRIPTION: ¡Lo reconocés enseguida! Pero… ¿sabés qué tiene realmente? Hay siete ingredientes en la etiqueta. Leelos, memorizalos y contame cuántos recordás sin volver a mirar. Jugá en https://ingredora.com
+HASHTAGS: #Ingredora #Nutella #Ingredientes #Desafio #Curiosidades
+TAGS: 
+PINNED_COMMENT: 🍫 ¿Cuántos de los siete ingredientes recordás? Te leo 👇
+ALT_TEXT: Video vertical de Ingredora sobre Nutella. Se muestra el frasco y su etiqueta para proponer un desafío de memoria sobre siete ingredientes. El cierre invita a jugar en Ingredora.com.
+@END
+--- FIN DE METADATOS ESTRUCTURADOS ---
 INGREDORA — CONTENIDO LISTO PARA PUBLICAR
 ===========================================
 
