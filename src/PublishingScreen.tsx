@@ -34,7 +34,7 @@ function labelValue(block: string, label: string) {
   const result: string[] = [];
   for (let i = index + 1; i < lines.length; i++) {
     if (/^[A-ZÁÉÍÓÚÜÑ0-9][A-ZÁÉÍÓÚÜÑ0-9 /()—–_-]{2,}$/.test(lines[i].trim()) || /^[-=]{3,}$/.test(lines[i].trim())) break;
-    if (/^[-=]{3,}$/.test(lines[i].trim())) continue;\n    if (lines[i].trim()) result.push(lines[i].trim());
+    if (lines[i].trim()) result.push(lines[i].trim());
     else if (result.length) break;
   }
   return result.join("\n").trim();
