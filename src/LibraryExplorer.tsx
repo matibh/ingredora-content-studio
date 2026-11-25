@@ -21,7 +21,7 @@ export default function LibraryExplorer(){
  const [message,setMessage]=useState("");
  const [approval,setApproval]=useState("");
  const input=useRef<HTMLInputElement>(null);
- const refresh=async()=>{try{const r=await fetch(import.meta.env.BASE_URL+"studio/productions.json?v="+Date.now(),{cache:"no-store"});if(!r.ok)throw new Error("No se pudo leer la biblioteca.");setManifest(await r.json());setError("");}catch(e){setError(e instanceof Error?e.message:"Error al sincronizar.");}finally{setLoading(false);}};
+ const refresh=async()=>{try{const r=await fetch("https://raw.githubusercontent.com/matibh/ingredora-content-studio/main/public/studio/productions.json?v="+Date.now(),{cache:"no-store"});if(!r.ok)throw new Error("No se pudo leer la biblioteca.");setManifest(await r.json());setError("");}catch(e){setError(e instanceof Error?e.message:"Error al sincronizar.");}finally{setLoading(false);}};
  useEffect(()=>{void refresh();},[]);
  const folders=manifest.folders||[],files=manifest.files||[],productions=manifest.productions||[];
  const currentFolders=useMemo(()=>folders.filter(f=>{const parent=f.path.includes("/")?f.path.slice(0,f.path.lastIndexOf("/")):"";return parent===path;}),[folders,path]);
