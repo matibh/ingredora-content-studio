@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import LibraryExplorer from "./LibraryExplorer";
 import { renderPackageToWebM, type RenderProgress } from "./engine/renderer";
 import { renderSitcomPackageToWebM } from "./series2d/renderer";
 import type { SitcomProductionPackage } from "./series2d/types";
@@ -403,6 +404,8 @@ function App() {
             <button type="button" className={collectionFilter === "series" ? "collection-tab active" : "collection-tab"} aria-pressed={collectionFilter === "series"} onClick={() => setCollectionFilter("series")}>Series originales</button>
           </div>
         </section>
+
+        <LibraryExplorer />
 
         {collectionFilter === "series" && voiceAuditionsReady && (
           <section className="voice-cast-section" aria-label="Audiciones del elenco">
