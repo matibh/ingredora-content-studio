@@ -1,42 +1,44 @@
-NÚMERO DE CAPÍTULO:
-9
-
-NOMBRE DEL CAPÍTULO:
-La parada.
-
-PERSONAJES QUE APARECEN:
-Bruno, Tomás y Valentina.
-
-¿CÓMO COMIENZA?
-Los tres esperan el colectivo en una parada nocturna. Bruno dice que hace media hora que están esperando, pero Tomás mira el reloj y lo corrige: llevan ocho minutos.
-
-¿QUÉ SUCEDE DURANTE EL CAPÍTULO?
-Valentina pregunta si Bruno miró el horario. Él responde que el colectivo pasa cada diez minutos y Tomás cree que ya tendría que estar llegando. Mientras esperan, Valentina propone hacer algo y Bruno explica que está con el Desafío Diario de Ingredora. Tomás le pregunta si no puede esperar el colectivo sin jugar. Cuando Valentina ve que llega el colectivo, Tomás y ella intentan que Bruno guarde el celular y suba. Bruno sigue concentrado en terminar el desafío y no alcanza a reaccionar a tiempo.
-
-¿CUÁL ES EL CONFLICTO O SITUACIÓN PRINCIPAL?
-Bruno está tan pendiente del desafío diario que no presta atención al colectivo que están esperando. Su distracción hace que pierda el transporte junto con sus amigos.
-
-¿CUÁLES SON LOS MOMENTOS MÁS GRACIOSOS O IMPORTANTES?
-- Bruno exagera el tiempo de espera: dice media hora, aunque pasaron solo ocho minutos.
-- Tomás le recuerda que el horario dice cada diez minutos.
-- Bruno admite: «Puedo. Pero prefiero no hacerlo» cuando le preguntan si puede esperar sin jugar.
-- Valentina avisa que el colectivo llegó y Tomás le pide que guarde el celular.
-- El colectivo abre las puertas, pero Bruno sigue con el desafío y reacciona demasiado tarde.
-
-¿CÓMO TERMINA?
-Tomás y Valentina alcanzan a subir y el colectivo se va. Bruno queda en la parada y pregunta: «¿Eh? ¿Ya se fue?». Después de perder el colectivo, consuela su situación diciendo: «Bueno... por lo menos gané». Entra la risa y la música de cierre.
-
-¿HAY ALGUNA FRASE O DIÁLOGO MEMORABLE?
-«Ocho minutos, Bruno. Miré el reloj.»
-«Puedo. Pero prefiero no hacerlo.»
-«¡Dale, que ya abrió las puertas!»
-«Bueno... por lo menos gané.»
-
-¿QUÉ DEBERÍA SABER ALGUIEN ANTES DE VERLO?
-Es una comedia cotidiana sobre la distracción de Bruno con Ingredora. La historia se entiende sin conocer capítulos anteriores.
-
-¿HAY ALGÚN SPOILER QUE DEBAMOS EVITAR?
-Sí. No adelantar que el colectivo se va sin Bruno ni la última frase sobre haber ganado.
-
-INFORMACIÓN ADICIONAL:
-El paquete del Studio identifica el capítulo como el número 9 y el título «La parada». El render se titula en el workflow «La parada nocturna». El capítulo está construido en formato vertical 720 × 1280 y 24 FPS.
+INGREDORA_PUBLISHING_TEMPLATE_V1
+@GLOBAL
+TITLE: Entre Partidas | Cap. 9: La parada
+DESCRIPTION: El colectivo está por llegar, pero Bruno está demasiado concentrado en su desafío diario.
+HASHTAGS: #Ingredora #EntrePartidas #Colectivo #ComediaArgentina
+TAGS: Ingredora, Entre Partidas, La parada, Bruno, Tomás, Valentina, colectivo, transporte público, celular, desafío diario, distracción, comedia argentina
+PINNED_COMMENT: ¿Alguna vez te pasó algo parecido por mirar el celular? 🚌 Te leemos.
+ALT_TEXT: Video vertical de comedia de Ingredora. Bruno, Tomás y Valentina esperan un colectivo de noche. Bruno está concentrado en su teléfono jugando el Desafío Diario mientras sus amigos observan la llegada del transporte.
+@YOUTUBE
+TITLE: La parada 😂 | Entre Partidas - Capítulo 9
+DESCRIPTION: Esperar el colectivo no debería ser complicado. 🚌 Pero Bruno está concentrado en el Desafío Diario de Ingredora y sus amigos intentan que no se distraiga. ¿Alguna vez estuviste tan pendiente del celular que casi te olvidaste de lo que tenías que hacer?
+HASHTAGS: #Ingredora #EntrePartidas #Colectivo #ComediaArgentina
+TAGS: Ingredora, Entre Partidas, La parada, Bruno, Tomás, Valentina, colectivo, transporte público, celular, desafío diario, distracción, comedia argentina
+PINNED_COMMENT: ¿Alguna vez te pasó algo parecido por mirar el celular? 🚌 Te leemos.
+ALT_TEXT: Video vertical de comedia de Ingredora. Bruno, Tomás y Valentina esperan un colectivo de noche. Bruno está concentrado en su teléfono jugando el Desafío Diario mientras sus amigos observan la llegada del transporte.
+@INSTAGRAM
+TITLE: La parada
+DESCRIPTION: El colectivo está llegando y Bruno sigue con el desafío. 🚌📱 Hay momentos para jugar… ¿y momentos para mirar alrededor? 😂
+HASHTAGS: #Ingredora #EntrePartidas #Colectivo #ComediaArgentina
+TAGS: 
+PINNED_COMMENT: ¿Alguna vez te pasó algo parecido por mirar el celular? 🚌 Te leemos.
+ALT_TEXT: Video vertical de comedia de Ingredora. Bruno, Tomás y Valentina esperan un colectivo de noche. Bruno está concentrado en su teléfono jugando el Desafío Diario mientras sus amigos observan la llegada del transporte.
+@TIKTOK
+TITLE: La parada
+DESCRIPTION: Cuando estás tan concentrado en el celular que te olvidás del colectivo que estabas esperando. 🚌📱😂
+HASHTAGS: #Ingredora #EntrePartidas #Colectivo #ComediaArgentina
+TAGS: 
+PINNED_COMMENT: ¿Alguna vez te pasó algo parecido por mirar el celular? 🚌 Te leemos.
+ALT_TEXT: Video vertical de comedia de Ingredora. Bruno, Tomás y Valentina esperan un colectivo de noche. Bruno está concentrado en su teléfono jugando el Desafío Diario mientras sus amigos observan la llegada del transporte.
+@FACEBOOK
+TITLE: La parada
+DESCRIPTION: Bruno, Tomás y Valentina esperan el colectivo. La espera parece tranquila hasta que Bruno se concentra en el Desafío Diario y deja de prestar atención a lo que pasa alrededor. 🚌
+HASHTAGS: #Ingredora #EntrePartidas #Colectivo #ComediaArgentina
+TAGS: 
+PINNED_COMMENT: ¿Alguna vez te pasó algo parecido por mirar el celular? 🚌 Te leemos.
+ALT_TEXT: Video vertical de comedia de Ingredora. Bruno, Tomás y Valentina esperan un colectivo de noche. Bruno está concentrado en su teléfono jugando el Desafío Diario mientras sus amigos observan la llegada del transporte.
+@X
+TITLE: La parada
+DESCRIPTION: Bruno está esperando el colectivo, pero el Desafío Diario tiene toda su atención. 🚌📱 ¿Qué podría salir mal? 😂 https://ingredora.com
+HASHTAGS: #Ingredora #EntrePartidas #Colectivo #ComediaArgentina
+TAGS: 
+PINNED_COMMENT: ¿Alguna vez te pasó algo parecido por mirar el celular? 🚌 Te leemos.
+ALT_TEXT: Video vertical de comedia de Ingredora. Bruno, Tomás y Valentina esperan un colectivo de noche. Bruno está concentrado en su teléfono jugando el Desafío Diario mientras sus amigos observan la llegada del transporte.
+@END
