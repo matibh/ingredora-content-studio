@@ -236,7 +236,11 @@ function App() {
       setMp4Stage("CONVIRTIENDO A MP4");
       const mp4 = await convertWebMToMp4(sourceBlob, setMp4Progress);
       if (!mp4.size) throw new Error("La conversión no generó un MP4 válido.");
-      const basename = active.id === "ingredora-nutella-supermarket-spot-009" ? "001-nutella" : active.id.replace(/[^a-z0-9-]+/gi, "-").toLowerCase();
+      const basename = active.collection === "series" && active.episodeNumber
+        ? "entre-partidas-capitulo-" + String(active.episodeNumber).padStart(2, "0")
+        : active.id === "ingredora-nutella-supermarket-spot-009"
+          ? "001-nutella"
+          : active.id.replace(/[^a-z0-9-]+/gi, "-").toLowerCase();
       const form = new FormData();
       form.append("video", new File([mp4], basename + ".mp4", { type: "video/mp4" }));
       form.append("basename", basename);
