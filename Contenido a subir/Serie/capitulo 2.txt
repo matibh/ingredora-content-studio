@@ -1,42 +1,44 @@
-NÚMERO DE CAPÍTULO:
-2
-
-NOMBRE DEL CAPÍTULO:
-La cena de los ingredientes.
-
-PERSONAJES QUE APARECEN:
-Bruno, Martina, Tomás, Valentina y Ernesto.
-
-¿CÓMO COMIENZA?
-Los cinco están reunidos alrededor de la mesa del departamento. Bruno tiene una Coca-Cola y empieza a leer en voz alta la lista de ingredientes de la etiqueta, como si estuviera haciendo un análisis técnico.
-
-¿QUÉ SUCEDE DURANTE EL CAPÍTULO?
-La lectura de Bruno transforma la cena en una conversación sobre los ingredientes de la gaseosa. Martina le pide que pueda pasar la Coca sin analizarla. Bruno explica que está estudiando para no volver a quedarse sin respuesta. Tomás interpreta las abreviaturas de manera disparatada, Ernesto compara las gaseosas actuales con el sifón de sus tiempos y Valentina lleva la conversación hacia el hábito de Bruno de no compartir. La charla continúa con bromas sobre la cafeína, las burbujas y la botella que Bruno termina tomando prácticamente solo.
-
-¿CUÁL ES EL CONFLICTO O SITUACIÓN PRINCIPAL?
-Bruno no puede dejar de estudiar los ingredientes ni siquiera durante una cena con amigos. Los demás intentan disfrutar de la comida mientras él convierte la Coca-Cola en una clase de química y, además, no la comparte.
-
-¿CUÁLES SON LOS MOMENTOS MÁS GRACIOSOS O IMPORTANTES?
-- Bruno enumera agua carbonatada, azúcar o jarabe de maíz de alta fructosa, colorante caramelo, acidulante, aromas, sucralosa y cafeína.
-- Tomás pregunta si JMAF es un ingrediente o la patente de un auto.
-- Ernesto recuerda el sifón y Martina le aclara que eso era soda.
-- Valentina pregunta por «el ingrediente que te hace compartir» y Bruno admite que no lo encuentra.
-- Tomás pregunta si la cafeína sirve para que las burbujas no se duerman y después quiere saber por qué siempre están acostadas en el vaso.
-- Bruno dice que está haciendo una prueba de calidad, pero Martina señala que la botella ya está vacía.
-
-¿CÓMO TERMINA?
-Ernesto le pregunta a Bruno qué resultado dio la prueba de calidad. Bruno responde «Aprobada». Ernesto remata: «Entonces aprobá también lavar los platos». Entra el cierre musical de la serie.
-
-¿HAY ALGUNA FRASE O DIÁLOGO MEMORABLE?
-«¿JMAF es un ingrediente o la patente de un auto?»
-«¿Y el ingrediente que te hace compartir?» — «No lo encuentro.»
-«Entonces aprobá también lavar los platos.»
-
-¿QUÉ DEBERÍA SABER ALGUIEN ANTES DE VERLO?
-Es una historia autoconclusiva de sobremesa con los cinco protagonistas. Continúa la idea de Bruno estudiando ingredientes, presentada en el capítulo 1.
-
-¿HAY ALGÚN SPOILER QUE DEBAMOS EVITAR?
-Sí. Conviene no revelar el remate de Ernesto sobre lavar los platos ni las bromas finales sobre la botella vacía.
-
-INFORMACIÓN ADICIONAL:
-La escena sucede en el comedor del departamento y mantiene la identidad visual y musical de la serie. El paquete de producción se llama «entre-partidas-dinner».
+INGREDORA_PUBLISHING_TEMPLATE_V1
+@GLOBAL
+TITLE: Entre Partidas | Cap. 2: La cena de los ingredientes
+DESCRIPTION: Una cena entre amigos se convierte en un análisis inesperado de una botella de gaseosa.
+HASHTAGS: #Ingredora #EntrePartidas #ComediaArgentina #Humor
+TAGS: Ingredora, Entre Partidas, La cena de los ingredientes, Bruno, Martina, Tomás, Valentina, Ernesto, Coca-Cola, ingredientes, sobremesa, comedia argentina, humor entre amigos
+PINNED_COMMENT: ¿En tu grupo también hay alguien que analiza todo? 😂 Te leemos. Más en Ingredora.com.
+ALT_TEXT: Video vertical de comedia de Ingredora. Bruno está sentado a la mesa con Martina, Tomás, Valentina y Ernesto y lee en voz alta los ingredientes de una botella de gaseosa. Los amigos reaccionan con bromas y preguntas.
+@YOUTUBE
+TITLE: La cena de los ingredientes 😂 | Entre Partidas - Capítulo 2
+DESCRIPTION: Una cena tranquila… hasta que Bruno empieza a leer la etiqueta de la Coca-Cola en voz alta. 🥤 La mesa se transforma en una charla sobre ingredientes, burbujas y costumbres. ¿Podrían tus amigos cenar sin convertir todo en un debate? Más episodios en https://ingredora.com
+HASHTAGS: #Ingredora #EntrePartidas #ComediaArgentina #Humor
+TAGS: Ingredora, Entre Partidas, La cena de los ingredientes, Bruno, Martina, Tomás, Valentina, Ernesto, Coca-Cola, ingredientes, sobremesa, comedia argentina, humor entre amigos
+PINNED_COMMENT: ¿En tu grupo también hay alguien que analiza todo? 😂 Te leemos. Más en Ingredora.com.
+ALT_TEXT: Video vertical de comedia de Ingredora. Bruno está sentado a la mesa con Martina, Tomás, Valentina y Ernesto y lee en voz alta los ingredientes de una botella de gaseosa. Los amigos reaccionan con bromas y preguntas.
+@INSTAGRAM
+TITLE: La cena de los ingredientes
+DESCRIPTION: Cuando Bruno se sienta a cenar, hasta una gaseosa termina bajo análisis. 🥤😂 Una sobremesa con ingredientes, preguntas insólitas y amigos que ya no saben cómo frenarlo. ¿En tu mesa pasa algo parecido?
+HASHTAGS: #Ingredora #EntrePartidas #ComediaArgentina #Humor
+TAGS: 
+PINNED_COMMENT: ¿En tu grupo también hay alguien que analiza todo? 😂 Te leemos. Más en Ingredora.com.
+ALT_TEXT: Video vertical de comedia de Ingredora. Bruno está sentado a la mesa con Martina, Tomás, Valentina y Ernesto y lee en voz alta los ingredientes de una botella de gaseosa. Los amigos reaccionan con bromas y preguntas.
+@TIKTOK
+TITLE: La cena de los ingredientes
+DESCRIPTION: Bruno no puede tomar una gaseosa sin analizar la etiqueta. 🥤😂 ¿Te imaginás tenerlo en tu mesa durante la cena?
+HASHTAGS: #Ingredora #EntrePartidas #ComediaArgentina #Humor
+TAGS: 
+PINNED_COMMENT: ¿En tu grupo también hay alguien que analiza todo? 😂 Te leemos. Más en Ingredora.com.
+ALT_TEXT: Video vertical de comedia de Ingredora. Bruno está sentado a la mesa con Martina, Tomás, Valentina y Ernesto y lee en voz alta los ingredientes de una botella de gaseosa. Los amigos reaccionan con bromas y preguntas.
+@FACEBOOK
+TITLE: La cena de los ingredientes
+DESCRIPTION: La cena de los ingredientes: Bruno convierte una botella de gaseosa en el tema central de la sobremesa. Sus amigos aportan preguntas y comentarios cada vez más disparatados. 🥤😂
+HASHTAGS: #Ingredora #EntrePartidas #ComediaArgentina #Humor
+TAGS: 
+PINNED_COMMENT: ¿En tu grupo también hay alguien que analiza todo? 😂 Te leemos. Más en Ingredora.com.
+ALT_TEXT: Video vertical de comedia de Ingredora. Bruno está sentado a la mesa con Martina, Tomás, Valentina y Ernesto y lee en voz alta los ingredientes de una botella de gaseosa. Los amigos reaccionan con bromas y preguntas.
+@X
+TITLE: La cena de los ingredientes
+DESCRIPTION: Bruno no puede cenar sin analizar la etiqueta de la gaseosa. 🥤 La sobremesa se convirtió en una clase de ingredientes. 😂 https://ingredora.com
+HASHTAGS: #Ingredora #EntrePartidas #ComediaArgentina #Humor
+TAGS: 
+PINNED_COMMENT: ¿En tu grupo también hay alguien que analiza todo? 😂 Te leemos. Más en Ingredora.com.
+ALT_TEXT: Video vertical de comedia de Ingredora. Bruno está sentado a la mesa con Martina, Tomás, Valentina y Ernesto y lee en voz alta los ingredientes de una botella de gaseosa. Los amigos reaccionan con bromas y preguntas.
+@END
