@@ -1,3 +1,48 @@
+INGREDORA_PUBLISHING_TEMPLATE_V1
+@GLOBAL
+TITLE: ¿Sabés qué tiene adentro una Coca-Cola? 🥤 | Desafío de 6 segundos
+DESCRIPTION: Un día de calor, una Coca bien fría y un desafío rápido. Tenés SOLO 6 segundos para adivinar los ingredientes de Coca-Cola Sabor Original antes de ver la respuesta. ¿Cuántos acertaste? Jugá en https://ingredora.com
+HASHTAGS: #Ingredora #DesafioDeIngredientes #CocaCola #CuantoSabes
+TAGS: Ingredora, Coca-Cola, Coca Cola, Coca-Cola Sabor Original, ingredientes de Coca-Cola, desafío de ingredientes, adivinar ingredientes, trivia, Argentina
+PINNED_COMMENT: ¿Los sacaste antes de que aparecieran? 👀 ¿Cuántos de los 6 acertaste? Probá otro desafío en https://ingredora.com.
+ALT_TEXT: Video vertical de Ingredora con una escena de verano. Una botella de Coca-Cola Sabor Original sirve bebida en un vaso con hielo. La escena se congela y propone adivinar seis ingredientes en seis segundos. Al final se muestran las respuestas y se invita a jugar en Ingredora.com.
+@YOUTUBE
+TITLE: ¿Sabés qué tiene adentro una Coca-Cola? 🥤 | Desafío de 6 segundos
+DESCRIPTION: Un día de calor, una Coca bien fría y un desafío rápido. Tenés SOLO 6 segundos para adivinar los ingredientes de Coca-Cola Sabor Original antes de ver la respuesta. ¿Cuántos acertaste? Jugá en https://ingredora.com
+HASHTAGS: #Ingredora #DesafioDeIngredientes #CocaCola #CuantoSabes
+TAGS: Ingredora, Coca-Cola, Coca Cola, Coca-Cola Sabor Original, ingredientes de Coca-Cola, desafío de ingredientes, adivinar ingredientes, trivia, Argentina
+PINNED_COMMENT: ¿Los sacaste antes de que aparecieran? 👀 ¿Cuántos de los 6 acertaste? Probá otro desafío en https://ingredora.com.
+ALT_TEXT: Video vertical de Ingredora con una escena de verano. Una botella de Coca-Cola Sabor Original sirve bebida en un vaso con hielo. La escena se congela y propone adivinar seis ingredientes en seis segundos. Al final se muestran las respuestas y se invita a jugar en Ingredora.com.
+@INSTAGRAM
+TITLE: ¿Sabés qué tiene adentro una Coca-Cola? 🥤 | Desafío de 6 segundos
+DESCRIPTION: Un día de calor, una Coca bien fría y un desafío rápido. Tenés SOLO 6 segundos para adivinar los ingredientes de Coca-Cola Sabor Original antes de ver la respuesta. ¿Cuántos acertaste? Jugá en https://ingredora.com
+HASHTAGS: #Ingredora #DesafioDeIngredientes #CocaCola #CuantoSabes
+TAGS: 
+PINNED_COMMENT: ¿Los sacaste antes de que aparecieran? 👀 ¿Cuántos de los 6 acertaste? Probá otro desafío en https://ingredora.com.
+ALT_TEXT: Video vertical de Ingredora con una escena de verano. Una botella de Coca-Cola Sabor Original sirve bebida en un vaso con hielo. La escena se congela y propone adivinar seis ingredientes en seis segundos. Al final se muestran las respuestas y se invita a jugar en Ingredora.com.
+@TIKTOK
+TITLE: ¿Sabés qué tiene adentro una Coca-Cola? 🥤 | Desafío de 6 segundos
+DESCRIPTION: Un día de calor, una Coca bien fría y un desafío rápido. Tenés SOLO 6 segundos para adivinar los ingredientes de Coca-Cola Sabor Original antes de ver la respuesta. ¿Cuántos acertaste? Jugá en https://ingredora.com
+HASHTAGS: #Ingredora #DesafioDeIngredientes #CocaCola #CuantoSabes
+TAGS: 
+PINNED_COMMENT: ¿Los sacaste antes de que aparecieran? 👀 ¿Cuántos de los 6 acertaste? Probá otro desafío en https://ingredora.com.
+ALT_TEXT: Video vertical de Ingredora con una escena de verano. Una botella de Coca-Cola Sabor Original sirve bebida en un vaso con hielo. La escena se congela y propone adivinar seis ingredientes en seis segundos. Al final se muestran las respuestas y se invita a jugar en Ingredora.com.
+@FACEBOOK
+TITLE: ¿Sabés qué tiene adentro una Coca-Cola? 🥤 | Desafío de 6 segundos
+DESCRIPTION: Un día de calor, una Coca bien fría y un desafío rápido. Tenés SOLO 6 segundos para adivinar los ingredientes de Coca-Cola Sabor Original antes de ver la respuesta. ¿Cuántos acertaste? Jugá en https://ingredora.com
+HASHTAGS: #Ingredora #DesafioDeIngredientes #CocaCola #CuantoSabes
+TAGS: 
+PINNED_COMMENT: ¿Los sacaste antes de que aparecieran? 👀 ¿Cuántos de los 6 acertaste? Probá otro desafío en https://ingredora.com.
+ALT_TEXT: Video vertical de Ingredora con una escena de verano. Una botella de Coca-Cola Sabor Original sirve bebida en un vaso con hielo. La escena se congela y propone adivinar seis ingredientes en seis segundos. Al final se muestran las respuestas y se invita a jugar en Ingredora.com.
+@X
+TITLE: ¿Sabés qué tiene adentro una Coca-Cola? 🥤 | Desafío de 6 segundos
+DESCRIPTION: Un día de calor, una Coca bien fría y un desafío rápido. Tenés SOLO 6 segundos para adivinar los ingredientes de Coca-Cola Sabor Original antes de ver la respuesta. ¿Cuántos acertaste? Jugá en https://ingredora.com
+HASHTAGS: #Ingredora #DesafioDeIngredientes #CocaCola #CuantoSabes
+TAGS: 
+PINNED_COMMENT: ¿Los sacaste antes de que aparecieran? 👀 ¿Cuántos de los 6 acertaste? Probá otro desafío en https://ingredora.com.
+ALT_TEXT: Video vertical de Ingredora con una escena de verano. Una botella de Coca-Cola Sabor Original sirve bebida en un vaso con hielo. La escena se congela y propone adivinar seis ingredientes en seis segundos. Al final se muestran las respuestas y se invita a jugar en Ingredora.com.
+@END
+--- FIN DE METADATOS ESTRUCTURADOS ---
 INGREDORA — PAQUETE DE PUBLICACIÓN EN REDES
 PRODUCCIÓN 002 — COCA-COLA SABOR ORIGINAL
 ============================================================
