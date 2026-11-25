@@ -189,7 +189,7 @@ export default function PublishingScreen({ productions, initialProductionId }: P
               <span>URL DE TU POSTY</span>
               <input type="url" value={postyUrl} onChange={event => { setPostyUrl(event.target.value); setPostyError(""); }} placeholder="https://tu-posty.vercel.app" autoComplete="url" />
             </label>
-            <button type="button" className="publish-review-button" disabled={!active || !postyUrl.trim()} onClick={openInPosty}>
+            <button type="button" className="publish-review-button" disabled={!active || !postyUrl.trim() || loadingMetadata || !!metadataError} onClick={openInPosty}>
               Enviar {active?.name || "video"} a Posty <span>→</span>
             </button>
             {postyError && <p className="publish-feedback" role="alert">{postyError}</p>}
