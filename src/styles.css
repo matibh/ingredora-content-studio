@@ -133,7 +133,7 @@
 .explorer-new-folder,.explorer-file-upload{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .explorer-new-folder input{min-width:180px;flex:1;padding:10px;border:1px solid #d6dfd2;border-radius:7px;font:11px Arial}
 .explorer-cancel{background:#f5f7f3!important;color:#68786b!important}
-.explorer-hidden-input{display:block;max-width:100%;font-size:10px}
+.explorer-hidden-input{display:none}
 .explorer-file-upload span{font-size:10px;color:#435b47;overflow-wrap:anywhere}
 .explorer-auth{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:8px;font-weight:800;letter-spacing:1px;color:#7b897e}
 .explorer-auth input{max-width:260px;padding:9px 10px;border:1px solid #d6dfd2;border-radius:7px;font:11px Arial}
