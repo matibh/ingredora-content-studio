@@ -1,3 +1,48 @@
+INGREDORA_PUBLISHING_TEMPLATE_V1
+@GLOBAL
+TITLE: 🕵️ El caso Guaymallén: ¿sabés qué ingredientes tiene?
+DESCRIPTION: CASO ABIERTO: el detective encontró un alfajor Guaymallén, pero hay algo que no puede resolver… ¡la lista de ingredientes! ¿Vos sabés cuáles tiene? Entrá a https://ingredora.com, completá los ingredientes y ayudalo a cerrar el caso.
+HASHTAGS: #Ingredora #Guaymallen #OperacionEtiqueta #DesafioDeIngredientes #QueEstamosComiendo
+TAGS: Ingredora, Guaymallén, alfajor, ingredientes, desafío de ingredientes, Operación Etiqueta, trivia, Argentina
+PINNED_COMMENT: ¿Te animás a resolver el caso? Dejá tu respuesta y después completá el desafío en Ingredora.com.
+ALT_TEXT: Un detective, en una oficina de investigación, examina un alfajor Guaymallén y busca su lista de ingredientes. Como no logra encontrarla, invita a la audiencia a ayudarlo y visitar Ingredora.com.
+@YOUTUBE
+TITLE: 🕵️ El caso Guaymallén: ¿sabés qué ingredientes tiene?
+DESCRIPTION: CASO ABIERTO: el detective encontró un alfajor Guaymallén, pero hay algo que no puede resolver… ¡la lista de ingredientes! ¿Vos sabés cuáles tiene? Entrá a https://ingredora.com, completá los ingredientes y ayudalo a cerrar el caso.
+HASHTAGS: #Ingredora #Guaymallen #OperacionEtiqueta #DesafioDeIngredientes #QueEstamosComiendo
+TAGS: Ingredora, Guaymallén, alfajor, ingredientes, desafío de ingredientes, Operación Etiqueta, trivia, Argentina
+PINNED_COMMENT: ¿Te animás a resolver el caso? Dejá tu respuesta y después completá el desafío en Ingredora.com.
+ALT_TEXT: Un detective, en una oficina de investigación, examina un alfajor Guaymallén y busca su lista de ingredientes. Como no logra encontrarla, invita a la audiencia a ayudarlo y visitar Ingredora.com.
+@INSTAGRAM
+TITLE: 🕵️ El caso Guaymallén: ¿sabés qué ingredientes tiene?
+DESCRIPTION: CASO ABIERTO: el detective encontró un alfajor Guaymallén, pero hay algo que no puede resolver… ¡la lista de ingredientes! ¿Vos sabés cuáles tiene? Entrá a https://ingredora.com, completá los ingredientes y ayudalo a cerrar el caso.
+HASHTAGS: #Ingredora #Guaymallen #OperacionEtiqueta #DesafioDeIngredientes #QueEstamosComiendo
+TAGS: 
+PINNED_COMMENT: ¿Te animás a resolver el caso? Dejá tu respuesta y después completá el desafío en Ingredora.com.
+ALT_TEXT: Un detective, en una oficina de investigación, examina un alfajor Guaymallén y busca su lista de ingredientes. Como no logra encontrarla, invita a la audiencia a ayudarlo y visitar Ingredora.com.
+@TIKTOK
+TITLE: 🕵️ El caso Guaymallén: ¿sabés qué ingredientes tiene?
+DESCRIPTION: CASO ABIERTO: el detective encontró un alfajor Guaymallén, pero hay algo que no puede resolver… ¡la lista de ingredientes! ¿Vos sabés cuáles tiene? Entrá a https://ingredora.com, completá los ingredientes y ayudalo a cerrar el caso.
+HASHTAGS: #Ingredora #Guaymallen #OperacionEtiqueta #DesafioDeIngredientes #QueEstamosComiendo
+TAGS: 
+PINNED_COMMENT: ¿Te animás a resolver el caso? Dejá tu respuesta y después completá el desafío en Ingredora.com.
+ALT_TEXT: Un detective, en una oficina de investigación, examina un alfajor Guaymallén y busca su lista de ingredientes. Como no logra encontrarla, invita a la audiencia a ayudarlo y visitar Ingredora.com.
+@FACEBOOK
+TITLE: 🕵️ El caso Guaymallén: ¿sabés qué ingredientes tiene?
+DESCRIPTION: CASO ABIERTO: el detective encontró un alfajor Guaymallén, pero hay algo que no puede resolver… ¡la lista de ingredientes! ¿Vos sabés cuáles tiene? Entrá a https://ingredora.com, completá los ingredientes y ayudalo a cerrar el caso.
+HASHTAGS: #Ingredora #Guaymallen #OperacionEtiqueta #DesafioDeIngredientes #QueEstamosComiendo
+TAGS: 
+PINNED_COMMENT: ¿Te animás a resolver el caso? Dejá tu respuesta y después completá el desafío en Ingredora.com.
+ALT_TEXT: Un detective, en una oficina de investigación, examina un alfajor Guaymallén y busca su lista de ingredientes. Como no logra encontrarla, invita a la audiencia a ayudarlo y visitar Ingredora.com.
+@X
+TITLE: 🕵️ El caso Guaymallén: ¿sabés qué ingredientes tiene?
+DESCRIPTION: CASO ABIERTO: el detective encontró un alfajor Guaymallén, pero hay algo que no puede resolver… ¡la lista de ingredientes! ¿Vos sabés cuáles tiene? Entrá a https://ingredora.com, completá los ingredientes y ayudalo a cerrar el caso.
+HASHTAGS: #Ingredora #Guaymallen #OperacionEtiqueta #DesafioDeIngredientes #QueEstamosComiendo
+TAGS: 
+PINNED_COMMENT: ¿Te animás a resolver el caso? Dejá tu respuesta y después completá el desafío en Ingredora.com.
+ALT_TEXT: Un detective, en una oficina de investigación, examina un alfajor Guaymallén y busca su lista de ingredientes. Como no logra encontrarla, invita a la audiencia a ayudarlo y visitar Ingredora.com.
+@END
+--- FIN DE METADATOS ESTRUCTURADOS ---
 INGREDORA — PRODUCCIÓN 013
 OPERACIÓN ETIQUETA: EL CASO GUAYMALLÉN
 
