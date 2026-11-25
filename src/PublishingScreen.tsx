@@ -7,7 +7,7 @@ type Production = {
 };
 type VideoAsset = { id: string; name: string; title: string; videoUrl: string; txtUrl: string };
 type CopyData = { title: string; description: string; hashtags: string; tags: string; pinnedComment: string; altText: string };
-type Props = { productions: Production[]; initialProductionId?: string; onBack: () => void };
+type Props = { productions: Production[]; initialProductionId?: string };
 const REPO = "https://api.github.com/repos/matibh/ingredora-content-studio/contents/Contenido%20a%20subir?ref=main";
 const RAW = "https://raw.githubusercontent.com/matibh/ingredora-content-studio/main/Contenido%20a%20subir/";
 const PLATFORMS = [
@@ -84,7 +84,7 @@ function parseMetadata(text: string): Record<string, CopyData> {
 function niceTitle(filename: string) {
   return filename.replace(/\.mp4$/i, "").replace(/[-_]+/g, " ").replace(/\b\d+\b/g, n => "#" + n).replace(/\b\w/g, c => c.toUpperCase());
 }
-export default function PublishingScreen({ productions, initialProductionId, onBack }: Props) {
+export default function PublishingScreen({ productions, initialProductionId }: Props) {
   const [assets, setAssets] = useState<VideoAsset[]>([]);
   const [videoId, setVideoId] = useState("");
   const [loadingAssets, setLoadingAssets] = useState(true);
@@ -148,7 +148,7 @@ export default function PublishingScreen({ productions, initialProductionId, onB
   const toggle = (id: string) => setSelected(current => current.includes(id) ? current.filter(item => item !== id) : [...current, id]);
   const readyToReview = !!active && !loadingMetadata && !!currentCopy.description.trim() && selected.length > 0 && (schedule === "now" || schedule === "draft" || !!scheduledAt);
   return <section className="publish-screen">
-    <div className="publish-topline"><button type="button" className="publish-back" onClick={onBack}>← Volver a la biblioteca</button><span>INGREDORA STUDIO / DISTRIBUCIÓN</span></div>
+    <div className="publish-topline"><span>INGREDORA STUDIO / DISTRIBUCIÓN</span><span>PUBLICACIÓN MULTIPLATAFORMA</span></div>
     <header className="publish-heading"><div><p className="eyebrow">DISTRIBUCIÓN MULTIPLATAFORMA</p><h1>Subir a <em>redes.</em></h1><p>Elegí un MP4 y cargamos automáticamente los textos de su TXT asociado.</p></div><div className="publish-step"><strong>01</strong><span>PREPARAR PUBLICACIÓN</span></div></header>
     <div className="publish-layout">
       <div className="publish-main">
